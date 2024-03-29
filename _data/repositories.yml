@@ -1,12 +1,15 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - MarkusThill
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - MarkusThill/AdventOfCode
+  - MarkusThill/MGAB
+  - MarkusThill/DTMFCuda
+  - MarkusThill/bioma-tcn-ae
+  - MarkusThill/PFBalancedBinaryTree 
+  - MarkusThill/65-C-02-Assembler
+  - MarkusThill/solitaire-diamond
+  - MarkusThill/BufferOverflows
+  
+
+
