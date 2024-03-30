@@ -5,6 +5,8 @@ date: 2024-03-29 00:20:00
 description: The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first.
 tags: fibonacci math signal processing
 categories: math
+giscus_comments: true
+featured: true
 ---
 
 The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. Already high school students starting with programming classes compute the first few Fibonacci numbers with their programs using different iterative or recursive approaches. One reason for its popularity might be that the Fibonacci sequence is closely related to many other fields of math and physics, often in very astonishing ways which one might not expect. Usually, the Fibonacci sequence is defined in a recursive manner. Hence, in order to compute the n-th Fibonacci number all previous Fibonacci numbers have to be computed first. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first. Interestingly, we will solve this problem with the help of a tool -- the so called Z-Transform -- which is actually more common in the field of digital signal processing.
@@ -27,7 +29,7 @@ $$
 
 A simple recursive function in R, implementing the sequence could look like this:
 
-{% highlight R linenos %}
+```R
 fibo <- function(n) {
 if(n<0) return (NaN);
 if(n == 0 ) return (0);
@@ -36,7 +38,7 @@ return (fibo(n-1) + fibo(n-2));
 }
 
 sapply(0:19, fibo)
-{% endhighlight %}
+```
 
 The first 20 elements $$F_0 \ldots F_{19}$$ of the Fibonacci Sequence are thus:
 
@@ -104,7 +106,7 @@ a = [1,-1,-1].
 $$
 
 Subsequently, we can compute and plot the impulse response of our system.
-{% highlight R linenos %}
+```R
 library(signal)
 library(ggplot2)
 b = c(1)
@@ -123,7 +125,7 @@ scale_x_continuous(breaks=c(0:10))+
 xlab("n")+
 ylab("h[n]")
 p
-{% endhighlight %}
+```
 
 {% include figure.liquid path="assets/img/fibo-impulse-response.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
@@ -259,35 +261,28 @@ If we look at Eq. \eqref{eq:ztransinfinite}, we can see that we have something w
 
 
 $$
-
 q = az^{-1}
-
 $$
 
 we can write
 
-
 $$
-
 \begin{align}
 X(z) &= \frac{b}{1-az^{-1}} = b\sum*{n=0}^{\infty} (az^{-1})^n \\
 &= b\sum*{n=0}^{\infty} a^nz^{-n} \label{eq:sumZ} \\
 &= b(1 + az^{-1} + a^2 z^{-2} + \ldots)
 \end{align}
-
 $$
 
 Note that this step assumes that
-$$
 
+$$
 |az^{-1}|<1
-
 $$
+
 or
 $$
-
 |a|<|z|
-
 $$
 .
 
@@ -295,48 +290,34 @@ For this sum that we found, the inverse Z-transform can now be easily determined
 
 
 $$
-
 \begin{align}
 x[n] &= \mathcal{Z}^{-1}\big\{X(z)\big\}\\ &= b a^n u[n], \\
 \end{align}
-
 $$
-
 where
 $$
-
 u[n]
-
 $$
 is the unit-step function which turns on at
 $$
-
 n=0.
-
 $$
 This is necessary, since the sum in Eq. \eqref{eq:sumZ} starts with
 $$
-
 n=0
-
 $$
 and
 $$
-
 x[n]
-
 $$
 is not defined (or is zero) for negative indexes.
 
 We can summarize the findings of this section in basically one equation:
 
-
 $$
-
 \begin{align}
 \mathcal{Z}\big\{b a^n u[n])\big\} &= \frac{b}{1-az^{-1}}. \label{eq:finalrelation}
 \end{align}
-
 $$
 
 
@@ -347,60 +328,42 @@ Let's do it. Remember:
 
 <!---H(z)= \frac{\frac{1}{2\sqrt 5} (1 +\sqrt 5)}{1-\frac{1}{2}(1 +\sqrt 5)z^{-1}} - \frac{\frac{1}{2\sqrt 5} (1 -\sqrt 5)}{1-\frac{1}{2}(1 -\sqrt 5)z^{-1}} -->
 $$
-
 \begin{align}
 H(z)=\frac{1}{\sqrt 5}\frac{1}{1-\frac{1}{2}(1 +\sqrt 5)z^{-1}} - \frac{1}{\sqrt 5}\frac{1}{1-\frac{1}{2}(1 -\sqrt 5)z^{-1}}
 \end{align}
-
 $$
 
 This leads us to:
 <!---&= \Big[\frac{1}{2\sqrt 5} (1 +\sqrt 5)\Big] \cdot \Big[\frac{1}{2}(1 +\sqrt 5)\Big]^n - \Big[\frac{1}{2\sqrt 5} (1 -\sqrt 5)\Big] \cdot \Big[\frac{1}{2}(1 -\sqrt 5)\Big]^n \\-->
 
-
 $$
-
 \begin{align}
 h[n] &= \mathcal{Z}^{-1}\big\{H(z)\big\} \\
 &= \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 +\sqrt 5)\Big]^{n}u[n] - \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 -\sqrt 5)\Big]^{n}u[n] \\
 &= \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 +\sqrt 5)\Big]^{n} - \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 -\sqrt 5)\Big]^{n}, \, \mbox{for} \, n \ge 0 \label{eq:backintime}
 \end{align}
-
 $$
 
 which -- when looking at it closer -- is a truely remarkable result. There is no recursive formulation in the impulse response any longer. This means that we can compute any arbitrary Fibonacci number directly using this closed-form solution.
 
 Another interesting observation from above equation is, that the term
 
-
 $$
-
 \frac{1}{2}(1 +\sqrt 5)
-
 $$
-
 is the so called golden ratio
 $$
-
 \varphi.
-
 $$
 The golden ration itself has many interesting properties, which one should take a look at. In this case, we will just use it to simplify our expression above.
 
 Using
-
-
 $$
-
 \varphi = \frac{1 +\sqrt 5}{2}
-
 $$
-
 and the additional relation
 
-
 $$
-
 \begin{align}
 -\frac{1}{\varphi} &= -\varphi^{-1} = -\frac{2}{1 +\sqrt 5} \\
 &= -\frac{2}{1 +\sqrt 5} \frac{1 -\sqrt 5}{1 -\sqrt 5} \\
@@ -409,21 +372,16 @@ $$
 &= -2 \frac{1 -\sqrt 5}{-4} \\
 &= \frac{1 -\sqrt 5}{2} ,
 \end{align}
-
 $$
-
 we can re-write Eq. \eqref{eq:backintime} in the following way:
 
-
 $$
-
 \begin{align}
 h[n] &= \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 +\sqrt 5)\Big]^{n} - \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 -\sqrt 5)\Big]^{n} \\
 &= \frac{1}{\sqrt 5} \varphi^{n} - \frac{1}{\sqrt 5} (-\varphi)^{-n} \\
 &= \frac{\varphi^{n} - (-\varphi)^{-n}}{\sqrt 5}\\
 &= \frac{\varphi^{n} - (-\varphi)^{-n}}{2\varphi -1},
 \end{align}
-
 $$
 
 which is -- as I find -- a really nice formulation of the Fibonacci sequence. (There are also some issues with above representation, but lets forget about them at the moment).
@@ -432,23 +390,21 @@ which is -- as I find -- a really nice formulation of the Fibonacci sequence. (T
 
 A simple R-function implementing this closed form solution could look like this:
 
-{% highlight R linenos %}
+```R
 fibo <- function(n) {
   phi = (1+sqrt(5))/2
   (phi^(n) - (-phi)^(-n))/(2*phi-1)
 }
-{% endhighlight %}
+```
 
 Try it out! For exampe, I get the following results in the following for the following cases:
-{% highlight R linenos %}
+```R
 > sapply(0:19, fibo)
 [1] 0  1  1  2  3  5  8  13  21  34  55  89  144  233  377  610  987 1597 2584 4181
-{% endhighlight %}
+```
 
-{% highlight R linenos %}
+```R
 > fibo(57)
 [1] 365435296162
-{% endhighlight %}
+``` 
 
-
-$$
