@@ -2,22 +2,24 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Data Scientist. Karlsruhe/Germany.
+subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Moto. Etc.
 
 profile:
   align: right
   image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
-  more_info:
+  more_info: >
+    <p>555 your office number</p>
+    <p>123 your address street</p>
+    <p>Your City, State 12345</p>
 
 news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-Hi there! I'm Markus Thill, a Data Scientist at [Atruvia AG](https://atruvia.de/). With a background in computer engineering (B.Sc.) and Automation & IT (M.Eng.), I'm deeply passionate about the intersection of machine learning, mathematics, and programming. In my professional role, I delve into data to uncover insights and drive innovation.
+Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](http://reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
 
-I have a particular interest in machine learning approaches, especially in the fields of time series analysis, anomaly detection, Reinforcement Learning (RL) (such as in board games), Deep Learning (DL), and incremental learning procedures.
-Recently, I received my doctoral certificate from [Leiden University](https://www.universiteitleiden.nl/en) for [my work](https://scholarlypublications.universiteitleiden.nl/handle/1887/3279161) titled "Machine Learning and Deep Learning Approaches for Multivariate Time Series Prediction and Anomaly Detection". This marked a final milestone in my academic journey, and since then, I've transitioned into the industry. During my tenure as a research associate at [TH Köln](https://www.th-koeln.de/), I presented a total of eight peer-reviewed publications at various international research conferences.
+Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
 
-Outside of work, I find joy in simple pleasures like flying drones and occasionally solving small mathematical riddles on projecteuler.net. Continuously learning and exploring new concepts in data science and mathematics keeps me motivated and engaged.
+Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
