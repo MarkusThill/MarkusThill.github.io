@@ -24,7 +24,7 @@ can be defined recursively as
 
 $$
 \begin{align}
-F_n = F_{n-1} + F_{n-2}, \, \, \mbox{for} \, n \in \mathbb{N}_{>1} \label{eq:fibo}
+F_n = F_{n-1} + F_{n-2}, \, \, \mbox{for} \, n \in \mathbb{N}_{>1}. \label{eq:fibo}
 \end{align}
 $$
 
@@ -128,11 +128,14 @@ ylab("h[n]")
 p
 ```
 
-{% include figure.liquid path="assets/img/fibo-impulse-response.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.liquid 
+   path="assets/img/fibo-impulse-response.png" 
+   class="img-fluid rounded z-depth-1 imgcenter" 
+   zoomable=true  
+   width="auto" 
+   caption="The impulse response (first 10 values) of our second-order IIR filter." 
+%}
 
-<div class="caption">
-    The impulse response (first 10 values) of our second-order IIR filter.
-</div>
 
 The impulse response corresponds precisely to the Fibonacci sequence.
 
@@ -252,8 +255,7 @@ b\sum_{n=0}^{\infty} q^k  = \frac{b}{1-q}, \label{eq:geom}
 \end{align}
 $$
 
-if
-
+if 
 $$
 |q|<1
 $$.
@@ -269,18 +271,16 @@ we can write
 
 $$
 \begin{align}
-X(z) &= \frac{b}{1-az^{-1}} = b\sum*{n=0}^{\infty} (az^{-1})^n \\
-&= b\sum*{n=0}^{\infty} a^nz^{-n} \label{eq:sumZ} \\
+X(z) &= \frac{b}{1-az^{-1}} = b\sum_{n=0}^{\infty} (az^{-1})^n \\
+&= b\sum_{n=0}^{\infty} a^nz^{-n} \label{eq:sumZ} \\
 &= b(1 + az^{-1} + a^2 z^{-2} + \ldots)
 \end{align}
 $$
 
 Note that this step assumes that
-
 $$
 |az^{-1}|<1
 $$
-
 or
 $$
 |a|<|z|
@@ -295,6 +295,7 @@ $$
 x[n] &= \mathcal{Z}^{-1}\big\{X(z)\big\}\\ &= b a^n u[n], \\
 \end{align}
 $$
+
 where
 $$
 u[n]
@@ -348,7 +349,6 @@ $$
 which -- when looked at closer -- is a truly remarkable result. There is no longer a recursive formulation in the impulse response. This means we can directly compute any arbitrary Fibonacci number using this closed-form solution.
 
 Another interesting observation from the above equation is that the term
-
 $$
 \frac{1}{2}(1 +\sqrt 5)
 $$
@@ -374,6 +374,7 @@ $$
 &= \frac{1 -\sqrt 5}{2} ,
 \end{align}
 $$
+
 we can re-write Eq. \eqref{eq:backintime} in the following way:
 
 $$
