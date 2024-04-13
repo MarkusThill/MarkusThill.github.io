@@ -1,12 +1,13 @@
 ---
 layout: post
-title: Deriving a Closed-Form Solution of the Fibonacci Sequence using the Z-Transform
+title: Deriving a Closed-Form Solution of the Fibonacci Sequence
 date: 2024-03-29 00:20:00
 description: The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first.
 tags: fibonacci math signal processing
 categories: math
 giscus_comments: true
 featured: true
+thumbnail: assets/img/thumbnail-paul-milasan.jpg
 ---
 
 The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. Already high school students starting with programming classes compute the first few Fibonacci numbers with their programs using different iterative or recursive approaches. One reason for its popularity might be that the Fibonacci sequence is closely related to many other fields of math and physics, often in very astonishing ways which one might not expect. Usually, the Fibonacci sequence is defined in a recursive manner. Hence, in order to compute the n-th Fibonacci number all previous Fibonacci numbers have to be computed first. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first. Interestingly, we will solve this problem with the help of a tool -- the so called Z-Transform -- which is actually more common in the field of digital signal processing.
