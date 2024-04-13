@@ -1,4 +1,4 @@
-{% if img_counter %}  {% else %} {% assign img_counter = 1 %} {% endif %}
+{% if img_counter %} {% else %} {% assign img_counter = 1 %} {% endif %}
 
 {% assign img_path = include.path | remove: '.jpg' | remove: '.jpeg' | remove: '.png' | remove: '.tiff' | remove: '.gif' %}
 
@@ -75,7 +75,9 @@
   </picture>
 
   {% if include.caption %}
-    <figcaption class="caption"> <b>Figure {{ img_counter }}:</b>  {{ include.caption | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines }}</figcaption>
+    <figcaption class="caption">
+      <b>Figure {{ img_counter }}:</b> {{ include.caption | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines }}
+    </figcaption>
     {% capture img_counter %}{{ img_counter | plus:1 }}{% endcapture %}
   {% endif %}
 </figure>
