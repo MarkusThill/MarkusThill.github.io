@@ -1,7 +1,9 @@
 ---
 layout: about
 title: about
-permalink: /
+nav: true
+nav_order: 0
+permalink: /about
 subtitle: <a href='#'>Affiliations</a>. Data Scientist. Karlsruhe/Germany.
 
 profile:
