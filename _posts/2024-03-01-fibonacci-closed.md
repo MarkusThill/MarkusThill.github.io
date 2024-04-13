@@ -10,7 +10,7 @@ featured: true
 thumbnail: assets/img/thumbnail-paul-milasan.jpg
 ---
 
-The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. Already high school students starting with programming classes compute the first few Fibonacci numbers with their programs using different iterative or recursive approaches. One reason for its popularity might be that the Fibonacci sequence is closely related to many other fields of math and physics, often in very astonishing ways which one might not expect. Usually, the Fibonacci sequence is defined in a recursive manner. Hence, in order to compute the n-th Fibonacci number all previous Fibonacci numbers have to be computed first. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first. Interestingly, we will solve this problem with the help of a tool -- the so called Z-Transform -- which is actually more common in the field of digital signal processing.
+The Fibonacci sequence might be one of the most famous sequences in the field of mathematics and computer science. High school students starting with programming classes already compute the first few Fibonacci numbers with their programs using different iterative or recursive approaches. One reason for its popularity might be that the Fibonacci sequence is closely related to many other fields of math and physics, often in astonishing ways that one might not expect. Usually, the Fibonacci sequence is defined recursively. Hence, to compute the n-th Fibonacci number, all previous Fibonacci numbers must be calculated first. In this blog post, we will derive an intriguing closed-form solution to directly compute any arbitrary Fibonacci number without first obtaining its predecessors. Interestingly, we will solve this problem with the help of a tool -- the so called Z-Transform -- which is actually more common in the field of digital signal processing.
 
 <!--more-->
 
@@ -49,7 +49,7 @@ $$
 \end{align}
 $$
 
-Surprisingly (not really, actually, if you think about it) the Fibonacci sequence can also be generated using an IIR (infinite impuls response) filter. Consider the difference equation of an IIR-filter in the form:
+Surprisingly (maybe not really, if you think about it), the Fibonacci sequence can also be generated using an IIR (infinite impulse response) filter. Consider the difference equation of an IIR-filter in the form:
 
 $$
 \begin{align}
@@ -77,7 +77,7 @@ h[3]=2\\
 \end{align}
 $$
 
-Let us now compute the impulse response for the given filter with some code and plot the results. Since the filter coefficients usually have to be passed in a strange way to most functions of the dsp-toolboxes, which requires reading off the coefficients from the transfer function $$H(z)$$, let us first compute the transfer function (the Z-transform of our filter in time domain):
+Now, let us compute the impulse response for the given filter with some code and plot the results. Since the filter coefficients usually have to be passed differently to most functions of the DSP toolboxes, which requires reading off the coefficients from the transfer function $$H(z)$$, let us first compute the transfer function (the Z-transform of our filter in the time domain):
 
 $$
 \begin{align}
@@ -90,7 +90,7 @@ H(z)=\frac{Y(z)}{X(z)} = \frac{z^{-1}}{1- z^{-1} - z^{-2}} \label{eq:z-transform
 \end{align}
 $$
 
-Now, we can read off the filter coefficients (from the numerator for the forward coefficients and from the denominator for the reverse coefficients). Hence, the forward coefficients are
+Now, we can read off the filter coefficients (from the numerator for the forward coefficients and the denominator for the reverse coefficients). Hence, the forward coefficients are
 
 $$
 \begin{align}
@@ -134,14 +134,14 @@ p
     The impulse response (first 10 values) of our second-order IIR filter.
 </div>
 
-Not surprisingly, the impulse response corresponds exactly to the Fibonacci sequence.
+The impulse response corresponds precisely to the Fibonacci sequence.
 
 In Eq. \eqref{eq:z-transform}, we already computed the transfer function of our "Fibonacci"-filter.
-Let us now see, if we can obtain another representation of the impulse response in time domain, which is no longer recursive and which depicts a closed-form description of the Fibonacci numbers. Such a representation would really be astonishing. We will do the following:
+Let us see if we can obtain another representation of the impulse response in the time domain, which is no longer recursive and depicts a closed-form description of the Fibonacci numbers. Such a representation would be astonishing. We will do the following:
 
-1. Compute the partical fraction decomposition of our transfer function in Eq. \eqref{eq:z-transform}
-2. Look at the Z-transform of an certain type of infinite series
-3. Use the insights from 2. to transform our transfer function back into time domain and removing the recursive structure of the impulse response
+1. Compute the partial fraction decomposition of our transfer function in Eq. \eqref{eq:z-transform}
+2. Look at the Z-transform of a certain type of infinite series
+3. Use the insights from 2. to transform our transfer function back into the time domain and remove the recursive structure of the impulse response
 4. Take the new impulse response to generate arbitrary Fibonacci numbers immediately
 
 # 1. Partial Fraction Decomposition of H(z)
@@ -180,7 +180,7 @@ H(z)=\frac{Y(z)}{X(z)} &= \frac{z^{-1}}{1- z^{-1} - z^{-2}} \\
 \end{align}
 $$
 
-In order to find the constants $$A$$ and $$B$$, we can multiply with the denominator of each term and evaluate the expression at the poles we found previously (done examplarily here for the constant $$A$$):
+To find the constants $$A$$ and $$B$$, we can multiply with the denominator of each term and evaluate the expression at the poles we found previously (done exemplarily here for the constant $$A$$):
 
 $$
 \begin{align}
@@ -230,7 +230,7 @@ $$
 
 # 2. Determing the inverse Z-Transform of a special Transfer Function
 
-In order to transfer back our transfer function in Eq. \eqref{eq:partialfrac} back into the time domain, we have to find a suitable inverse transformation for an expression of the type
+To transfer our transfer function in Eq. \eqref{eq:partialfrac} back into the time domain, we have to find a suitable inverse transformation for an expression of the type
 
 $$
 \begin{align}
@@ -324,7 +324,7 @@ $$
 
 
 # 3. Inverse Transform of the previous Partial Fraction Decomposition
-No we are ready, to transform Eq. \eqref{eq:partialfrac} back into the time domain by using the relation in Eq. \eqref{eq:finalrelation}.
+We are ready to transform Eq. \eqref{eq:partialfrac} back into the time domain by using the relation in Eq. \eqref{eq:finalrelation}.
 Let's do it. Remember:
 
 <!---H(z)= \frac{\frac{1}{2\sqrt 5} (1 +\sqrt 5)}{1-\frac{1}{2}(1 +\sqrt 5)z^{-1}} - \frac{\frac{1}{2\sqrt 5} (1 -\sqrt 5)}{1-\frac{1}{2}(1 -\sqrt 5)z^{-1}} -->
@@ -345,9 +345,9 @@ h[n] &= \mathcal{Z}^{-1}\big\{H(z)\big\} \\
 \end{align}
 $$
 
-which -- when looking at it closer -- is a truely remarkable result. There is no recursive formulation in the impulse response any longer. This means that we can compute any arbitrary Fibonacci number directly using this closed-form solution.
+which -- when looked at closer -- is a truly remarkable result. There is no longer a recursive formulation in the impulse response. This means we can directly compute any arbitrary Fibonacci number using this closed-form solution.
 
-Another interesting observation from above equation is, that the term
+Another interesting observation from the above equation is that the term
 
 $$
 \frac{1}{2}(1 +\sqrt 5)
@@ -356,7 +356,7 @@ is the so called golden ratio
 $$
 \varphi.
 $$
-The golden ration itself has many interesting properties, which one should take a look at. In this case, we will just use it to simplify our expression above.
+The golden ratio has many exciting properties that one should look at. In this case, we will use it to simplify our expression above.
 
 Using
 $$
@@ -385,7 +385,7 @@ h[n] &= \frac{1}{\sqrt 5} \Big[\frac{1}{2}(1 +\sqrt 5)\Big]^{n} - \frac{1}{\sqrt
 \end{align}
 $$
 
-which is -- as I find -- a really nice formulation of the Fibonacci sequence. (There are also some issues with above representation, but lets forget about them at the moment).
+which is -- as I find -- a really stunning formulation of the Fibonacci sequence. (There are also some issues with the above representation, but let's forget about them at the moment.)
 
 # 4. Compute arbitrary Fibonacci Numbers using the Closed-Form Solution
 
