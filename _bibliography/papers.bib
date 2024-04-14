@@ -1,6 +1,117 @@
 ---
 ---
 
+@mastersthesis{Thill12,
+title = {Reinforcement Learning mit N-Tupel-Systemen für Vier Gewinnt},
+author = {Thill, Markus},
+url = {http://www.gm.fh-koeln.de/ciopwebpub/Theses.d/Thill12.d/BA-Thill-2012.pdf},
+year = {2012},
+date = {2012-07-01},
+school = {TH Köln -- University of Applied Sciences},
+note = {Bachelor thesis, 1st prize in Opitz award 2013, Festo award 2012, Ferchau award 2012},
+pubstate = {published},
+tppubtype = {mastersthesis},
+pdf={BA-Thill-2012.pdf},
+html={http://www.gm.fh-koeln.de/ciopwebpub/Theses.d/Thill12.d/BA-Thill-2012.pdf},
+abbr={Bachelor thesis},
+abstract={Die Untersuchung maschineller Lernverfahren für Brettspiele stellt auch heute noch
+ein sehr interessantes Forschungsgebiet dar. Dies liegt vor allem daran, dass das
+Erlernen komplexer Spiele wie dem Schach- oder Go-Spiel nach wie vor als sehr
+anspruchsvoll gilt.
+Während Menschen in der Lage sind, gewisse Zusammenhänge bzw.
+Gesetzmäßigkeiten in Spielen zu erkennen und daraus die richtigen Rückschlüsse zu
+ziehen, ist dies für ein Computerprogramm deutlich schwieriger. Aus diesem Grund
+müssen die Entwickler häufig viel spieltheoretisches Wissen in das Programm
+einbringen, damit der Lernprozess überhaupt fähig ist, auf die besonderen
+spielspezifischen Merkmale zu achten.
+In dieser Arbeit wird die Anwendung von sogenannten N-Tupel-Systemen -- in
+Kombination mit einer Reinforcement-Learning-Trainingsumgebung -- auf das Spiel Vier
+Gewinnt untersucht. N-Tupel-Systeme dienen dazu, lineare Nutzenfunktionen von
+Agenten zu approximieren, sodass Stellungsbewertungen vorgenommen werden
+können. Um diese Funktionen zu erlernen, werden die N-Tupel-Systeme mithilfe des
+Temporal Difference Learnings (TDL), einem Algorithmus zur Lösung von RL-
+Problemen, trainiert.
+Das Training der Agenten erfolgte ausschließlich durch Self-Play, während des
+Trainings kam daher kein Lehrer oder spieltheoretisches Wissen irgendeiner Form zum
+Einsatz. Dennoch gelang es, Agenten mit hoher Spielstärke zu trainieren, die in vielen
+Fällen einen perfekten Spieler schlagen konnten. Insbesondere die N-Tupel-Systeme,
+die eine sehr große Zahl an Features generieren und die passenden selektieren, tragen
+zu den außerordentlich guten Ergebnissen bei.}
+}
+
+@mastersthesis{Thill2015a,
+title = {Temporal Difference Learning Methods with Automatic Step-Size Adaption for Strategic Board Games: Connect-4 and Dots-and-Boxes},
+author = {Thill, Markus},
+url = {{http://www.gm.fh-koeln.de/~konen/research/PaperPDF/MT-Thill2015-final.pdf}},
+year = {2015},
+date = {2015-01-01},
+urldate = {2015-01-01},
+institution = {Institut für Informatik},
+school = {TH Köln -- University of Applied Sciences},
+note = {Master thesis, Festo award 2015},
+pubstate = {published},
+abbr={Masters thesis},
+html="http://www.gm.fh-koeln.de/%7Ekonen/research/PaperPDF/MT-Thill2015-final.pdf",
+pdf={MT-Thill2015-final.pdf},
+tppubtype = {mastersthesis},
+abstract={Machine learning tasks for board games which rely solely on self-play methods remain
+rather challenging up till today. The perhaps most impressive breakthrough in this field
+was achieved by Tesauro's TD-Gammon, which was able to learn the game backgammon at
+expert level with a self-play variant of the temporal difference learning (TDL) algorithm.
+Since then, many studies attempted to replicate some of TD-Gammon's success by applying
+TDL to other board games, however, mostly with mixed results.
+We found in our earlier work on the board game Connect-4 that a rich feature set is
+required to successfully learn a near-perfect strategy. Nonetheless, several millions of
+self-play training games were necessary in order to generate strong Connect-4 agents.
+In this thesis we will mainly focus on two topics, namely online-adaptable learning rate
+methods and eligibility traces, and investigate whether these approaches have the potential
+to speed up learning.
+For the Connect-4 learning task we show that algorithms with geometric step-size changes
+have the best performance, in some cases reducing the required number of training games
+to learn the game by more than 40%.
+In a case study, we compare several state-of-the-art step-size adaptation algorithms with
+respect to their sensitivity towards certain meta parameters.
+In the further course of this thesis, we investigate the benefits of different eligibility trace
+variants. Additionally, we extend several learning rate algorithms to eligibility traces and
+examine their performance. We could observe that eligibility traces improve the speed of
+learning by a factor of two for our Connect-4 task.
+Overall, with several additional enhancements, we could reduce the number of training
+games to learn Connect-4 to slightly more than 100 000, which is an improvement by a
+factor of 13, compared to previously published results.
+In the last sections of this work, we apply the learning framework that we developed for
+Connect-4 -- with several adjustments -- to the strategic board game Dots-and-Boxes and
+discuss the main problems that we observed for our initial experiments.
+}
+}
+
+@article{krause2023,
+  author = {Martin Krause and Markus Thill and Fabian Mack},
+  title = "Process signal reconstruction and anomaly detection in laser machining processes",
+  nationality = "United States",
+  number = "18047859",
+  journal={Patent US20230120761A1},
+  year = "2023",
+  url = "https://patents.google.com/patent/US20230120761A1",
+  html={https://patents.google.com/patent/US20230120761A1}
+}
+
+@article{thill2022machine,
+  title={Machine Learning and Deep Learning Approaches for Multivariate Time Series Prediction and Anomaly Detection},
+  author={Markus Thill},
+  url={https://hdl.handle.net/1887/3279161},
+  html={https://hdl.handle.net/1887/3279161},
+  pdf={2022_phd_thill.pdf},
+  year={2022},
+  publisher={Leiden University},
+  school       = {Leiden University},
+  journal={PhD thesis},
+  abbr={PhD thesis},
+  google_scholar_id={WF5omc3nYNoC},
+  preview={phd.jpg},
+  abstract={In many real-world applications today, it is critical to continuously record and monitor certain machine or system health indicators to discover malfunctions or other abnormal behavior at an early stage and prevent potential harm. The demand for such reliable monitoring systems is expected to increase in the coming years. Particularly in the industrial context, in the course of ongoing digitization, it is becoming increasingly important to analyze growing volumes of data in an automated manner using state-of-the-art algorithms. In many practical applications, one has to deal with temporal data in the form of data streams or time series. The problem of detecting unusual (or anomalous) behavior in time series is commonly referred to as time series anomaly detection. Anomalies are events observed in the data that do not conform to the normal or expected behavior when viewed in their temporal context.This thesis focuses on unsupervised machine learning algorithms for anomaly detection in time series. In an unsupervised learning setup, a model attempts to learn the normal behavior in a time series — which might already be contaminated with anomalies — without any external assistance. The model can then use its learned notion of normality to detect anomalous events. }
+}
+
+
 @article{thill2021,
 title = {Temporal convolutional autoencoder for unsupervised anomaly detection in time series},
 journal = {Applied Soft Computing (ASoC)},
@@ -11,7 +122,10 @@ issn = {1568-4946},
 doi = {https://doi.org/10.1016/j.asoc.2021.107751},
 author = {Markus Thill and Wolfgang Konen and Hao Wang and Thomas Bäck},
 keywords = {Anomaly detection, Deep learning, TCN, Autoencoder, Mahalanobis distance},
-selected={true}
+selected={true},
+abbr={ASoC},
+google_scholar_id = {eQOLeE2rZwMC},
+abstract={Learning temporal patterns in time series remains a challenging task up until today. Particularly for anomaly detection in time series, it is essential to learn the underlying structure of a system’s normal behavior. Periodic or quasiperiodic signals with complex temporal patterns make the problem even more challenging: Anomalies may be a hard-to-detect deviation from the normal recurring pattern. In this paper, we present TCN-AE, a temporal convolutional network autoencoder based on dilated convolutions. Contrary to many other anomaly detection algorithms, TCN-AE is trained in an unsupervised manner. The algorithm demonstrates its efficacy on a comprehensive real-world anomaly benchmark comprising electrocardiogram (ECG) recordings of patients with cardiac arrhythmia. TCN-AE significantly outperforms several other unsupervised state-of-the-art anomaly detection algorithms. Moreover, we investigate the contribution of the individual enhancements and show that each new ingredient improves the overall performance on the investigated benchmark.}
 }
 
 @inproceedings{Thill20a,
@@ -23,7 +137,10 @@ booktitle = {{9th International Conference on Bioinspired Optimisation Methods a
 address = {Bruxelles},
 keywords = {anomaly detection, deep learning, TCN, time series},
 pubstate = {published},
-tppubtype = {inproceedings}
+tppubtype = {inproceedings},
+abbr={BIOMA},
+google_scholar_id={YsMSGLbcyi4C},
+abstract={The training of anomaly detection models usually requires labeled data. We present in this paper a novel approach for anomaly detection in time series which trains unsupervised using a convolutional approach coupled to an autoencoder framework. After training, only a small amount of labeled data is needed to adjust the anomaly threshold. We show that our new approach outperforms several other state-of-the-art anomaly detection algorithms on a Mackey-Glass (MG) anomaly benchmark. At the same time our autoencoder is capable of learning interesting representations in latent space. Our new MG anomaly benchmark allows to create an unlimited amount of anomaly benchmark data with steerable difficulty. In this benchmark, the anomalies are well-defined, yet difficult to spot for the human eye.}
 }
 
 @inproceedings{Thill2019a,
@@ -39,7 +156,11 @@ note = {{Best Paper Award}},
 keywords = {anomaly detection, deep learning, learning, LSTM, time series},
 pubstate = {published},
 tppubtype = {inproceedings},
-selected={true}
+selected={true},
+abbr={ITAT},
+google_scholar_id={W7OEmFMy1HYC},
+abstract={Real-world anomaly detection for time series is still a challenging task. This is especially true for periodic or quasi-periodic time series since automated approaches have to learn long-term correlations before they are able to detect anomalies. Electrocardiography (ECG) time series, a prominent real-world example of quasi-periodic signals, are investigated in this work. Anomaly detection algorithms often have the additional goal to identify anomalies in an unsupervised manner.
+In this paper we present an unsupervised time series anomaly detection algorithm. It learns with recurrent Long Short-Term Memory (LSTM) networks to predict the normal time series behavior. The prediction error on several prediction horizons is used to build a statistical model of normal behavior. We propose new methods that are essential for a successful model-building process and for a high signal-to-noise-ratio. We apply our method to the well-known MIT-BIH ECG data set and present first results. We obtain a good recall of anomalies while having a very low false alarm rate (FPR) in a fully unsupervised procedure. We compare also with other anomaly detectors (NuPic, ADVec) from the state-of-the-art.}
 }
 
 @article{ThillKonenBaeck2018_1000097489,
@@ -51,11 +172,13 @@ selected={true}
     pages        = {A04,17 S. online},
     journal      = {{Archives of Data Science, Series A (Online First)}},
     issn         = {2363-9881},
-    language     = {english}
+    language     = {english},
+    google_scholar_id={Y0pCki6q_DkC},
+    abstract={In this paper we present an unsupervised time series anomaly detection algorithm, which is based on the discrete wavelet transform (DWT) operating fully online. Given streaming data or time series, the algorithm iteratively computes the (causal and decimating) discrete wavelet transform. For individual frequency scales of the current DWT, the algorithm estimates the parameters of a multivariate Gaussian distribution. These parameters are adapted in an online fashion. Based on the multivariate Gaussian distributions, unusual patterns can then be detected across frequency scales, which in certain constellations indicate anomalous behavior. The algorithm is tested on a diverse set of 425 time series. A comparison to several other state-of-the-art online anomaly detectors shows that our algorithm can mostly produce results similar to the best algorithm on each dataset. It produces the highest average F1-score with one standard parameter setting. That is, it works more stable on high- and low-frequency-anomalies than all other algorithms. We believe that the wavelet transform is an important ingredient to achieve this.}
 }
 
 @inproceedings{Thill2017c,
-title = {{Anomaly Detection in Time Series with Discrete Wavelet Transforms and Maximum Likelihood Estimation}},
+title = {{Discrete Wavelet Transforms and Multivariate Gaussian Distributions for Anomaly Detection in Time Series}},
 author = {Markus Thill and Wolfgang Konen and Thomas Bäck},
 editor = {Frank Hoffmann and Eyke Hüllermeier},
 year = {2017},
@@ -64,7 +187,9 @@ pages = {67-71},
 publisher = {Universitätsverlag Karlsruhe},
 keywords = {anomaly detection, DWT, time series},
 pubstate = {published},
-tppubtype = {inproceedings}
+tppubtype = {inproceedings},
+google_scholar_id={Tyk-4Ss8FVUC},
+abstract={A new algorithm, based on the Discrete Wavelet Transform (DWT), for unsupervised anomaly detection in time series is introduced in this paper. The approach is based on using maximum likelihood estimation (MLE) on the DWT of time series. On a diverse set of 158 time series, the algorithm is compared with three other state-of-the-art anomaly detectors and it is shown to outperform the other approaches on the test set. Thanks to the linear time complexity of the DWT, our new algorithm is also computationally eﬃcient.}
 }
 
 @inproceedings{Thill17b-ITISE,
@@ -75,7 +200,10 @@ year = {2017},
 booktitle = {{International Work-Conference on Time Series (ITISE 2017)}},
 keywords = {anomaly detection, DWT, time series},
 pubstate = {published},
-tppubtype = {inproceedings}
+tppubtype = {inproceedings},
+abbr={ITISE},
+google_scholar_id={IjCSPb-OGe4C},
+abstract={A new algorithm, based on the Discrete Wavelet Transform (DWT), for unsupervised anomaly detection in time series is introduced in this paper. The approach is based on using maximum likelihood estimation (MLE) on the DWT of time series. On a diverse set of 158 time series, the algorithm is compared with three other state-of-the-art anomaly detectors and it is shown to outperform the other approaches on the test set. Thanks to the linear time complexity of the DWT, our new algorithm is also computationally efficient.}
 }
 
 @inproceedings{Thill17a-SORAD,
@@ -87,7 +215,10 @@ pages = {1},
 organization = {Springer},
 keywords = {anomaly detection, time series},
 pubstate = {published},
-tppubtype = {inproceedings}
+tppubtype = {inproceedings},
+abbr={EAIS},
+google_scholar_id={2osOgNQ5qMEC},
+abstract={An unresolved challenge for all kind of temporal data is the reliable anomaly detection, especially when adaptability is required in the case of non-stationary time series or when the nature of future anomalies is unknown or only vaguely defined. Most of the current anomaly detection algorithms follow the general idea to classify an anomaly as a significant deviation from the prediction. In this paper we present a comparative study where several online anomaly detection algorithms are compared on the large Yahoo Webscope S5 anomaly benchmark. We show that a relatively Simple Online Regression Anomaly Detector (SORAD) is quite successful compared to other anomaly detectors. We discuss the importance of several adaptive and online elements of the algorithm and their influence on the overall anomaly detection accuracy.}
 }
 
 @Article{	  bagh16b,
@@ -102,7 +233,10 @@ tppubtype = {inproceedings}
   pages		= {33-42},
   %note		= {accepted 11/2014},
   keywords	= {Game Learning, learning, reinforcement learning, CI,
-		  optimization}
+		  optimization},
+  abbr={IEEE Trans. Games},
+  google_scholar_id={u-x6o8ySG0sC},
+  abstract={Learning board games by self-play has a long tradition in computational intelligence for games. Based on Tesauro's seminal success with TD-Gammon in 1994, many successful agents use temporal difference learning today. But in order to be successful with temporal difference learning on game tasks, often a careful selection of features and a large number of training games is necessary. Even for board games of moderate complexity like Connect-4, we found in previous work that a very rich initial feature set and several millions of game plays are required. In this work we investigate different approaches of online-adaptable learning rates like Incremental Delta Bar Delta (IDBD) or temporal coherence learning (TCL) whether they have the potential to speed up learning for such a complex task. We propose a new variant of TCL with geometric step size changes. We compare those algorithms with several other state-of-the-art learning rate adaptation algorithms and perform a case study on the sensitivity with respect to their meta parameters. We show that in this set of learning algorithms those with geometric step size changes outperform those other algorithms with constant step size changes. Algorithms with nonlinear output functions are slightly better than linear ones. Algorithms with geometric step size changes learn faster by a factor of 4 as compared to previously published results on the task Connect-4.}
 }
 
 @inproceedings{Thil14,
@@ -114,7 +248,10 @@ booktitle = {CIG'2014, International Conference on Computational Intelligence in
 pages = {84 -- 91},
 keywords = {CI, Game Learning, learning, reinforcement learning},
 pubstate = {published},
-tppubtype = {inproceedings}
+tppubtype = {inproceedings},
+abbr={CIG},
+google_scholar_id={d1gkVwhDpl0C},
+abstract={Systems that learn to play board games are often trained by self-play on the basis of temporal difference (TD) learning. Successful examples include Tesauro's well known TD-Gammon and Lucas' Othello agent. For other board games of moderate complexity like Connect Four, we found in previous work that a successful system requires a very rich initial feature set with more than half a million of weights and several millions of training games. In this work we study the benefits of eligibility traces added to this system. To the best of our knowledge, eligibility traces have not been used before for such a large system. Different versions of eligibility traces (standard, resetting, and replacing traces) are compared. We show that eligibility traces speed up the learning by a factor of two and that they increase the asymptotic playing strength.}
 }
 
 @inproceedings{Thil12,
@@ -129,7 +266,10 @@ address = {Heidelberg},
 keywords = {CI, Game Learning, learning, reinforcement learning, SOMA},
 pubstate = {published},
 tppubtype = {inproceedings},
-selected={true}
+selected={true},
+abbr={PPSN},
+google_scholar_id={u5HHmVD_uO8C},
+abstract={Learning complex game functions is still a difficult task. We apply temporal difference learning (TDL), a well-known variant of the reinforcement learning approach, in combination with n-tuple networks to the game Connect-4. Our agent is trained just by self-play. It is able, for the first time, to consistently beat the optimal-playing Minimax agent (in game situations where a win is possible). The n-tuple network induces a mighty feature space: It is not necessary to design certain features, but the agent learns to select the right ones. We believe that the n-tuple network is an important ingredient for the overall success and identify several aspects that are relevant for achieving high-quality results. The architecture is sufficiently general to be applied to similar reinforcement learning tasks as well.}
 }
 
 @misc{Buhl19,

@@ -161,7 +161,7 @@ hence, the roots in the denominator:
 
 $$
 \begin{align}
-z^2-z-1=0
+z^2-z-1=0.
 \end{align}
 $$
 
