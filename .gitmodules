@@ -1,0 +1,3 @@
+[submodule "assets/jupyter/MarkusThill.github.io-jupyter"]
+	path = assets/jupyter/MarkusThill.github.io-jupyter
+	url = git@github.com:MarkusThill/MarkusThill.github.io-jupyter.git
