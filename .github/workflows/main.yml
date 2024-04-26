@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-        submodules: recursive
+          submodules: recursive
       - name: actions-template-sync
         uses: AndreasAugustin/actions-template-sync@v1
         with:
