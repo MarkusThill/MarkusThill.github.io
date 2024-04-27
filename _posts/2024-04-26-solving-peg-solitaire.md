@@ -5,7 +5,7 @@ discription:
 modified:
 categories: boardgames
 description: Many of us might now the board game peg solitaire and might even have one of its many variants at home. Peg solitaire is a one-player game played on a board with n holes and n - 1 pegs. The number of holes depends on the board variant. For example, the English variant consists of 33 holes while the typical diamond variant consists of 41 holes. The rules of the game are rather easy.
-tags: games solver C peg solitaire
+tags: games solver C peg solitaire code
 thumbnail: assets/img/2024-04-26-solving-peg-solitaire/peg-solitaire/solitaire1.png
 giscus_comments: true
 featured: true
