@@ -49,7 +49,7 @@ $$
 \end{align}
 $$
 
-If we now define a diagonal matrix carrying the eigenvalues $\lambda_i$ as
+If we now define a diagonal matrix carrying the eigenvalues $$\lambda_i$$ as
 
 $$
 \begin{align}
