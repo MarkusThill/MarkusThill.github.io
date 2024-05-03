@@ -4,8 +4,8 @@ title: "Short Notes: The Eigendecomposition"
 discription: 
 modified:
 categories: math
-description: The derivation of the eigendecomposition is surprisingly simple.
-tags: games solver C peg solitaire code
+description: The derivation of the eigendecomposition is surprisingly simple. Read more here!
+tags: code eigendecomposition python
 thumbnail: 
 giscus_comments: true
 featured: False
