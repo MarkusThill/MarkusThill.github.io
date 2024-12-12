@@ -9,7 +9,7 @@ The question is: how many coconuts were originally in the pile?"
 thumbnail: assets/img/monkey-coconut-problem.webp
 giscus_comments: true
 toc:
-  sidebar: left
+  beginning: true
 date: 2024-05-26
 ---
 
