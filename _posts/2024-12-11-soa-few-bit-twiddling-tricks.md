@@ -5,7 +5,7 @@ modified:
 categories: 
 tags: [bit, twiddling, hacks, performance, speed]
 description: "When working with bit-fields, there are several techniques that can significantly speed up code — beyond the inherent performance benefits that bit-fields provide for many problems. In this post, I will introduce a few bit-twiddling tricks that I occasionally use, which can be useful for a variety of tasks."
-thumbnail:
+thumbnail: assets/img/bit-twiddling.webp
 giscus_comments: true
 featured: False
 share:

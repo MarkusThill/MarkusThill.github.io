@@ -5,7 +5,7 @@ modified:
 categories: 
 tags: [math]
 description: "In this blog post, we present a fun little proof that 1 is actually equal to 2. Or is it?"
-thumbnail:
+thumbnail: assets/img/1-equals-2.webp
 giscus_comments: true
 featured: False
 share:
