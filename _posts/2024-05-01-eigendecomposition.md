@@ -87,7 +87,7 @@ $$
 \end{align}
 $$
 
-Eq. \eqref{eq:eigendecomposition} is also called eigendecomposition of matrix $$\mathbf{A}$$.
+Eq. \eqref{eq:eigendecomposition} is also called the eigendecomposition of matrix $$\mathbf{A}$$.
 
 
 <!--- Move to CSS  --->
