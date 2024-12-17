@@ -6,7 +6,7 @@ description: Imagine that you are planning to use a Light Dependent Resistor (LD
 tags: voltage divider electronics
 categories: electronics
 giscus_comments: true
-featured: true
+featured: false
 thumbnail: assets/img/2024-03-31-choosing-a-voltage-divider-resistor-for-a-ldr/harrison-broadbent-afZVP8xbbw0-unsplash.jpg
 ---
 
