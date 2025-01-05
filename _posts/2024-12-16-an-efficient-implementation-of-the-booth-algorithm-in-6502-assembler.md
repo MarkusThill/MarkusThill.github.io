@@ -15,6 +15,8 @@ Some time ago, I had to implement a multiplication routine in 6502 assembly for 
 
 I also found it important to write a routine that tests the multiplication with various predefined combinations of the two factors. The tests included all edge cases, as well as cases where at least one of the factors is zero.
 
+The code was also benchmarked [here](https://github.com/TobyLobster/multiply_test). As it turns out, it is not terribly fast (depending on the benchmark, Booth's algorithm does not always leverage its advantages), but it requires only 49 bytes of memory.
+
 <!--more-->
 
 The code I ended up with is listed below:

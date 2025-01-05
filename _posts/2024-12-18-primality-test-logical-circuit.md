@@ -7,7 +7,7 @@ tags: [electronics, boolean algebra, prime numbers]
 description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`."
 thumbnail: assets/img/2024-12-18-primality-test-logical-circuit/logic-circuit-prime-thumbnail.webp
 giscus_comments: true
-featured: False
+featured: True
 share:
 toc:
   beginning: true
@@ -56,6 +56,8 @@ If you’re curious to see this in action, I’ve provided an interactive enviro
 
 ## Logic Circuit Diagram
 
+The project file can be downloaded from [here]({{ site.url }}/assets/img/2024-12-18-primality-test-logical-circuit/prime_number_test_project.cv).
+
 {% include figure.liquid 
    path="assets/img/2024-12-18-primality-test-logical-circuit/diagram_1.png" 
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="100%"  
@@ -63,11 +65,11 @@ If you’re curious to see this in action, I’ve provided an interactive enviro
 %}
 
 
-## Additional Insights
+## Final Thoughts
 
-The techniques applied here — truth table construction, Quine-McCluskey minimization, and further algebraic optimization — aren’t limited to primality tests. They’re part of the essential toolbox for digital logic design. By working through such an example, you’ll gain a deeper understanding of the trade-offs between perfect minimization and practical considerations like flexibility and ease of modification.
+The techniques applied here — truth table construction, Quine-McCluskey minimization, and further algebraic optimization — are not limited to primality tests. They are part of the essential toolbox for digital logic design. By working through such an example, you’ll gain a deeper understanding of the trade-offs between perfect minimization and practical considerations like flexibility and ease of modification.
 
-Whether your interest is in digital design, number theory, or just satisfying your technical curiosity, this project provides a tangible demonstration of how logic circuits can represent and solve a mathematical concept like primality.
+Note that while this approach effectively demonstrates the concept for 8-bit integers, it becomes increasingly impractical to scale for larger bit-widths (e.g., 16-bit or higher) due to the exponential growth in the truth table size and the corresponding complexity of the Boolean function. This limitation lies in the nature of prime numbers themselves, as they lack a simple, deterministic function to identify them, requiring inherently complex and resource-intensive algorithms or representations.
 
 
 
