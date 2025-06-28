@@ -3,7 +3,7 @@ layout: post
 title: "Understanding Bootstrap Sampling: Where Euler’s Number Meets Random Forests"
 modified: 2025-06-28T13:37:32+02:00
 categories: 
-description: "A common problem involves drawing a sample of size *n* from a set of *n* elements, with replacement. For example, in Random Forests, each decision tree is trained on a bootstrap sample drawn *n* times with replacement from the training data. A natural question is: how many **unique** examples can we expect in such a sample? Since sampling is done with replacement, some examples are likely selected multiple times, while others may not be selected at all."
+description: "A common problem involves drawing a sample of size n from a set of n elements, with replacement. For example, in Random Forests, each decision tree is trained on a bootstrap sample drawn n times with replacement from the training data. A natural question is: how many unique examples can we expect in such a sample? Since sampling is done with replacement, some examples are likely selected multiple times, while others may not be selected at all."
 
 tags: [stats, ML, math]
 thumbnail: assets/img/2025-06-28-sampling-with-replacement-random-forest/thumbnail.png
