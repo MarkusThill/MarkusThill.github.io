@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Challenge: The Sequence of Fibonacho"
+title: "Math Challenge: The Sequence of Fibonacho"
 modified:
 categories: 
 tags: [fibonacci, number theory, math, python, programming]
