@@ -5,7 +5,7 @@ modified: 2025-05-06T20:33:46+02:00
 categories:
 description: "Imagine you are working in three-dimensional space and have two directions. You want to find a third direction that is perpendicular to both of them. In this setting, there's a well-known solution: the cross product. When applied to the two original directions, it produces a new one that is exactly orthogonal to both."
 tags: [vectors, cross product, high dimensions, generalization, multi dimensionality]
-thumbnail: 
+thumbnail: assets/img/2025-05-06-a-generalization-of-the-vector-cross-product.png
 giscus_comments: true
 toc:
   beginning: true
