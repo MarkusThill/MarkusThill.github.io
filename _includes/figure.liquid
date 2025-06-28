@@ -83,6 +83,8 @@
   </picture>
 
   {% if include.caption %}
-    <figcaption class="caption">{{ include.caption }}</figcaption>
+  <!--- Changed by Markus --->
+    <figcaption class="caption"> <b>Figure {{ img_counter }}:</b>  {{ include.caption | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines }}</figcaption>Add commentMore actions
+    {% capture img_counter %}{{ img_counter | plus:1 }}{% endcapture %}
   {% endif %}
 </figure>
