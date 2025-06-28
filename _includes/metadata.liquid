@@ -125,7 +125,7 @@
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.projecteuler_username %}
-    {% capture link %}https://projecteuler.net/{% endcapture %}
+    {% capture link %}https://projecteuler.net/profile/{{ site.projecteuler_username }}.png{% endcapture %}
     {% assign sameaslinks = sameaslinks | push: link %}
   {% endif %}
   {% if site.x_username %}
