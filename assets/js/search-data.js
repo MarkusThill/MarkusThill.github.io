@@ -109,6 +109,17 @@ ninja.data = [{
             window.location.href = "/blog/2024/migrating-git-from-https-to-ssh/";
           
         },
+      },{id: "post-designing-an-8-bit-integer-primality-test-using-logic-circuits",
+        
+          title: "Designing an 8-Bit Integer Primality Test Using Logic Circuits",
+        
+        description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/primality-test-logical-circuit/";
+          
+        },
       },{id: "post-short-notes-installing-gcc-13-on-debian-and-ubuntu",
         
           title: "Short Notes: Installing GCC 13 on Debian and Ubuntu",
@@ -129,17 +140,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2024/installing-cmake/";
-          
-        },
-      },{id: "post-designing-an-8-bit-integer-primality-test-using-logic-circuits",
-        
-          title: "Designing an 8-Bit Integer Primality Test Using Logic Circuits",
-        
-        description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2024/primality-test-logical-circuit/";
           
         },
       },{id: "post-stack-overflow-vulnerabilities",
@@ -340,8 +340,8 @@ ninja.data = [{
           section: "News",},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
           title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
           description: "",
-          section: "News",},{id: "news-bitbully-v0-1-released-a-fast-connect-4-solver-for-python-3",
-          title: 'BitBully v0.1 released: A fast Connect-4 Solver for Python 3',
+          section: "News",},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully Preview v0.0.38 released: A fast Connect-4 Solver for Python 3',
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/announcement_2/";
