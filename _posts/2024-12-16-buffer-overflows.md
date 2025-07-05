@@ -14,7 +14,7 @@ images:
   slider: true
 toc:
   beginning: true
-date: 2024-12-16 05:16:00
+date: 2024-12-17 05:16:00
 ---
 Buffer overflows remain one of the most common security vulnerabilities in modern software and typically result from improperly written programs. A buffer overflow occurs when a program allocates too little memory for a given amount of data. The excess data then overwrites adjacent memory areas, which can contain sensitive information such as program flow data, process memory, or pointers. Because attackers can manipulate this overwritten information to execute malicious code, buffer overflows are considered critical vulnerabilities.
 

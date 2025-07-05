@@ -11,7 +11,7 @@ featured: True
 share:
 toc:
   beginning: true
-date: 2024-12-18 01:16:00
+date: 2024-12-20 01:16:00
 ---
 
 When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.

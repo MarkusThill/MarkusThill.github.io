@@ -9,7 +9,7 @@ thumbnail: assets/img/lagged-fibo.webp
 giscus_comments: true
 featured: False
 share:
-date: 2024-12-16 01:16:00
+date: 2024-12-15 01:16:00
 ---
 
 Lagged Fibonacci Generators (LFGs) are widely used in simulations and cryptography for generating pseudo-random sequences. While the naive implementation is straightforward, it becomes inefficient for large indices ($n$) due to its iterative nature and growing computational costs.
