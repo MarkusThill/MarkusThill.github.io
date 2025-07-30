@@ -19,12 +19,12 @@ tabs: true
 
 This post is the 1st part of a series of 7 articles:
 1. **[Building Intelligent Agents for Connect-4&#58; First Steps]({% post_url  2025-07-05-connect-4-introduction-and-tree-search-algorithms %})**
-2. [Building Intelligent Agents for Connect-4&#58; Tree Search Algorithms](TODO)
-3. [Building Intelligent Agents for Connect-4&#58; Board Representations](TODO)
-4. [Building Intelligent Agents for Connect-4&#58; Move Ordering](TODO)
-5. [Building Intelligent Agents for Connect-4&#58; Transposition Tables](TODO)
-6. [Building Intelligent Agents for Connect-4&#58; Opening Databases](TODO)
-7. [Building Intelligent Agents for Connect-4&#58; Final Considerations](TODO)
+2. [Building Intelligent Agents for Connect-4&#58; Tree Search Algorithms](#)
+3. [Building Intelligent Agents for Connect-4&#58; Board Representations](#)
+4. [Building Intelligent Agents for Connect-4&#58; Move Ordering](#)
+5. [Building Intelligent Agents for Connect-4&#58; Transposition Tables](#)
+6. [Building Intelligent Agents for Connect-4&#58; Opening Databases](#)
+7. [Building Intelligent Agents for Connect-4&#58; Final Considerations](#)
 
 
 The study of strategic board games is a long-standing and foundational area of research in artificial intelligence (AI). Over the years, countless approaches have been explored—often with very different goals and methodologies. Complex games such as chess, Go, and checkers have traditionally attracted significant attention due to their strategic depth and computational challenges.
@@ -33,7 +33,7 @@ In this blog post—and in future entries—we’ll turn our attention to *Conne
 
 <!--more-->
 
-More recently, I developed a high-performance C++ and Python version of a Connect-4 solver called **BitBully**, available [here](https://github.com/MarkusThill/BitBully) and [here](https://pypi.org/project/bitbully/). Also, check out the related [project page]({{ 'projects/0_bitbully/' | absolute_url }}).
+More recently, I developed a high-performance C++ and Python version of a Connect-4 solver called **BitBully**, available [here](https://github.com/MarkusThill/BitBully) and [here](here). Also, check out the related [project page]({{ 'projects/0_bitbully/' | absolute_url }}).
 
 For those interested in a more educational or research-oriented setup, an earlier Java-based framework for *Connect-4* is also available on GitHub: [http://github.com/MarkusThill/Connect-Four](http://github.com/MarkusThill/Connect-Four).
 
