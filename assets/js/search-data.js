@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
+            },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
+        
+        description: "A deep dive into the construction of intelligent agents for Connect-4. This introductory post covers the historical context, motivation, complexity of the game, and foundational concepts behind AI-based approaches—particularly tree search and reinforcement learning methods. Includes a preview of the full 7-part series and links to an open-source Python3/C++ framework.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/connect-4-introduction-and-tree-search-algorithms/";
+          
+        },
+      },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
         
           title: "Understanding Bootstrap Sampling: Where Euler’s Number Meets Random Forests",
         
