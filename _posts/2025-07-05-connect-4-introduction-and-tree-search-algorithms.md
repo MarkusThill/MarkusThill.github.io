@@ -33,7 +33,7 @@ In this blog post—and in future entries—we’ll turn our attention to *Conne
 
 <!--more-->
 
-More recently, I developed a high-performance C++ and Python version of a Connect-4 solver called **BitBully**, available [https://github.com/MarkusThill/BitBully](here) and [https://pypi.org/project/bitbully/](here). Also, check out the related [project page]({{ 'projects/0_bitbully/' | absolute_url }}).
+More recently, I developed a high-performance C++ and Python version of a Connect-4 solver called **BitBully**, available [here](https://github.com/MarkusThill/BitBully) and [here](https://pypi.org/project/bitbully/). Also, check out the related [project page]({{ 'projects/0_bitbully/' | absolute_url }}).
 
 For those interested in a more educational or research-oriented setup, an earlier Java-based framework for *Connect-4* is also available on GitHub: [http://github.com/MarkusThill/Connect-Four](http://github.com/MarkusThill/Connect-Four).
 
