@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+            },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
+        
+          title: "Short Notes: The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix",
+        
+        description: "This post explores how a multivariate Gaussian distribution simplifies when the covariance matrix is diagonal. By breaking down the math, we show how the density function factorizes into a product of independent univariate Gaussians—making both interpretation and computation more tractable.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
         
