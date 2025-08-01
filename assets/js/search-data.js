@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
+            },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
+        
+          title: "Visualizing High-Dimensional Data Using Parallel Coordinates",
+        
+        description: "A deep dive into the visualization technique of Parallel Coordinates (||-Coordinates), exploring its strengths, challenges, and practical applications in data mining. Through detailed case studies—including wine quality analysis and the MiniBooNe particle dataset—we demonstrate how this powerful tool can reveal hidden structures, correlations, and clusters in high-dimensional data. With insights into alpha blending, axis reordering, outlier handling, and visual classification, this post offers both theoretical background and hands-on use cases for using Parallel Coordinates effectively.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/visualizing-high-dimensional-data-with-parallel-coordinates/";
+          
+        },
+      },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
         
           title: "Short Notes: The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix",
         
