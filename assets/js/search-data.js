@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-conway-39-s-game-of-life",
+            },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
+        
+          title: "Short Notes: Understanding Euclid’s GCD Algorithm",
+        
+        description: "A concise walkthrough of why Euclid’s Algorithm correctly computes the greatest common divisor (GCD), using basic properties of divisibility and remainders.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/euclids-algorithm/";
+          
+        },
+      },{id: "post-conway-39-s-game-of-life",
         
           title: "Conway&#39;s Game of Life",
         
