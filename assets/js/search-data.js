@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
+            },{id: "post-conway-39-s-game-of-life",
+        
+          title: "Conway&#39;s Game of Life",
+        
+        description: "An introduction to Conway’s Game of Life with an implementation in R. We explore the simple rules behind this zero-player cellular automaton, simulate its evolution on a 100×100 grid, and visualize emerging patterns and population dynamics over time.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/conways-game-of-life/";
+          
+        },
+      },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
         
           title: "Visualizing High-Dimensional Data Using Parallel Coordinates",
         
