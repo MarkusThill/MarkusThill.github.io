@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Short Notes: Understanding Euclid’s GCD Algorithm"
-modified: 2025-08-03
+modified: 2025-08-03T00:00:51+01:00
 categories: [Math, Algorithms, Programming]
 description: "A concise walkthrough of why Euclid’s Algorithm correctly computes the greatest common divisor (GCD), using basic properties of divisibility and remainders."
 tags: [gcd, euclids-algorithm, number-theory, mathematics, proofs]
@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2025-08-03
+date: 2025-08-03T00:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
