@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
+            },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
+        
+          title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches",
+        
+        description: "Discover the Seychelles’ most stunning beaches from a new perspective. From the iconic Anse Source d’Argent on La Digue to the sweeping Anse Intendance on Mahé, these drone shots capture some of the islands’ breathtaking beauty.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/seychelles-images/";
+          
+        },
+      },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
         
           title: "Short Notes: Understanding Euclid’s GCD Algorithm",
         
