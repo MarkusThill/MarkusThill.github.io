@@ -3,8 +3,8 @@ layout: post
 title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches"
 date: 2025-09-09 01:59:00
 description: "Discover the Seychelles’ most stunning beaches from a new perspective. From the iconic Anse Source d’Argent on La Digue to the sweeping Anse Intendance on Mahé, these drone shots capture some of the islands’ breathtaking beauty."
-tags: formatting images
-categories: sample-posts
+tags: seychelles drone
+categories: traveling
 thumbnail: /assets/img/2025-09-09-seychelles-images/anse_source_dargent/DJI_0559-480.webp
 images:
   lightbox2: true
