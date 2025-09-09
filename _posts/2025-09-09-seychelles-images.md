@@ -62,8 +62,8 @@ With my drone, I had the chance to capture these breathtaking places from above,
 
 ## [Anse Lazio (Praslin)](https://www.google.com/maps/place/Anse+Lazio/@-4.2936471,55.6912067,15z/data=!3m1!4b1!4m6!3m5!1s0x231ff05ad4683b45:0xb86dca89962a5d20!8m2!3d-4.2936687!4d55.7015064!16zL20vMGJ5Yzhj?entry=ttu&g_ep=EgoyMDI1MDkwMy4wIKXMDSoASAFQAw%3D%3D)
 
-<a href="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0129.JPG" data-lightbox="roadtrip"><img src="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0129-480.webp" width="33%"/></a>
 <a href="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0149-ed.png" data-lightbox="roadtrip"><img src="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0149-ed-480.webp" width="33%"/></a>
+<a href="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0129.JPG" data-lightbox="roadtrip"><img src="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0129-480.webp" width="33%"/></a>
 <a href="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0151.JPG" data-lightbox="roadtrip"><img src="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0151-480.webp" width="33%"/></a>
 
 <a href="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0152.JPG" data-lightbox="roadtrip"><img src="/assets/img/2025-09-09-seychelles-images/anse_lazio/DJI_0152-480.webp" width="33%"/></a>
