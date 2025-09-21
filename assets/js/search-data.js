@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
+            },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
+        
+          title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT...",
+        
+        description: "A DIY IoT project using the ESP8266-01 module to build a network-controlled adapter plug from scratch. This project demonstrates how to create connected devices with minimal hardware and effort using Wi-Fi and MQTT.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/control-an-adapter-plug-with-an-esp8266-and-mqtt/";
+          
+        },
+      },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
         
           title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches",
         
