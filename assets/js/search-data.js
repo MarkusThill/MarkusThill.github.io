@@ -65,7 +65,29 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
+            },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
+        
+          title: "Notes on the Runtime Complexity of Latin Hypercube Sampling",
+        
+        description: "Exploring the runtime complexity of the Latin Hypercube Sampling (LHS) algorithm, this post investigates how computation time scales with the number of design points. By measuring runtimes, applying log-log transformations, and using weighted linear regression, we estimate the polynomial order of growth and provide practical insights into the expected performance of LHS for larger datasets.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-few-notes-on-the-runtime-complexity-of-latin-hypercube-sampling/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
+        
+        description: "Learn how the Alpha-Beta search algorithm optimizes Minimax for Connect-4 by pruning unnecessary branches, improving efficiency, and enabling stronger gameplay strategies.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/connect-4-tree-search-algorithms/";
+          
+        },
+      },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
         
           title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT...",
         
