@@ -30,10 +30,10 @@ In this post, we’ll walk through the steps to build a simple adapter plug that
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/electronics06.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/electronics06.jpg" class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="80%"  %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/electronics07.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/electronics07.jpg" class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="80%"  %}
     </div>
 </div>
 
@@ -44,10 +44,10 @@ The low-cost ESP8266 Wi-Fi chip family has become increasingly popular among hob
 
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/esp01v0.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/esp01v0.jpg" class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="80%" %}
     </div>
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/esp8266-01.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.liquid loading="eager" path="assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/esp8266-01.jpg" class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="80%" %}
     </div>
 </div>
 

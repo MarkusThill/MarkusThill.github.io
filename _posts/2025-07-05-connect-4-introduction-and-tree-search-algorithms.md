@@ -18,8 +18,9 @@ tabs: true
 ---
 
 This post is the 1st part of a series of 7 articles:
-1. **[Building Intelligent Agents for Connect-4&#58; First Steps]({% post_url  2025-07-05-connect-4-introduction-and-tree-search-algorithms %})**
-2. [Building Intelligent Agents for Connect-4&#58; Tree Search Algorithms](#)
+
+1. **[Building Intelligent Agents for Connect-4&#58; First Steps]({% post_url 2025-07-05-connect-4-introduction-and-tree-search-algorithms %})**
+2. [Building Intelligent Agents for Connect-4&#58; Tree Search Algorithms]({% post_url 2025-09-24-connect-4-tree-search-algorithms %})
 3. [Building Intelligent Agents for Connect-4&#58; Board Representations](#)
 4. [Building Intelligent Agents for Connect-4&#58; Move Ordering](#)
 5. [Building Intelligent Agents for Connect-4&#58; Transposition Tables](#)
