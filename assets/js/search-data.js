@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
+            },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
+        
+          title: "The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution",
+        
+        description: "This post explores why the squared Mahalanobis distance of Gaussian data follows a Chi-square distribution. We cover the theory step by step, show empirical evidence, and explain how this relationship provides a principled way to set anomaly detection thresholds using quantiles.A companion Jupyter Notebook with code, benchmarks, and visualizations is provided to put the theory into practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance/";
+          
+        },
+      },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
         
           title: "Notes on the Runtime Complexity of Latin Hypercube Sampling",
         
@@ -74,6 +85,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2025/a-few-notes-on-the-runtime-complexity-of-latin-hypercube-sampling/";
+          
+        },
+      },{id: "post-implementing-the-mahalanobis-distance-in-python",
+        
+          title: "Implementing the Mahalanobis Distance in Python",
+        
+        description: "A hands-on Jupyter Notebook implementation of the Mahalanobis distance in Python. Covers theory, multiple implementations (NumPy, JAX, TensorFlow, SciPy), benchmarking on low- and high-dimensional data, visualizations, and its connection to the Chi-square distribution for anomaly detection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance-implementations/";
           
         },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
