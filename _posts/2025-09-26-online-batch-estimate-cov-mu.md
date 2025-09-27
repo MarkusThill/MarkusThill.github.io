@@ -20,7 +20,9 @@ images:
 ---
 
 > Estimating the mean and covariance matrix of a dataset is a cornerstone of multivariate statistics and machine learning. While batch (offline) methods are straightforward when all data is available at once, many modern applications require online or streaming estimation — where data arrives sequentially, potentially at very high rates, and storing all past samples is infeasible.
+
 > In this Jupyter Notebook below, we explore fully online and batch-incremental estimators for the mean and covariance matrix, including their inverses. We look at how these algorithms work, why they are useful, and how they can adapt to non-stationary data through a forgetting factor. Importantly, these approaches allow us to update estimates efficiently without recomputing matrix inverses from scratch.
+
 > The goal is to provide both the mathematical background and practical insights for applying online covariance and mean estimation in real-world scenarios such as anomaly detection, adaptive systems, and streaming analytics.
 
 <!--- Move to CSS  --->
