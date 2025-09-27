@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
+            },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
+        
+          title: "Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python",
+        
+        description: "Learn how to estimate the mean, covariance, and inverse covariance matrices in an online or batch-incremental fashion. This post explains the theory behind forgetting factors and effective memory, provides Python implementations for both online and batch estimators, and investigates their accuracy and efficiency through experiments and visualizations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/online-batch-estimate-cov-mu/";
+          
+        },
+      },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
         
           title: "The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution",
         
