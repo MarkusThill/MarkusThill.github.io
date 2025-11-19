@@ -952,6 +952,21 @@ code {
   word-wrap: break-word;
 }
 
+/* Inline code */
+:not(pre) > code {
+  color: var(--global-theme-color);
+  background-color: var(--global-code-bg-color);
+  border-radius: 3px;
+  padding: 3px 3px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+pre code {
+  white-space: inherit;  // or: white-space: pre;
+  word-wrap: normal;
+}
+
 // Transitioning Themes
 html.transition,
 html.transition *,
