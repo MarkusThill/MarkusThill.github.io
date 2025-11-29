@@ -1520,6 +1520,7 @@ figure.cover {
   }
 }
 
-mjx-container[jax="CHTML"][display="true"] {
-  overflow-x: auto;
-}
+//mjx-container[jax="CHTML"][display="true"] {
+//  overflow-x: auto;
+//  overflow-y: visible !important;
+//}
