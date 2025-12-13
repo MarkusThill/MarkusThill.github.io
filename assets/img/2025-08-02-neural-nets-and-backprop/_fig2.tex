@@ -1,0 +1,161 @@
+\documentclass{standalone}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+\urldef{\mailsa}\path|{markus.thill}@th-koeln.com|
+%\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+%\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows, shapes}
+\usepackage{xifthen}
+\usepackage[ngerman, english]{babel}
+\usepackage{amsmath}
+
+\newcommand{\myX}{\mathbf{x}}
+\newcommand{\mySigma}{\mathbf{\Sigma}}
+\newcommand{\myM}{\mathbf{M}}
+\newcommand{\myT}{\mathsf{T}}
+
+\begin{document}
+
+\tikzset{%
+  every neuron/.style={
+    circle,
+    draw,
+    minimum size=1cm,
+  },
+	input neuron/.style={
+    circle,
+    draw,
+    minimum size=0.5cm
+  },
+	tiny neuron/.style={
+    circle,
+    draw,
+    minimum size=0.05cm
+  },
+  neuron missing/.style={
+    draw=none, 
+    scale=2,
+    text height=0.333cm,
+		%opacity=0,
+    execute at begin node=\color{black}$\vdots$
+  },
+	activation/.style={
+		draw,
+		inner sep=2pt,
+		font=\Large
+		%,join = by -latex
+	},
+	nothing/.style={
+		draw=none
+	}
+}
+
+
+\begin{minipage}{10cm}
+  \centering
+  \begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth, scale=1.0]
+		\foreach \m/\l [count=\y] in {1,2} {
+				\node [tiny neuron/.try, neuron \m/.try] (input-\m) at (0,2-\y*1) {};
+				\node[left of=input-\m,label={[label distance=-0.4cm]0:\ifthenelse{\y=3}{}{$a_{\l}^{(\ell-1)}$}}]  {};
+		}
+        \node [tiny missing/.try, neuron missing/.try] (input-missing) at (0,-.6) {};
+        
+		\node [tiny neuron/.try] (input-4) at (0,1.5-4*0.7) {};
+		\node[left of=input-4,label={[label distance=-0.4cm]0:$a_{d_{\ell-1}}^{(\ell-1)}$}]  {};
+
+        \node[
+              every neuron,
+              right=1.5cm of input-2
+            ] (hidden1-1) {$a_i^{(\ell)}$};
+        
+		\foreach \l [count=\j] in {1,2}
+			 \draw [->] (input-\l) -- (hidden1-1) node[pos=0.3, above=-0.05, sloped]{$w_{i,\l}^{(\ell)}$};
+		\draw [->] (input-4) -- (hidden1-1) node[pos=0.5, above=-0.05, sloped]{$w_{i,d_{\ell-1}}^{(\ell)}$};
+		\draw [->] (hidden1-1) -- ++(1.0,0) ;
+		\node[label={[label distance=-0.2cm]0:$a_{i}^{(\ell)}$}] (hallo) at (2.5,-0.1) {};
+        \draw [->] ++(hidden1-1.north)+(0,0.4) -- (hidden1-1)
+            node[pos=0.1,right=-0.05]{ $b^{(\ell)}_i$ } ;
+	 \end{tikzpicture}
+
+  % Separator
+  \vspace{1em}
+  \Large $\hat{=}$
+
+  % Vertical spacing between figures
+  \vspace{1em}
+    \resizebox{10cm}{!} {
+	\begin{tikzpicture}[
+	init/.style={
+		draw,
+		circle,
+		inner sep=2pt,
+		font=\Huge,
+		join = by -latex
+	},
+	squa/.style={
+		draw,
+		inner sep=2pt,
+		font=\Large,
+		join = by -latex
+	},
+	start chain=2,node distance=12mm
+	]
+	\node[on chain=2] (x2) {$a_2^{(\ell-1)}$};
+	\draw(0,-.8)  node[font=\Huge] { $\vdots$};
+	\draw(2.3,-.8) node[font=\Huge] { $\vdots$};
+	%\node[on chain=2] (vdots) {\vdots};
+	\node[on chain=2, join=by o-latex,circle,
+          draw, inner sep=0.5pt] (w2) {$\times$}; %
+    \draw[->]
+      ++(w2.north)+(0,0.4) -- (w2.north)
+      node[midway, above=0.1] {$w_{i,2}^{(\ell)}$};
+    
+    \node[on chain=2, init] (sigma) {$\displaystyle\Sigma$};
+	\node[on chain=2,squa,label=above:{\parbox{2cm}{\centering Activation}}]   {$\sigma$};
+	\node[] at (5.3,-0.5) {$z_i^{(\ell)}$};
+	\node[on chain=2,label=above:Output,join=by -latex]  {$a_i^{(\ell)}$};
+	
+    \begin{scope}[start chain=1]
+	\node[on chain=1] at (0,2.5cm) 
+		(x1) {$a_1^{{(\ell-1)}}$};
+	\node[
+          on chain=1,
+          join=by o-latex,
+          circle,
+          draw,
+          inner sep=0.5pt
+        ] (w1) {$\times$};
+    \draw[->]
+      ++(w1.north)+(0,0.4) -- (w1.north)
+      node[midway, above=0.1] {$w_{i,1}^{(\ell)}$};
+	\end{scope}
+	
+    \begin{scope}[start chain=3]
+	\node[on chain=3] at (0,-3cm) 
+		(x3) {$a_{d_{\ell-1}}^{(\ell-1)}$};
+    \node[on chain=3,label=below:Weights,join=by o-latex,circle,
+          draw, inner sep=0.5pt] 
+		(w3) {$\times$}; %
+    \draw[->]
+      ++(w3.north)+(0,0.4) -- (w3.north)
+      node[midway, above=0.1] {$w_{i,d_{\ell-1}}^{(\ell)} \ \ $};
+	\end{scope}
+	\node[label=above:\parbox{2cm}{\centering Bias \\ $b_i^{(\ell)}$}] at (sigma|-w1) (b) {};
+
+	\draw[-latex] (w1) -- (sigma);
+	\draw[-latex] (w3) -- (sigma);
+	\draw[o-latex] (b) -- (sigma);
+	\draw[decorate,decoration={brace,mirror}] (x1.north west) -- node[left=10pt] {Inputs} (x3.south west);
+	\end{tikzpicture}
+    } % resizebox
+\end{minipage}
+
+\end{document}

@@ -1,0 +1,129 @@
+\documentclass{standalone}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+
+\usepackage{url}
+\urldef{\mailsa}\path|{markus.thill}@th-koeln.com|
+%\urldef{\mailsb}\path|anna.kramer, leonie.kunz, christine.reiss, nicole.sator,|
+%\urldef{\mailsc}\path|erika.siebert-cole, peter.strasser, lncs}@springer.com|    
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows, shapes}
+\usepackage{xifthen}
+\usepackage[ngerman, english]{babel}
+\usepackage{amsmath}
+
+\newcommand{\myX}{\mathbf{x}}
+\newcommand{\mySigma}{\mathbf{\Sigma}}
+\newcommand{\myM}{\mathbf{M}}
+\newcommand{\myT}{\mathsf{T}}
+
+\begin{document}
+
+\tikzset{%
+  every neuron/.style={
+    circle,
+    draw,
+    minimum size=1cm,
+  },
+	input neuron/.style={
+    circle,
+    draw,
+    minimum size=0.5cm
+  },
+	tiny neuron/.style={
+    circle,
+    draw,
+    minimum size=0.05cm
+  },
+  neuron missing/.style={
+    draw=none, 
+    scale=2,
+    text height=0.333cm,
+		%opacity=0,
+    execute at begin node=\color{black}$\vdots$
+  },
+	activation/.style={
+		draw,
+		inner sep=2pt,
+		font=\Large
+		%,join = by -latex
+	},
+	nothing/.style={
+		draw=none
+	}
+}
+
+	\centering
+	\begin{tikzpicture}[x=1.5cm, y=1.5cm, >=stealth, scale=.8]
+		\scriptsize
+		\centering
+		% draw first activation
+		\node[activation/.try] (Act1) at (0,0) {$\sigma$};
+		
+		% Draw a_j circle
+		\node[tiny neuron/.try, inner sep=0.5pt] (aj) at (1,0) {$\times$};
+        \draw[->]
+          ++(aj.north)+(0,0.4) -- (aj.north)
+          node[midway, above=0.1] {$w_{i,j}^{(\ell)}$};
+		
+		% Draw First Sum
+		\node [every neuron/.try] (Sigma-1) at (2,0) {\Large $\Sigma$};
+		\draw [->]  ++(2,1) -- (Sigma-1) node[midway,above=0.2] {$b_{i}^{(\ell)}$};
+		%Inputs of first sum
+		\foreach \i in {1,3}
+			\draw [->] ++(1.5,1.2-0.6*\i) -- (Sigma-1);
+		%\draw[->] 
+		\draw[->] (Act1) -- (aj) node[pos=0.5, below=-0.05, sloped] {$a_{j}^{(\ell-1)}$};
+		\draw[->] (aj) -- (Sigma-1) node[pos=0.45, below=-0.05, sloped] {};
+		
+		% draw second activation
+		\node[activation/.try] (Act2) at (3.5,0) {$\sigma$};
+		\node[tiny neuron/.try, inner sep=0.5pt] (Nothing0) at (4.5,0) {$\times$};
+		\draw[->] (Sigma-1) -- (Act2) node[pos=0.5, below=-0.05, sloped] {$z_{i}^{(\ell)}$};
+		\draw[->] (Act2) -- (Nothing0) node[pos=0.5, below=-0.05, sloped] {$a_{i}^{(\ell)}$};
+        \draw[->]
+          ++(Nothing0.north)+(0,0.4) -- (Nothing0.north)
+          node[midway, above=0.1] {$w_{2,i}^{(\ell+1)}$};
+        
+		
+		%
+		\node [tiny neuron/.try, inner sep=0.5pt] (Nothing1) at (4.5,2) {$\times$};
+		\node [tiny neuron/.try, inner sep=0.5pt] (Nothing-1) at (4.5,-2) {$\times$};
+		\draw[->] (Act2.east) -- (Nothing1) node[pos=0.5, left=-0.05] {$a_{i}^{(\ell)}$};
+		\draw[->] (Act2.east) -- (Nothing-1) node[pos=0.5, left=-0.05] {$a_{i}^{(\ell)}$};
+        \draw[->]
+          ++(Nothing-1.south) + (0,-0.4) -- (Nothing-1.south)
+            node[midway, below=0.1] {$w_{d_{\ell+1},i}^{(\ell+1)}$};
+        \draw[->]
+          ++(Nothing1.north)+(0,0.4) -- (Nothing1.north)
+          node[midway, above=0.1] {$w_{1,i}^{(\ell+1)}$};
+		
+		% Three Neurons
+		\foreach \i [count=\k] in {-1,0,1} {
+			\node [every neuron/.try] (Sig\i) at (6,\i*2) {\Large $\Sigma$};
+			\draw[->] (Nothing\i) -- (Sig\i) {}; 
+			\foreach \j in {1,3}
+					\draw [->] ++(5.5,\i*2+1.2-0.6*\j) -- (Sig\i);
+		}
+		\draw [->] (Sig1) -- ++(1.0,0) node[pos=0.5, below=-0.0, sloped] {$z_{1}^{(\ell+1)}$};
+		\draw [->] (Sig0) -- ++(1.0,0) node[pos=0.5, below=-0.0, sloped] {$z_{2}^{(\ell+1)}$};
+		\draw [->] (Sig-1) -- ++(1.0,0) node[pos=0.5, below=-0.0, sloped] {$z_{d_{\ell}}^{(\ell+1)}$};
+		
+		% Bias
+		\draw [->]  ++(6,3) -- (Sig1) node[midway,above=0.1] {$b_{1}^{(\ell+1)}$};
+		\draw [->] ++(6,1) -- (Sig0) node[midway,above=0.1] {$b_{2}^{(\ell+1)}$};
+		\draw [->] ++(6,-3) -- (Sig-1) node[midway,below=0.2]{$b_{d_{\ell}}^{(\ell+1)}$};
+
+        \draw(4.5,-1)  node {\Large \vdots};
+		\draw(6,-1)  node {\Large \vdots};
+		\draw(6.75,-1)  node {\Large \vdots};
+
+		
+	\end{tikzpicture}
+
+\end{document}
