@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Yet another Neural Networks Introduction: Feed Forward Networks and the Backpropagation Algorithm"
-modified: 2025-08-01T09:00:51+01:00
+modified: 2025-12-13T09:00:51+01:00
 categories: [Math, Neural Nets]
 description: "A few notes on the backprop algorithm"
 tags: []
@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2025-08-01T09:00:51+01:00
+date: 2025-12-13T09:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
@@ -36,6 +36,8 @@ tabs: true
 \def\matr#1{\boldsymbol{\mathbf{#1}}}
 \def\Wmatr{\matr{W}}
 \newcommand{\din}{\mathord{d_0}}
+\newcommand{\batch}{\mathord{N}}
+\newcommand{\yhat}{\vec{\hat{y}}}
 \\)
 
 **TODO**: matrices bold, vectors bold!
@@ -87,9 +89,9 @@ identified with the activations $a_i^{(0)} = x_i$. Throughout this work, a
 superscript $(\ell)$ is used to indicate that a quantity is associated with layer
 $\ell$.
 
-Each layer $\ell$ consists of $d_\ell$ so-called neurons, where
-$\vec{x} \in \mathbb{R}^{\din}$ denotes the input vector and $d_L$
-denotes the output dimension of the network. In Figure 1, neurons are depicted
+Each layer $\ell$ consists of $d_\ell$ neurons, where $d_0 = \din$ corresponds to
+the input dimension and $d_L$ denotes the output dimension of the network.
+ In Figure 1, neurons are depicted
 as circles with incoming arrows. A neuron (also referred to as a node or unit) is
 the fundamental computational element of a neural network. It receives inputs from
 the preceding layer, forms a weighted sum of these inputs, adds a bias term, and
@@ -155,7 +157,7 @@ function $\sigma(\cdot)$, producing the output (or activation)
 $$
 \begin{equation}
 a_i^{(\ell)} = \sigma\!\left(z_i^{(\ell)}\right)  = 
-\sigma \Bigg( \sum_{j=1}^{d_{(\ell-1)}} {w_{i,j}^{(\ell)} \cdot a_j^{(\ell-1)} + b_i^{(\ell)}} \Bigg)
+\sigma \Bigg( \sum_{j=1}^{d_{\ell-1}} {w_{i,j}^{(\ell)} \cdot a_j^{(\ell-1)} } + b_i^{(\ell)} \Bigg)
 \label{eq:activation}
 \end{equation}
 $$
@@ -178,7 +180,7 @@ $$
 \end{equation}
 $$
 
-where
+where all vectors are interpreted as column vectors:
 
 $$
 \begin{align}
@@ -189,52 +191,167 @@ $$
 \end{align}
 $$
 
-**TODO:** Continue from here....
-It is also possible to pass a matrix consisting of $M$ examples (input vectors) $\vec{x}_i$ through the network, where
+The activation function $\sigma(\cdot)$ is applied element-wise to its vector argument.
+
+It is also possible to pass multiple input vectors through the network
+simultaneously by stacking them into a matrix. Let
+
+$$\vec{x}_1, \vec{x}_2, \ldots, \vec{x}_\batch$$ 
+
+denote $\batch$ input examples, where $\batch$ is referred to as the batch size. These inputs are arranged
+column-wise into the input matrix
 
 $$
-\begin{eqnarray}
-X = \big( \vec{x}_1\  \vec{x}_2\  \ldots\  \vec{x}_M \big) \\
-X \in \mathbb{R}^{\din \times M}.
+\begin{align}
+\matr X
+&= \big( \vec{x}_1 \ \vec{x}_2 \ \ldots \ \vec{x}_\batch \big), \\
+\matr X &\in \mathbb{R}^{\din \times \batch}.
 \label{eq:input-matrix}
-\end{eqnarray}
+\end{align}
 $$
-This is commonly referred to as batching a set of individual samples. A matrix holding a set of sample vectors is called a batch.
 
-**TODO**: Add a note that it is also common, to stack the input vectors vertically, each row representing an example.
+This procedure is commonly referred to as batching. A matrix containing multiple
+input vectors is called a batch.
 
-For each example a separate activation vector $\vec{a}_i^\ell$ will be generated, which can be placed in a matrix:
+> In some implementations, input vectors are stacked row-wise, with each row representing one example. Here, we adopt the column-wise convention, which is consistent with the preceding vector notation and the matrix formulations used throughout.
+
+For each input example $\vec{x}_i$, a corresponding activation vector
+$\vec{a}_i^{(\ell)}$ is produced at layer $\ell$. These activations can be
+collected into the activation matrix
 
 $$
-\begin{eqnarray}
-Z^\ell =  \begin{pmatrix} b^\ell & \Wmatr^{\ell}  \end{pmatrix} \begin{pmatrix} \vec{1}^\top \\ A^{\ell-1}  \end{pmatrix}\\
-A^\ell = \sigma(Z^\ell)
+\matr A^{(\ell)}
+= \big( \vec a_1^{(\ell)} \ \vec a_2^{(\ell)} \ \ldots \ \vec a_\batch^{(\ell)} \big)
+\in \mathbb{R}^{d_\ell \times \batch}.
+$$
+
+Using matrix notation, the forward pass for a batch of inputs can be written as
+
+$$
+\begin{align}
+\matr Z^{(\ell)} &=
+\begin{pmatrix}
+\vec b^{(\ell)} & \Wmatr^{(\ell)}
+\end{pmatrix}
+\begin{pmatrix}
+\vec{1}^\top \\
+\matr A^{(\ell-1)}
+\end{pmatrix}, \\
+\matr A^{(\ell)} &= \sigma\!\left( \matr Z^{(\ell)} \right),
 \label{eq:input-matrix1}
-\end{eqnarray}
+\end{align}
 $$
 
-Note, that the bias-vector is included into the weight matrix. For example, with $A^0=X$ we get:
+where $\vec{1} \in \mathbb{R}^{\batch}$ denotes a vector of ones.
+
+Note that the inclusion of the bias vector into the weight matrix is a purely notational convenience. From a mathematical perspective, the bias term can equivalently be added as a separate vector after the weighted sum has been computed. By augmenting the input with a constant component equal to one and concatenating the bias vector to the weight matrix, the affine transformation can be written as a single matrix multiplication. Throughout this post, this augmented representation is used where it simplifies the notation, but it does not constitute an additional modeling assumption.
+
+Using the augmented representation and  $\matr A^{(0)}= \matr X$, the affine transformation of the first hidden
+layer can be written as
 
 $$
-\begin{eqnarray}
-A^1 = \sigma \Bigg( \begin{pmatrix} b^1 & \Wmatr^1  \end{pmatrix} \begin{pmatrix} \vec{1}^\top \\ X  \end{pmatrix} \Bigg) 
-\in \mathbb{R}^{d_1 \times (\din+1)} \cdot \mathbb{R}^{(\din+1) \times M} = \mathbb{R}^{d_1 \times M}
+\begin{equation}
+\matr A^{(1)}
+=
+\sigma\!\left(
+\begin{pmatrix}
+\vec b^{(1)} & \Wmatr^{(1)}
+\end{pmatrix}
+\begin{pmatrix}
+\vec{1}^\top \\
+\matr X
+\end{pmatrix}
+\right).
 \label{eq:input-matrix2}
-\end{eqnarray}
+\end{equation}
 $$
+
+Here, the augmented weight matrix
+
+$$
+\begin{pmatrix}
+\vec b^{(1)} & \Wmatr^{(1)}
+\end{pmatrix}
+\in \mathbb{R}^{d_1 \times (\din + 1)}
+$$
+
+is formed by concatenating the bias vector $\vec b^{(1)} \in \mathbb{R}^{d_1}$ and
+the weight matrix $\Wmatr^{(1)} \in \mathbb{R}^{d_1 \times \din}$, while the augmented
+input matrix
+
+$$
+\begin{pmatrix}
+\vec{1}^\top \\
+\matr X
+\end{pmatrix}
+\in \mathbb{R}^{(\din + 1) \times \batch}
+$$
+contains a row of ones and the input batch $\matr X \in \mathbb{R}^{\din \times \batch}$. As a result, the matrix product is well defined and yields
+
+$$
+\matr A^{(1)} \in \mathbb{R}^{d_1 \times \batch}.
+$$
+
 
 ## The Backpropagation Algorithm
-In order to train the model a suitable, differentiable, error function $E(\mathbb{\Wmatr})$ is required, where $\mathbb{\Wmatr}$ is set of all weights (including the bias weights) of the neural network. A popular function is the mean-squared error, so that:
+
+To train the neural network, a suitable differentiable cost (sometimes objective) function $J(\Theta)$ is
+required, where $\Theta$ denotes the set of all trainable parameters of the network,
+including both the weight matrices and the bias vectors of all layers. Explicitly,
+we write
 
 $$
-\begin{eqnarray}
-E = \frac{1}{M} \sum_{m=1}^M { \left\| \vec{y}_m^* - \vec{o}_m \right\|^2 }\\
-\vec{y}_m^*, \vec{o}_m \in \mathbb{R}^{P \times 1}
+\Theta = \left\{ \Wmatr^{(1)}, \vec b^{(1)}, \Wmatr^{(2)}, \vec b^{(2)}, \ldots,
+\Wmatr^{(L)}, \vec b^{(L)} \right\}.
+$$
+
+We denote the loss for a single ($n$-th) training example by
+$\mathcal{L}(\vec y_n^*, \hat{\vec y_n})$.
+A commonly used choice is the mean squared error (MSE) loss, which measures the
+prediction error for a single training example. For an individual example $n$, the
+loss is defined as
+
+$$
+\mathcal{L}_n
+= \frac{1}{2}\left\| \vec{y}_n^* - \hat{\vec y}_n \right\|^2,
+$$
+
+where $\vec y_n^* \in \mathbb{R}^{d_L}$ denotes the true output vector of the $n$-th
+example and $\hat{\vec y}_n = \vec a_n^{(L)} \in \mathbb{R}^{d_L}$ is the corresponding
+predicted output of the network.
+
+> **Note.**  
+> The factor $\tfrac{1}{2}$ is included purely for convenience. When differentiating
+> the squared error, it cancels the factor $2$ arising from the derivative of the
+> square and thus simplifies the resulting gradient expressions. Importantly, this
+> factor does not affect the location of the minimum of the cost function.
+
+The cost function $J(\Theta)$ is obtained by aggregating the loss over a batch of
+$\batch$ training examples. Using the mean squared error, the cost function is given
+by
+
+$$
+J(\Theta)
+= \frac{1}{\batch} \sum_{n=1}^{\batch}
+\mathcal{L}_n
+= \frac{1}{\batch} \sum_{n=1}^{\batch}
+\frac{1}{2}\left\| \vec{y}_n^* - \hat{\vec y}_n \right\|^2.
 \label{eq:mse}
-\end{eqnarray}
 $$
 
-where $y_m^*$ is the true output vector and $\vec{o}_m=\vec{a}^L$ is the predicted output vector with in total $P$ outputs.
+
+In Figure 3, the local structure of two consecutive layers in a feed-forward neural
+network is illustrated in a form that is particularly useful for deriving the
+backpropagation algorithm. The figure highlights a single neuron $i$ in layer $\ell$,
+its pre-activation $z_i^{(\ell)}$, and its activation
+
+$$
+a_i^{(\ell)} = \sigma\left(z_i^{(\ell)}\right),
+$$
+
+as well as how this activation is propagated forward to all neurons in the subsequent layer $\ell + 1$.
+
+Specifically, the activation $a_i^{(\ell)}$ serves as an input to each neuron in layer $\ell + 1$, where it is multiplied by the corresponding weights $w_{k,i}^{(\ell+1)}$, summed together with the other incoming weighted activations, and combined with the bias terms $b_k^{(\ell+1)}$ to form the pre-activations $z_k^{(\ell+1)}$. This explicit depiction makes clear how a single activation influences multiple downstream neurons and, conversely (as we will see below), how gradients computed at layer $\ell + 1$ will later be propagated backward through the same weighted connections to layer $\ell$.
 
 {% include figure.liquid 
    path=  "assets/img/2025-08-02-neural-nets-and-backprop/fig3.png" 
@@ -244,211 +361,551 @@ where $y_m^*$ is the true output vector and $\vec{o}_m=\vec{a}^L$ is the predict
    caption="Zoom into the neural network."  
 %}
 
-One can use a gradient descent approach in order to minimize the error $E$. This requires computing the partial derivatives of $E$ with respect to all weights in $\mathbb{W}$. Due to the layered structure of the neural network, this is not trivial. Fig. 3 illustrates the problem for a specific weight $w_{ij}^\ell$. Assume we want to compute the partial derivate for this weight:
+Gradient descent can be used to minimize the cost function $J(\Theta)$. This
+requires computing the partial derivatives of $J$ with respect to all trainable
+parameters contained in $\Theta$. Due to the layered structure of a neural
+network, these derivatives cannot be computed directly in a single step.
+Figure 3 illustrates this dependency structure for a specific weight
+$w_{i,j}^{(\ell)}$.
+
+At this point, it is convenient to distinguish between the **loss**
+$\mathcal{L}(\vec y^*, \hat{\vec y})$ of a single training example and the
+**cost function** $J(\Theta)$, which aggregates the loss over a batch of
+$\batch$ examples. The derivation of backpropagation is carried out at the
+single-sample level, since differentiation is a linear operation. In
+particular, if
 
 $$
-\begin{eqnarray}
-\frac{\partial}{\partial w_{ij}^\ell} E = \frac{\partial E}{\partial z_i^\ell} \frac{\partial z_i^\ell}{\partial w_{ij}^\ell} \label{eq:partial1}
-\end{eqnarray}
+J(\Theta) = \frac{1}{\batch} \sum_{n=1}^{\batch} \mathcal{L}_n(\Theta),
 $$
 
-Since
+then the gradient of the cost function is given by
 
 $$
-\begin{eqnarray}
-\frac{\partial z_i^\ell}{\partial w_{ij}^\ell} = a_j^{\ell-1},\label{eq:partial2}
-\end{eqnarray}
+\frac{\partial J}{\partial \Theta}
+= \frac{1}{\batch} \sum_{n=1}^{\batch}
+\frac{\partial \mathcal{L}_n}{\partial \Theta}.
 $$
 
-we can simplify \eqref{eq:partial1} to
+Thus, the gradient of $J$ is simply the average of the gradients of the
+individual losses. For this reason, we first derive the gradients of the
+loss for a single training example and later extend the result to a batch
+by averaging.
+
+Assume that we want to compute the partial derivative of the loss function
+with respect to the weight $w_{i,j}^{(\ell)}$. Since this weight influences
+the loss only indirectly through the pre-activation $z_i^{(\ell)}$ of neuron
+$i$ in layer $\ell$, the chain rule yields
 
 $$
-\begin{eqnarray}
-\frac{\partial}{\partial w_{ij}^\ell} E 
-=  \frac{\partial E}{\partial z_i^\ell} a_j^{\ell-1}
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}
+   \frac{\partial z_i^{(\ell)}}{\partial w_{i,j}^{(\ell)}}.
+\label{eq:partial1}
+\end{align}
+$$
+
+
+From the definition of the pre-activation
+
+$$
+z_i^{(\ell)} = \sum_{j} w_{i,j}^{(\ell)} a_j^{(\ell-1)} + b_i^{(\ell)},
+$$
+
+it follows immediately that
+
+$$
+\begin{align}
+\frac{\partial z_i^{(\ell)}}{\partial w_{i,j}^{(\ell)}}
+= a_j^{(\ell-1)}.
+\label{eq:partial2}
+\end{align}
+$$
+
+Substituting this result into Eq. \eqref{eq:partial1} yields
+
+$$
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}.
 \label{eq:partial3}
-\end{eqnarray}
+\end{align}
 $$
-The remaining partial derivative cannot be evaluated that easily. However, we can derive a recursive expression using the chain rule for partial derivatives. Remember the following rule:
+
+So far, we have considered the partial derivative of the loss with respect to the
+weights $w_{i,j}^{(\ell)}$. An analogous and even simpler expression is obtained
+for the bias parameters $b_i^{(\ell)}$.
+
+Since the bias enters the pre-activation additively, we have
 
 $$
-\begin{eqnarray}
-z=f(x,y), \ x=g(t), \ y=h(t)\\
+\frac{\partial z_i^{(\ell)}}{\partial b_i^{(\ell)}} = 1.
+$$
+
+Therefore, by the chain rule,
+
+$$
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}
+   \frac{\partial z_i^{(\ell)}}{\partial b_i^{(\ell)}} \\
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}.
+\end{align}
+$$
+
+
+In summary, we have:
+
+$$
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}, \\
+\frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}.
+\end{align}
+$$
+
+The remaining partial derivative $\partial \mathcal{L} / \partial z_i^{(\ell)}$ cannot be
+evaluated directly. However, it can be expressed recursively by applying the chain
+rule, which forms the basis of the backpropagation algorithm.
+
+### Interlude: The Chain Rule and Nested Dependencies
+
+Before deriving the backpropagation algorithm, it is helpful to briefly recall the
+chain rule for derivatives, which plays a central role in computing gradients in
+neural networks. In particular, neural networks are composed of nested functions,
+so changes in a parameter typically affect the output only indirectly through a
+sequence of intermediate variables.
+
+Consider a function $z = f(x, y)$ that depends on two intermediate variables
+$x$ and $y$, which in turn both depend on a common variable $t$, i.e.
+
+$$
+x = g(t), \qquad y = h(t).
+$$
+
+In this case, the total derivative of $z$ with respect to $t$ is given by the
+chain rule as
+
+$$
+\begin{align}
+z &= f(x, y), \quad x = g(t), \quad y = h(t), \\
 \frac{d z}{d t}
-=  \frac{\partial z}{\partial x} \frac{d x}{d t}
-+  \frac{\partial z}{\partial y} \frac{d y}{d t}
-\label{eq:cahinrule1}
-\end{eqnarray}
-$$
-
-Consider the following example:
-
-$$
-\begin{align}
-z&=\mbox{sin}(x^2+y^2), \ x=e^t, \ y=t^2\\
-\frac{\partial z}{\partial x} &= 2x\cdot \mbox{cos}(x^2+y^2)\\
-\frac{\partial z}{\partial y} &= 2y\cdot \mbox{cos}(x^2+y^2)\\
-\frac{d x}{d t} &= e^t\\
-\frac{d y}{d t} &= 2t\\
-\frac{d z}{d t} &= 2x\cdot \mbox{cos}(x^2+y^2) e^t 
-+ 2y\cdot \mbox{cos}(x^2+y^2) 2t\\
-&= 2\mbox{cos}(x^2+y^2)(x\cdot e^t + 2yt)\\
-&= 2\mbox{cos}(e^{2t}+t^4) (e^{2t} + 2t^3)
+&= \frac{\partial z}{\partial x} \frac{d x}{d t}
+ + \frac{\partial z}{\partial y} \frac{d y}{d t}.
+\label{eq:chainrule1}
 \end{align}
 $$
 
-Using the direct method we retrieve:
+This expression shows that the influence of $t$ on $z$ is obtained by summing all
+paths through which $t$ affects the intermediate variables $x$ and $y$.
+
+Consider the composite function
+
+$$
+z = \sin(x^2 + y^2), \qquad x = e^t, \qquad y = t^2.
+$$
+
+Since $z$ depends on $t$ only through the intermediate variables $x$ and $y$, the
+chain rule gives
 
 $$
 \begin{align}
-z&=\mbox{sin}(e^{2t}+t^4)\\
-\frac{d z}{d t} 
-&= \mbox{cos}(e^{2t}+t^4) (2 e^{2t} + 4t^3)
+\frac{\partial z}{\partial x} &= 2x \cos(x^2 + y^2), \\
+\frac{\partial z}{\partial y} &= 2y \cos(x^2 + y^2), \\
+\frac{d x}{d t} &= e^t, \\
+\frac{d y}{d t} &= 2t.
 \end{align}
 $$
 
-Similarly, the following applies, assuming that $\vec{t}$ is a vector rather than a scalar and $\vec{x}$ is a vector as well:
+Therefore, the total derivative of $z$ with respect to $t$ is
 
 $$
 \begin{align}
-z=f(\vec{x}), \ x=g(\vec{t})\\
+\frac{d z}{d t}
+&= 2x   \cos(x^2 + y^2)\,\frac{d x}{d t}
+   + 2y  \cos(x^2 + y^2)\,\frac{d y}{d t} \\
+&= 2x  \cos(x^2 + y^2)\,e^t
+   + 2y   \cos(x^2 + y^2)\,2t \\
+&= 2\cos(x^2 + y^2)\left(x\,e^t + 2yt\right) \\
+&= 2\cos\left(e^{2t} + t^4\right)\left(e^{2t} + 2t^3\right).
+\end{align}
+$$
+
+
+Using direct differentiation, we obtain
+
+$$
+\begin{align}
+z &= \sin(e^{2t} + t^4), \\
+\frac{d z}{d t}
+&= \cos(e^{2t} + t^4)\left(2 e^{2t} + 4 t^3\right) \\
+&= 2\cos(e^{2t} + t^4)\left(e^{2t} + 2 t^3\right),
+\end{align}
+$$
+
+which is identical to the result obtained via the chain rule.
+
+Similarly, an analogous form of the chain rule applies when the intermediate
+variables are vector-valued. Let $\vec t$ be a vector and let
+$z = f(\vec x)$ with $\vec x = g(\vec t)$. Then the partial derivative of $z$
+with respect to the $i$-th component of $\vec t$ is given by
+
+$$
+\begin{align}
+z &= f(\vec{x}), \qquad \vec{x} = g(\vec{t}), \\
 \frac{\partial z}{\partial t_i}
-&=  \frac{\partial z}{\partial x_1} \frac{\partial x_1}{\partial t_i}
-+ \frac{\partial z}{\partial x_2} \frac{\partial x_2}{\partial t_i}+ \cdots\\
-&= \sum_{j} {\frac{\partial z}{\partial x_j} \frac{\partial x_j}{\partial t_i}}
-\label{eq:cahinrule2}
+&= \frac{\partial z}{\partial x_1} \frac{\partial x_1}{\partial t_i}
+ + \frac{\partial z}{\partial x_2} \frac{\partial x_2}{\partial t_i}
+ + \cdots \\
+&= \sum_{j} \frac{\partial z}{\partial x_j}
+              \frac{\partial x_j}{\partial t_i}.
+\label{eq:chainrule2}
 \end{align}
 $$
 
-We can use this relation, to compute the partial derivative $\frac{\partial E}{\partial z_i^\ell}$ in \eqref{eq:partial3} in a recursive manner.
-Note that in Fig. 3 the terms $z_k^{\ell+1}$ can be expressed as functions $z_k^{\ell+1}(\ldots, z_i^\ell, \ldots)$.
-Assuming that $z_k^{\ell+1}$ were free parameters such as the weights in $\mathbb{W}$, then one could also imagine the error function as function of these parameters, i.e., $E=E\big(\ldots,z_k^{\ell+1}(\ldots, z_i^\ell, \ldots)\ldots\big)$.
+This expression shows that the influence of a single component $t_i$ on $z$ is
+obtained by summing over all paths through which $t_i$ affects the intermediate
+variables $\vec x$.
 
-Let us now compute the partial derivative $\frac{\partial E}{\partial z_i^\ell}$ from \eqref{eq:partial3} (see Fig. 3):
+### Backpropagation via the Chain Rule
+
+We can now use the chain rule to compute the partial derivative
+$\partial \mathcal{L} / \partial z_i^{(\ell)}$ in Eq. \eqref{eq:partial3} in a recursive
+manner. As illustrated in Figure 3, the pre-activations $z_k^{(\ell+1)}$ of the
+next layer can be regarded as functions of the pre-activations of the current
+layer, in particular of $z_i^{(\ell)}$, i.e.,
+$z_k^{(\ell+1)} = z_k^{(\ell+1)}(\ldots, z_i^{(\ell)}, \ldots)$. Consequently, the
+loss function depends on $z_i^{(\ell)}$ only indirectly through its influence on
+all downstream pre-activations $z_k^{(\ell+1)}$. Formally, one may therefore view
+the loss function as a composite function of the form
+$\mathcal{L} = \mathcal{L}\big(\ldots, z_k^{(\ell+1)}(\ldots, z_i^{(\ell)}, \ldots), \ldots\big)$, which
+naturally leads to a recursive application of the chain rule.
+
+
+Applying the chain rule, we obtain
 
 $$
 \begin{align}
-\frac{\partial E}{\partial z_i^\ell} 
-&= \frac{\partial E}{\partial z_1^{\ell+1}} \frac{\partial z_1^{\ell+1}}{\partial z_i^\ell} 
-+ \frac{\partial E}{\partial z_2^{\ell+1}} \frac{\partial z_2^{\ell+1}}{\partial z_i^\ell} + \cdots \\
-&= \sum\limits_k^{d_{\ell+1}} {\frac{\partial E}{\partial z_k^{\ell+1}} \frac{\partial z_k^{\ell+1}}{\partial z_i^\ell}}\\
-&= \sum\limits_k^{d_{\ell+1}} \frac{\partial E}{\partial z_k^{\ell+1}} \sigma'(z_i^\ell) w_{ki}^{\ell+1},
-\label{eq:cahinrule3}
+\frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_1^{(\ell+1)}}
+   \frac{\partial z_1^{(\ell+1)}}{\partial z_i^{(\ell)}}
+ + \frac{\partial \mathcal{L}}{\partial z_2^{(\ell+1)}}
+   \frac{\partial z_2^{(\ell+1)}}{\partial z_i^{(\ell)}}
+ + \cdots \\
+&= \sum_{k=1}^{d_{\ell+1}}
+   \frac{\partial \mathcal{L}}{\partial z_k^{(\ell+1)}}
+   \frac{\partial z_k^{(\ell+1)}}{\partial z_i^{(\ell)}}.
+\label{eq:chainrule3}
 \end{align}
 $$
 
-where $\sigma'$ is the outer derivative of the activation $\sigma$. Note the recursive structure of \eqref{eq:cahinrule3} which can be re-written as:
+From the definition
 
 $$
-\begin{eqnarray}
-\delta_i^\ell &= \frac{\partial E}{\partial z_i^\ell}\\
-\delta_i^\ell &= \sum\limits_k^{d_{\ell+1}} \delta_k^{\ell+1}  \sigma'(z_i^\ell) w_{ki}^{\ell+1}
-\label{eq:cahinrule4}
-\end{eqnarray}
+z_k^{(\ell+1)} = \sum_j w^{(\ell+1)}_{k,j} a_j^{(\ell)} + b_k^{(\ell+1)},
+\qquad
+a_j^{(\ell)} = \sigma\!\left(z_j^{(\ell)}\right),
 $$
 
-For the output-layer $\ell=L$ one typically receives the following expression for $\delta_i^L$ (Cross-entropy loss should deliver the same results with $\sigma=logsig$): 
+it follows that
+
+$$
+\frac{\partial z_k^{(\ell+1)}}{\partial z_i^{(\ell)}}
+= w^{(\ell+1)}_{k,i} \, \sigma'\!\left(z_i^{(\ell)}\right),
+$$
+
+where $\sigma'(z)$ denotes the derivative of the activation function
+$\sigma(\cdot)$ with respect to its argument.
+
+Substituting this result into Eq. \eqref{eq:chainrule3} yields
 
 $$
 \begin{align}
-\delta_i^L &= \frac{\partial E}{\partial z_i^L} \\
-&= \frac{\partial}{\partial z_i^L} {\frac{1}{2} (y_i^* - a_i^L)^2}\\
-&= \frac{\partial}{\partial z_i^L} {\frac{1}{2} \big(y_i^* - \sigma(z_i^L)\big)^2}\\
-&= \big(y_i^* - \sigma(z_i^L)\big) \frac{\partial}{\partial z_i^L} {\big(y_i^* - \sigma(z_i^L)\big)}\\
-&= -\big(y_i^* - \sigma(z_i^L)\big) \sigma'(z_i^L) \\
-&= (a_i^L - y_i^*)\sigma'(z_i^L) \\
-\delta^L &= (\vec{a}^L- \vec{y}^*) \otimes \sigma'(\vec{z}^L),
-\label{eq:cahinrule5}
+\frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}
+= \sigma'\!\left(z_i^{(\ell)}\right)
+  \sum_{k=1}^{d_{\ell+1}}
+  w^{(\ell+1)}_{k,i}
+  \frac{\partial \mathcal{L}}{\partial z_k^{(\ell+1)}}.
+\label{eq:backprop-recursion}
 \end{align}
 $$
 
-where the second row already shows the vector representation and "$\otimes$" represents the hadamard product.
-Also \eqref{eq:cahinrule4} can be written in the more compact vector form with:
+
+Note the recursive structure of Eq. \eqref{eq:backprop-recursion}. For notational
+convenience, we define the error signal (also called the delta term) at neuron $i$
+in layer $\ell$ as
 
 $$
-\begin{eqnarray}
-\vec\delta^\ell &\in \mathbb{R}^{d_\ell \times 1}\\
-\vec\delta^{\ell+1} &\in \mathbb{R}^{d_{\ell+1} \times 1}\\
-\Wmatr^{\ell+1} & \in \mathbb{R}^{d_{\ell+1} \times d_{\ell}}
-\label{eq:cahinrule6}
-\end{eqnarray}
+\delta_i^{(\ell)} := \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}.
 $$
 
-Note, that in \eqref{eq:cahinrule4} we sum over the first index of $w_{ki}^{\ell+1}$. This means that we have to compute the transpose of $\Wmatr^{\ell+1}$, which then delivers:
+With this definition, Eq. \eqref{eq:backprop-recursion} can be written in the
+recursive form
 
 $$
-\begin{eqnarray}
-(\Wmatr^{\ell+1})^\top & \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}} \\
-(\Wmatr^{\ell+1})^\top \cdot \vec\delta^{\ell+1} &\in \mathbb{R}^{d_{\ell} \times d_{\ell+1}} \cdot \mathbb{R}^{d_{\ell+1} \times 1} = \mathbb{R}^{d_{\ell} \times 1}
-\label{eq:cahinrule7}
-\end{eqnarray}
+\begin{align}
+\delta_i^{(\ell)}
+&= \sigma'\!\left(z_i^{(\ell)}\right)
+   \sum_{k=1}^{d_{\ell+1}}
+   w^{(\ell+1)}_{k,i}\, \delta_k^{(\ell+1)}.
+\label{eq:chainrule4}
+\end{align}
 $$
 
-Finally, we get -- with vector $z^\ell$:<d-footnote>Using the denominator layout convention.</d-footnote>
+
+
+
+
+Equation \eqref{eq:chainrule4} can be written in a more compact vector form.
+To this end, we introduce the error vectors
 
 $$
-\begin{eqnarray}
-\delta^\ell = \frac{\partial E}{\partial \vec z^\ell}
-= (\Wmatr^{\ell+1})^\top \cdot \delta^{\ell+1} \otimes \sigma'(z_i^\ell)
-\label{eq:cahinrule8}
-\end{eqnarray}
+\begin{align}
+\vec{\delta}^{(\ell)} &\in \mathbb{R}^{d_\ell }, \\
+\vec{\delta}^{(\ell+1)} &\in \mathbb{R}^{d_{\ell+1} },
+\end{align}
 $$
+
+and the weight matrix
+
+$$
+\begin{align}
+\Wmatr^{(\ell+1)} \in \mathbb{R}^{d_{\ell+1} \times d_\ell}.
+\label{eq:chainrule6}
+\end{align}
+$$
+
+In Eq.\eqref{eq:chainrule4}, the summation is carried out over the index
+$k$, which corresponds to the first index of the weight
+$w_{k,i}^{(\ell+1)}$. This implies that, in matrix notation, the transpose of
+$\Wmatr^{(\ell+1)}$ must be used. Indeed, we have
+
+$$
+\begin{align}
+(\Wmatr^{(\ell+1)})^\top
+&\in \mathbb{R}^{d_\ell \times d_{\ell+1}}, \\
+(\Wmatr^{(\ell+1)})^\top \vec{\delta}^{(\ell+1)}
+&\in \mathbb{R}^{d_\ell }.
+\label{eq:chainrule7}
+\end{align}
+$$
+
+
+
+
+
+To see how the transpose arises explicitly, write the weight matrix row-wise as
+
+$$
+\Wmatr^{(\ell+1)}
+=
+\begin{pmatrix}
+(\vec w^{(\ell+1)}_{1})^\top \\
+(\vec w^{(\ell+1)}_{2})^\top \\
+\vdots \\
+(\vec w^{(\ell+1)}_{d_{\ell+1}})^\top
+\end{pmatrix},
+\qquad
+\vec w^{(\ell+1)}_{k} \in \mathbb{R}^{d_\ell},
+$$
+
+i.e., the $k$-th row contains the incoming weights of neuron $k$ in layer $\ell+1$.
+Taking the transpose yields
+
+$$
+(\Wmatr^{(\ell+1)})^\top
+=
+\begin{pmatrix}
+\vec w^{(\ell+1)}_{1} &
+\vec w^{(\ell+1)}_{2} &
+\cdots &
+\vec w^{(\ell+1)}_{d_{\ell+1}}
+\end{pmatrix}.
+$$
+
+Now let
+
+$$
+\vec\delta^{(\ell+1)}
+=
+\begin{pmatrix}
+\delta^{(\ell+1)}_{1}\\
+\delta^{(\ell+1)}_{2}\\
+\vdots\\
+\delta^{(\ell+1)}_{d_{\ell+1}}
+\end{pmatrix}.
+$$
+
+Then the matrix-vector product can be interpreted as a weighted sum of the
+(transposed) row vectors:
+
+$$
+(\Wmatr^{(\ell+1)})^\top \vec\delta^{(\ell+1)}
+=
+\sum_{k=1}^{d_{\ell+1}} \vec w^{(\ell+1)}_{k}\,\delta^{(\ell+1)}_{k}.
+$$
+
+Looking at the $i$-th component of this vector gives
+
+$$
+\big[(\Wmatr^{(\ell+1)})^\top \vec\delta^{(\ell+1)}\big]_i
+=
+\sum_{k=1}^{d_{\ell+1}} w^{(\ell+1)}_{k,i}\,\delta^{(\ell+1)}_{k},
+$$
+
+which is exactly the summation term appearing in Eq. \eqref{eq:chainrule4}.
+
+
+
+
+
+
+
+Using this notation and writing the derivative of the activation function
+element-wise, the backpropagation recursion can be expressed as
+
+$$
+\begin{align}
+\vec{\delta}^{(\ell)}
+:= \frac{\partial \mathcal{L}}{\partial \vec z^{(\ell)}}
+= \Big( (\Wmatr^{(\ell+1)})^\top \vec{\delta}^{(\ell+1)} \Big)
+  \otimes \sigma'\!\left(\vec z^{(\ell)}\right),
+\label{eq:chainrule8}
+\end{align}
+$$
+
+where $\otimes$ denotes the Hadamard (element-wise) product and the derivative
+$\sigma'(\cdot)$ is applied component-wise to the vector $\vec z^{(\ell)}$.
+
+
+
+
+
+**TODO: Continue here!**
+
+
+
+
+
+
+
+
+
+
+
+
 
 Remember Eq. \eqref{eq:partial3} which was:
 
 <aside><p> \footnote{Note that we cannot directly update the weights of a layer; we have to first compute $\delta^\ell$ for the remaining layers. Otherwise, the adjusted weights change $\delta^\ell$ of previous layers.}</p> </aside>
 
 $$
-\begin{eqnarray}
+\begin{align}
 \frac{\partial}{\partial w_{ij}^\ell} E 
 =  \frac{\partial E}{\partial z_i^\ell} a_j^{\ell-1} = \delta_i^\ell a_j^{\ell-1}
 \label{eq:finalbackprop}
-\end{eqnarray}
+\end{align}
 $$
 
 Since \textcolor[rgb]{1,0,0}{(Note that bias weights are not included...)}
 
 $$
-\begin{eqnarray}
+\begin{align}
 \Wmatr^\ell, \frac{\partial E}{\partial W^\ell} \in \mathbb{R}^{d_\ell \times d_{\ell-1}} \label{eq:finalbackprop1}\\
-\vec a^{\ell-1} \in \mathbb{R}^{d_{\ell-1} \times 1},
-\end{eqnarray}
+\vec a^{\ell-1} \in \mathbb{R}^{d_{\ell-1} },
+\end{align}
 $$
 
-if we apply \eqref{eq:cahinrule8} to \eqref{eq:finalbackprop} we have to transpose vector $a^{\ell-1}$ in order to meet the dimensions of $\frac{\partial E}{\partial \Wmatr^\ell}$ in Eq. \eqref{eq:finalbackprop1}:
+if we apply \eqref{eq:chainrule8} to \eqref{eq:finalbackprop} we have to transpose vector $a^{\ell-1}$ in order to meet the dimensions of $\frac{\partial E}{\partial \Wmatr^\ell}$ in Eq. \eqref{eq:finalbackprop1}:
 
 $$
-\begin{eqnarray}
-\frac{\partial E}{\partial \Wmatr^\ell} =\vec \delta^\ell \cdot (\vec a^{\ell-1})^\top \in \mathbb{R}^{d_\ell \times 1} \cdot \mathbb{R}^{1 \times d_{\ell-1}}= \mathbb{R}^{d_\ell \times d_{\ell-1}}
+\begin{align}
+\frac{\partial E}{\partial \Wmatr^\ell} =\vec \delta^\ell \cdot (\vec a^{\ell-1})^\top \in \mathbb{R}^{d_\ell } \cdot \mathbb{R}^{1 \times d_{\ell-1}}= \mathbb{R}^{d_\ell \times d_{\ell-1}}
 \label{eq:finalbackprop2}
-\end{eqnarray}
+\end{align}
 $$
 
-As before, we can put a batch of training examples in a matrix $X\in \mathbb{R}^{n \times M}$ through the network. In every layer we collect an activation matrix $A^\ell$ until we reach the final output $A^L$. If we want to perform a batch update of the weights we have to sum up the gradients in \eqref{eq:finalbackprop2} for every example. Similar to before, we create a matrix $\Delta^\ell$ which contains the single column vectors $\delta^\ell$ for every training example. This can be done with:
+As before, we can put a batch of training examples in a matrix $X\in \mathbb{R}^{n \times \batch}$ through the network. In every layer we collect an activation matrix $A^\ell$ until we reach the final output $A^L$. If we want to perform a batch update of the weights we have to sum up the gradients in \eqref{eq:finalbackprop2} for every example. Similar to before, we create a matrix $\Delta^\ell$ which contains the single column vectors $\delta^\ell$ for every training example. This can be done with:
 
 **TODO:** Describe, how to compute $$\Delta^{\ell-1}$$, since this is what we will compute in the backprop method and then return to the previous layer.
 
 $$
-\begin{eqnarray}
- Z^\ell \in \mathbb{R}^{d_\ell\times M}\\
+\begin{align}
+ Z^\ell \in \mathbb{R}^{d_\ell\times \batch}\\
 (\Wmatr^{\ell+1})^\top  \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}\\
-\Delta^{\ell+1} \in \mathbb{R}^{d_{\ell+1}\times M}\\
+\Delta^{\ell+1} \in \mathbb{R}^{d_{\ell+1}\times \batch}\\
 \Delta^\ell = \big( \Wmatr^{\ell+1}\big)^\top \cdot \Delta^{\ell+1} \otimes \sigma'(Z^\ell) \\
-\Delta^\ell \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}} \cdot \mathbb{R}^{d_{\ell+1}\times M} = \mathbb{R}^{d_{\ell}\times M}\\
+\Delta^\ell \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}} \cdot \mathbb{R}^{d_{\ell+1}\times \batch} = \mathbb{R}^{d_{\ell}\times \batch}\\
 \label{eq:matrixBackprop}
-\end{eqnarray}
+\end{align}
 $$ 
 
 However, the derivative $\frac{\partial E}{\partial W^\ell}$ in \eqref{eq:finalbackprop2} should have the same dimensions as before, but sum up the gradients for all examples:
 
 $$
-\begin{eqnarray}
-\frac{\partial E}{\partial \Wmatr^\ell} &=\sum_{k=1}^{M} \vec \delta_k^\ell \cdot (\vec a_k^{\ell-1})^\top\\
+\begin{align}
+\frac{\partial E}{\partial \Wmatr^\ell} &=\sum_{k=1}^{\batch} \vec \delta_k^\ell \cdot (\vec a_k^{\ell-1})^\top\\
 &= \Delta^\ell \cdot \big( A^{\ell-1}\big)^\top \\
-\Delta^\ell \cdot \big( A^{\ell-1}\big)^\top \in \mathbb{R}^{d_{\ell}\times M} \cdot \mathbb{R}^{M \times d_{\ell-1}} &= \mathbb{R}^{d_{\ell} \times d_{\ell-1}}
+\Delta^\ell \cdot \big( A^{\ell-1}\big)^\top \in \mathbb{R}^{d_{\ell}\times \batch} \cdot \mathbb{R}^{\batch \times d_{\ell-1}} &= \mathbb{R}^{d_{\ell} \times d_{\ell-1}}
 \label{eq:finalbackprop3}
-\end{eqnarray}
+\end{align}
 $$
+
+
+**TODO: Moved this from an earlier paragraph to here:**
+
+
+The recursive relation in Eq. \eqref{eq:chainrule4} and Eq. \eqref{eq:chainrule8} expresses the error signal in
+layer $\ell$ in terms of the error signals in the subsequent layer $\ell+1$.
+Consequently, the recursion must be initialized at the output layer $\ell = L$ and
+then evaluated backwards through the network. This backward propagation of error
+signals gives rise to the name *backpropagation*.
+
+We therefore begin by computing the error signal for the output layer
+$\ell = L$. For the mean squared error (MSE) loss, the error signal of the $i$-th
+output neuron is given by
+
+$$
+\begin{align}
+\delta_i^{(L)}
+&:= \frac{\partial \mathcal{L}}{\partial z_i^{(L)}} \\
+&= \frac{\partial}{\partial z_i^{(L)}}
+   \left[ \frac{1}{2} \big(y_i^* - a_i^{(L)}\big)^2 \right] \\
+&= \frac{\partial}{\partial z_i^{(L)}}
+   \left[ \frac{1}{2} \big(y_i^* - \sigma(z_i^{(L)})\big)^2 \right] \\
+&= -\big(y_i^* - \sigma(z_i^{(L)})\big)\,\sigma'\!\left(z_i^{(L)}\right) \\
+&= \big(a_i^{(L)} - y_i^*\big)\,\sigma'\!\left(z_i^{(L)}\right).
+\end{align}
+$$
+
+> **Remark (Cross-entropy loss).**  
+> For the cross-entropy loss in combination with a sigmoid activation function in
+> the output layer, the expression for the output-layer error signal simplifies
+> considerably. In this case, the derivative of the activation function cancels
+> with a corresponding term arising from the derivative of the loss, yielding
+> $$\delta_i^{(L)} = a_i^{(L)} - y_i^*.$$
+> This simplification is one of the main reasons why the cross-entropy loss is
+> commonly preferred over the mean squared error for classification tasks.
+> This case is discussed separately in Section **TODO**.
+
+In vector form, this can be written as
+
+$$
+\begin{align}
+\boldsymbol{\delta}^{(L)}
+&= \big(\vec a^{(L)} - \vec y^{*}\big)
+  \otimes \sigma'\!\left(\vec z^{(L)}\right) \\
+&= \big(\vec \yhat  - \vec y^{*}\big)
+  \otimes \sigma'\!\left(\vec z^{(L)}\right)
+\label{eq:chainrule5}
+\end{align}
+$$
+
+where $\otimes$ denotes the Hadamard (element-wise) product.
+
+
 
 ## Putting Everything Together
 1. Forward pass (what to remember?)
@@ -458,4 +915,9 @@ $$
 5. ...
 
 ## Practical Considerations
+- gradient checking
+- SGD vs. mini batches vs. full-batches
+- initialization of weights
+- local minima
+
 ### Weight Initialization
