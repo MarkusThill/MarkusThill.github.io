@@ -41,7 +41,7 @@ tabs: true
 \\)
 
 **TODO**: matrices bold, vectors bold!
-- Intro: The only tricky thing about neural nets is to get the notation straight. At the end, every thing boils down to notation, notation, notation...
+
 - Notation guide: ...
 - Put certain posts on medium!
 - Animation of Gradient descent here!
@@ -73,6 +73,7 @@ $\din$: Dimension of the input vector $\vec x$
 - Also, I implemented a feedforward neural net from scratch, based on the formulas derived below.
 - We will also look at some practical considerations when training neural networks, which are important to make the training work, like weight initialization and gradient checking.
 - The idea is to develop a solid mathmatical formulation of a feedforard neural net, starting on a single-weight level and single example level and extending to full weight matrices and vectors and extenting to batches of examples which are used to train the neural net.
+- - Intro: The only tricky thing about neural nets is to get the notation straight. At the end, every thing boils down to notation, notation, notation...
 
 ---
 
@@ -1579,15 +1580,32 @@ error vectors $\vec{\delta}_n^{(L)}$ are collected column-wise into the **batch
 error matrix**
 
 $$
+\begin{align}
 \matr\Delta^{(L)}
-=
+&=
 \begin{pmatrix}
 \vec{\delta}_1^{(L)} &
 \vec{\delta}_2^{(L)} &
 \cdots &
 \vec{\delta}_\batch^{(L)}
-\end{pmatrix}
-\in \mathbb{R}^{d_L \times \batch}.
+\end{pmatrix} \\
+&= 
+\big(\matr A^{(L)} - \matr Y^*\big)\ \otimes\ \sigma'\!\big(\matr Z^{(L)}\big) \\
+&= 
+\big(\matr{\hat{Y}} - \matr Y^*\big)\ \otimes\ \sigma'\!\big(\matr Z^{(L)}\big),
+\end{align}
+$$
+
+with $\matr\Delta^{(L)} \in \mathbb{R}^{d_L \times \batch}$, the predictions 
+
+$$
+\matr{\hat{Y}} = \big(\vec{\yhat}_1 \ \ldots \ \vec{\yhat}_\batch \big)\in \mathbb{R}^{d_L \times \batch},
+$$
+
+and the targets (truth labels)
+
+$$
+\matr Y^* = \big(\vec y_1^* \ \ldots \ \vec y_\batch^*\big)\in \mathbb{R}^{d_L \times \batch}.
 $$
 
 This matrix constitutes the **initial condition** for batch backpropagation.
@@ -1595,6 +1613,117 @@ Starting from $\matr\Delta^{(L)}$, the error matrices of all preceding layers
 $\matr\Delta^{(\ell)}$ are obtained recursively using
 Eq. \eqref{eq:chainrule8}.
 
+---
+
+## Summary: Backpropagation
+
+We summarize the steps required to compute **all gradients of the cost function**
+$J(\Theta)$ for a batch of $\batch$ training examples using backpropagation. The
+resulting gradients can then be used in a gradient-descent update.
+
+### Inputs and Stored Quantities
+
+- **Network architecture**
+  - Number of layers: $L$
+  - Layer sizes: $d_0=\din, d_1, \ldots, d_L$
+
+- **Trainable parameters (for each layer $\ell=1,\ldots,L$)**
+  - $\Wmatr^{(\ell)} \in \mathbb{R}^{d_\ell \times d_{\ell-1}}$
+  - $\vec b^{(\ell)} \in \mathbb{R}^{d_\ell}$
+
+- **Batch data**
+  - Inputs: $\matr X = \matr A^{(0)} \in \mathbb{R}^{\din \times \batch}$
+  - Targets: $\matr Y^* = \big(\vec y_1^* \ \ldots \ \vec y_\batch^*\big)\in \mathbb{R}^{d_L \times \batch}$
+
+- **Forward-pass cache (must be available from the forward pass)**
+  - Activations: $\matr A^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}$ for $\ell=0,\ldots,L$
+  - Pre-activations: $\matr Z^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}$ for $\ell=1,\ldots,L$
+
+- **Element-wise operations**
+  - $\sigma(\cdot)$ and $\sigma'(\cdot)$ are applied element-wise
+  - $\otimes$ denotes the Hadamard (element-wise) product
+  - $\vec 1 \in \mathbb{R}^{\batch}$ denotes a vector of ones
+
+---
+
+### Backward Pass: Error Signals
+
+1. **Initialize at the output layer ($\ell=L$)**  
+   For mean squared error (MSE),
+   $$
+   \matr\Delta^{(L)}
+   =
+   \big(\matr A^{(L)} - \matr Y^*\big)\ \otimes\ \sigma'\!\big(\matr Z^{(L)}\big),
+   \qquad
+   \matr\Delta^{(L)} \in \mathbb{R}^{d_L \times \batch}.
+   $$
+   
+   (Other loss/activation pairs may yield a simpler expression; e.g. cross-entropy + sigmoid/softmax. See below.)
+
+2. **Propagate errors backward**  
+   For $\ell = L-1, L-2, \ldots, 1$:
+   $$
+   \matr\Delta^{(\ell)}
+   =
+   \Big( (\Wmatr^{(\ell+1)})^\top \matr\Delta^{(\ell+1)} \Big)
+   \ \otimes\
+   \sigma'\!\big(\matr Z^{(\ell)}\big),
+   \qquad
+   \matr\Delta^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}.
+   $$
+
+---
+
+### Gradients for Weights and Biases (Batch)
+
+For each layer $\ell = 1,\ldots,L$, the gradients of the **cost**
+$$
+J(\Theta)=\frac{1}{\batch}\sum_{n=1}^{\batch}\mathcal{L}_n(\Theta)
+$$
+are
+
+- **Weight gradient**
+  $$
+  \frac{\partial J}{\partial \Wmatr^{(\ell)}}
+  =
+  \frac{1}{\batch}\;
+  \matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top,
+  \qquad
+  \frac{\partial J}{\partial \Wmatr^{(\ell)}} \in \mathbb{R}^{d_\ell \times d_{\ell-1}}.
+  $$
+
+- **Bias gradient**
+  $$
+  \frac{\partial J}{\partial \vec b^{(\ell)}}
+  =
+  \frac{1}{\batch}\;
+  \matr\Delta^{(\ell)} \vec 1,
+  \qquad
+  \frac{\partial J}{\partial \vec b^{(\ell)}} \in \mathbb{R}^{d_\ell}.
+  $$
+
+---
+
+### Parameter Update (Gradient Descent)
+
+With learning rate $\eta>0$, update for each layer $\ell=1,\ldots,L$:
+
+$$
+\begin{align*}
+\Wmatr^{(\ell)} &\leftarrow \Wmatr^{(\ell)} - \eta\,\frac{\partial J}{\partial \Wmatr^{(\ell)}}, \\
+\vec b^{(\ell)} &\leftarrow \vec b^{(\ell)} - \eta\,\frac{\partial J}{\partial \vec b^{(\ell)}}.
+\end{align*}
+$$
+
+---
+
+### Remarks
+
+- The backward pass must be evaluated **from $\ell=L$ down to $\ell=1$** because
+  each $\matr\Delta^{(\ell)}$ depends on $\matr\Delta^{(\ell+1)}$.
+- The forward-pass matrices $\{\matr A^{(\ell)}, \matr Z^{(\ell)}\}$ are required
+  to compute $\matr\Delta^{(\ell)}$ and the parameter gradients.
+- In a standard implementation: **compute all gradients first, then update all parameters**.
 
 
 ---
@@ -1617,7 +1746,4 @@ Eq. \eqref{eq:chainrule8}.
 - initialization of weights
 - local minima
 - step size parameter
-
----
-
-### Weight Initialization
+- Weight Initialization
