@@ -59,22 +59,27 @@ tabs: true
 - Normalizing the input
 
 
-# Neural Networks
+---
 
-## Notation Guide
+# Notation Guide
 $\din$: Dimension of the input vector $\vec x$
 
-## Introduction
+---
+
+# Introduction
 - Motivation: Understand the nuts and bolts of neural networks and especially how the neural net is trained using the so-called backpropagation algorithm, which is effectively just some clever & efficient recursive implementation of the gradient descent optimization.
 - Neural networks are not really hard to understand. The main problem that many people have, is to get the notation straight. At the end of the end, neural networks are just notation, notation & notation, and less math like multivariate differential calculus.
 - Thus, I would recommend to try to work out the notation and math yourself and write down your own understanding of the neural net and come up with an notation that you can understand -> This is what I did!
 - Also, I implemented a feedforward neural net from scratch, based on the formulas derived below.
 - We will also look at some practical considerations when training neural networks, which are important to make the training work, like weight initialization and gradient checking.
+- The idea is to develop a solid mathmatical formulation of a feedforard neural net, starting on a single-weight level and single example level and extending to full weight matrices and vectors and extenting to batches of examples which are used to train the neural net.
 
-## Classical Feed-Forward Neural Network Architecture
+---
+
+# Classical Feed-Forward Neural Network Architecture
 
 Figure 1 illustrates the general structure of a typical fully connected feed-forward
-neural network. The network consists of $L$ feed-forward layers with trainable
+neural network. The network consists of $L$ parameterized feed-forward layers with trainable
 weights, starting with the first hidden layer at $\ell = 1$ and ending with the
 output layer at $\ell = L$.
 
@@ -131,6 +136,10 @@ of a (nonlinear) activation function.
    caption="Representation of a typical neuron in a neural net."  
 %}
 
+# The Feed-Forward Pass 
+
+## The Activation of a Neuron
+
 The neuron receives as inputs the activations 
 $$a^{(\ell-1)}_1, a^{(\ell-1)}_2, \ldots, a^{(\ell-1)}_{d_{\ell-1}}$$ 
 from all neurons in
@@ -165,6 +174,7 @@ $$
 This activation constitutes the output of the neuron and serves as an input to the
 neurons in the subsequent layer $\ell + 1$.
 
+## The Activation of a Layer of Neurons
 The figure thus highlights the three fundamental steps performed by a neuron during
 the forward pass: weighted summation of inputs, addition of a bias term, and
 application of a nonlinear activation function.
@@ -215,8 +225,8 @@ input vectors is called a batch.
 
 > In some implementations, input vectors are stacked row-wise, with each row representing one example. Here, we adopt the column-wise convention, which is consistent with the preceding vector notation and the matrix formulations used throughout.
 
-For each input example $\vec{x}_i$, a corresponding activation vector
-$\vec{a}_i^{(\ell)}$ is produced at layer $\ell$. These activations can be
+For each input example $\vec{x}_n$, a corresponding activation vector
+$\vec{a}_n^{(\ell)}$ is produced at layer $\ell$. These activations can be
 collected into the activation matrix
 
 $$
@@ -237,6 +247,7 @@ $$
 \vec{1}^\top \\
 \matr A^{(\ell-1)}
 \end{pmatrix}, \\
+&= \Wmatr^{(\ell)} \matr A^{(\ell-1)} + \vec b^{(\ell)} \vec 1^\top \\
 \matr A^{(\ell)} &= \sigma\!\left( \matr Z^{(\ell)} \right),
 \label{eq:input-matrix1}
 \end{align}
@@ -245,6 +256,116 @@ $$
 where $\vec{1} \in \mathbb{R}^{\batch}$ denotes a vector of ones.
 
 Note that the inclusion of the bias vector into the weight matrix is a purely notational convenience. From a mathematical perspective, the bias term can equivalently be added as a separate vector after the weighted sum has been computed. By augmenting the input with a constant component equal to one and concatenating the bias vector to the weight matrix, the affine transformation can be written as a single matrix multiplication. Throughout this post, this augmented representation is used where it simplifies the notation, but it does not constitute an additional modeling assumption.
+
+--- 
+
+### Unpacking the Batch Forward Pass (Column-wise View)
+
+To see explicitly how the augmented matrix multiplication works, we expand
+Eq. \eqref{eq:input-matrix1} using block-matrix multiplication:
+
+
+$$
+\matr A^{(\ell-1)}
+=
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\vec a^{(\ell-1)}_{1}  & \vec a^{(\ell-1)}_{2} & \cdots & \vec a^{(\ell-1)}_{\batch} \\
+\vert & \vert &        & \vert
+\end{pmatrix}
+\in \mathbb{R}^{d_{\ell-1}\times \batch}.
+$$
+
+Then the matrix multiplication expands as
+
+$$
+\Wmatr^{(\ell)}\matr A^{(\ell-1)}
+=
+\Wmatr^{(\ell)}
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\vec a^{(\ell-1)}_{1}  & \vec a^{(\ell-1)}_{2} & \cdots & \vec a^{(\ell-1)}_{\batch} \\
+\vert & \vert &        & \vert
+\end{pmatrix}
+=
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{1}  &
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{2}  &
+\cdots &
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{\batch} \\
+\vert & \vert &        & \vert
+\end{pmatrix}.
+$$
+
+To add the bias to every column, we replicate it across the batch:
+
+$$
+\vec b^{(\ell)}\vec 1^\top
+=
+\vec b^{(\ell)}
+\begin{pmatrix}
+1 & 1 & \cdots & 1
+\end{pmatrix}
+=
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\vec b^{(\ell)} & \vec b^{(\ell)} & \cdots & \vec b^{(\ell)} \\
+\vert & \vert &        & \vert
+\end{pmatrix}.
+$$
+
+Hence the pre-activation matrix becomes
+
+$$
+\matr Z^{(\ell)}
+=
+\Wmatr^{(\ell)}\matr A^{(\ell-1)} + \vec b^{(\ell)}\vec 1^\top
+=
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{1} + \vec b^{(\ell)}  &
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{2} + \vec b^{(\ell)}  &
+\cdots &
+\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{\batch} + \vec b^{(\ell)} \\
+\vert & \vert &        & \vert
+\end{pmatrix}.
+$$
+
+Applying $\sigma(\cdot)$ element-wise yields the activation matrix
+
+$$
+\begin{align*}
+\matr A^{(\ell)}
+=
+\sigma\!\left(\matr Z^{(\ell)}\right)
+&=
+\begin{pmatrix}
+\vert & \vert &        & \vert \\
+\sigma\!\big(\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{1} + \vec b^{(\ell)}\big)  &
+\sigma\!\big(\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{2} + \vec b^{(\ell)}\big)  &
+\cdots &
+\sigma\!\big(\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{\batch} + \vec b^{(\ell)}\big) \\
+\vert & \vert &        & \vert
+\end{pmatrix} \\[12pt]
+&= \big( \vec a_1^{(\ell)} \ \vec a_2^{(\ell)} \ \ldots \ \vec a_\batch^{(\ell)} \big)
+\end{align*}
+$$
+
+So each column is exactly the single-example relation we already wrote:
+
+$$
+\vec a^{(\ell)}_{n}
+=
+\sigma\!\left(\vec z^{(\ell)}_{n}\right)
+=
+\sigma\!\left(\Wmatr^{(\ell)}\vec a^{(\ell-1)}_{n} + \vec b^{(\ell)}\right),
+\qquad n=1,\ldots,\batch.
+$$
+
+--- 
+
+### Computing the Activation of the first Hidden Layer
 
 Using the augmented representation and  $\matr A^{(0)}= \matr X$, the affine transformation of the first hidden
 layer can be written as
@@ -292,8 +413,110 @@ $$
 \matr A^{(1)} \in \mathbb{R}^{d_1 \times \batch}.
 $$
 
+---
 
-## The Backpropagation Algorithm
+## Summary: Forward Pass Through the Network
+
+We summarize the steps required to compute a **forward pass for a batch of inputs**
+through a fully connected feed-forward neural network. This provides a compact,
+algorithmic view of the computations introduced so far and serves as a reference
+for later gradient derivations.
+
+
+### Inputs and Parameters
+
+- **Network architecture**
+  - Number of layers: $L$
+  - Layer sizes: $d_0=\din, d_1, \ldots, d_L$
+
+- **Trainable parameters (for each layer $\ell = 1,\ldots,L$)**
+  - Weight matrix:
+    $
+    \Wmatr^{(\ell)} \in \mathbb{R}^{d_\ell \times d_{\ell-1}}
+    $
+  - Bias vector:
+    $
+    \vec b^{(\ell)} \in \mathbb{R}^{d_\ell}
+    $
+
+- **Activation function**
+  - Nonlinear function $\sigma(\cdot)$, applied element-wise
+
+- **Batch input**
+  - $\batch$ input vectors stacked column-wise:
+    $$
+    \matr X = \matr A^{(0)} \in \mathbb{R}^{\din \times \batch}
+    $$
+
+---
+
+### Forward Pass
+
+1. **Initialization**
+   $$
+   \matr A^{(0)} := \matr X
+   $$
+
+2. **Layer-wise propagation**  
+   For each layer $\ell = 1,2,\ldots,L$:
+   - Pre-activations: $$
+     \matr Z^{(\ell)} =
+      \begin{pmatrix}
+      \vec b^{(\ell)} & \Wmatr^{(\ell)}
+      \end{pmatrix}
+      \begin{pmatrix}
+      \vec{1}^\top \\
+      \matr A^{(\ell-1)}
+      \end{pmatrix}, \qquad \matr Z^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch},
+     $$
+
+     where $\vec 1 \in \mathbb{R}^{\batch}$ denotes a vector of ones.
+
+     Equivalently: $\matr Z^{(\ell)} = \Wmatr^{(\ell)} \matr A^{(\ell-1)} + \vec b^{(\ell)} \vec 1^\top$.
+
+   - Activations:
+     $$
+     \matr A^{(\ell)} = \sigma\!\left(\matr Z^{(\ell)}\right),
+     \qquad
+     \matr A^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}
+     $$
+
+     
+
+3. **Network output**
+   $$
+   \matr A^{(L)}
+   = \big( \hat{\vec y}_1 \ \hat{\vec y}_2 \ \ldots \ \hat{\vec y}_\batch \big) ,\qquad
+   \matr A^{(L)} \in \mathbb{R}^{d_L \times \batch}, 
+   $$
+
+   where $\hat{\vec y}_n \in \mathbb{R}^{d_L}$ denotes the output of the network for the $n$-th input example.
+
+
+Each column of $\matr A^{(\ell)}$ corresponds to the activations produced by one
+training example, and the same weight matrices and bias vectors are shared across
+all columns.
+
+---
+
+### Remarks
+
+- The batch forward pass is mathematically equivalent to performing $\batch$
+  independent forward passes in parallel.
+- Writing the computation in matrix form enables efficient implementations using
+  linear algebra routines.
+- All intermediate matrices
+  $$\{\matr A^{(\ell)}, \matr Z^{(\ell)}\}_{\ell=1}^L$$
+  must be retained, as they are required later during backpropagation.
+
+This completes the forward-pass specification for batched inputs.
+
+
+---
+
+# The Backpropagation Algorithm
+
+## Cost Function and Gradient Descent
 
 To train the neural network, a suitable differentiable cost (sometimes objective) function $J(\Theta)$ is
 required, where $\Theta$ denotes the set of all trainable parameters of the network,
@@ -429,7 +652,6 @@ $$
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
 = \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}.
-\label{eq:partial3}
 \end{align}
 $$
 
@@ -460,9 +682,9 @@ In summary, we have:
 $$
 \begin{align}
 \frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
-&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}, \\
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}, \label{eq:partial3} \\
 \frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
-&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}.
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}. \label{eq:partial3_b}
 \end{align}
 $$
 
@@ -470,7 +692,9 @@ The remaining partial derivative $\partial \mathcal{L} / \partial z_i^{(\ell)}$ 
 evaluated directly. However, it can be expressed recursively by applying the chain
 rule, which forms the basis of the backpropagation algorithm.
 
-### Interlude: The Chain Rule and Nested Dependencies
+---
+
+## Interlude: The Chain Rule and Nested Dependencies
 
 Before deriving the backpropagation algorithm, it is helpful to briefly recall the
 chain rule for derivatives, which plays a central role in computing gradients in
@@ -569,10 +793,12 @@ This expression shows that the influence of a single component $t_i$ on $z$ is
 obtained by summing over all paths through which $t_i$ affects the intermediate
 variables $\vec x$.
 
-### Backpropagation via the Chain Rule
+---
+
+## Backpropagation via the Chain Rule
 
 We can now use the chain rule to compute the partial derivative
-$\partial \mathcal{L} / \partial z_i^{(\ell)}$ in Eq. \eqref{eq:partial3} in a recursive
+$\partial \mathcal{L} / \partial z_i^{(\ell)}$ in Eq. \eqref{eq:partial3} & Eq. \eqref{eq:partial3_b} in a recursive
 manner. As illustrated in Figure 3, the pre-activations $z_k^{(\ell+1)}$ of the
 next layer can be regarded as functions of the pre-activations of the current
 layer, in particular of $z_i^{(\ell)}$, i.e.,
@@ -634,7 +860,7 @@ $$
 
 
 Note the recursive structure of Eq. \eqref{eq:backprop-recursion}. For notational
-convenience, we define the error signal (also called the delta term) at neuron $i$
+convenience, we define the error signal (also called the delta term), i.e. the gradient of the loss with respect to the pre-activation, at neuron $i$
 in layer $\ell$ as
 
 $$
@@ -763,7 +989,7 @@ which is exactly the summation term appearing in Eq. \eqref{eq:chainrule4}.
 
 
 
-Using this notation and writing the derivative of the activation function
+Using this notation (following the [denominator-layout convention](https://en.wikipedia.org/wiki/Matrix_calculus)) and writing the derivative of the activation function
 element-wise, the backpropagation recursion can be expressed as
 
 $$
@@ -780,144 +1006,618 @@ where $\otimes$ denotes the Hadamard (element-wise) product and the derivative
 $\sigma'(\cdot)$ is applied component-wise to the vector $\vec z^{(\ell)}$.
 
 
-
-
-
-**TODO: Continue here!**
-
-
-
-
-
-
-
-
-
-
-
-
-
-Remember Eq. \eqref{eq:partial3} which was:
-
-<aside><p> \footnote{Note that we cannot directly update the weights of a layer; we have to first compute $\delta^\ell$ for the remaining layers. Otherwise, the adjusted weights change $\delta^\ell$ of previous layers.}</p> </aside>
+Recall Eqs. \eqref{eq:partial3} and \eqref{eq:partial3_b}, which give the gradients of
+the loss with respect to the weights and biases of layer $\ell$:
 
 $$
 \begin{align}
-\frac{\partial}{\partial w_{ij}^\ell} E 
-=  \frac{\partial E}{\partial z_i^\ell} a_j^{\ell-1} = \delta_i^\ell a_j^{\ell-1}
-\label{eq:finalbackprop}
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}} \, a_j^{(\ell-1)}, \\
+\frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
+&= \frac{\partial \mathcal{L}}{\partial z_i^{(\ell)}}.
 \end{align}
 $$
 
-Since \textcolor[rgb]{1,0,0}{(Note that bias weights are not included...)}
+
+By comparison with Eq. \eqref{eq:chainrule8}, we immediately obtain
 
 $$
 \begin{align}
-\Wmatr^\ell, \frac{\partial E}{\partial W^\ell} \in \mathbb{R}^{d_\ell \times d_{\ell-1}} \label{eq:finalbackprop1}\\
-\vec a^{\ell-1} \in \mathbb{R}^{d_{\ell-1} },
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+&= \delta_i^{(\ell)} \, a_j^{(\ell-1)}, \label{eq:finalbackprop} \\
+\frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
+&= \delta_i^{(\ell)} \label{eq:finalbackprop_b}
 \end{align}
 $$
 
-if we apply \eqref{eq:chainrule8} to \eqref{eq:finalbackprop} we have to transpose vector $a^{\ell-1}$ in order to meet the dimensions of $\frac{\partial E}{\partial \Wmatr^\ell}$ in Eq. \eqref{eq:finalbackprop1}:
+Thus, once the error signal $\vec{\delta}^{(\ell)}$ has been computed for a given
+layer, the gradients with respect to both the weights and the biases follow
+directly.
+These observations naturally lead to compact matrix expressions for the gradients
+with respect to the weight matrices and bias vectors, which we derive next.
+
+
+From the component-wise relations
+
+$$
+\frac{\partial \mathcal{L}}{\partial w_{i,j}^{(\ell)}}
+= \delta_i^{(\ell)}\, a_j^{(\ell-1)},
+\qquad
+\frac{\partial \mathcal{L}}{\partial b_i^{(\ell)}}
+= \delta_i^{(\ell)},
+$$
+
+we can derive compact matrix-vector expressions for the gradients with respect to
+the weight matrix $\Wmatr^{(\ell)}$ and the bias vector $\vec b^{(\ell)}$.
+
+---
+
+### Gradient with respect to the weights (vectorized form)
+
+Collecting all partial derivatives $\partial \mathcal{L}/\partial w_{i,j}^{(\ell)}$
+into a matrix yields
 
 $$
 \begin{align}
-\frac{\partial E}{\partial \Wmatr^\ell} =\vec \delta^\ell \cdot (\vec a^{\ell-1})^\top \in \mathbb{R}^{d_\ell } \cdot \mathbb{R}^{1 \times d_{\ell-1}}= \mathbb{R}^{d_\ell \times d_{\ell-1}}
+\frac{\partial \mathcal{L}}{\partial \Wmatr^{(\ell)}}
+&= \vec{\delta}^{(\ell)} \, \big(\vec a^{(\ell-1)}\big)^\top.
 \label{eq:finalbackprop2}
 \end{align}
 $$
 
-As before, we can put a batch of training examples in a matrix $X\in \mathbb{R}^{n \times \batch}$ through the network. In every layer we collect an activation matrix $A^\ell$ until we reach the final output $A^L$. If we want to perform a batch update of the weights we have to sum up the gradients in \eqref{eq:finalbackprop2} for every example. Similar to before, we create a matrix $\Delta^\ell$ which contains the single column vectors $\delta^\ell$ for every training example. This can be done with:
+The transpose arises because $\vec{\delta}^{(\ell)}$ and $\vec a^{(\ell-1)}$ are
+column vectors. With the (column-vector) convention used throughout,
 
-**TODO:** Describe, how to compute $$\Delta^{\ell-1}$$, since this is what we will compute in the backprop method and then return to the previous layer.
+$$
+\vec{\delta}^{(\ell)} \in \mathbb{R}^{d_\ell \times 1},
+\qquad
+\vec a^{(\ell-1)} \in \mathbb{R}^{d_{\ell-1} \times 1}.
+$$
+
+To obtain a matrix in $\mathbb{R}^{d_\ell \times d_{\ell-1}}$, we must form an
+outer product: the first factor stays a column vector, while the second is
+transposed into a row vector:
+
+$$
+\big(\vec a^{(\ell-1)}\big)^\top \in \mathbb{R}^{1 \times d_{\ell-1}}.
+$$
+
+Thus the dimensions match as
 
 $$
 \begin{align}
- Z^\ell \in \mathbb{R}^{d_\ell\times \batch}\\
-(\Wmatr^{\ell+1})^\top  \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}}\\
-\Delta^{\ell+1} \in \mathbb{R}^{d_{\ell+1}\times \batch}\\
-\Delta^\ell = \big( \Wmatr^{\ell+1}\big)^\top \cdot \Delta^{\ell+1} \otimes \sigma'(Z^\ell) \\
-\Delta^\ell \in \mathbb{R}^{d_{\ell} \times d_{\ell+1}} \cdot \mathbb{R}^{d_{\ell+1}\times \batch} = \mathbb{R}^{d_{\ell}\times \batch}\\
+\vec{\delta}^{(\ell)} \, \big(\vec a^{(\ell-1)}\big)^\top
+&\in \mathbb{R}^{d_\ell \times 1}\;\cdot\;\mathbb{R}^{1 \times d_{\ell-1}}
+= \mathbb{R}^{d_\ell \times d_{\ell-1}}.
+\end{align}
+$$
+
+Equivalently, the $(i,j)$-th entry of this outer product is
+
+$$
+\left[\vec{\delta}^{(\ell)} \, (\vec a^{(\ell-1)})^\top\right]_{i,j}
+= \delta_i^{(\ell)}\, a_j^{(\ell-1)},
+$$
+
+which matches the component-wise gradient $\partial \mathcal{L}/\partial w_{i,j}^{(\ell)}$.
+
+---
+
+### Gradient with respect to the biases (vectorized form)
+
+The bias gradient collects the partial derivatives
+$\partial \mathcal{L}/\partial b_i^{(\ell)}$ into a vector:
+
+$$
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial \vec b^{(\ell)}}
+&= \vec{\delta}^{(\ell)}
+\in \mathbb{R}^{d_\ell \times 1}.
+\label{eq:finalbackprop2_b}
+\end{align}
+$$
+
+Hence, once the error vector $\vec{\delta}^{(\ell)}$ has been computed via the
+backpropagation recursion \eqref{eq:chainrule8}, both gradients
+$\partial \mathcal{L}/\partial \Wmatr^{(\ell)}$ and
+$\partial \mathcal{L}/\partial \vec b^{(\ell)}$ follow immediately.
+
+
+
+
+
+
+
+As before, we can propagate a batch of training examples through the network by
+collecting them column-wise into the input matrix
+
+$$
+\matr X = \matr A^{(0)} \in \mathbb{R}^{\din \times \batch}.
+$$
+
+During the forward pass, each layer produces an activation matrix
+$\matr A^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}$, where the $n$-th
+column corresponds to the activations generated by the $n$-th training example.
+Proceeding layer by layer, we eventually obtain the output matrix
+$\matr A^{(L)}$.
+
+In the derivation above, the gradients were computed for a **single training
+example**. To perform a batch update of the parameters, these gradients must be
+aggregated over all $\batch$ examples in the batch. Since differentiation is
+linear, this aggregation is achieved by summing (or averaging) the per-example
+gradients.
+
+To this end, we collect the error vectors $\vec{\delta}^{(\ell)}$ of all
+training examples at layer $\ell$ into the **error matrix**
+
+$$
+\matr\Delta^{(\ell)}
+=
+\big(
+\vec{\delta}_1^{(\ell)} \;
+\vec{\delta}_2^{(\ell)} \;
+\ldots \;
+\vec{\delta}_\batch^{(\ell)}
+\big)
+\in \mathbb{R}^{d_\ell \times \batch}.
+$$
+
+Analogously, we denote by
+$$
+\matr Z^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}
+$$
+the matrix of pre-activations at layer $\ell$.
+
+---
+
+## Batch Backpropagation Recursion
+
+Applying the single-sample recursion \eqref{eq:chainrule8} column-wise to all
+examples yields the batch version of backpropagation:
+
+$$
+\begin{align}
+\matr\Delta^{(\ell)}
+&=
+\Big( (\Wmatr^{(\ell+1)})^\top \matr\Delta^{(\ell+1)} \Big)
+\;\otimes\;
+\sigma'\!\left(\matr Z^{(\ell)}\right),
 \label{eq:matrixBackprop}
 \end{align}
-$$ 
+$$
 
-However, the derivative $\frac{\partial E}{\partial W^\ell}$ in \eqref{eq:finalbackprop2} should have the same dimensions as before, but sum up the gradients for all examples:
+where the derivative $\sigma'(\cdot)$ is applied element-wise and
+$\otimes$ denotes the Hadamard product.
+
+The dimensions involved are
 
 $$
 \begin{align}
-\frac{\partial E}{\partial \Wmatr^\ell} &=\sum_{k=1}^{\batch} \vec \delta_k^\ell \cdot (\vec a_k^{\ell-1})^\top\\
-&= \Delta^\ell \cdot \big( A^{\ell-1}\big)^\top \\
-\Delta^\ell \cdot \big( A^{\ell-1}\big)^\top \in \mathbb{R}^{d_{\ell}\times \batch} \cdot \mathbb{R}^{\batch \times d_{\ell-1}} &= \mathbb{R}^{d_{\ell} \times d_{\ell-1}}
-\label{eq:finalbackprop3}
+(\Wmatr^{(\ell+1)})^\top &\in \mathbb{R}^{d_\ell \times d_{\ell+1}}, \\
+\matr\Delta^{(\ell+1)} &\in \mathbb{R}^{d_{\ell+1} \times \batch}, \\
+\matr Z^{(\ell)} &\in \mathbb{R}^{d_\ell \times \batch},
 \end{align}
 $$
 
+so that
 
-**TODO: Moved this from an earlier paragraph to here:**
+$$
+(\Wmatr^{(\ell+1)})^\top \matr\Delta^{(\ell+1)}
+\in \mathbb{R}^{d_\ell \times \batch},
+$$
+
+and the element-wise multiplication with
+$\sigma'(\matr Z^{(\ell)})$ is well defined.
+
+---
+
+### Batch gradients for weights and biases
+
+Using the batch error matrix $\matr\Delta^{(\ell)}$, the gradients of the loss
+with respect to the parameters of layer $\ell$ can be written compactly as
+
+$$
+\begin{align}
+\frac{\partial J}{\partial \Wmatr^{(\ell)}}
+&= \frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top, \label{eq:J_W_ell}
+\\[6pt]
+\frac{\partial J}{\partial \vec b^{(\ell)}}
+&= \frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \vec 1, \label{eq:J_b_ell}
+\end{align}
+$$
+
+with the following dimensions:
+
+$$
+\begin{align}
+\matr\Delta^{(\ell)} &\in \mathbb{R}^{d_\ell \times \batch}, \\
+\matr A^{(\ell-1)} &\in \mathbb{R}^{d_{\ell-1} \times \batch}, \\
+\big(\matr A^{(\ell-1)}\big)^\top &\in \mathbb{R}^{\batch \times d_{\ell-1}}, \\
+\vec 1 &\in \mathbb{R}^{\batch}, \\
+\frac{\partial J}{\partial \Wmatr^{(\ell)}}
+&\in \mathbb{R}^{d_\ell \times d_{\ell-1}}, \\
+\frac{\partial J}{\partial \vec b^{(\ell)}}
+&\in \mathbb{R}^{d_\ell}.
+\end{align}
+$$
+
+Here, the weight gradient has the same shape as the weight matrix
+$\Wmatr^{(\ell)}$, and the bias gradient has the same shape as the bias vector
+$\vec b^{(\ell)}$, as required for gradient-based optimization.
 
 
-The recursive relation in Eq. \eqref{eq:chainrule4} and Eq. \eqref{eq:chainrule8} expresses the error signal in
-layer $\ell$ in terms of the error signals in the subsequent layer $\ell+1$.
-Consequently, the recursion must be initialized at the output layer $\ell = L$ and
-then evaluated backwards through the network. This backward propagation of error
-signals gives rise to the name *backpropagation*.
+The first expression Eq. \eqref{eq:J_W_ell} corresponds to summing the outer products
+$\vec{\delta}_n^{(\ell)} (\vec a_n^{(\ell-1)})^\top$ over all training examples,
+while the second expression in Eq. \eqref{eq:J_b_ell} reflects the fact that each bias gradient is obtained
+by summing the corresponding error signals across the batch.
 
-We therefore begin by computing the error signal for the output layer
-$\ell = L$. For the mean squared error (MSE) loss, the error signal of the $i$-th
-output neuron is given by
+These batch-wise expressions allow all gradients to be computed efficiently using
+matrix operations, which is crucial for practical implementations of
+backpropagation.
+
+To make the batch expressions more explicit, we write out the matrices
+$\matr\Delta^{(\ell)}$ and $\matr A^{(\ell-1)}$ in terms of their column
+vectors.
+
+The activation matrix of layer $\ell-1$ is given by
+
+$$
+\matr A^{(\ell-1)}
+=
+\begin{pmatrix}
+\vec a^{(\ell-1)}_1 &
+\vec a^{(\ell-1)}_2 &
+\cdots &
+\vec a^{(\ell-1)}_\batch
+\end{pmatrix}
+\in \mathbb{R}^{d_{\ell-1} \times \batch},
+$$
+
+where 
+
+$$\vec a^{(\ell-1)}_n \in \mathbb{R}^{d_{\ell-1}}$$ 
+
+denotes the activation vector produced by the $n$-th training example at layer $\ell-1$.
+
+Similarly, the error matrix at layer $\ell$ is
+
+$$
+\matr\Delta^{(\ell)}
+=
+\begin{pmatrix}
+\vec\delta^{(\ell)}_1 &
+\vec\delta^{(\ell)}_2 &
+\cdots &
+\vec\delta^{(\ell)}_\batch
+\end{pmatrix}
+\in \mathbb{R}^{d_\ell \times \batch},
+$$
+
+where each column 
+
+$$\vec\delta^{(\ell)}_n \in \mathbb{R}^{d_\ell}$$ 
+
+is the error
+signal corresponding to the $n$-th training example.
+
+Taking the transpose of the activation matrix yields
+
+$$
+\big(\matr A^{(\ell-1)}\big)^\top
+=
+\begin{pmatrix}
+(\vec a^{(\ell-1)}_1)^\top \\
+(\vec a^{(\ell-1)}_2)^\top \\
+\vdots \\
+(\vec a^{(\ell-1)}_\batch)^\top
+\end{pmatrix}
+\in \mathbb{R}^{\batch \times d_{\ell-1}}.
+$$
+
+---
+
+### Weight gradient as a sum of outer products
+
+Using these explicit forms, the batch gradient with respect to the weight matrix
+can be expanded as
+
+$$
+\begin{align}
+\matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top
+&=
+\begin{pmatrix}
+\vec\delta^{(\ell)}_1 &
+\vec\delta^{(\ell)}_2 &
+\cdots &
+\vec\delta^{(\ell)}_\batch
+\end{pmatrix}
+\begin{pmatrix}
+(\vec a^{(\ell-1)}_1)^\top \\
+(\vec a^{(\ell-1)}_2)^\top \\
+\vdots \\
+(\vec a^{(\ell-1)}_\batch)^\top
+\end{pmatrix} \\[6pt]
+&=
+\sum_{n=1}^{\batch}
+\vec\delta^{(\ell)}_n \, (\vec a^{(\ell-1)}_n)^\top.
+\end{align}
+$$
+
+Thus, the gradient of the cost function with respect to the weights is
+
+$$
+\begin{align}
+\frac{\partial J}{\partial \Wmatr^{(\ell)}}
+&=
+\frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top \\
+&=
+\frac{1}{\batch}
+\sum_{n=1}^{\batch}
+\vec\delta^{(\ell)}_n \, (\vec a^{(\ell-1)}_n)^\top,
+\end{align}
+$$
+
+which is exactly the average of the single-sample gradients derived earlier.
+
+---
+
+### Bias Gradient as a Sum of Error Signals
+
+For the bias parameters, we multiply the error matrix by a vector of ones,
+
+$$
+\vec 1 =
+\begin{pmatrix}
+1 \\ 1 \\ \vdots \\ 1
+\end{pmatrix}
+\in \mathbb{R}^{\batch}.
+$$
+
+This yields
+
+$$
+\begin{align}
+\matr\Delta^{(\ell)} \vec 1
+&=
+\begin{pmatrix}
+\vec\delta^{(\ell)}_1 &
+\vec\delta^{(\ell)}_2 &
+\cdots &
+\vec\delta^{(\ell)}_\batch
+\end{pmatrix}
+\begin{pmatrix}
+1 \\ 1 \\ \vdots \\ 1
+\end{pmatrix}
+=
+\sum_{n=1}^{\batch} \vec\delta^{(\ell)}_n.
+\end{align}
+$$
+
+Therefore, the batch gradient with respect to the bias vector is
+
+$$
+\begin{align}
+\frac{\partial J}{\partial \vec b^{(\ell)}}
+&=
+\frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \vec 1 \\
+&=
+\frac{1}{\batch}
+\sum_{n=1}^{\batch}
+\vec\delta^{(\ell)}_n.
+\end{align}
+$$
+
+---
+
+These expansions make explicit that the matrix-based batch formulas implement
+nothing more than an efficient summation (or averaging) of the per-example
+gradients, fully consistent with the definition of the cost function
+$$
+J(\Theta) = \frac{1}{\batch} \sum_{n=1}^{\batch} \mathcal{L}_n(\Theta).
+$$
+
+
+---
+
+## Gradient Descent Parameter Updates
+
+Once the gradients of the **cost function** $J(\Theta)$ with respect to all
+parameters have been computed (typically for a full batch or mini-batch; see the section on practial considerations for details), the
+weights and biases can be updated using a gradient-based optimizer. For standard
+(batch) gradient descent with learning rate $\eta>0$, the update rule for layer
+$\ell$ is
+
+$$
+\begin{align}
+\Wmatr^{(\ell)} &\leftarrow \Wmatr^{(\ell)} - \eta \, \frac{\partial J}{\partial \Wmatr^{(\ell)}}, \label{eq:gd-update_1} \\
+\vec b^{(\ell)} &\leftarrow \vec b^{(\ell)} - \eta \, \frac{\partial J}{\partial \vec b^{(\ell)}}.
+\label{eq:gd-update}
+\end{align}
+$$
+
+Using the batch-gradient expressions derived above, we have
+
+$$
+\begin{align}
+\frac{\partial J}{\partial \Wmatr^{(\ell)}}
+&= \frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top, \\
+\frac{\partial J}{\partial \vec b^{(\ell)}}
+&= \frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \vec 1,
+\end{align}
+$$
+
+where $\matr\Delta^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}$ collects the
+error vectors of layer $\ell$ for all $\batch$ examples and
+$\vec 1 \in \mathbb{R}^{\batch}$ is a vector of ones. Substituting these
+gradients into \eqref{eq:gd-update_1} & \eqref{eq:gd-update} yields the explicit batch update rules
+
+$$
+\begin{align}
+\Wmatr^{(\ell)} &\leftarrow
+\Wmatr^{(\ell)} - \eta \,\frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \big(\matr A^{(\ell-1)}\big)^\top, \\
+\vec b^{(\ell)} &\leftarrow
+\vec b^{(\ell)} - \eta \,\frac{1}{\batch}\;
+\matr\Delta^{(\ell)} \vec 1.
+\label{eq:gd-update-batch}
+\end{align}
+$$
+
+These updates are applied for $\ell = 1,2,\ldots,L$. In practice, $J$ is often
+computed over a **mini-batch**, so $\batch$ denotes the mini-batch size.
+
+> **Implementation note (when to update).**  
+> In a standard backpropagation implementation, one first performs the full
+> backward pass to compute all error signals $\matr\Delta^{(\ell)}$ (and thus
+> all gradients) before updating any parameters. Updating weights prematurely
+> would mix parameters from different stages of the backward pass and can lead to
+> incorrect gradients.  
+>  
+> That said, with careful bookkeeping (e.g., storing the required activations and
+> error signals, or recomputing them deterministically), updates can be scheduled
+> in different ways. The safest approach is: **compute all
+> gradients first, then update**. Implement this approach first and make sure everything 
+> is working as intended, before considering optimizations of the backpropagation algorithm.
+
+
+## Initialization of Backpropagation at the Output Layer
+
+The recursive relations in Eqs. \eqref{eq:chainrule4} and \eqref{eq:chainrule8}
+express the error signal in layer $\ell$ in terms of the error signals in the
+subsequent layer $\ell+1$. Consequently, this recursion cannot be evaluated
+forward and must instead be **initialized at the output layer** $\ell = L$ and
+then propagated backward through the network.
+
+This backward flow of error signals—from the output layer toward the input
+layer—is the origin of the term *backpropagation*.
+
+---
+
+### Output-layer Error Signal (single training example)
+
+We begin by computing the error signal for the output layer $\ell = L$.
+For the mean squared error (MSE) loss and a single training example, the error
+signal of the $i$-th output neuron is defined as
 
 $$
 \begin{align}
 \delta_i^{(L)}
-&:= \frac{\partial \mathcal{L}}{\partial z_i^{(L)}} \\
+&:= \frac{\partial \mathcal{L}}{\partial z_i^{(L)}} \\[4pt]
 &= \frac{\partial}{\partial z_i^{(L)}}
-   \left[ \frac{1}{2} \big(y_i^* - a_i^{(L)}\big)^2 \right] \\
+   \left[ \frac{1}{2} \big(y_i^* - a_i^{(L)}\big)^2 \right] \\[4pt]
 &= \frac{\partial}{\partial z_i^{(L)}}
-   \left[ \frac{1}{2} \big(y_i^* - \sigma(z_i^{(L)})\big)^2 \right] \\
-&= -\big(y_i^* - \sigma(z_i^{(L)})\big)\,\sigma'\!\left(z_i^{(L)}\right) \\
-&= \big(a_i^{(L)} - y_i^*\big)\,\sigma'\!\left(z_i^{(L)}\right).
+   \left[ \frac{1}{2} \big(y_i^* - \sigma(z_i^{(L)})\big)^2 \right] \\[4pt]
+&= -\big(y_i^* - \sigma(z_i^{(L)})\big)\,
+   \sigma'\!\left(z_i^{(L)}\right) \\[4pt]
+&= \big(a_i^{(L)} - y_i^*\big)\,
+   \sigma'\!\left(z_i^{(L)}\right)\\[4pt]
+&= \big(\yhat_i - y_i^*\big)\,
+   \sigma'\!\left(z_i^{(L)}\right).
 \end{align}
 $$
 
+This expression provides the **starting point** for the recursive computation of
+error signals in all preceding layers.
+
+---
+
 > **Remark (Cross-entropy loss).**  
-> For the cross-entropy loss in combination with a sigmoid activation function in
-> the output layer, the expression for the output-layer error signal simplifies
-> considerably. In this case, the derivative of the activation function cancels
-> with a corresponding term arising from the derivative of the loss, yielding
-> $$\delta_i^{(L)} = a_i^{(L)} - y_i^*.$$
-> This simplification is one of the main reasons why the cross-entropy loss is
-> commonly preferred over the mean squared error for classification tasks.
+> For the binary cross-entropy loss in combination with a sigmoid activation function in
+> the output layer (or for the generalized cross-entropy loss with a softmax activation), 
+> the derivative of the activation function cancels with a
+> corresponding term from the loss derivative. In this case, the output-layer
+> error signal simplifies to $\delta_i^{(L)} = a_i^{(L)} - y_i^*.$
+> This simplification is one of the main reasons why cross-entropy loss is
+> commonly preferred over mean squared error for classification tasks.
 > This case is discussed separately in Section **TODO**.
 
-In vector form, this can be written as
+---
+
+### Vectorized Form (single training example)
+
+Collecting the error signals of all output neurons into a vector yields
 
 $$
 \begin{align}
-\boldsymbol{\delta}^{(L)}
-&= \big(\vec a^{(L)} - \vec y^{*}\big)
-  \otimes \sigma'\!\left(\vec z^{(L)}\right) \\
-&= \big(\vec \yhat  - \vec y^{*}\big)
-  \otimes \sigma'\!\left(\vec z^{(L)}\right)
+\vec{\delta}^{(L)}
+&= \big(\vec a^{(L)} - \vec y^*\big)
+   \otimes \sigma'\!\left(\vec z^{(L)}\right) \\[4pt]
+&= \big(\hat{\vec y} - \vec y^*\big)
+   \otimes \sigma'\!\left(\vec z^{(L)}\right),
 \label{eq:chainrule5}
 \end{align}
 $$
 
-where $\otimes$ denotes the Hadamard (element-wise) product.
+with the following dimensions:
+
+$$
+\begin{align}
+\vec{\delta}^{(L)} &\in \mathbb{R}^{d_L}, \\
+\vec a^{(L)} = \hat{\vec y}, \vec y^* &\in \mathbb{R}^{d_L}, \\
+\vec z^{(L)} &\in \mathbb{R}^{d_L}, \\
+\sigma'\!\left(\vec z^{(L)}\right) &\in \mathbb{R}^{d_L}.
+\end{align}
+$$
+
+Here, $\otimes$ denotes the Hadamard (element-wise) product, and the derivative
+$\sigma'(\cdot)$ is applied component-wise to the pre-activation vector
+$\vec z^{(L)}$.
 
 
+---
+
+### Vectorized Batch Formulation
+
+When processing a batch of $\batch$ training examples, the individual output-layer
+error vectors $\vec{\delta}_n^{(L)}$ are collected column-wise into the **batch
+error matrix**
+
+$$
+\matr\Delta^{(L)}
+=
+\begin{pmatrix}
+\vec{\delta}_1^{(L)} &
+\vec{\delta}_2^{(L)} &
+\cdots &
+\vec{\delta}_\batch^{(L)}
+\end{pmatrix}
+\in \mathbb{R}^{d_L \times \batch}.
+$$
+
+This matrix constitutes the **initial condition** for batch backpropagation.
+Starting from $\matr\Delta^{(L)}$, the error matrices of all preceding layers
+$\matr\Delta^{(\ell)}$ are obtained recursively using
+Eq. \eqref{eq:chainrule8}.
+
+
+
+---
 
 ## Putting Everything Together
+
+**TODO:** Describe, how to compute $$\Delta^{\ell-1}$$, since this is what we will compute in the backprop method and then return to the previous layer.
+
 1. Forward pass (what to remember?)
-2. Compute Loss
-3. Compute $\Delta$ for the loss
+2. Compute Losses/Cost
+3. Compute $\Delta^L$ for the Cost
 4. backprop
-5. ...
+5. update weights
+
+---
 
 ## Practical Considerations
 - gradient checking
 - SGD vs. mini batches vs. full-batches
 - initialization of weights
 - local minima
+- step size parameter
+
+---
 
 ### Weight Initialization
