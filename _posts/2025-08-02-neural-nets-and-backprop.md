@@ -2237,3 +2237,28 @@ The following topics extend (however, the list is still fairly incomplete) beyon
   - Universal approximation theorem
 
 These topics build on the foundations presented in this post and are good entry points for further study. 
+
+# Accompanying Jupyter Notebook (Code Companion)
+
+
+<!--- Move to CSS  --->
+<style>
+  .jupyter-child-ext {
+  width: 112%;
+  position: relative;
+  left: calc(-10%);
+}
+</style>
+
+{::nomarkdown}
+<div class="jupyter-child-ext">
+{% assign jupyter_path = "assets/jupyter/MarkusThill.github.io-jupyter/2025_12_16_intro_neural_nets.ipynb" | relative_url %}
+{% capture notebook_exists %}{% file_exists assets/jupyter/MarkusThill.github.io-jupyter/2025_12_16_intro_neural_nets.ipynb %}{% endcapture %}
+{% if notebook_exists == "true" %}
+{% jupyter_notebook jupyter_path %}
+{% else %}
+
+<p>Sorry, the notebook you are looking for does not exist.</p>
+{% endif %}
+</div>
+{:/nomarkdown}
