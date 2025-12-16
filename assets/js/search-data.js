@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
+            },{id: "post-backpropagation-from-scratch-feed-forward-neural-networks-in-matrix-notation",
+        
+          title: "Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation",
+        
+        description: "A notation-first walkthrough of feed-forward neural networks and vectorized backpropagation, focusing on how the math translates directly into clean, correct implementations. Covers forward pass, backprop, batching, and practical training considerations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/neural-nets-and-backprop/";
+          
+        },
+      },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
         
           title: "Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python",
         
