@@ -1740,10 +1740,15 @@ $$
 
 ---
 
-## Practical Considerations
+## Practical Considerations / Further reading
 - gradient checking
 - SGD vs. mini batches vs. full-batches
 - initialization of weights
-- local minima
 - step size parameter
 - Weight Initialization
+- Input X normalization
+- vanishing gradient problem
+- step-size adaptation
+- regularization
+- other loss functions (ReLU, etc.)
+- Convergence, local minima, and divergence (too large stepsize)
