@@ -61,19 +61,76 @@ tabs: true
 
 ---
 
-# Notation Guide
-$\din$: Dimension of the input vector $\vec x$
-
 ---
 
 # Introduction
-- Motivation: Understand the nuts and bolts of neural networks and especially how the neural net is trained using the so-called backpropagation algorithm, which is effectively just some clever & efficient recursive implementation of the gradient descent optimization.
-- Neural networks are not really hard to understand. The main problem that many people have, is to get the notation straight. At the end of the end, neural networks are just notation, notation & notation, and less math like multivariate differential calculus.
-- Thus, I would recommend to try to work out the notation and math yourself and write down your own understanding of the neural net and come up with an notation that you can understand -> This is what I did!
-- Also, I implemented a feedforward neural net from scratch, based on the formulas derived below.
-- We will also look at some practical considerations when training neural networks, which are important to make the training work, like weight initialization and gradient checking.
-- The idea is to develop a solid mathmatical formulation of a feedforard neural net, starting on a single-weight level and single example level and extending to full weight matrices and vectors and extenting to batches of examples which are used to train the neural net.
-- - Intro: The only tricky thing about neural nets is to get the notation straight. At the end, every thing boils down to notation, notation, notation...
+
+Neural networks have been explained a thousand times — so why another intro?
+
+Because for many people (my past self included) the hard part isn't "deep math", it's getting the **nuts and bolts** of training straight: what exactly happens in the forward pass, where the gradients come from, and how *backpropagation* is really just an efficient, structured application of the chain rule that makes gradient descent practical.
+
+The basics are also the best entry point: once you understand a plain fully connected feed-forward network end to end, the same ideas carry over to CNNs, recurrent nets, and even transformers. In my experience, neural networks are not conceptually difficult - the main obstacle is **notation**. At the end of the day it’s often "notation, notation, notation" (and much less multivariate calculus than it first appears).
+
+That's why this post takes a deliberately "from scratch" approach: we build a mathematical formulation step by step (single weight → vectors/matrices → batches), derive backpropagation in a way that matches an implementation, and then implement a small network accordingly. Along the way we also cover practical details that matter in real code, such as **weight initialization** and **gradient checking**, to make sure training works and the derivations actually hold up in practice.
+
+---
+
+# Notation Guide
+
+The following table summarizes all symbols and notation used throughout this post.
+Vectors are written in **bold lowercase**, matrices in **bold uppercase**, and scalars
+in regular font. Unless stated otherwise, vectors are column vectors.
+
+| Symbol | Type | Description |
+|------|------|-------------|
+| $L$ | scalar | Number of parameterized (trainable) layers in the network |
+| $\ell$ | index | Layer index, $\ell = 0,1,\ldots,L$ |
+| $\din$ | scalar | Input dimension of the network |
+| $d_\ell$ | scalar | Number of neurons in layer $\ell$ |
+| $\batch$ | scalar | Batch size (number of training examples processed in parallel) |
+| $\vec{x}$ | vector | Single input vector $\vec{x} \in \mathbb{R}^{\din}$ |
+| $\vec{x}_n$ | vector | $n$-th input vector in a batch |
+| $\matr X$ | matrix | Input batch matrix, $\matr X \in \mathbb{R}^{\din \times \batch}$ |
+| $a_i^{(\ell)}$ | scalar | Activation of neuron $i$ in layer $\ell$ |
+| $\vec a^{(\ell)}$ | vector | Activation vector of layer $\ell$ for a single example |
+| $\vec a_n^{(\ell)}$ | vector | Activation vector at layer $\ell$ for the $n$-th example |
+| $\matr A^{(\ell)}$ | matrix | Activation matrix at layer $\ell$, $\matr A^{(\ell)} \in \mathbb{R}^{d_\ell \times \batch}$ |
+| $z_i^{(\ell)}$ | scalar | Pre-activation of neuron $i$ in layer $\ell$ |
+| $\vec z^{(\ell)}$ | vector | Pre-activation vector of layer $\ell$ (single example) |
+| $\matr Z^{(\ell)}$ | matrix | Pre-activation matrix of layer $\ell$ (batch) |
+| $w_{i,j}^{(\ell)}$ | scalar | Weight connecting neuron $j$ in layer $\ell-1$ to neuron $i$ in layer $\ell$ |
+| $\vec w^{(\ell)}_{i}$ | vector | Incoming weight vector of neuron $i$ in layer $\ell$ |
+| $\Wmatr^{(\ell)}$ | matrix | Weight matrix of layer $\ell$, $\Wmatr^{(\ell)} \in \mathbb{R}^{d_\ell \times d_{\ell-1}}$ |
+| $b_i^{(\ell)}$ | scalar | Bias of neuron $i$ in layer $\ell$ |
+| $\vec b^{(\ell)}$ | vector | Bias vector of layer $\ell$, $\vec b^{(\ell)} \in \mathbb{R}^{d_\ell}$ |
+| $\sigma(\cdot)$ | function | Activation function (applied element-wise) |
+| $\sigma'(\cdot)$ | function | Derivative of the activation function |
+| $\hat{\vec y}$ | vector | Network output for a single input |
+| $\hat{\vec y}_n$ | vector | Predicted output for the $n$-th training example |
+| $\matr{\hat{Y}}$ | matrix | Output matrix of the network for a batch |
+| $\vec y_n^*$ | vector | True target/output for the $n$-th training example |
+| $\matr Y^*$ | matrix | Target output matrix for a batch |
+| $\mathcal{L}_n$ | scalar | Loss for the $n$-th training example |
+| $\mathcal{L}(\vec y^*, \hat{\vec y})$ | scalar | Loss function for a single example |
+| $J(\Theta)$ | scalar | Cost function (average loss over a batch) |
+| $\Theta$ | set | Set of all trainable parameters of the network |
+| $\delta_i^{(\ell)}$ | scalar | Error signal (loss derivative w.r.t. $z_i^{(\ell)}$) |
+| $\vec{\delta}^{(\ell)}$ | vector | Error vector at layer $\ell$ (single example) |
+| $\matr\Delta^{(\ell)}$ | matrix | Error matrix at layer $\ell$ for a batch |
+| $\otimes$ | operator | Hadamard (element-wise) product |
+| $\vec 1$ | vector | Vector of ones, $\vec 1 \in \mathbb{R}^{\batch}$ |
+| $\eta$ | scalar | Learning rate |
+| $\frac{\partial J}{\partial \Wmatr^{(\ell)}}$ | matrix | Gradient of the cost w.r.t. weights of layer $\ell$ |
+| $\frac{\partial J}{\partial \vec b^{(\ell)}}$ | vector | Gradient of the cost w.r.t. biases of layer $\ell$ |
+| $(\cdot)^\top$ | operator | Matrix or vector transpose |
+
+**Conventions**
+
+- All vectors are column vectors unless explicitly stated otherwise.
+- Batch data is stacked **column-wise**.
+- Activation functions and their derivatives are applied element-wise.
+- Gradients are derived using the denominator-layout convention for matrix calculus.
+
 
 ---
 
