@@ -1,16 +1,16 @@
 ---
 layout: post
-title: "Yet another Neural Networks Introduction: Feed Forward Networks and the Backpropagation Algorithm"
-modified: 2025-12-13T09:00:51+01:00
-categories: [Math, Neural Nets]
-description: "A few notes on the backprop algorithm"
-tags: []
-thumbnail: 
+title: "Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation"
+modified: 2025-12-16T09:00:51+01:00
+categories: [math, neural nets]
+description: "A notation-first walkthrough of feed-forward neural networks and vectorized backpropagation, focusing on how the math translates directly into clean, correct implementations. Covers forward pass, backprop, batching, and practical training considerations."
+tags: [neural-networks, backpropagation, deep-learning, matrix-notation, from-scratch]
+thumbnail: assets/img/2025-08-02-neural-nets-and-backprop/neural_net_thumbnail.png
 giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2025-12-13T09:00:51+01:00
+date: 2025-12-16T09:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
@@ -40,28 +40,16 @@ tabs: true
 \newcommand{\yhat}{\vec{\hat{y}}}
 \\)
 
-**TODO**: matrices bold, vectors bold!
-
-- Notation guide: ...
-- Put certain posts on medium!
+<!---
 - Animation of Gradient descent here!
 - Compare Gradients to JAX
-- Take a look at EDX lecture and homework!!
 - Talk about other optimizers that take into account gradient and cost, such as fminunc, fmincg, L-BFGS (fmincon in MATLAB, FMINLBFGS in MATALB), ..., online L-BFGS, ..., other online Training algorithms that only require the gradient
 - Visualize the first hidden layer of the net (without biases). E.g., for the hand-written digits set, it can be shown what features the different units have learned.
 - Add regularization to the implementation of the cost-function. The derivation afterwards is quite simple, since the regularization term for a weight is just dependent on the weight, so that the derivative can be computed in one simple step...
-- Describe Gradient Checking...
-- Describe **random initialization for breaking the symmetry**. Take a look at the literature
 - Softmax output layer with log-liklihood cost
-- Second order techniques for optimizing the cost function using the Hessian: See \url{http://neuralnetworksanddeeplearning.com/chap3.html} for an intro.
-- Momentum for addreesing the step-size problem
-- Step-size adaptation: RProp, IDBD, ...
-- Normalizing the input
-
-
----
-
----
+- Momentum for addressing the step-size problem
+- Step-size adaptation: RProp, Adam, RMSProp, ...
+--->
 
 # Introduction
 
@@ -69,9 +57,9 @@ Neural networks have been explained a thousand times — so why another intro?
 
 Because for many people (my past self included) the hard part isn't "deep math", it's getting the **nuts and bolts** of training straight: what exactly happens in the forward pass, where the gradients come from, and how *backpropagation* is really just an efficient, structured application of the chain rule that makes gradient descent practical.
 
-The basics are also the best entry point: once you understand a plain fully connected feed-forward network end to end, the same ideas carry over to CNNs, recurrent nets, and even transformers. In my experience, neural networks are not conceptually difficult - the main obstacle is **notation**. At the end of the day it’s often "notation, notation, notation" (and much less multivariate calculus than it first appears).
+The basics are also the best entry point: once you understand a plain fully connected feed-forward network end to end, the same ideas carry over to CNNs, recurrent nets, and even transformers. In my experience, neural networks are not conceptually difficult - the main obstacle is notation. At the end of the day it’s often **"notation, notation, notation"** (and much less multivariate calculus than it first appears).
 
-That's why this post takes a deliberately "from scratch" approach: we build a mathematical formulation step by step (single weight → vectors/matrices → batches), derive backpropagation in a way that matches an implementation, and then implement a small network accordingly. Along the way we also cover practical details that matter in real code, such as **weight initialization** and **gradient checking**, to make sure training works and the derivations actually hold up in practice.
+That's why this post takes a deliberately "from scratch" approach: we build a mathematical formulation step by step (single weight → vectors/matrices → batches), derive backpropagation in a way that matches an implementation, and then implement a small network accordingly. Along the way we also cover practical details that matter in real code, such as weight initialization and gradient checking, to make sure training works and the derivations actually hold up in practice.
 
 ---
 
@@ -86,6 +74,7 @@ in regular font. Unless stated otherwise, vectors are column vectors.
 | $L$ | scalar | Number of parameterized (trainable) layers in the network |
 | $\ell$ | index | Layer index, $\ell = 0,1,\ldots,L$ |
 | $\din$ | scalar | Input dimension of the network |
+| $d_L$ | scalar | Output dimension of the network |
 | $d_\ell$ | scalar | Number of neurons in layer $\ell$ |
 | $\batch$ | scalar | Batch size (number of training examples processed in parallel) |
 | $\vec{x}$ | vector | Single input vector $\vec{x} \in \mathbb{R}^{\din}$ |
@@ -124,6 +113,7 @@ in regular font. Unless stated otherwise, vectors are column vectors.
 | $\frac{\partial J}{\partial \vec b^{(\ell)}}$ | vector | Gradient of the cost w.r.t. biases of layer $\ell$ |
 | $(\cdot)^\top$ | operator | Matrix or vector transpose |
 
+<br>
 **Conventions**
 
 - All vectors are column vectors unless explicitly stated otherwise.
@@ -173,6 +163,7 @@ its inputs before the activation function is applied.
 The activations of the output layer, $a_i^{(L)}$, constitute the network output and
 are commonly denoted by $\hat{y}_i$, as indicated in Figure 1.
 
+<br>
 {% include figure.liquid 
    path=  "assets/img/2025-08-02-neural-nets-and-backprop/fig1.png" 
    class="img-fluid rounded z-depth-1 imgcenter" 
@@ -182,21 +173,13 @@ are commonly denoted by $\hat{y}_i$, as indicated in Figure 1.
 %}
 
 
-Figure 2 illustrates the internal structure of a neuron, including the weighted
-summation of its inputs, the addition of a bias term, and the subsequent application
-of a (nonlinear) activation function.
-
-{% include figure.liquid 
-   path=  "assets/img/2025-08-02-neural-nets-and-backprop/fig2.png" 
-   class="img-fluid rounded z-depth-1 imgcenter" 
-   zoomable=true 
-   width="70%"  
-   caption="Representation of a typical neuron in a neural net."  
-%}
-
 # The Feed-Forward Pass 
 
 ## The Activation of a Neuron
+
+Figure 2 illustrates the internal structure of a neuron, including the weighted
+summation of its inputs, the addition of a bias term, and the subsequent application
+of a (nonlinear) activation function.
 
 The neuron receives as inputs the activations 
 $$a^{(\ell-1)}_1, a^{(\ell-1)}_2, \ldots, a^{(\ell-1)}_{d_{\ell-1}}$$ 
@@ -231,6 +214,15 @@ $$
 
 This activation constitutes the output of the neuron and serves as an input to the
 neurons in the subsequent layer $\ell + 1$.
+
+<br>
+{% include figure.liquid 
+   path=  "assets/img/2025-08-02-neural-nets-and-backprop/fig2.png" 
+   class="img-fluid rounded z-depth-1 imgcenter" 
+   zoomable=true 
+   width="70%"  
+   caption="Representation of a typical neuron in a neural net."  
+%}
 
 ## The Activation of a Layer of Neurons
 The figure thus highlights the three fundamental steps performed by a neuron during
@@ -475,7 +467,7 @@ $$
 
 ## Summary: Forward Pass Through the Network
 
-We summarize the steps required to compute a **forward pass for a batch of inputs**
+We summarize the steps required to compute a forward pass for a batch of inputs
 through a fully connected feed-forward neural network. This provides a compact,
 algorithmic view of the computations introduced so far and serves as a reference
 for later gradient derivations.
@@ -634,6 +626,7 @@ as well as how this activation is propagated forward to all neurons in the subse
 
 Specifically, the activation $a_i^{(\ell)}$ serves as an input to each neuron in layer $\ell + 1$, where it is multiplied by the corresponding weights $w_{k,i}^{(\ell+1)}$, summed together with the other incoming weighted activations, and combined with the bias terms $b_k^{(\ell+1)}$ to form the pre-activations $z_k^{(\ell+1)}$. This explicit depiction makes clear how a single activation influences multiple downstream neurons and, conversely (as we will see below), how gradients computed at layer $\ell + 1$ will later be propagated backward through the same weighted connections to layer $\ell$.
 
+<br>
 {% include figure.liquid 
    path=  "assets/img/2025-08-02-neural-nets-and-backprop/fig3.png" 
    class="img-fluid rounded z-depth-1 imgcenter" 
@@ -1199,14 +1192,14 @@ column corresponds to the activations generated by the $n$-th training example.
 Proceeding layer by layer, we eventually obtain the output matrix
 $\matr A^{(L)}$.
 
-In the derivation above, the gradients were computed for a **single training
-example**. To perform a batch update of the parameters, these gradients must be
+In the derivation above, the gradients were computed for a single training
+example. To perform a batch update of the parameters, these gradients must be
 aggregated over all $\batch$ examples in the batch. Since differentiation is
 linear, this aggregation is achieved by summing (or averaging) the per-example
 gradients.
 
 To this end, we collect the error vectors $\vec{\delta}^{(\ell)}$ of all
-training examples at layer $\ell$ into the **error matrix**
+training examples at layer $\ell$ into the error matrix
 
 $$
 \matr\Delta^{(\ell)}
@@ -1483,7 +1476,7 @@ $$
 
 ## Gradient Descent Parameter Updates
 
-Once the gradients of the **cost function** $J(\Theta)$ with respect to all
+Once the gradients of the cost function $J(\Theta)$ with respect to all
 parameters have been computed (typically for a full batch or mini-batch; see the section on practial considerations for details), the
 weights and biases can be updated using a gradient-based optimizer. For standard
 (batch) gradient descent with learning rate $\eta>0$, the update rule for layer
@@ -1528,7 +1521,7 @@ $$
 $$
 
 These updates are applied for $\ell = 1,2,\ldots,L$. In practice, $J$ is often
-computed over a **mini-batch**, so $\batch$ denotes the mini-batch size.
+computed over a mini-batch, so $\batch$ denotes the mini-batch size.
 
 > **Implementation note (when to update).**  
 > In a standard backpropagation implementation, one first performs the full
@@ -1539,8 +1532,8 @@ computed over a **mini-batch**, so $\batch$ denotes the mini-batch size.
 >  
 > That said, with careful bookkeeping (e.g., storing the required activations and
 > error signals, or recomputing them deterministically), updates can be scheduled
-> in different ways. The safest approach is: **compute all
-> gradients first, then update**. Implement this approach first and make sure everything 
+> in different ways. The safest approach is: compute all
+> gradients first, then update. Implement this approach first and make sure everything 
 > is working as intended, before considering optimizations of the backpropagation algorithm.
 
 
@@ -1549,11 +1542,11 @@ computed over a **mini-batch**, so $\batch$ denotes the mini-batch size.
 The recursive relations in Eqs. \eqref{eq:chainrule4} and \eqref{eq:chainrule8}
 express the error signal in layer $\ell$ in terms of the error signals in the
 subsequent layer $\ell+1$. Consequently, this recursion cannot be evaluated
-forward and must instead be **initialized at the output layer** $\ell = L$ and
+forward and must instead be initialized at the output layer $\ell = L$ and
 then propagated backward through the network.
 
-This backward flow of error signals—from the output layer toward the input
-layer—is the origin of the term *backpropagation*.
+This backward flow of error signals (from the output layer toward the input
+layer) is the origin of the term *backpropagation*.
 
 ---
 
@@ -1580,7 +1573,7 @@ $$
 \end{align}
 $$
 
-This expression provides the **starting point** for the recursive computation of
+This expression provides the starting point for the recursive computation of
 error signals in all preceding layers.
 
 ---
@@ -1593,7 +1586,6 @@ error signals in all preceding layers.
 > error signal simplifies to $\delta_i^{(L)} = a_i^{(L)} - y_i^*.$
 > This simplification is one of the main reasons why cross-entropy loss is
 > commonly preferred over mean squared error for classification tasks.
-> This case is discussed separately in Section **TODO**.
 
 ---
 
@@ -1633,8 +1625,8 @@ $\vec z^{(L)}$.
 ### Vectorized Batch Formulation
 
 When processing a batch of $\batch$ training examples, the individual output-layer
-error vectors $\vec{\delta}_n^{(L)}$ are collected column-wise into the **batch
-error matrix**
+error vectors $\vec{\delta}_n^{(L)}$ are collected column-wise into the batch
+error matrix
 
 $$
 \begin{align}
@@ -1665,7 +1657,7 @@ $$
 \matr Y^* = \big(\vec y_1^* \ \ldots \ \vec y_\batch^*\big)\in \mathbb{R}^{d_L \times \batch}.
 $$
 
-This matrix constitutes the **initial condition** for batch backpropagation.
+This matrix constitutes the initial condition for batch backpropagation.
 Starting from $\matr\Delta^{(L)}$, the error matrices of all preceding layers
 $\matr\Delta^{(\ell)}$ are obtained recursively using
 Eq. \eqref{eq:chainrule8}.
@@ -1674,7 +1666,7 @@ Eq. \eqref{eq:chainrule8}.
 
 ## Summary: Backpropagation
 
-We summarize the steps required to compute **all gradients of the cost function**
+We summarize the steps required to compute all gradients of the cost function
 $J(\Theta)$ for a batch of $\batch$ training examples using backpropagation. The
 resulting gradients can then be used in a gradient-descent update.
 
@@ -1776,36 +1768,472 @@ $$
 
 ### Remarks
 
-- The backward pass must be evaluated **from $\ell=L$ down to $\ell=1$** because
+- The backward pass must be evaluated from $\ell=L$ down to $\ell=1$ because
   each $\matr\Delta^{(\ell)}$ depends on $\matr\Delta^{(\ell+1)}$.
 - The forward-pass matrices $\{\matr A^{(\ell)}, \matr Z^{(\ell)}\}$ are required
   to compute $\matr\Delta^{(\ell)}$ and the parameter gradients.
-- In a standard implementation: **compute all gradients first, then update all parameters**.
+- In a standard implementation: compute all gradients first, then update all parameters.
 
 
 ---
 
-## Putting Everything Together
+# Putting Everything Together (Full-Batch, Vectorized)
 
-**TODO:** Describe, how to compute $$\Delta^{\ell-1}$$, since this is what we will compute in the backprop method and then return to the previous layer.
-
-1. Forward pass (what to remember?)
-2. Compute Losses/Cost
-3. Compute $\Delta^L$ for the Cost
-4. backprop
-5. update weights
+This section summarizes one full **training step** (full batch) in a form that maps 1:1 to an implementation.
 
 ---
 
-## Practical Considerations / Further reading
-- gradient checking
-- SGD vs. mini batches vs. full-batches
-- initialization of weights
-- step size parameter
-- Weight Initialization
-- Input X normalization
-- vanishing gradient problem
-- step-size adaptation
-- regularization
-- other loss functions (ReLU, etc.)
-- Convergence, local minima, and divergence (too large stepsize)
+**1. Forward Pass (cache activations and pre-activations)**
+
+*Initialize*
+
+$$
+\matr A^{(0)} := \matr X
+$$
+
+*For each layer $ \ \ell = 1,2,\ldots,L$*
+
+$$
+\matr Z^{(\ell)} := \Wmatr^{(\ell)} \matr A^{(\ell-1)} + \vec b^{(\ell)} \vec 1^\top
+$$
+
+$$
+\matr A^{(\ell)} := \sigma\!\left(\matr Z^{(\ell)}\right)
+$$
+
+*Network output*
+
+$$
+\matr{\hat{Y}} := \matr A^{(L)}
+$$
+
+*What to store for backprop*
+
+$$
+\{\matr A^{(\ell)}\}_{\ell=0}^{L}, \qquad \{\matr Z^{(\ell)}\}_{\ell=1}^{L}.
+$$
+
+---
+
+**2. Cost (full-batch scalar)**
+
+Define the batch cost as the mean loss over the batch:
+
+$$
+J(\Theta) := \frac{1}{\batch}\sum_{n=1}^{\batch}\mathcal{L}\!\left(\vec y_n^*, \hat{\vec y}_n\right).
+$$
+
+(Equivalently: aggregate a per-example loss column-wise over $\matr Y^*$ and $\matr{\hat{Y}}$.)
+
+---
+
+**3. Backward Pass**
+
+**Initialize at the output layer**
+
+*MSE + general activation*
+
+$$
+\matr\Delta^{(L)} := \big(\matr A^{(L)} - \matr Y^*\big)\ \otimes\ \sigma'\!\big(\matr Z^{(L)}\big).
+$$
+
+*Binary cross-entropy + sigmoid output (simplified)*
+
+$$
+\matr\Delta^{(L)} := \matr A^{(L)} - \matr Y^*.
+$$
+
+*For other loss functions / output actitavations other initializations apply*
+
+**Propagate backward for hidden layers**
+
+For $\ell = L-1, L-2, \ldots, 1$:
+
+$$
+\matr\Delta^{(\ell)} :=
+\Big( (\Wmatr^{(\ell+1)})^\top \matr\Delta^{(\ell+1)} \Big)
+\ \otimes\
+\sigma'\!\big(\matr Z^{(\ell)}\big).
+$$
+
+---
+
+**4. Gradients (full-batch)**
+
+For each layer $\ell = 1,\ldots,L$:
+
+$$
+\frac{\partial J}{\partial \Wmatr^{(\ell)}} :=
+\frac{1}{\batch}\;\matr\Delta^{(\ell)}\big(\matr A^{(\ell-1)}\big)^\top
+$$
+
+$$
+\frac{\partial J}{\partial \vec b^{(\ell)}} :=
+\frac{1}{\batch}\;\matr\Delta^{(\ell)}\vec 1
+$$
+
+---
+
+**5. Gradient Descent Update**
+
+For each layer $\ell = 1,\ldots,L$:
+
+$$
+\begin{align*}
+\Wmatr^{(\ell)} &\leftarrow \Wmatr^{(\ell)} - \eta \frac{\partial J}{\partial \Wmatr^{(\ell)}},
+\\
+\vec b^{(\ell)} &\leftarrow \vec b^{(\ell)} - \eta \frac{\partial J}{\partial \vec b^{(\ell)}}.
+\end{align*}
+$$
+
+---
+
+**6. One Full Training Step**
+
+*Forward*
+
+$$
+\begin{align*}
+\matr A^{(0)} &:= \matr X,\\
+\matr Z^{(\ell)} &:= \Wmatr^{(\ell)} \matr A^{(\ell-1)} + \vec b^{(\ell)}\vec 1^\top,\\
+\matr A^{(\ell)} &:= \sigma(\matr Z^{(\ell)}),\ \ \ell=1..L.
+\end{align*}
+$$
+
+*Backward*
+
+$$
+\begin{align*}
+\matr\Delta^{(L)} &:= \text{(choose loss/activation-specific formula)},\\
+\matr\Delta^{(\ell)} &:= ((\Wmatr^{(\ell+1)})^\top \matr\Delta^{(\ell+1)})\otimes \sigma'(\matr Z^{(\ell)}),\ \ \ell=L-1..1.
+\end{align*}
+$$
+
+*Gradients + update*
+
+$$
+\begin{align*}
+\frac{\partial J}{\partial \Wmatr^{(\ell)}} &:= \frac{1}{\batch}\matr\Delta^{(\ell)}(\matr A^{(\ell-1)})^\top,\\
+\frac{\partial J}{\partial \vec b^{(\ell)}} &:= \frac{1}{\batch}\matr\Delta^{(\ell)}\vec 1,\\
+(\Wmatr^{(\ell)},\vec b^{(\ell)}) &\leftarrow (\Wmatr^{(\ell)},\vec b^{(\ell)}) - \eta\left(\frac{\partial J}{\partial \Wmatr^{(\ell)}}, \frac{\partial J}{\partial \vec b^{(\ell)}}\right).
+\end{align*}
+$$
+
+
+---
+
+## Practical Considerations
+
+The following topics are directly relevant when implementing and training neural networks in practice. They affect numerical stability, convergence behavior, and training efficiency.
+
+### Gradient Checking (Finite Differences)
+
+When implementing a neural network from scratch, one of the very first validation tools you should add is **gradient checking**. Backpropagation formulas are easy to derive on paper but surprisingly easy to implement incorrectly (sign errors, missing transposes, wrong broadcasting, etc.). Gradient checking provides a simple but powerful sanity check that your analytical gradients are correct.
+
+Gradient checking compares two quantities for the same parameter:
+
+1. **Analytical gradient**  
+   Computed via backpropagation: $$\frac{\partial J}{\partial \theta}$$, where $\theta$ is a weight or bias parameter in the network.
+
+2. **Numerical gradient**  
+   Approximated using finite differences applied directly to the scalar cost function
+   $J(\Theta)$.
+
+If both gradients agree (up to a small tolerance), your backpropagation implementation is very likely correct.
+
+Let $\theta$ be a single scalar parameter (e.g. one entry of $\Wmatr^{(\ell)}$ or $\vec b^{(\ell)}$).
+The numerical gradient is approximated by the central difference formula:
+
+$$
+\frac{\partial J}{\partial \theta}
+\;\approx\;
+\frac{J(\Theta + \varepsilon\,\mathbf e_\theta)
+      - J(\Theta - \varepsilon\,\mathbf e_\theta)}
+     {2\varepsilon},
+$$
+
+where:
+
+- $\varepsilon > 0$ is a small step size (e.g. $10^{-5}$),
+- $\mathbf e_\theta$ denotes a perturbation that affects *only* parameter $\theta$,
+- $J(\Theta)$ is the total cost of the network, i.e.
+  $$
+  J(\Theta) = \frac{1}{\batch}\sum_{n=1}^{\batch}\mathcal{L}\!\left(\vec y_n^*, \hat{\vec y}_n\right).
+  $$
+
+Importantly, **no backpropagation is used** to compute this quantity; only forward passes.
+
+For a given layer $\ell$, gradient checking compares:
+
+- **Backprop gradient** $$g_{\text{bp}}$$
+
+  $$
+  \frac{\partial J}{\partial \Wmatr^{(\ell)}},
+  \qquad
+  \frac{\partial J}{\partial \vec b^{(\ell)}}
+  $$
+
+- **Numerical gradient** $$g_{\text{num}}$$
+
+$$
+\left(\frac{\partial J}{\partial \Wmatr^{(\ell)}}\right)^{\text{num}},
+\qquad
+\left(\frac{\partial J}{\partial \vec b^{(\ell)}}\right)^{\text{num}}
+$$
+
+The comparison is can be done using a **relative error** score:
+
+$$
+\mathrm{rel\_err}
+=
+\frac{\lvert g_{\text{num}} - g_{\text{bp}} \rvert}
+     {\lvert g_{\text{num}} \rvert + \lvert g_{\text{bp}} \rvert + \varepsilon_{\text{stab}}},
+$$
+
+evaluated element-wise, where $\varepsilon_{\text{stab}}$ is a small value like $10^{-12}$ which is added to the denominator for stability reasons. A common rule of thumb for interpretation for $$\mathrm{rel\_err}$$:
+
+| Relative error | Interpretation |
+|---------------|----------------|
+| $< 10^{-7}$ |  Excellent (almost certainly correct) |
+| $10^{-7}$ – $10^{-5}$ | Probably fine |
+| $10^{-5}$ – $10^{-3}$ | Suspicious |
+| $> 10^{-3}$ | Very likely a bug |
+
+Small absolute gradients are usually exempted from strict relative-error checks.
+
+**Practical Remarks**
+
+- Gradient checking is slow: each parameter requires two forward passes.
+  → Use it only for debugging, never during real training.
+- Check one layer at a time, not the whole network at once.
+- Disable regularization, dropout, and data shuffling while checking.
+- Once gradient checking passes, turn it off permanently and trust backprop.
+
+---
+
+In our example implementation, gradient checking is performed by perturbing individual entries of
+$\Wmatr^{(\ell)}$ or $\vec b^{(\ell)}$, recomputing the total network cost $J(\Theta)$, and comparing the resulting numerical gradients against the gradients produced by backpropagation. This clean separation (numerical gradients from forward passes only, analytical gradients from backprop) makes gradient checking a reliable correctness test.
+
+### Batching Strategies
+
+In practice, the cost function
+
+$$
+J(\Theta) = \frac{1}{\batch}\sum_{n=1}^{\batch}\mathcal{L}_n(\Theta)
+$$
+
+is rarely evaluated over the entire training set at once. Instead, training data is
+processed in batches, leading to different optimization regimes.
+
+- **Full-batch gradient descent**  
+  The gradient of $J(\Theta)$ is computed using all available training examples.
+  This yields an exact descent direction but is computationally expensive and
+  impractical for large datasets.
+
+- **Mini-batch gradient descent**  
+  The dataset is split into smaller batches of size $\batch \ll N_{\text{data}}$.
+  Each update uses
+  $$
+  J_{\text{batch}}(\Theta)
+  = \frac{1}{\batch}\sum_{n=1}^{\batch}\mathcal{L}_n(\Theta),
+  $$
+  providing a good trade-off between computational efficiency and gradient quality.
+  This is the standard choice in modern deep learning.
+
+- **Stochastic gradient descent (SGD)**  
+  A special case of mini-batch training with $\batch = 1$.
+  Updates are noisy but inexpensive and can help escape shallow local minima and
+  saddle points.
+
+All three methods share the same backpropagation equations; only the batch size
+$\batch$ differs. In our example below, we use the full-batch approach.
+
+### Weight Initialization
+
+Weight initialization plays a critical role in training neural networks. In
+particular, initializing all weights to zero is a bad idea, because it breaks
+learning entirely: if all weights in a layer start with the same value, then all
+neurons in that layer compute identical activations and receive identical gradients
+during backpropagation. As a result, they remain indistinguishable throughout
+training, and the network effectively behaves as if each layer had only a single
+neuron. Random initialization is therefore essential to break this symmetry
+between neurons.
+
+In our implementation, we use Glorot (Xavier) uniform initialization for the
+weights. For a layer with $d_{\ell-1}$ input units and $d_\ell$ output units, the
+weights are drawn from a uniform distribution
+
+$$
+w_{i,j}^{(\ell)} \sim \mathcal{U}\!\left(
+-\sqrt{\frac{6}{d_{\ell-1}+d_\ell}},
+\ \sqrt{\frac{6}{d_{\ell-1}+d_\ell}}
+\right).
+$$
+
+This choice is motivated by the desire to keep the variance of activations and
+gradients approximately constant across layers, which helps to avoid vanishing or
+exploding signals during the forward and backward passes.
+
+Bias terms are initialized to zero,
+
+$$
+\vec b^{(\ell)} = \vec 0,
+$$
+
+which is common practice and does *not* cause symmetry issues, since symmetry is
+already broken by the random weight initialization.
+
+> **Further reading.**  
+> Other widely used initialization schemes include He initialization (for ReLU-based
+> networks), orthogonal initialization, and data-dependent or adaptive initialization
+> strategies. These approaches are discussed extensively in the literature.
+
+### Learning Rate (Step Size)
+
+The *learning rate* $\eta>0$ controls the size of the parameter update in each
+gradient descent step,
+
+$$
+\Wmatr^{(\ell)} \leftarrow \Wmatr^{(\ell)} - \eta\,\frac{\partial J}{\partial \Wmatr^{(\ell)}},
+\qquad
+\vec b^{(\ell)} \leftarrow \vec b^{(\ell)} - \eta\,\frac{\partial J}{\partial \vec b^{(\ell)}}.
+$$
+
+Choosing an appropriate step size is crucial:
+- If $\eta$ is *too small*, training progresses very slowly and may appear to stall.
+- If $\eta$ is *too large*, the updates can overshoot minima, leading to oscillations
+  or divergence of the cost function.
+
+In practice, $\eta$ is often treated as a hyperparameter that must be tuned
+experimentally. More advanced methods adapt the effective step size automatically
+during training; these are discussed in the further reading section.
+
+### Input Normalization
+
+Neural networks are sensitive to the scale and distribution of input features.
+If different input dimensions have very different magnitudes, the optimization
+problem becomes poorly conditioned, which can significantly slow down training.
+
+A common remedy is *input normalization*, applied to the input matrix
+$\matr X = \matr A^{(0)}$ before training:
+
+- **Feature scaling**  
+  Rescale each input feature to a comparable range (e.g. $[0,1]$), preventing some
+  features from dominating others.
+
+- **Zero-mean / unit-variance normalization**  
+  Standardize each feature by subtracting its mean and dividing by its standard
+  deviation,
+  $$
+  x_{i,n} \leftarrow \frac{x_{i,n} - \mu_i}{\sigma_i},
+  $$
+  where $\mu_i$ and $\sigma_i$ are computed over the training set.
+
+Well-normalized inputs lead to more stable gradients and typically result in faster
+and more reliable convergence.
+
+
+### Vanishing and Exploding Gradients
+
+In deep networks, gradients are propagated backward through many layers via repeated
+matrix multiplications and element-wise derivatives. If these factors are consistently
+smaller than one, gradients can *vanish*; if they are larger than one, gradients can
+*explode*. Both effects impair learning: vanishing gradients slow or stop updates in
+early layers, while exploding gradients lead to numerical instability.
+
+Common causes include poor weight initialization, unsuitable activation functions
+(e.g. sigmoid in very deep networks), and deep architectures without normalization.
+
+**Practical mitigation strategies**:
+- Careful weight initialization (e.g. Glorot initialization)
+- Appropriate activation functions (sigmoid, as used in our example code might be a bad choice for deep nets)
+- Input normalization and regularization
+- Gradient clipping (to control exploding gradients)
+
+
+### Convergence Issues
+
+Even with correct gradients, optimization may behave poorly:
+
+- **Divergence**  
+  Often caused by an excessively large learning rate, leading to overshooting and
+  unstable updates.
+
+- **Slow convergence**  
+  Can result from poor conditioning of the optimization problem, unnormalized inputs,
+  or an overly small learning rate.
+
+- **Plateaus and saddle points**  
+  Regions where gradients are close to zero but are not local minima, causing training
+  to progress very slowly.
+
+Understanding and diagnosing these behaviors is essential for successfully training
+neural networks in practice.
+
+### Training, Validation, and Test Data
+
+In practical machine learning workflows, the available data is typically split into three disjoint subsets:
+
+- **Training set**  
+  Used to compute gradients and update the parameters $\Theta$ via backpropagation and gradient descent.
+
+- **Validation set**  
+  Used to monitor performance during training (e.g. for hyperparameter tuning, early stopping, or model selection) without influencing the learned parameters directly.
+
+- **Test set**  
+  Used only once, after all training decisions are finalized, to obtain an unbiased estimate of the model's generalization performance.
+
+This separation is crucial because evaluating a model on the same data used for training leads to *optimistically biased performance estimates* and can mask overfitting.
+
+In the example below, we deliberately train on the full dataset to keep the mathematical derivations and implementation as transparent as possible. Since the goal here is to understand *how* backpropagation works (not to assess generalization performance) this simplification is intentional. For any real-world application, however, proper train/validation/test splits are essential.
+
+
+## Further Reading
+
+The following topics extend (however, the list is still fairly incomplete) beyond the basic feed-forward network and are useful for deeper understanding or more advanced applications.
+
+- **Regularization**
+  - L2 (weight decay)
+  - L1 regularization
+  - Early stopping
+- **Adaptive optimization methods**
+  - Momentum
+  - RMSProp
+  - Adam, AdamW
+- **Advanced activation functions**
+  - ReLU, Leaky ReLU, ELU
+  - GELU, Swish
+  - Softmax (multiclass classification)
+- **Loss functions**
+  - Binary cross-entropy
+  - Categorical cross-entropy
+  - Mean squared error (MSE)
+  - Mean absolute error (MAE)
+  - Huber loss
+- **Numerical stability tricks**
+  - Log-sum-exp trick
+  - Stable softmax implementations
+- **Bias–variance tradeoff**
+- **Overfitting vs. underfitting**
+- **Initialization and symmetry breaking**
+- **Second-order methods**
+  - Newton’s method
+  - Quasi-Newton methods (L-BFGS)
+- **Backpropagation efficiency**
+  - Computational graphs
+  - Automatic differentiation
+- **Other neural network architectures**
+  - Convolutional Neural Networks (CNNs)
+  - Recurrent Neural Networks (RNNs)
+  - Long Short-Term Memory (LSTM)
+  - Gated Recurrent Units (GRU)
+  - Transformers
+- **Other training techniques**
+  - Batch normalization
+  - Layer normalization
+  - Dropout
+- **Expressivity and depth**
+  - Shallow vs. deep networks
+  - Universal approximation theorem
+
+These topics build on the foundations presented in this post and are good entry points for further study. 
