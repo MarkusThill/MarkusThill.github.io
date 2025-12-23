@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2025-12-08'
+  last_updated: '2025-12-19'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 56
@@ -42,11 +42,11 @@ papers:
     title: Online adaptable time series anomaly detection with discrete wavelet transforms and multivariate gaussian distributions
     year: '2018'
   Bu5eFxQAAAAJ:YsMSGLbcyi4C:
-    citations: 64
+    citations: 65
     title: Time series encodings with temporal convolutional networks
     year: '2020'
   Bu5eFxQAAAAJ:_FxGoFyzp5QC:
-    citations: 2
+    citations: 3
     title: Process signal reconstruction and anomaly detection in laser machining processes
     year: '2023'
   Bu5eFxQAAAAJ:d1gkVwhDpl0C:
@@ -54,7 +54,7 @@ papers:
     title: Temporal difference learning with eligibility traces for the game connect four
     year: '2014'
   Bu5eFxQAAAAJ:eQOLeE2rZwMC:
-    citations: 246
+    citations: 250
     title: Temporal convolutional autoencoder for unsupervised anomaly detection in time series
     year: '2021'
   Bu5eFxQAAAAJ:qjMakFHDy7sC:
