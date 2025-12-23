@@ -493,6 +493,11 @@ ninja.data = [{
           description: "One of the fastest and perfect-playing Connect-4 solvers around",
           section: "Projects",handler: () => {
               window.location.href = "/projects/0_bitbully/";
+            },},{id: "projects-bitbully-databases",
+          title: 'BitBully Databases',
+          description: "Precomputed Connect-4 opening books with millions of evaluated positions",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_bitbully_databases/";
             },},{
         id: 'social-cv',
         title: 'CV',
