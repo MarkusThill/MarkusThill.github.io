@@ -59,24 +59,33 @@ No compilation needed—pre-built wheels included!
 ## 🧠 Example Usage (Python)
 
 ```python
-from bitbully import bitbully_core as bbc
-import time
+import bitbully as bb
 
-board = bbc.Board()
-for _ in range(6):
-    board.playMove(3)
+agent = bb.BitBully()
+board = bb.Board()
+
+while not board.is_game_over():
+    board.play(agent.best_move(board))
+
 print(board)
-
-solver = bbc.BitBully()
-start = time.time()
-score = solver.mtdf(board, first_guess=0)
-print(f"Solved in {round(time.time() - start, 2)}s → Score: {score}")
+print("Winner:", board.winner())
 ```
 
 You can also solve boards defined as NumPy arrays, use opening books, and generate random game states.
 For more examples check out the [docs](https://markusthill.github.io/BitBully) or the [GitHub repository](https://github.com/MarkusThill/BitBully)· 
 
 ---
+
+## 🎮 Play a Game of Connect-4 with a simple Jupyter Notebook Widget
+
+{% include figure.liquid loading="eager" path="assets/img/project_bitbully/screenshot_gui.png" title="Playing a Game of Connect-4 in a Jupyter Notebook" class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="70%" %}
+
+BitBully includes an interactive Connect-4 widget for Jupyter built with ipywidgets + Matplotlib.
+`GuiC4` renders a 6x7 board using image sprites, supports click-to-play or column buttons, provides undo/redo, can trigger a computer move using the BitBully engine (optionally with an opening book database), and shows win/draw popups. It's intended for quick experimentation and demos inside notebooks (best with `%matplotlib ipympl`).
+
+Jupyter Notebook: [notebooks/game_widget.ipynb](https://github.com/MarkusThill/BitBully/blob/master/notebooks/game_widget.ipynb)
+
+<a href="https://colab.research.google.com/github/MarkusThill/BitBully/blob/master/notebooks/game_widget.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
 ## 📜 License
 
