@@ -499,13 +499,6 @@ ninja.data = [{
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_bitbully_databases/";
             },},{
-        id: 'social-cv',
-        title: 'CV',
-        section: 'Socials',
-        handler: () => {
-          window.open("/assets/pdf/example_pdf.pdf", "_blank");
-        },
-      },{
         id: 'social-github',
         title: 'GitHub',
         section: 'Socials',
