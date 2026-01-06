@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "todo"
+title: "Summing Non-Isolated Divisors Across All Subsets"
 modified:
 categories: [programming,math]
-description: "todo"
-tags: [math]
-thumbnail:
+description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset, with fast modular support."
+tags: [combinatorics, number-theory, divisibility, powerset, optimization, python]
+thumbnail: assets/img/2026-01-06-math-thumbnail.png
 giscus_comments: true
 toc:
   beginning: true
@@ -227,7 +227,7 @@ for A in subsets:
     if contributes:
         count_contributing_subsets += 1
 
-print(f"{x} contributes in {count_contributing_subsets} subsets of {{1,...,{n}}}. In total 2^n-(n+1)={len(subsets)} subsets.")
+print(f"{x} contributes in {count_contributing_subsets} subsets of { {1,...,{n}} }. In total 2^n-(n+1)={len(subsets)} subsets.")
 ```
 *Expected output:*
 ```text
@@ -353,7 +353,7 @@ for i in range(1, m + 1):            # must pick at least one multiple of x
         ways_pick_rest = choose(r, j)
         count_contributing_subsets += ways_pick_multiples * ways_pick_rest
 
-print(f"{x} contributes in {count_contributing_subsets} subsets of {{1,...,{n}}}. In total 2^n-(n+1)={2**n-(n+1)} subsets.")
+print(f"{x} contributes in {count_contributing_subsets} subsets of { {1,...,{n}} }. In total 2^n-(n+1)={2**n-(n+1)} subsets.")
 ```
 
 *Expected output:*
