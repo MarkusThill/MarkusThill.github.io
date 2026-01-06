@@ -763,6 +763,10 @@ def S(n: int) -> int:
         total += x * contribution_count
 
     return total
+
+assert S(11) == 9855
+assert S(20) == 18626559
+assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
 ---
