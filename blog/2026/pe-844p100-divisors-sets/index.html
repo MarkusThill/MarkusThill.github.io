@@ -1,0 +1,615 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Summing Non-Isolated Divisors Across All Subsets | Markus Thill </title> <meta name="author" content="Markus Thill"> <meta name="description" content="A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8D%95&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://markusthill.github.io/blog/2026/pe-844p100-divisors-sets/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Markus</span> Thill </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"> </a> </li> <li class="nav-item "> <a class="nav-link" href="/about">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/index.html">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/publications/">publications</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/projects/">projects</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Summing Non-Isolated Divisors Across All Subsets</h1> <p class="post-meta"> Created on January 06, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/combinatorics"> <i class="fa-solid fa-hashtag fa-sm"></i> combinatorics</a>   <a href="/blog/tag/number-theory"> <i class="fa-solid fa-hashtag fa-sm"></i> number-theory</a>   <a href="/blog/tag/divisibility"> <i class="fa-solid fa-hashtag fa-sm"></i> divisibility</a>   <a href="/blog/tag/powerset"> <i class="fa-solid fa-hashtag fa-sm"></i> powerset</a>   <a href="/blog/tag/optimization"> <i class="fa-solid fa-hashtag fa-sm"></i> optimization</a>   <a href="/blog/tag/python"> <i class="fa-solid fa-hashtag fa-sm"></i> python</a>   ·   <a href="/blog/category/programming"> <i class="fa-solid fa-tag fa-sm"></i> programming</a>   <a href="/blog/category/math"> <i class="fa-solid fa-tag fa-sm"></i> math</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"> <a href="#problem-description">Problem Description</a> <ul> <li class="toc-entry toc-h3"><a href="#examples">Examples</a></li> <li class="toc-entry toc-h3"><a href="#more-formal-problem-description">More Formal Problem Description</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#a-straightforward-baseline-solution">A Straightforward Baseline Solution</a> <ul> <li class="toc-entry toc-h3"><a href="#the-above-code-is-slow">The above Code is slow</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#from-brute-force-to-a-combinatorial-viewpoint">From Brute Force to a Combinatorial Viewpoint</a> <ul> <li class="toc-entry toc-h3"><a href="#counting-contributions-per-element-still-brute-force">Counting Contributions per Element (Still Brute Force)</a></li> <li class="toc-entry toc-h3"><a href="#counting-contributing-subsets-via-binomial-coefficients">Counting Contributing Subsets via Binomial Coefficients</a></li> <li class="toc-entry toc-h3"><a href="#element-wise-computation-of-sn-via-combinatorial-counting">Element-Wise Computation of \(S(n)\) via Combinatorial Counting</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#step-by-step-combinatorial-simplifications">Step-by-Step Combinatorial Simplifications</a> <ul> <li class="toc-entry toc-h3"><a href="#first-simplification-collapsing-the-inner-sum">First Simplification: Collapsing the Inner Sum</a></li> <li class="toc-entry toc-h3"><a href="#second-simplification-replacing-the-inner-binomial-sum-by-a-power-of-two">Second Simplification: Replacing the Inner Binomial Sum by a Power of Two</a></li> <li class="toc-entry toc-h3"><a href="#third-simplification-factoring-the-independent-choices">Third Simplification: Factoring the Independent Choices</a></li> <li class="toc-entry toc-h3"><a href="#fourth-simplification-eliminating-the-final-inner-sum">Fourth Simplification: Eliminating the Final Inner Sum</a></li> <li class="toc-entry toc-h3"><a href="#fifth-simplification-collapsing-the-expression-into-a-single-power-difference">Fifth Simplification: Collapsing the Expression into a Single Power Difference</a></li> <li class="toc-entry toc-h3"><a href="#sixth-simplification-reusing-the-global-power-term">Sixth Simplification: Reusing the Global Power Term</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#grouping-values-of-x-by-constant-quotients">Grouping Values of \(x\) by Constant Quotients</a> <ul> <li class="toc-entry toc-h3"><a href="#summing-contributions-over-ranges-of-x">Summing Contributions over Ranges of \(x\)</a></li> <li class="toc-entry toc-h3"><a href="#replacing-interval-summation-by-a-closed-form-formula">Replacing Interval Summation by a Closed-Form Formula</a></li> <li class="toc-entry toc-h3"><a href="#optimized-implementation-with-optional-modulus">Optimized Implementation with Optional Modulus</a></li> </ul> </li> </ul> </div> <hr> <div id="markdown-content"> <p><br></p> <h2 id="problem-description">Problem Description</h2> <p>Take the numbers from \(1\) up to some number \(n\) and consider <strong>all possible subsets</strong> of these numbers.</p> <p>Inside any chosen subset, some numbers may be <em>isolated</em> while others are <em>connected</em> to the rest of the set by divisibility:</p> <ul> <li>A number is <strong>isolated</strong> if it does <strong>not</strong> divide any other <em>different</em> number in the subset.</li> <li>A number is <strong>non-isolated</strong> if it divides at least one other element of the same subset.</li> </ul> <p>For each subset, we add up all <strong>non-isolated</strong> numbers.<br> Finally, we sum these values over <strong>all</strong> subsets of \(\{1,2,\dots,n\}\).</p> <p>Our task is to compute the same quantity for a very large value of \(n\) (e.g., \(10^{12}\)), and report the answer modulo a given number.</p> <p><br></p> <h3 id="examples">Examples</h3> <ul> <li> <p>Subset \(A=\{2,3\}\)<br> Neither number divides the other, so both are isolated.<br> Contribution: \(0\)</p> </li> <li> <p>Subset \(A=\{2,4\}\)<br> The number \(2\) divides \(4\), so \(2\) is non-isolated.<br> The number \(4\) does not divide any other element.<br> Contribution: \(2\)</p> </li> <li> <p>Subset \(A=\{1,3,6\}\)<br> The number \(1\) divides both \(3\) and \(6\).<br> The number \(3\) divides \(6\).<br> All except \(6\) are non-isolated.<br> Contribution: \(1 + 3 = 4\)</p> </li> <li> <p>Subset \(A=\{5\}\)<br> A single element cannot divide another <em>distinct</em> element.<br> Contribution: \(0\)</p> </li> </ul> <p><br></p> <h3 id="more-formal-problem-description">More Formal Problem Description</h3> <p>Let \(A\) be a finite subset of the positive integers.</p> <p>An element \(x \in A\) is included in the sum for \(A\) if there exists another element \(y \in A\) with \(y \neq x\) such that \(x \mid y.\)</p> <p>Define the function</p> \[f(A) = \sum_{\substack{x \in A \\ \exists\, y \in A,\; y \neq x,\; x \mid y}} x,\] <p>that is, the sum of all elements of \(A\) that divide at least one other element of \(A\).</p> <p>For a positive integer \(n\), define</p> \[S(n) = \sum_{A \subseteq \{1,2,\dots,n\}} f(A),\] <p>where the sum ranges over all subsets of \(\{1,2,\dots,n\}\).</p> <hr> <p><br></p> <h2 id="a-straightforward-baseline-solution">A Straightforward Baseline Solution</h2> <p>The code below implements a straight-forward, brute-force solution that follows the problem definition literally: it explicitly enumerates all subsets of \(\{1,\dots,n\}\), checks within each subset which elements divide at least one other element, sums those elements, and finally aggregates the result over all subsets. While this approach is easy to understand and closely mirrors the mathematical definition of \(S(n)\), it quickly becomes infeasible, as we will see below.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="n">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+
+<span class="k">def</span> <span class="nf">powerset</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="sh">"""</span><span class="s">Return all subsets of A with size &gt;= 2 (since size 0/1 cannot contribute).</span><span class="sh">"""</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nf">set</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nf">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nf">combinations</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">r</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Sum of all x in A that divide at least one other (distinct) element of A.</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">A</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nf">any</span><span class="p">((</span><span class="n">y</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">A</span> <span class="o">-</span> <span class="p">{</span><span class="n">x</span><span class="p">}):</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">total</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Naively compute S(n) by enumerating all subsets of {1, ..., n}.</span><span class="sh">"""</span>
+    <span class="n">universe</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nf">sum</span><span class="p">(</span><span class="nf">f</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="k">for</span> <span class="n">A</span> <span class="ow">in</span> <span class="nf">powerset</span><span class="p">(</span><span class="n">universe</span><span class="p">))</span>
+
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">result</span> <span class="o">=</span> <span class="nc">S</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Solution:</span><span class="sh">"</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">9855</span>  <span class="c1"># expected answer
+</span></code></pre></div></div> <p><strong>What this code does</strong></p> <p>The goal is to compute \(S(n)\), defined as follows:</p> <ol> <li>Consider <strong>all subsets</strong> \(A \subseteq \{1,2,\dots,n\}\).</li> <li>For each subset \(A\), compute \(f(A)\): <ul> <li>For every \(x \in A\), check whether there exists a <em>different</em> element \(y \in A\) such that \(x \mid y\).</li> <li>If such a \(y\) exists, then \(x\) is counted <strong>once</strong> (even if it divides multiple elements).</li> <li>Sum all counted \(x\) values to obtain \(f(A)\).</li> </ul> </li> <li>Sum \(f(A)\) over all subsets \(A\) to get \(S(n)\).</li> </ol> <p><strong>How the functions map to this definition</strong></p> <ul> <li> <p><code class="language-plaintext highlighter-rouge">powerset(A)</code><br> Generates all subsets of <code class="language-plaintext highlighter-rouge">A</code> with size at least 2.<br> (Subsets of size 0 or 1 cannot contribute to \(f(A)\), because there is no <em>distinct</em> second element to be divisible by.)</p> </li> <li> <code class="language-plaintext highlighter-rouge">f(A)</code><br> Implements the rule “sum all elements that divide at least one other distinct element in the subset”. The line <div class="language-python highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="nf">any</span><span class="p">((</span><span class="n">y</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">A</span> <span class="o">-</span> <span class="p">{</span><span class="n">x</span><span class="p">})</span>
+</code></pre></div> </div> <p>checks whether \(x\) divides at least one other element \(y\) in the subset.</p> </li> <li> <code class="language-plaintext highlighter-rouge">S(n)</code> Builds the universe set<br> \(\{1, \dots, n\}\), enumerates all relevant subsets, applies \(f\) to each, and sums the results.</li> </ul> <p>The snippet runs this for \(n = 11\) and verifies the known value \(S(11) = 9855\).</p> <p><br></p> <h3 id="the-above-code-is-slow">The above Code is slow</h3> <p>However, this becomes infeasible quickly. Here is why:</p> <ol> <li>The number of subsets explodes exponentially. The set \(\{1,2,\dots,n\}\) has \(2^n\) subsets in total. <strong>TODO: Explain why…</strong> Even though the code skips subsets of size 0 and 1, the count is still essentially \(2^n - (n + 1),\) which is still exponential growth. Concrete sizes: <ul> <li>\(n = 20 \Rightarrow 2^{20} = 1{,}048{,}576\) subsets (about one million)</li> <li>\(n = 30 \Rightarrow 2^{30} \approx 1.07 \cdot 10^9\) subsets (about a billion)</li> <li>\(n = 40 \Rightarrow 2^{40} \approx 1.10 \cdot 10^{12}\) subsets (a trillion) So just looping over all subsets becomes impossible very quickly.</li> </ul> </li> <li>Each subset also has internal work. For each subset \(A\), the function \(f(A)\) performs nested checks: <ul> <li>It loops over each \(x \in A\).</li> <li>For each \(x\), it scans the other elements \(A \setminus \{x\}\) until it finds a multiple. In the worst case (when few divisibility relations exist), this is roughly quadratic in the subset size: \(\text{work per subset} \sim O(|A|^2).\) So the total runtime behaves roughly like: \(\sum_{A \subseteq \{1,\dots,n\}} O(|A|^2),\) which is exponential overall, with a large constant factor coming from the inner checks.</li> </ul> </li> <li>Memory usage can also become a bottleneck. The function <code class="language-plaintext highlighter-rouge">powerset(...)</code> returns a full <code class="language-plaintext highlighter-rouge">list[set[int]]</code> of <em>all</em> subsets at once.<br> This means the program stores every subset in memory before it even starts summing. For moderately large \(n\), this alone can exhaust available RAM, independent of runtime.</li> </ol> <p>This code is a simple and functioning baseline, but it is fundamentally limited because it performs an exhaustive enumeration over roughly \(2^n\) subsets and then does additional work inside each subset. That exponential growth is why values like \(S(20)\) already become slow, and why computing \(S(10^{12})\) requires a completely different, non-enumerative approach.</p> <p>In the following, we will attempt to find an efficient approach, step-by-step.</p> <hr> <p><br></p> <h2 id="from-brute-force-to-a-combinatorial-viewpoint">From Brute Force to a Combinatorial Viewpoint</h2> <p>The brute-force approach mirrors the definition of \(S(n)\) directly, but its exponential complexity makes it unsuitable for large values of \(n\). To make progress, we need to rethink <em>what</em> we are counting and <em>how</em> we count it.</p> <p>This section takes a first step in that direction by changing perspective. Instead of iterating over all subsets and computing their contributions one by one, we begin to analyze the problem <strong>element-wise</strong>: we fix a single number \(x\) and ask how often it contributes across all subsets. This shift lays the groundwork for a fully combinatorial formulation that avoids explicit subset enumeration.</p> <p><br></p> <h3 id="counting-contributions-per-element-still-brute-force">Counting Contributions per Element (Still Brute Force)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Try different values of n and x to see how many subsets a single x contributes to
+# for n=11 and x=3, expected: 768 subsets
+</span><span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">universe</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">subsets</span> <span class="o">=</span> <span class="nf">powerset</span><span class="p">(</span><span class="n">universe</span><span class="p">)</span>
+
+<span class="n">count_contributing_subsets</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">subsets</span><span class="p">:</span>
+    <span class="n">contributes</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">A</span><span class="p">)</span> <span class="ow">and</span> <span class="nf">any</span><span class="p">((</span><span class="n">y</span> <span class="o">!=</span> <span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">A</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">contributes</span><span class="p">:</span>
+        <span class="n">count_contributing_subsets</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s"> contributes in </span><span class="si">{</span><span class="n">count_contributing_subsets</span><span class="si">}</span><span class="s"> subsets of </span><span class="si">{</span> <span class="si">{</span><span class="mi">1</span><span class="p">,...,</span><span class="si">{</span><span class="n">n</span><span class="si">}}</span> <span class="si">}</span><span class="s">. In total 2^n-(n+1)=</span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">subsets</span><span class="p">)</span><span class="si">}</span><span class="s"> subsets.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <p><em>Expected output:</em></p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3 contributes in 768 subsets of {1,...,11}. In total 2^n-(n+1)=2036 subsets.
+</code></pre></div></div> <p><strong>What this computation is counting</strong></p> <p>The idea is to <strong>fix a single value</strong> \(x\) and ask:</p> <p>Among all subsets \(A \subseteq \{1,2,\dots,n\}\), in how many of them does \(x\) actually <em>contribute</em> to the overall sum \(S(n)\)?</p> <p>An element \(x\) contributes to a subset \(A\) exactly when:</p> <ol> <li>\(x \in A\), and</li> <li>there exists some <em>other</em> element \(y \in A\) with \(y \neq x\) such that<br> \(x \mid y.\)</li> </ol> <p>In words: the subset must contain \(x\) <strong>and</strong> at least one <em>distinct multiple</em> of \(x\).</p> <p><strong>Why this is useful for a combinatorial approach</strong></p> <p>The naive brute-force approach computes \(S(n)\) by iterating over all subsets and summing contributions inside each subset.</p> <p>Here we flip the perspective:</p> <ul> <li>Instead of asking “what is the contribution of this subset?”,</li> <li>we ask “in how many subsets does this particular \(x\) contribute?”.</li> </ul> <p>If we can count the number of subsets where \(x\) contributes, then the total contribution of \(x\) to \(S(n)\) is simply:</p> \[x \cdot \#\{A \subseteq \{1,\dots,n\} : x \in A \text{ and } \exists\, y \in A,\ y \neq x,\ x \mid y\}.\] <p>Summing this quantity over all \(x \in \{1,\dots,n\}\) reconstructs \(S(n)\), but in a way that is much more amenable to mathematical counting arguments (and avoids enumerating all subsets explicitly).</p> <p><strong>About the “total number of subsets” mentioned</strong></p> <p>The enumeration in this experiment typically ignores subsets of size 0 or 1, because such subsets can never contain a pair of distinct elements where one divides the other. So the total number of considered subsets is</p> \[2^n - (n+1),\] <p>i.e. all subsets minus the empty set and the \(n\) singletons.</p> <p><br></p> <h3 id="counting-contributing-subsets-via-binomial-coefficients">Counting Contributing Subsets via Binomial Coefficients</h3> <p>Having identified how often a fixed element \(x\) contributes across all subsets, we now replace explicit subset enumeration by a counting argument based on binomial coefficients.<br> The code below implements this idea in a direct and still-naive form, preparing the ground for a fully closed-form combinatorial solution.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute n! for n &gt;= 0 (naive iterative implementation).</span><span class="sh">"""</span>
+    <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+    <span class="n">fac</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">fac</span> <span class="o">*=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">fac</span>
+
+
+<span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute the binomial coefficient </span><span class="sh">'</span><span class="s">n choose k</span><span class="sh">'</span><span class="s"> (naive implementation).</span><span class="sh">"""</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">//</span> <span class="p">(</span><span class="nf">factorial</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c1"># We want to count how many subsets A ⊆ {1,...,n} satisfy:
+#   (1) x ∈ A, and
+#   (2) there exists some y ∈ A with y ≠ x and x | y.
+#
+# In other words: A must contain x and at least one *distinct multiple* of x.
+</span>
+<span class="c1"># Count the multiples of x in {1,...,n}, excluding x itself.
+# Multiples of x are: x, 2x, 3x, ..., floor(n/x)*x.
+# That is floor(n/x) many multiples total, and removing x leaves:
+</span><span class="n">num_multiples_of_x_excluding_x</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="c1"># Partition the universe {1,...,n} into:
+#   - the required element {x}
+#   - the "good" elements: multiples of x (excluding x), from which we must pick ≥ 1
+#   - the "free" elements: all remaining numbers (not equal to x and not a multiple of x),
+#     from which we may pick any amount (including 0)
+</span><span class="n">m</span> <span class="o">=</span> <span class="n">num_multiples_of_x_excluding_x</span>               <span class="c1"># "good" pool size
+</span><span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>                                    <span class="c1"># "free" pool size (everything else)
+</span>
+<span class="c1"># Now count subsets by two independent choices:
+#   - choose i &gt;= 1 elements from the m "good" multiples (to ensure x divides something)
+#   - choose j &gt;= 0 elements from the r "free" elements (arbitrary)
+#
+# Each pair (i, j) yields: choose(m, i) * choose(r, j) subsets,
+# and we always include x itself (so x ∈ A is guaranteed).
+#
+# This is still a brute-force sum over i and j, but it avoids enumerating subsets A.
+</span>
+<span class="c1"># Sanity check targets for (n=11):
+#   x=1 -&gt; 1023
+#   x=2 -&gt; 960
+#   x=3 -&gt; 768
+</span><span class="n">count_contributing_subsets</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>            <span class="c1"># must pick at least one multiple of x
+</span>    <span class="n">ways_pick_multiples</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>        <span class="c1"># may pick any number of remaining elements
+</span>        <span class="n">ways_pick_rest</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">count_contributing_subsets</span> <span class="o">+=</span> <span class="n">ways_pick_multiples</span> <span class="o">*</span> <span class="n">ways_pick_rest</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s"> contributes in </span><span class="si">{</span><span class="n">count_contributing_subsets</span><span class="si">}</span><span class="s"> subsets of </span><span class="si">{</span> <span class="si">{</span><span class="mi">1</span><span class="p">,...,</span><span class="si">{</span><span class="n">n</span><span class="si">}}</span> <span class="si">}</span><span class="s">. In total 2^n-(n+1)=</span><span class="si">{</span><span class="mi">2</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s"> subsets.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <p><em>Expected output:</em></p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3 contributes in 768 subsets of {1,...,11}. In total 2^n-(n+1)=2036 subsets.
+</code></pre></div></div> <p>This code counts, for fixed values of \(n\) and \(x\), how many subsets \(A \subseteq \{1,\dots,n\}\) satisfy the condition that <strong>\(x\) contributes</strong> to the sum \(S(n)\), without explicitly enumerating all subsets.</p> <p>The helper functions</p> <ul> <li> <code class="language-plaintext highlighter-rouge">factorial(n)</code> computes \(n!\),</li> <li> <code class="language-plaintext highlighter-rouge">choose(n, k)</code> computes the binomial coefficient \(\binom{n}{k},\) which counts the number of ways to choose \(k\) elements from a set of size \(n\). These are used as basic counting primitives.</li> </ul> <p>A subset \(A\) contributes for a given \(x\) if and only if:</p> <ol> <li>\(x \in A\), and</li> <li>\(A\) contains at least one <em>distinct multiple</em> of \(x\).</li> </ol> <p>To exploit this structure, the set \(\{1,\dots,n\}\) is partitioned into three disjoint parts:</p> <ul> <li>the fixed element \(\{x\}\), which must always be included,</li> <li>the set of <em>multiples of</em> \(x\) greater than \(x\) itself,</li> <li>all remaining elements, which are neither equal to \(x\) nor divisible by \(x\).</li> </ul> <p>If there are \(m\) multiples of \(x\) larger than \(x\) and \(r\) remaining elements, then every contributing subset is uniquely determined by:</p> <ul> <li>choosing at least one element from the \(m\) multiples, and</li> <li>choosing any number of elements from the \(r\) remaining elements.</li> </ul> <p>For a fixed choice of:</p> <ul> <li>\(i \ge 1\) multiples of \(x\), and</li> <li>\(j \ge 0\) remaining elements,</li> </ul> <p>there are</p> \[\binom{m}{i} \cdot \binom{r}{j}\] <p>distinct subsets, and each of them automatically contains \(x\).</p> <p>The double loop over \(i\) and \(j\) sums these contributions, effectively counting all subsets in which \(x\) contributes, but without ever listing the subsets themselves.</p> <p>This approach still performs explicit summation, but it has replaced subset enumeration by pure combinatorial counting. It demonstrates how the contribution of a single element \(x\) can be expressed in terms of binomial coefficients, a small step toward deriving a closed-form expression for \(S(n)\).</p> <p><br></p> <h3 id="element-wise-computation-of-sn-via-combinatorial-counting">Element-Wise Computation of \(S(n)\) via Combinatorial Counting</h3> <p>Building on the contribution-counting idea for a fixed element \(x\), the following implementation assembles the full value of \(S(n)\) by summing the weighted contributions of all \(x \in \{1,\dots,n\}\). While still computationally naive, it avoids explicit subset enumeration and makes the underlying combinatorial structure of the problem explicit.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via element-wise combinatorial counting (still naive).</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Number of remaining elements (neither x nor a multiple of x)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Count how many subsets A ⊆ {1,...,n} make x contribute
+</span>        <span class="n">count_contributing_subsets</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Choose at least one multiple of x
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">ways_pick_multiples</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+            <span class="c1"># Choose any number of remaining elements
+</span>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">ways_pick_rest</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                <span class="n">count_contributing_subsets</span> <span class="o">+=</span> <span class="n">ways_pick_multiples</span> <span class="o">*</span> <span class="n">ways_pick_rest</span>
+
+        <span class="c1"># Each such subset contributes x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">count_contributing_subsets</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="nc">S</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1"># should be 9855
+</span></code></pre></div></div> <p><em>Expected output:</em></p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>9855
+</code></pre></div></div> <p>This function computes \(S(n)\) by summing the contributions of each individual element \(x \in \{1,\dots,n\}\) separately, rather than iterating over all subsets.</p> <p>For a fixed value of \(x\), the code counts how many subsets \(A \subseteq \{1,\dots,n\}\) satisfy the condition that \(x\) contributes, i.e. that \(A\) contains \(x\) and at least one other element divisible by \(x\). This is done by partitioning the universe into multiples of \(x\) and all remaining elements, and then counting valid subsets using binomial coefficients.</p> <p>Once the number of contributing subsets for \(x\) has been determined, it is multiplied by \(x\) itself, since each such subset contributes exactly \(x\) to the overall sum. Summing this quantity over all \(x\) reconstructs \(S(n)\).</p> <p>With this element-wise counting approach, we can already evaluate \(S(n)\) for moderately larger values of \(n\) than before. For example, we can compute \(S(20):\)</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div> <p><em>Expected output:</em></p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>18626559
+</code></pre></div></div> <p>And even \(S(200)\):</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+</code></pre></div></div> <p><em>Expected output:</em></p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2664683200606651329234017512985870589238327005040580368858611711
+</code></pre></div></div> <p>These results confirm the correctness of the combinatorial reformulation and demonstrate a significant improvement over the original subset enumeration (try it yourself for different small values of \(n\) and compare with our initial naive solution).</p> <p>Nevertheless, the implementation still performs explicit summations for each \(x \in \{1,\dots,n\}\) and relies on repeated evaluations of binomial coefficients. As a result, the runtime grows too quickly, and the method becomes impractical for large values of \(n\)—in particular for the target value \(n = 10^{14}\). A further simplification to closed-form expressions is therefore required.</p> <hr> <p><br></p> <h2 id="step-by-step-combinatorial-simplifications">Step-by-Step Combinatorial Simplifications</h2> <h3 id="first-simplification-collapsing-the-inner-sum">First Simplification: Collapsing the Inner Sum</h3> <p>As a first optimization, we focus on the innermost loop of the combinatorial expression. By recognizing that the sum over all binomial coefficients corresponding to the “free” elements does not depend on how many multiples of \(x\) are chosen, this inner summation can be factored out and simplified. This reduces redundant computation and reveals a familiar combinatorial pattern that will be exploited further in the next steps.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via element-wise combinatorial counting (inner sum simplified).</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># r = number of remaining elements (neither x nor a multiple of x)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Precompute the inner sum over j (still written as a sum here).
+</span>        <span class="c1"># This counts all ways to choose any subset of the r "free" elements.
+</span>        <span class="n">sum_over_rest</span> <span class="o">=</span> <span class="nf">sum</span><span class="p">(</span><span class="nf">choose</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">count_contributing_subsets</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># must pick at least one multiple of x
+</span>            <span class="n">ways_pick_multiples</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">count_contributing_subsets</span> <span class="o">+=</span> <span class="n">ways_pick_multiples</span> <span class="o">*</span> <span class="n">sum_over_rest</span>
+
+        <span class="c1"># Each contributing subset adds x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">count_contributing_subsets</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+</code></pre></div></div> <p><br></p> <h3 id="second-simplification-replacing-the-inner-binomial-sum-by-a-power-of-two">Second Simplification: Replacing the Inner Binomial Sum by a Power of Two</h3> <p>The inner sum over the “free” elements counts all ways to choose an arbitrary subset from a pool of size \(r\). In combinatorial terms, this is exactly the size of a power set:</p> \[\sum_{j=0}^{r} \binom{r}{j} = 2^{r}.\] <p>Using the notation from above, we have:</p> <ul> <li>\(m = \left\lfloor \frac{n}{x} \right\rfloor - 1\) (multiples of \(x\) larger than \(x\)),</li> <li>\(r = n - m - 1\) (all remaining “free” elements).</li> </ul> <p>The inner sum runs over all possible choices of elements from the \(r\) “free” elements. For each fixed \(j\), the binomial coefficient \(\binom{r}{j}\) counts the number of subsets of size exactly \(j\). Summing over all values of \(j\) therefore counts <strong>all subsets</strong> of a set with \(r\) elements.</p> <p>Equivalently, each of the \(r\) elements can be either included or excluded independently, giving \(2 \cdot 2 \cdots 2 = 2^{r}\) possible subsets.</p> <p>Another intuitive way to see this identity is through a binary encoding: Consider the \(r\) “free” elements and fix an ordering of them. Any subset of these elements can be represented by a binary string of length \(r\): the \(k\)-th bit is set to \(1\) if the \(k\)-th element is included in the subset, and set to \(0\) otherwise. Each bit has two independent choices (on or off), so the total number of such binary strings is \(2 \cdot 2 \cdots 2 = 2^{r}.\) This gives a one-to-one correspondence between subsets and binary strings of length \(r\), showing that there are exactly \(2^{r}\) subsets. Grouping these subsets by the number of bits set to \(1\) recovers the binomial sum: there are \(\binom{r}{j}\) binary strings with exactly \(j\) ones, and summing over \(j = 0,\dots,r\) yields</p> \[\sum_{j=0}^{r} \binom{r}{j} = 2^{r}.\] <p>which in code becomes a single exponentiation. This removes an entire loop and makes the structure of the count much clearer: for each valid choice of at least one multiple of \(x\), the remaining elements can be included or excluded independently, giving \(2^{r}\) possibilities.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via element-wise combinatorial counting (inner sum = power of 2).</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># r = number of remaining elements (neither x nor a multiple of x)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># All subsets of the r "free" elements: sum_{j=0}^r C(r,j) = 2^r
+</span>        <span class="n">sum_over_rest</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">r</span>
+
+        <span class="n">count_contributing_subsets</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># must pick at least one multiple of x
+</span>            <span class="n">ways_pick_multiples</span> <span class="o">=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">count_contributing_subsets</span> <span class="o">+=</span> <span class="n">ways_pick_multiples</span> <span class="o">*</span> <span class="n">sum_over_rest</span>
+
+        <span class="c1"># Each contributing subset adds x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">count_contributing_subsets</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+</code></pre></div></div> <p><br></p> <h3 id="third-simplification-factoring-the-independent-choices">Third Simplification: Factoring the Independent Choices</h3> <p>In this step, we make the independence of the two combinatorial choices explicit. The selection of multiples of \(x\) and the selection of the remaining elements are handled separately: we first sum over all nonempty choices of multiples of \(x\), and only then multiply once by the number of possible choices for the remaining elements. This removes another unnecessary dependency inside the loop and brings the expression closer to a closed-form count.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via element-wise combinatorial counting (factor out 2^r).
+
+    Improvement vs. the previous version:
+      - We no longer multiply by 2^r inside the i-loop.
+      - Instead, we first compute the i-sum: sum_{i=1..m} C(m,i),
+        and only then multiply once by 2^r.
+    </span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># r = number of remaining elements (neither x nor a multiple of x)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Count ways to pick at least one element from the m "good" multiples:
+</span>        <span class="c1">#   sum_{i=1..m} C(m, i)
+</span>        <span class="n">count_nonempty_multiple_choices</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">count_nonempty_multiple_choices</span> <span class="o">+=</span> <span class="nf">choose</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># Independent choices for the r "free" elements:
+</span>        <span class="c1">#   sum_{j=0..r} C(r, j) = 2^r
+</span>        <span class="n">count_free_choices</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">r</span>
+
+        <span class="c1"># Each valid subset contributes x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">count_nonempty_multiple_choices</span> <span class="o">*</span> <span class="n">count_free_choices</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+</code></pre></div></div> <p><br></p> <h3 id="fourth-simplification-eliminating-the-final-inner-sum">Fourth Simplification: Eliminating the Final Inner Sum</h3> <p>At this stage, both remaining summations can be replaced by closed-form expressions. The number of ways to select at least one multiple of \(x\) becomes \(2^{m}-1\), while the number of ways to select any subset of the remaining elements is \(2^{r}\). This removes all inner loops and yields a compact formula for the contribution of each \(x\), bringing the computation of \(S(n)\) close to its final combinatorial form.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via element-wise combinatorial counting (closed form for both sums).
+
+    Improvement vs. the previous version:
+      - The sum over i = 1..m of C(m, i) is replaced by its closed form 2^m - 1.
+      - Together with the already simplified factor 2^r, this removes the inner loop
+        entirely.
+    </span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># r = number of remaining elements (neither x nor a multiple of x)
+</span>        <span class="n">r</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Number of nonempty choices of multiples of x:
+</span>        <span class="c1">#   sum_{i=1..m} C(m, i) = 2^m - 1
+</span>        <span class="n">count_nonempty_multiple_choices</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Number of choices for the remaining "free" elements:
+</span>        <span class="c1">#   sum_{j=0..r} C(r, j) = 2^r
+</span>        <span class="n">count_free_choices</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">r</span>
+
+        <span class="c1"># Each valid subset contributes x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">count_nonempty_multiple_choices</span> <span class="o">*</span> <span class="n">count_free_choices</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+</code></pre></div></div> <p><br></p> <h3 id="fifth-simplification-collapsing-the-expression-into-a-single-power-difference">Fifth Simplification: Collapsing the Expression into a Single Power Difference</h3> <p>In this final simplification step, the remaining combinatorial factors are combined algebraically. The product \((2^{m} - 1)\cdot 2^{r}\) is rewritten as a difference of two powers of two, yielding a compact expression for the number of subsets in which a given element \(x\) contributes. As a result, the contribution of each \(x\) can now be computed in constant time, leaving only a single loop over \(x \in \{1,\dots,n\}\).</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) via a closed-form contribution per element x.</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Using:
+</span>        <span class="c1">#   (2^m - 1) * 2^r
+</span>        <span class="c1"># with r = n - m - 1,
+</span>        <span class="c1"># this simplifies algebraically to:
+</span>        <span class="c1">#   2^(n-1) - 2^r
+</span>        <span class="n">contribution_count</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Each such subset contributes x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+</code></pre></div></div> <p><br></p> <h3 id="sixth-simplification-reusing-the-global-power-term">Sixth Simplification: Reusing the Global Power Term</h3> <p>In this step, we observe that the term \(2^{\,n-1}\) is independent of \(x\) and can be computed once and reused for all iterations. Only the subtraction term \(2^{\,n-m-1}\) depends on \(x\) through the number of multiples of \(x\).</p> <p>This change does not alter the mathematical structure of the formula, but it removes redundant recomputation and clarifies the separation between the global contribution shared by all elements and the correction term specific to each \(x\). The result is a cleaner and slightly more efficient implementation of the final closed-form expression for \(S(n)\).</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) using a shared power-of-two term.</span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># This term does not depend on x and can be reused
+</span>    <span class="n">base_power</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Contribution count for x:
+</span>        <span class="c1">#   2^(n-1) - 2^(n-m-1)
+</span>        <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Each such subset contributes x exactly once
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+</code></pre></div></div> <hr> <p><br></p> <h2 id="grouping-values-of-x-by-constant-quotients">Grouping Values of \(x\) by Constant Quotients</h2> <p>In the previous formula, the contribution of each element \(x\) depends on the value</p> \[m = \left\lfloor \frac{n}{x} \right\rfloor - 1,\] <p>rather than on \(x\) itself. A closer inspection reveals that this quantity remains constant over large contiguous ranges of \(x\). The following code illustrates this phenomenon by grouping values of \(x\) according to the same value of \(m\). Making this structure explicit is the key to the next optimization step, where we replace the loop over individual \(x\) by a loop over ranges with identical combinatorial behavior.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">q</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of x-values per printed row
+</span>
+<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">base_power</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">current_m</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># m = number of multiples of x in {1,...,n}, excluding x itself
+</span>    <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="c1"># Collect (x, m) pairs for printing
+</span>    <span class="k">if</span> <span class="n">current_m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">current_m</span> <span class="o">=</span> <span class="n">m</span>
+
+    <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="n">current_m</span> <span class="ow">or</span> <span class="nf">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="n">q</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">m = </span><span class="si">{</span><span class="n">current_m</span><span class="si">}</span><span class="s">: </span><span class="sh">"</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_m</span> <span class="o">=</span> <span class="n">m</span>
+
+    <span class="n">row</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># print remaining row
+</span><span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">m = </span><span class="si">{</span><span class="n">current_m</span><span class="si">}</span><span class="s">: </span><span class="sh">"</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+
+</code></pre></div></div> <p><em>Output</em>:</p> <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>m = 99:  [1]
+m = 49:  [2]
+m = 32:  [3]
+m = 24:  [4]
+m = 19:  [5]
+m = 15:  [6]
+m = 13:  [7]
+m = 11:  [8]
+m = 10:  [9]
+m = 9:  [10]
+m = 8:  [11]
+m = 7:  [12]
+m = 6:  [13, 14]
+m = 5:  [15, 16]
+m = 4:  [17, 18, 19, 20]
+m = 3:  [21, 22, 23, 24, 25]
+m = 2:  [26, 27, 28, 29, 30, 31, 32, 33]
+m = 1:  [34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+m = 0:  [51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+</code></pre></div></div> <p>This output groups values of \(x\) by the value of</p> \[m = \left\lfloor \frac{n}{x} \right\rfloor - 1\] <p>for \(n = 100\). For small values of \(x\), the quotient \(\left\lfloor \frac{n}{x} \right\rfloor\) changes rapidly, so each value of \(x\) tends to produce a distinct value of \(m\). As \(x\) increases, the quotient varies more slowly, and the same value of \(m\) applies to increasingly large ranges of \(x\).</p> <p>This is why the early groups contain only one element (for example, \(x = 1\) gives \(m = 99\)), while later groups grow wider and wider. In particular, once \(x &gt; \frac{n}{2}\), we have \(\left\lfloor \frac{n}{x} \right\rfloor = 1\), so \(m = 0\) and all remaining values of \(x\) fall into a single large group.</p> <p>This behavior reflects a general property of integer division and is the reason why the final summation over \(x\) can be optimized by iterating over ranges with constant \(m\) rather than over individual values of \(x\).</p> <p>Below you find a small helper snippet that makes the structure behind the quantity \(m = \left\lfloor \frac{n}{x} \right\rfloor - 1\) explicit.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Explore ranges of x for which
+#     m = floor(n / x) - 1
+# is constant.
+</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Fix a value of m
+</span><span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># We want all x such that:
+#     floor(n / x) - 1 = m
+# ⇔  floor(n / x) = m + 1
+#
+# This inequality is equivalent to:
+#     m + 1 ≤ n / x &lt; m + 2
+#
+# Solving for x gives:
+#     n / (m + 2) &lt; x ≤ n / (m + 1)
+</span>
+<span class="n">left</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>   <span class="c1"># smallest integer x satisfying n/x &lt; m+2
+</span><span class="n">right</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>     <span class="c1"># largest integer x satisfying n/x ≥ m+1
+</span>
+<span class="n">x_range</span> <span class="o">=</span> <span class="nf">range</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x_range</span> <span class="c1"># should match the result obtained above
+</span></code></pre></div></div> <p><em>Output</em>:</p> <pre><code class="language-test">range(26, 34) 
+</code></pre> <p>By fixing a value of \(m\) and solving the corresponding inequality for \(x\), we can explicitly determine all values of \(x\) for which the combinatorial contribution depends on the same parameter \(m\). The resulting interval shows that many consecutive values of \(x\) share identical behavior, especially for larger \(x\).</p> <p>This observation is crucial for a further optimization: instead of summing contributions for each \(x\) individually, we can group values of \(x\) with the same \(m\) and handle their total contribution in one step.</p> <p><br></p> <h3 id="summing-contributions-over-ranges-of-x">Summing Contributions over Ranges of \(x\)</h3> <p>Having identified that the quantity</p> \[m = \left\lfloor \frac{n}{x} \right\rfloor - 1\] <p>remains constant over contiguous intervals of \(x\), we can now exploit this structure directly in the computation of \(S(n)\). Instead of iterating over each value of \(x\) individually, the following code groups together all \(x\) sharing the same \(m\) and accumulates their contributions in bulk. This marks a decisive shift from element-wise summation to interval-wise aggregation.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) by grouping x-values with the same m = n//x - 1 (range batching).
+
+    Conceptually unchanged vs. the previous closed-form version:
+      - We still use that each x contributes: x * (2^(n-1) - 2^(n-m-1)).
+      - The only change in viewpoint is that we do not iterate over every x in 1..n.
+        Instead, we iterate over values of m and add the contributions of *ranges* of x
+        where m is constant.
+
+    Note:
+      - This is still not fully optimized: the summation sum(range(...)) is a bit slow
+        and will be replaced later by an O(1) arithmetic-series formula.
+    </span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">base_power</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># -------------------------------------------------------------------------
+</span>    <span class="c1"># Phase 1: Iterate over possible m-values and find intervals [x_left, x_right]
+</span>    <span class="c1"># such that for all x in that interval:
+</span>    <span class="c1">#     m = floor(n / x) - 1
+</span>    <span class="c1">#
+</span>    <span class="c1"># Solving floor(n/x) = m+1 gives:
+</span>    <span class="c1">#     n/(m+2) &lt; x &lt;= n/(m+1)
+</span>    <span class="c1"># Hence:
+</span>    <span class="c1">#     x_left  = floor(n/(m+2)) + 1
+</span>    <span class="c1">#     x_right = floor(n/(m+1))
+</span>    <span class="c1"># -------------------------------------------------------------------------
+</span>    <span class="n">last_left</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">last_right</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">x_left</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">x_right</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Once the interval collapses to a single x, we stop the batching phase
+</span>        <span class="c1"># and handle the remaining small x-values individually.
+</span>        <span class="k">if</span> <span class="n">x_left</span> <span class="o">==</span> <span class="n">x_right</span><span class="p">:</span>
+            <span class="n">last_left</span> <span class="o">=</span> <span class="n">x_left</span>
+            <span class="n">last_right</span> <span class="o">=</span> <span class="n">x_right</span>
+            <span class="k">break</span>
+
+        <span class="c1"># For this entire interval, m is constant, so the contribution factor is constant.
+</span>        <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Sum contributions over all x in [x_left, x_right]:
+</span>        <span class="c1">#   sum_{x=x_left..x_right} x * contribution_count
+</span>        <span class="c1"># = (sum of x over the interval) * contribution_count
+</span>        <span class="c1">#
+</span>        <span class="c1"># Still computed "naively" as in your snippet (we'll optimize this later).
+</span>        <span class="n">total</span> <span class="o">+=</span> <span class="nf">sum</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="n">x_left</span><span class="p">,</span> <span class="n">x_right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="c1"># -------------------------------------------------------------------------
+</span>    <span class="c1"># Phase 2: Handle the remaining x-values individually.
+</span>    <span class="c1">#
+</span>    <span class="c1"># The batching above stops when x_left == x_right, i.e. the next interval has
+</span>    <span class="c1"># length 1. From that point downward, intervals are tiny, so we just compute
+</span>    <span class="c1"># x * factor directly for x = x_left, x_left-1, ..., 1.
+</span>    <span class="c1"># -------------------------------------------------------------------------
+</span>    <span class="k">assert</span> <span class="n">last_left</span> <span class="o">==</span> <span class="n">last_right</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">last_left</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1234567891234567891234567891</span> <span class="o">==</span> <span class="mi">156208504659765295659151493</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1234567891234567891234567891</span> <span class="o">==</span> <span class="mi">617453040502786108363224072</span>
+</code></pre></div></div> <p>Note that we can now also compute \(S(2000)\) or \(S(2 \cdot 10^5)\) in feasible time. However, larger values of \(n\) are still hard for our approach.</p> <p><br></p> <h3 id="replacing-interval-summation-by-a-closed-form-formula">Replacing Interval Summation by a Closed-Form Formula</h3> <p>In this optimization step, we eliminate the remaining inner summation over intervals of \(x\) by using the closed-form formula for an arithmetic series. Once values of \(x\) are grouped by a constant value of</p> \[m = \left\lfloor \frac{n}{x} \right\rfloor - 1,\] <p>their total contribution can be computed in constant time. This removes all residual linear work inside the main loop and yields an efficient, fully combinatorial implementation of \(S(n)\).</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) using range batching + O(1) arithmetic-series interval sums.
+
+    We use the closed-form per-element contribution:
+        x * (2^(n-1) - 2^(n-m-1)),
+    where
+        m = n//x - 1
+    is constant over contiguous ranges of x.
+
+    Compared to the previous batching version:
+      - we compute powers via pow(2, k),
+      - and replace sum(range(x_left, x_right+1)) by the O(1) interval sum formula.
+    </span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">base_power</span> <span class="o">=</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Phase 1: iterate over m-values and aggregate whole x-intervals at once
+</span>    <span class="n">stop_x</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Interval of x where floor(n/x) - 1 == m:
+</span>        <span class="c1">#   n/(m+2) &lt; x &lt;= n/(m+1)
+</span>        <span class="n">x_left</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">x_right</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">x_left</span> <span class="o">==</span> <span class="n">x_right</span><span class="p">:</span>
+            <span class="n">stop_x</span> <span class="o">=</span> <span class="n">x_left</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Constant factor for all x in this interval (depends only on m)
+</span>        <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Sum_{x=x_left..x_right} x  (arithmetic series, computed in O(1))
+</span>        <span class="n">sum_x_interval</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_left</span> <span class="o">+</span> <span class="n">x_right</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_right</span> <span class="o">-</span> <span class="n">x_left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">sum_x_interval</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="c1"># Phase 2: handle the remaining small x-values individually
+</span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">stop_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1234567891234567891234567891</span> <span class="o">==</span> <span class="mi">156208504659765295659151493</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span> <span class="o">%</span> <span class="mi">1234567891234567891234567891</span> <span class="o">==</span> <span class="mi">617453040502786108363224072</span>
+</code></pre></div></div> <p><br></p> <h3 id="optimized-implementation-with-optional-modulus">Optimized Implementation with Optional Modulus</h3> <p>We now arrive at a optimized version of the algorithm that combines all previous combinatorial insights. By batching values of \(x\) with identical \(m = \left\lfloor \frac{n}{x} \right\rfloor - 1,\) using closed-form arithmetic-series sums, and supporting fast modular exponentiation, the computation of \(S(n)\) becomes feasible even for very large values of \(n\).</p> <p>This implementation allows the use of an optional modulus to keep intermediate values manageable. When a modulus is provided, all arithmetic is performed modulo that value; otherwise, the exact (and potentially enormous) integer result is computed. The remaining runtime depends mainly on the number of distinct values of \(m\), which grows on the order of \(O(\sqrt{n})\), making this approach scalable to inputs far beyond what brute-force methods could handle.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+
+<span class="k">def</span> <span class="nf">S</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">modulus</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Compute S(n) using range batching and closed-form interval sums.
+
+    This version supports an optional modulus:
+      - If `modulus` is None, all computations are done with exact integers.
+      - If `modulus` is given, all arithmetic is performed modulo `modulus`.
+
+    Core idea (unchanged):
+      - Each x contributes: x * (2^(n-1) - 2^(n-m-1)),
+        where m = n//x - 1.
+      - Values of x are grouped into intervals where m is constant.
+      - Contributions over each interval are summed using the arithmetic series formula.
+    </span><span class="sh">"""</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Precompute the global power term (modular or exact)
+</span>    <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">base_power</span> <span class="o">=</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">base_power</span> <span class="o">=</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">modulus</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------
+</span>    <span class="c1"># Phase 1: batch ranges of x where m = floor(n/x) - 1 is constant
+</span>    <span class="c1"># ------------------------------------------------------------------
+</span>    <span class="n">stop_x</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># All x satisfying floor(n/x) - 1 = m lie in:
+</span>        <span class="c1">#   n/(m+2) &lt; x &lt;= n/(m+1)
+</span>        <span class="n">x_left</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">x_right</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">x_left</span> <span class="o">==</span> <span class="n">x_right</span><span class="p">:</span>
+            <span class="n">stop_x</span> <span class="o">=</span> <span class="n">x_left</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Contribution factor for this whole interval
+</span>        <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">modulus</span><span class="p">)</span>
+            <span class="n">contribution_count</span> <span class="o">%=</span> <span class="n">modulus</span>
+
+        <span class="c1"># Sum of x over the interval [x_left, x_right]
+</span>        <span class="n">interval_sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_left</span> <span class="o">+</span> <span class="n">x_right</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_right</span> <span class="o">-</span> <span class="n">x_left</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">interval_sum</span> <span class="o">%=</span> <span class="n">modulus</span>
+
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">interval_sum</span> <span class="o">*</span> <span class="n">contribution_count</span>
+        <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">%=</span> <span class="n">modulus</span>
+
+    <span class="c1"># ------------------------------------------------------------------
+</span>    <span class="c1"># Phase 2: handle the remaining small x-values individually
+</span>    <span class="c1"># ------------------------------------------------------------------
+</span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">stop_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">modulus</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">contribution_count</span> <span class="o">=</span> <span class="n">base_power</span> <span class="o">-</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">modulus</span><span class="p">)</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">contribution_count</span>
+            <span class="n">total</span> <span class="o">%=</span> <span class="n">modulus</span>
+
+    <span class="k">return</span> <span class="n">total</span>
+
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">==</span> <span class="mi">9855</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">==</span> <span class="mi">18626559</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2664683200606651329234017512985870589238327005040580368858611711</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1234567891234567891234567891</span><span class="p">)</span> <span class="o">==</span> <span class="mi">156208504659765295659151493</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1234567891234567891234567891</span><span class="p">)</span> <span class="o">==</span> <span class="mi">617453040502786108363224072</span>
+<span class="k">assert</span> <span class="nc">S</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1234567891234567891234567891</span><span class="p">)</span> <span class="o">==</span> <span class="mi">481424271854145029777746921</span>
+</code></pre></div></div> <p>Now, also solutions for \(S(2 \cdot 10^{10})\) can be computed without problems (considering a modulus which is sufficiently small). Computing \(S(10^{14}, 1234567891)\) still needs around 2-3 minutes.</p> </div> </article> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="external nofollow noopener">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="external nofollow noopener">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/neural-nets-and-backprop/">Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/online-batch-estimate-cov-mu/">Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2025/mahalanobis-distance/">The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution</a> </li> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script defer src="/assets/js/giscus-setup.js"></script> <noscript> Please enable JavaScript to view the <a href="http://giscus.app/?ref_noscript" rel="external nofollow noopener" target="_blank">comments powered by giscus.</a> </noscript> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: January 06, 2026. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?b608866baffe761c7f8f7670a3310d0f"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/tabs.min.js?b8748955e1076bbe0dabcf28f2549fdc"></script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
