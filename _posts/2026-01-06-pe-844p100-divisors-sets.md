@@ -19,6 +19,7 @@ images:
   slider: false
 ---
 
+<br>
 ## Problem Description
 
 Take the numbers from $$1$$ up to some number $$n$$ and consider **all possible subsets**
@@ -36,7 +37,7 @@ Finally, we sum these values over **all** subsets of $$\{1,2,\dots,n\}$$.
 Our task is to compute the same quantity for a very large value of $$n$$ (e.g., $$10^{12}$$), and report the
 answer modulo a given number.
 
-
+<br>
 ### Examples
 
 - Subset $$A=\{2,3\}$$  
@@ -58,7 +59,7 @@ answer modulo a given number.
   A single element cannot divide another *distinct* element.  
   Contribution: $$0$$
 
-
+<br>
 ### More Formal Problem Description
 
 Let $$A$$ be a finite subset of the positive integers.
@@ -158,6 +159,7 @@ The goal is to compute $$S(n)$$, defined as follows:
 
 The snippet runs this for $$n = 11$$ and verifies the known value $$S(11) = 9855$$.
 
+<br>
 ### The above Code is slow
 However, this becomes infeasible quickly. Here is why:
 
@@ -207,6 +209,7 @@ how often it contributes across all subsets.
 This shift lays the groundwork for a fully combinatorial formulation that avoids
 explicit subset enumeration.
 
+<br>
 ### Counting Contributions per Element (Still Brute Force)
 
 ```python
@@ -281,6 +284,7 @@ $$
 
 i.e. all subsets minus the empty set and the $$n$$ singletons.
 
+<br>
 ### Counting Contributing Subsets via Binomial Coefficients
 
 Having identified how often a fixed element $$x$$ contributes across all subsets,
@@ -403,7 +407,7 @@ It demonstrates how the contribution of a single element $$x$$ can be expressed 
 of binomial coefficients, a small step toward deriving a closed-form expression for
 $$S(n)$$.
 
-
+<br>
 ### Element-Wise Computation of $$S(n)$$ via Combinatorial Counting
 
 Building on the contribution-counting idea for a fixed element $$x$$, the following
@@ -528,6 +532,7 @@ assert S(20) == 18626559
 assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
+<br>
 ### Second Simplification: Replacing the Inner Binomial Sum by a Power of Two
 
 The inner sum over the "free" elements counts all ways to choose an arbitrary subset from a pool of size $$r$$. In combinatorial terms, this is exactly the size of a power set:
@@ -595,6 +600,7 @@ assert S(20) == 18626559
 assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
+<br>
 ### Third Simplification: Factoring the Independent Choices
 
 In this step, we make the independence of the two combinatorial choices explicit.
@@ -643,6 +649,7 @@ assert S(20) == 18626559
 assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
+<br>
 ### Fourth Simplification: Eliminating the Final Inner Sum
 
 At this stage, both remaining summations can be replaced by closed-form expressions.
@@ -689,6 +696,7 @@ assert S(20) == 18626559
 assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
+<br>
 ### Fifth Simplification: Collapsing the Expression into a Single Power Difference
 
 In this final simplification step, the remaining combinatorial factors are combined
@@ -724,6 +732,7 @@ assert S(20) == 18626559
 assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
 ```
 
+<br>
 ### Sixth Simplification: Reusing the Global Power Term
 
 In this step, we observe that the term $$2^{\,n-1}$$ is independent of $$x$$ and can be computed once and reused for all iterations. Only the subtraction term $$2^{\,n-m-1}$$ depends on $$x$$ through the number of
@@ -879,7 +888,7 @@ The resulting interval shows that many consecutive values of $$x$$ share identic
 
 This observation is crucial for a further optimization: instead of summing contributions for each $$x$$ individually, we can group values of $$x$$ with the same $$m$$ and handle their total contribution in one step.
 
-
+<br>
 ### Summing Contributions over Ranges of $$x$$
 
 Having identified that the quantity  
@@ -970,5 +979,161 @@ assert S(2*10**5) % 1234567891234567891234567891 == 617453040502786108363224072
 
 Note that we can now also compute $$S(2000)$$ or $$S(2 \cdot 10^5)$$ in feasible time. However, larger values of $$n$$ are still hard for our approach.
 
+<br>
+### Replacing Interval Summation by a Closed-Form Formula
+
+In this optimization step, we eliminate the remaining inner summation over intervals of $$x$$ by using the closed-form formula for an arithmetic series.
+Once values of $$x$$ are grouped by a constant value of
+
+$$
+m = \left\lfloor \frac{n}{x} \right\rfloor - 1,
+$$
+
+their total contribution can be computed in constant time.
+This removes all residual linear work inside the main loop and yields an efficient, fully combinatorial implementation of $$S(n)$$.
+
+```python
+from __future__ import annotations
 
 
+def S(n: int) -> int:
+    """Compute S(n) using range batching + O(1) arithmetic-series interval sums.
+
+    We use the closed-form per-element contribution:
+        x * (2^(n-1) - 2^(n-m-1)),
+    where
+        m = n//x - 1
+    is constant over contiguous ranges of x.
+
+    Compared to the previous batching version:
+      - we compute powers via pow(2, k),
+      - and replace sum(range(x_left, x_right+1)) by the O(1) interval sum formula.
+    """
+    total = 0
+    base_power = pow(2, n - 1)
+
+    # Phase 1: iterate over m-values and aggregate whole x-intervals at once
+    stop_x = 1
+    for m in range(0, n):
+        # Interval of x where floor(n/x) - 1 == m:
+        #   n/(m+2) < x <= n/(m+1)
+        x_left = n // (m + 2) + 1
+        x_right = n // (m + 1)
+
+        if x_left == x_right:
+            stop_x = x_left
+            break
+
+        # Constant factor for all x in this interval (depends only on m)
+        contribution_count = base_power - pow(2, n - m - 1)
+
+        # Sum_{x=x_left..x_right} x  (arithmetic series, computed in O(1))
+        sum_x_interval = (x_left + x_right) * (x_right - x_left + 1) // 2
+
+        total += sum_x_interval * contribution_count
+
+    # Phase 2: handle the remaining small x-values individually
+    for x in range(stop_x, 0, -1):
+        m = n // x - 1
+        contribution_count = base_power - pow(2, n - m - 1)
+        total += x * contribution_count
+
+    return total
+
+assert S(11) == 9855
+assert S(20) == 18626559
+assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
+assert S(2000) % 1234567891234567891234567891 == 156208504659765295659151493
+assert S(2*10**5) % 1234567891234567891234567891 == 617453040502786108363224072
+```
+
+<br>
+### Optimized Implementation with Optional Modulus
+
+We now arrive at a optimized version of the algorithm that combines all previous
+combinatorial insights.
+By batching values of $$x$$ with identical $$m = \left\lfloor \frac{n}{x} \right\rfloor - 1,$$ using closed-form arithmetic-series sums, and supporting fast modular exponentiation, the computation of $$S(n)$$ becomes feasible even for very large values of $$n$$.
+
+This implementation allows the use of an optional modulus to keep intermediate values
+manageable. When a modulus is provided, all arithmetic is performed modulo that value; otherwise, the exact (and potentially enormous) integer result is computed. The remaining runtime depends mainly on the number of distinct values of $$m$$, which grows on the order of $$O(\sqrt{n})$$, making this approach scalable to inputs far beyond what brute-force methods could handle.
+
+```python
+from __future__ import annotations
+
+
+def S(n: int, modulus: int | None = None) -> int:
+    """Compute S(n) using range batching and closed-form interval sums.
+
+    This version supports an optional modulus:
+      - If `modulus` is None, all computations are done with exact integers.
+      - If `modulus` is given, all arithmetic is performed modulo `modulus`.
+
+    Core idea (unchanged):
+      - Each x contributes: x * (2^(n-1) - 2^(n-m-1)),
+        where m = n//x - 1.
+      - Values of x are grouped into intervals where m is constant.
+      - Contributions over each interval are summed using the arithmetic series formula.
+    """
+    total = 0
+
+    # Precompute the global power term (modular or exact)
+    if modulus is None:
+        base_power = pow(2, n - 1)
+    else:
+        base_power = pow(2, n - 1, modulus)
+
+    # ------------------------------------------------------------------
+    # Phase 1: batch ranges of x where m = floor(n/x) - 1 is constant
+    # ------------------------------------------------------------------
+    stop_x = 1
+    for m in range(0, n):
+        # All x satisfying floor(n/x) - 1 = m lie in:
+        #   n/(m+2) < x <= n/(m+1)
+        x_left = n // (m + 2) + 1
+        x_right = n // (m + 1)
+
+        if x_left == x_right:
+            stop_x = x_left
+            break
+
+        # Contribution factor for this whole interval
+        if modulus is None:
+            contribution_count = base_power - pow(2, n - m - 1)
+        else:
+            contribution_count = base_power - pow(2, n - m - 1, modulus)
+            contribution_count %= modulus
+
+        # Sum of x over the interval [x_left, x_right]
+        interval_sum = (x_left + x_right) * (x_right - x_left + 1) // 2
+        if modulus is not None:
+            interval_sum %= modulus
+
+        total += interval_sum * contribution_count
+        if modulus is not None:
+            total %= modulus
+
+    # ------------------------------------------------------------------
+    # Phase 2: handle the remaining small x-values individually
+    # ------------------------------------------------------------------
+    for x in range(stop_x, 0, -1):
+        m = n // x - 1
+
+        if modulus is None:
+            contribution_count = base_power - pow(2, n - m - 1)
+            total += x * contribution_count
+        else:
+            contribution_count = base_power - pow(2, n - m - 1, modulus)
+            total += x * contribution_count
+            total %= modulus
+
+    return total
+
+assert S(11) == 9855
+assert S(20) == 18626559
+assert S(200) == 2664683200606651329234017512985870589238327005040580368858611711
+assert S(2000, 1234567891234567891234567891) == 156208504659765295659151493
+assert S(2*10**5, 1234567891234567891234567891) == 617453040502786108363224072
+assert S(2*10**10, 1234567891234567891234567891) == 481424271854145029777746921
+```
+
+Now, also solutions for $$S(2 \cdot 10^{10})$$ can be computed without problems (considering a modulus which is sufficiently small). Computing $$S(10^{14}, 1234567891)$$ still needs around 2-3 minutes.
