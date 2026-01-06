@@ -69,7 +69,7 @@ ninja.data = [{
         
           title: "Summing Non-Isolated Divisors Across All Subsets",
         
-        description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset, with fast modular support.",
+        description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting.",
         section: "Posts",
         handler: () => {
           
