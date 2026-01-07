@@ -1,8 +1,11 @@
 ---
 layout: post
-date: 2016-01-15 07:59:00-0400
-inline: true
+title: "bitbully-databases 0.0.2 released: Opening Databases for the Board Game Connect-4."
+date: 2026-01-05 21:11:00-0400
+inline: false
 related_posts: false
 ---
 
-A simple inline announcement with Markdown emoji! :sparkles: :smile:
+Check out the related [project page]({{ 'projects/1_bitbully_databases/' | absolute_url }}).
+
+---

@@ -1140,8 +1140,11 @@ assert S(2*10**5, 1234567891234567891234567891) == 617453040502786108363224072
 assert S(2*10**10, 1234567891234567891234567891) == 481424271854145029777746921
 ```
 
-Now, also solutions for $$S(2 \cdot 10^{10})$$ can be computed without problems (considering a modulus which is sufficiently small). Computing $$S(10^{14}, 1234567891)$$ still needs around 2-3 minutes.
+Now, also solutions for $$S(2 \cdot 10^{10})$$ can be computed without problems (considering a modulus which is sufficiently small). Computing $$S(10^{14}, 1234567891)$$ needs around 2-3 minutes.
 
+---
+
+<br>
 ## Appendix
 ### Why are there $$2^n$$ subsets?
 
