@@ -164,7 +164,7 @@ The snippet runs this for $$n = 11$$ and verifies the known value $$S(11) = 9855
 However, this becomes infeasible quickly. Here is why:
 
 1. The number of subsets explodes exponentially.
-  The set  $$\{1,2,\dots,n\}$$ has $$2^n$$ subsets in total. **TODO: Explain why...**
+  The set  $$\{1,2,\dots,n\}$$ has $$2^n$$ subsets in total. As explained in [Why are there \(2^n\) subsets?](#why-are-there-2n-subsets), the exponential growth comes from independent include/exclude decisions.
   Even though the code skips subsets of size 0 and 1, the count is still essentially $$2^n - (n + 1),$$ which is still exponential growth.
   Concrete sizes:
   - $$n = 20 \Rightarrow 2^{20} = 1{,}048{,}576$$ subsets (about one million)
@@ -1141,3 +1141,59 @@ assert S(2*10**10, 1234567891234567891234567891) == 481424271854145029777746921
 ```
 
 Now, also solutions for $$S(2 \cdot 10^{10})$$ can be computed without problems (considering a modulus which is sufficiently small). Computing $$S(10^{14}, 1234567891)$$ still needs around 2-3 minutes.
+
+## Appendix
+### Why are there $$2^n$$ subsets?
+
+Think of building a subset $$A \subseteq \{1,2,\dots,n\}$$ as making **$$n$$ independent yes/no decisions**:
+
+- For element $$1$$: **in** the subset (bit = 1) or **not in** the subset (bit = 0)?
+- For element $$2$$: in (1) or out (0)?
+- …
+- For element $$n$$: in (1) or out (0)?
+
+So every subset can be represented by a binary vector of length $$n$$.
+This is exactly the same idea as a truth table in logic (“Wahrheitstafel”): each row is one assignment of $$n$$ bits.
+
+#### Small example: $$n = 3$$
+
+Universe: $$\{1,2,3\}$$
+
+Each subset corresponds to one row in this table:
+
+| bit for 1 | bit for 2 | bit for 3 | subset |
+|---:|---:|---:|:---|
+| 0 | 0 | 0 | $$\emptyset$$ |
+| 0 | 0 | 1 | $$\{3\}$$ |
+| 0 | 1 | 0 | $$\{2\}$$ |
+| 0 | 1 | 1 | $$\{2,3\}$$ |
+| 1 | 0 | 0 | $$\{1\}$$ |
+| 1 | 0 | 1 | $$\{1,3\}$$ |
+| 1 | 1 | 0 | $$\{1,2\}$$ |
+| 1 | 1 | 1 | $$\{1,2,3\}$$ |
+
+How many rows are there?
+
+- 3 bit positions,
+- each bit can be 0 or 1 (2 choices),
+- choices are independent,
+
+so the total number is:
+
+$$
+2 \cdot 2 \cdot 2 = 2^3.
+$$
+
+#### General case: $$n$$
+
+By the same logic, there are $$n$$ independent bits, each with 2 possibilities, hence
+
+$$
+\underbrace{2 \cdot 2 \cdot \dots \cdot 2}_{n\text{ times}} = 2^n
+$$
+
+different bit patterns, and therefore $$2^n$$ subsets.
+
+That’s why brute-forcing “all subsets” explodes so quickly: increasing $$n$$ by 1 **doubles** the number of subsets.
+
+*(And if we exclude the empty set and all singletons, we subtract $$1 + n$$, leaving $$2^n - (n+1)$$ subsets.)*
