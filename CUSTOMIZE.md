@@ -23,6 +23,7 @@ Here we will give you some tips on how to customize the website. One important t
     - [Key Integration Points](#key-integration-points)
   - [Modifying the CV information](#modifying-the-cv-information)
   - [Modifying the user and repository information](#modifying-the-user-and-repository-information)
+    - [Configuring external service URLs](#configuring-external-service-urls)
   - [Creating new pages](#creating-new-pages)
   - [Creating new blog posts](#creating-new-blog-posts)
   - [Creating new projects](#creating-new-projects)
@@ -268,6 +269,30 @@ What this means is, if there is no resume data defined in [\_config.yml](_config
 ## Modifying the user and repository information
 
 The user and repository information is defined in [\_data/repositories.yml](_data/repositories.yml). You can add as many users and repositories as you want. Both informations are used in the `repositories` section.
+
+### Configuring external service URLs
+
+The repository page uses external services to display GitHub statistics and trophies. By default, these are:
+
+- `github-readme-stats.vercel.app` for user stats and repository cards
+- `github-profile-trophy.vercel.app` for GitHub profile trophies
+
+**Important:** These default services are hosted by third parties and may not be available 100% of the time. For better reliability, privacy, and customization, you can self-host these services and configure your website to use your own instances.
+
+To use your own instances of these services, configure the URLs in [\_config.yml](_config.yml):
+
+```yaml
+external_services:
+  github_readme_stats_url: https://github-readme-stats.vercel.app
+  github_profile_trophy_url: https://github-profile-trophy.vercel.app
+```
+
+To self-host these services, follow the deployment instructions in their respective repositories:
+
+- [github-readme-stats](https://github.com/anuraghazra/github-readme-stats)
+- [github-profile-trophy](https://github.com/ryo-ma/github-profile-trophy)
+
+Once deployed, update the URLs above to point to your custom deployment.
 
 ## Creating new pages
 
