@@ -499,17 +499,21 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-a-simple-inline-announcement",
-          title: 'A simple inline announcement.',
-          description: "",
-          section: "News",},{id: "news-a-simple-inline-announcement-with-markdown-emoji-sparkles-smile",
-          title: 'A simple inline announcement with Markdown emoji! :sparkles: :smile:',
-          description: "",
-          section: "News",},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
+            },},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
           title: 'BitBully Preview v0.0.38 released: A fast Connect-4 Solver for Python 3',
           description: "",
           section: "News",handler: () => {
               window.location.href = "/news/announcement_2/";
+            },},{id: "news-bitbully-databases-0-0-2-released-opening-databases-for-the-board-game-connect-4",
+          title: 'bitbully-databases 0.0.2 released: Opening Databases for the Board Game Connect-4.',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_3/";
+            },},{id: "news-bitbully-v0-0-74-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully v0.0.74 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_1/";
             },},{id: "projects-bitbully",
           title: 'BitBully',
           description: "One of the fastest and perfect-playing Connect-4 solvers around",
