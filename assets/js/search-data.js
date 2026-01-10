@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-summing-non-isolated-divisors-across-all-subsets",
+            },{id: "post-on-a-curious-prefix-sum-problem",
+        
+          title: "On a Curious Prefix-Sum Problem",
+        
+        description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-818p100-generalized-parity-recurrence/";
+          
+        },
+      },{id: "post-summing-non-isolated-divisors-across-all-subsets",
         
           title: "Summing Non-Isolated Divisors Across All Subsets",
         
