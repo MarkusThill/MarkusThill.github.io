@@ -65,9 +65,20 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-on-a-curious-prefix-sum-problem",
+            },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
         
-          title: "On a Curious Prefix-Sum Problem",
+          title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
+        
+        description: "We study how splitting an integer into equal parts affects the maximum attainable product and how arithmetic properties of the optimum emerge. In particular, we relate a continuous optimization problem to the decimal structure of the resulting rational values.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-83p100-quanity-equal-parts/";
+          
+        },
+      },{id: "post-short-notes-on-a-curious-prefix-sum-problem",
+        
+          title: "Short Notes: On a Curious Prefix-Sum Problem",
         
         description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle.",
         section: "Posts",
@@ -76,9 +87,9 @@ ninja.data = [{
             window.location.href = "/blog/2026/pe-818p100-generalized-parity-recurrence/";
           
         },
-      },{id: "post-summing-non-isolated-divisors-across-all-subsets",
+      },{id: "post-short-notes-summing-non-isolated-divisors-across-all-subsets",
         
-          title: "Summing Non-Isolated Divisors Across All Subsets",
+          title: "Short Notes: Summing Non-Isolated Divisors Across All Subsets",
         
         description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting.",
         section: "Posts",
