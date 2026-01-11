@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "On a Curious Prefix-Sum Problem"
+title: "Short Notes: On a Curious Prefix-Sum Problem"
 modified:
 categories: [programming, algorithms, mathematics]
 description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle."
