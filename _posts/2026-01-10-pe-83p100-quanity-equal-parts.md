@@ -24,8 +24,7 @@ images:
 
 Dividing a fixed quantity into equal parts often leads to interesting trade-offs between the size of each part and the number of factors involved. In this problem, we investigate how such a division influences not only the magnitude of a product, but also its arithmetic properties.
 
-Let $$N \ge 2$$ be a positive integer.  
-Suppose $$N$$ is divided into $$k$$ equal real parts, each of size $$r = N/k$$, so that
+Let $$N \ge 2$$ be a positive integer. Suppose $$N$$ is divided into $$k$$ equal real parts, each of size $$r = N/k$$, so that
 
 $$
 N = \underbrace{r + r + \cdots + r}_{k\text{ times}}.
@@ -37,13 +36,13 @@ $$
 P = r^k = \left(\frac{N}{k}\right)^k.
 $$
 
-For a fixed value of $$N$$, let $$M(N)$$ denote the **maximum possible value** of $$P$$ over all integers $$k \ge 1$$.
+For a fixed value of $$N$$, let $$M(N)$$ denote the maximum possible value of $$P$$ over all integers $$k \ge 1$$.
 
 
 <br>
 ### Decimal Behavior
 
-A rational number is said to have a **terminating decimal expansion** (also called being *finite in base 10*) if its decimal representation ends after finitely many digits.
+A rational number is said to have a terminating decimal expansion (also called being *finite in base 10*) if its decimal representation ends after finitely many digits.
 
 For each $$N$$, the value $$M(N)$$ is a rational number, and its decimal expansion may or may not terminate.
 
@@ -54,7 +53,7 @@ For each $$N$$, the value $$M(N)$$ is a rational number, and its decimal expansi
 Define a function $$W(N)$$ as follows:
 
 - If $$M(N)$$ has a terminating decimal expansion, set $$W(N) = 0$$.
-- Otherwise, write $$M(N)$$ in lowest terms and let $$W(N)$$ be the **smallest prime divisor of its denominator**.
+- Otherwise, write $$M(N)$$ in lowest terms and let $$W(N)$$ be the smallest prime divisor of its denominator.
 
 
 <br>
@@ -178,10 +177,6 @@ f'(k)
 = \left(\frac{N}{k}\right)^k (\ln N - \ln k - 1).
 $$
 
-This matches the structure in the handwritten derivation:
-a positive factor $$\left(\frac{N}{k}\right)^k$$ times a bracket term.
-
-
 <br>
 ### Step 4: Solve the critical point equation
 
@@ -255,24 +250,18 @@ k_1 = \lfloor k^* \rfloor,
 k_2 = \lceil k^* \rceil,
 $$
 
-and select the one that yields the larger product.
-
-Equivalently, since the logarithm is strictly increasing, one may compare
+and select the one that yields the larger product.Equivalently, since the logarithm is strictly increasing, one may compare
 
 $$
 k \bigl(\ln N - \ln k\bigr)
 $$
 
-for $$k \in \{k_1, k_2\}$$ instead of evaluating the product directly.
-
-The integer value chosen in this way determines the maximizing split and hence the value of $$M(N)$$.
+for $$k \in \{k_1, k_2\}$$ instead of evaluating the product directly. The integer value chosen in this way determines the maximizing split and hence the value of $$M(N)$$.
 
 
 ## Implementation Notes
 
-To turn the mathematical reasoning into an efficient program, we proceed in a few clearly separated steps.
-
-For each value of $$N$$, the first task is to determine the integer $$k$$ that maximizes the product
+To turn the mathematical reasoning into an efficient program, we proceed in a few clearly separated steps. For each value of $$N$$, the first task is to determine the integer $$k$$ that maximizes the product
 
 $$
 \left(\frac{N}{k}\right)^k.
@@ -284,9 +273,7 @@ $$
 \lfloor k^* \rfloor \quad \text{and} \quad \lceil k^* \rceil.
 $$
 
-To avoid numerical overflow, this comparison is carried out in logarithmic form.
-
-Once the optimal integer $$k$$ has been selected, we consider the value
+To avoid numerical overflow, this comparison is carried out in logarithmic form. Once the optimal integer $$k$$ has been selected, we consider the value
 
 $$
 M(N) = \left(\frac{N}{k}\right)^k = \frac{N^k}{k^k}.
@@ -298,11 +285,7 @@ $$
 \left(\frac{k}{\gcd(N,k)}\right)^k.
 $$
 
-This observation allows us to decide whether $$M(N)$$ has a terminating decimal expansion using only elementary number theory: a rational number terminates in base 10 if and only if its reduced denominator has no prime factors other than $$2$$ and $$5$$.
-
-If the decimal expansion terminates, the contribution $$W(N)$$ is zero. Otherwise, the contribution is defined as the smallest prime divisor of the reduced denominator, which can be extracted directly from $$k / \gcd(N,k)$$.
-
-The following code implements these steps and computes the required sum
+This observation allows us to decide whether $$M(N)$$ has a terminating decimal expansion using only elementary number theory: a rational number terminates in base 10 if and only if its reduced denominator has no prime factors other than $$2$$ and $$5$$. If the decimal expansion terminates, the contribution $$W(N)$$ is zero. Otherwise, the contribution is defined as the smallest prime divisor of the reduced denominator, which can be extracted directly from $$k / \gcd(N,k)$$. The following code implements these steps and computes the required sum
 
 $$
 \sum_{N=5}^{10^6} W(N).

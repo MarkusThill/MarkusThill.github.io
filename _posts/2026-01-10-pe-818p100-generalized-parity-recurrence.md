@@ -5,7 +5,7 @@ modified:
 categories: [programming, algorithms, mathematics]
 description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle."
 tags: [recurrence-relations, prefix-sums, discrete-math, algorithms, optimization, python]
-thumbnail: assets/img/2026-01-10-math-thumbnail.png
+thumbnail:
 giscus_comments: true
 toc:
   beginning: true
@@ -41,7 +41,7 @@ where:
 - $$q$$ controls how values at even indices are produced,
 - $$r$$ and $$t$$ control how values at odd indices depend on earlier terms.
 
-From this sequence, define the **prefix sum**
+From this sequence, define the prefix sum
 
 $$
 S(N) = a_1 + a_2 + a_3 + \dots + a_N,
@@ -75,8 +75,11 @@ Before diving into the solution, here is a brief roadmap of how we will approach
 ## Formal Problem Statement
 
 Let $(a_n)_{n\ge 1}$ be a sequence defined by constants
+
 $$a_1,q,r,t \in \mathbb{R} \;(\text{or } \mathbb{Z})$$
+
 and the recurrence
+
 $$
 \begin{aligned}
 a_{2n}   &= q\,a_n, \\
@@ -104,28 +107,7 @@ Throughout this discussion, "exact" means exact arithmetic with respect to the c
 <br>
 ## From the Recurrence to Prefix-Sum Relations
 
-We now turn to the key analytical step: translating the defining recurrence of the sequence into corresponding recurrences for its prefix sums.
-
-Throughout this section, let $(a_n)_{n\ge 1}$ be defined by the parity-dependent rules
-
-$$
-\begin{aligned}
-a_{2n}   &= q\,a_n, \\
-a_{2n+1} &= r\,a_n + t\,a_{n+1},
-\end{aligned}
-\qquad (n\ge 1),
-$$
-
-with a fixed initial value $$a_1$$.
-
-Define the prefix sums, with the convention $$S(0):=0$$, by
-
-$$
-S(n) := \sum_{k=1}^{n} a_k.
-$$
-
-The central objective is to express $$S(2n)$$ and $$S(2n+1)$$ in terms of *smaller
-indices*, involving only $$S(n)$$, $$S(n-1)$$, and a small amount of local sequence
+We now turn to the key analytical step: translating the defining recurrence of the sequence into corresponding recurrences for its prefix sums. The central objective is to express $$S(2n)$$ and $$S(2n+1)$$ in terms of *smaller indices*, involving only $$S(n)$$, $$S(n-1)$$, and a small amount of local sequence
 information. This is precisely what will later allow an efficient algorithm.
 
 ---
@@ -133,9 +115,7 @@ information. This is precisely what will later allow an efficient algorithm.
 <br>
 ## Deriving a Formula for $$S(2n)$$
 
-Because the recurrence defining $(a_n)$ distinguishes between even and odd indices, it is natural to analyze the prefix sums by separating contributions from even and odd positions.
-
-We begin directly from the definition:
+Because the recurrence defining $(a_n)$ distinguishes between even and odd indices, it is natural to analyze the prefix sums by separating contributions from even and odd positions. We begin directly from the definition:
 
 $$
 S(2n)
@@ -212,8 +192,7 @@ S(2n)
 = (q+t)S(n) + rS(n-1) + (1-t)a_1.
 $$
 
-Notably, $$S(2n)$$ depends only on prefix sums at smaller indices and a constant
-term determined by $$a_1$$.
+Notably, $$S(2n)$$ depends only on prefix sums at smaller indices and a constant term determined by $$a_1$$.
 
 ---
 
@@ -286,9 +265,7 @@ $$
 $$
 
 which contains precisely the information required to compute
-$$S(2n),\; S(2n+1)$$ and the next sequence values.
-
-The initial state corresponds to $$n=1$$:
+$$S(2n),\; S(2n+1)$$ and the next sequence values. The initial state corresponds to $$n=1$$:
 
 $$
 \bigl(S(0), S(1), a_1, a_2\bigr)
@@ -381,9 +358,7 @@ $$n=N$$. The desired prefix sum is therefore $$S(N)$$.
 
 The entire computation runs in $$O(\log N)$$ time.
 Only a constant-size state is maintained, and each binary digit of $$N$$ triggers
-a single constant-time update.
-
-The apparent necessity of summing $$N$$ terms disappears once the binary
+a single constant-time update. The apparent necessity of summing $$N$$ terms disappears once the binary
 self-similarity of the recurrence is made explicit.
 
 ---
@@ -394,9 +369,7 @@ self-similarity of the recurrence is made explicit.
 ### A Naive Reference Implementation
 
 Before turning to the optimized algorithm, it is useful to establish a simple
-baseline.
-
-For small values of $$N$$, the most straightforward approach is to **explicitly
+baseline. For small values of $$N$$, the most straightforward approach is to **explicitly
 generate the sequence** using its defining recurrence and then compute the prefix
 sums by a single pass over the resulting list. While this method runs in
 $$O(N)$$ time and quickly becomes infeasible for large $$N$$, it has two important
@@ -475,15 +448,10 @@ The first function, `build_sequence_naive`, constructs the sequence values
 $$a_1,a_2,\dots,a_{N+1}$$ directly from the recurrence by iterating over all
 indices up to $$N$$.
 The second function, `prefix_sums_naive`, then computes the prefix sums
-$$S(k)=\sum_{i=1}^k a_i$$ in a single linear pass.
-
-Together, these two routines implement the most direct solution to the problem:
+$$S(k)=\sum_{i=1}^k a_i$$ in a single linear pass. Together, these two routines implement the most direct solution to the problem:
 explicit sequence generation followed by explicit summation.
 This approach is simple and transparent, but its runtime grows linearly with
-$$N$$, which makes it unsuitable for very large inputs.
-
-The following example demonstrates how the naive implementation can be used for
-moderate values of $$N$$. We generate the sequence, inspect the first few terms,
+$$N$$, which makes it unsuitable for very large inputs. The following example demonstrates how the naive implementation can be used for moderate values of $$N$$. We generate the sequence, inspect the first few terms,
 and finally compute the prefix sum $$S(N)$$.
 
 ```python
@@ -506,27 +474,19 @@ print("S(N):", S[N])
 In this example, we fix concrete values for the parameters $$a_1$$, $$q$$, $$r$$,
 and $$t$$, and choose a moderately large bound $$N = 10\,000$$.
 The sequence is first generated explicitly up to index $$N+1$$ using the naive
-construction.
-
-Printing the first few terms provides a quick sanity check that the recurrence
+construction. Printing the first few terms provides a quick sanity check that the recurrence
 is applied as expected.
 Afterwards, the prefix sums are computed in linear time, and the final value
-$$S(N)$$ is obtained by a simple array lookup.
-
-For values of $$N$$ on this scale, this approach works well and is easy to
+$$S(N)$$ is obtained by a simple array lookup. For values of $$N$$ on this scale, this approach works well and is easy to
 understand—but it already hints at why a different strategy is needed when
-$$N$$ becomes much larger.
-
-Before moving on to the optimized algorithm, it is helpful to *see* what this
+$$N$$ becomes much larger. Before moving on to the optimized algorithm, it is helpful to *see* what this
 recurrence produces.
 
 The following plot shows the sequence values $$a_n$$ and their corresponding
 prefix sums $$S(n)$$ for a fixed choice of parameters and a moderate range of
 indices. Even at this scale, the behavior is far from simple: the sequence
 oscillates, changes magnitude rapidly, and the prefix sums reflect a complex
-accumulation of these effects.
-
-This visual complexity hints at why a naive summation strategy quickly becomes
+accumulation of these effects. This visual complexity hints at why a naive summation strategy quickly becomes
 unwieldy—and why exploiting the structure of the recurrence is essential.
 
 <br>
@@ -727,7 +687,6 @@ Because each binary digit of $$N$$ triggers only a constant amount of work, the
 overall runtime is proportional to the bit-length of $$N$$.
 This allows exact prefix sums to be computed for values of $$N$$ that are far
 beyond the reach of any direct summation approach.
-
 
 As a quick sanity check, we can compare the naive result (computed by explicitly
 building the sequence and its prefix sums) with the optimized function.

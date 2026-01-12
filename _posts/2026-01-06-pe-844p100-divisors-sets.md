@@ -5,7 +5,7 @@ modified:
 categories: [programming,math]
 description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting."
 tags: [combinatorics, number-theory, divisibility, powerset, optimization, python]
-thumbnail: assets/img/2026-01-06-math-thumbnail.png
+thumbnail:
 giscus_comments: true
 toc:
   beginning: true
