@@ -576,10 +576,10 @@ ninja.data = [{
         },
       },{
         id: 'social-projecteuler',
-        title: 'Project Euler',
+        title: 'Projecteuler',
         section: 'Socials',
         handler: () => {
-          window.open("https://projecteuler.net/profile/diedackel.png", "_blank");
+          window.open("https://projecteuler.net/", "_blank");
         },
       },{
       id: 'light-theme',
