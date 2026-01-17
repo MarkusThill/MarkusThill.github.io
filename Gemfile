@@ -2,9 +2,17 @@ source 'https://rubygems.org'
 
 gem 'jekyll'
 
+# Force Ruby-3.x-compatible ActiveSupport (prevents Bundler picking 3.1.12)
+gem "activesupport", ">= 6.1", "< 8"
+
+# Often comes along with html-pipeline and may otherwise stay very old
+gem "i18n", ">= 1.10"
+
 # Core plugins that directly affect site building
 group :jekyll_plugins do
+    gem 'jekyll-3rd-party-libraries'
     gem 'jekyll-archives-v2'
+    gem 'jekyll-cache-bust'
     gem 'jekyll-email-protect'
     gem 'jekyll-feed'
     gem 'jekyll-get-json'
@@ -16,6 +24,7 @@ group :jekyll_plugins do
     gem 'jekyll-regex-replace'
     gem 'jekyll-scholar'
     gem 'jekyll-sitemap'
+    gem 'jekyll-socials'
     gem 'jekyll-tabs'
     gem 'jekyll-terser', :git => "https://github.com/RobertoJBeltran/jekyll-terser.git"
     gem 'jekyll-toc'

@@ -56,4 +56,8 @@ scholar_userid: Bu5eFxQAAAAJ # your Google Scholar ID
 #  logo: https://projecteuler.net/profile/diedackel.png # can be png, svg, jpg
 #  title: Project Euler
 #  url: https://projecteuler.net/
-projecteuler_username: diedackel
+projecteuler:
+  logo: https://projecteuler.net/profile/diedackel.png
+  title: Project Euler
+  url: https://projecteuler.net/
+

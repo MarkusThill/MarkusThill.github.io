@@ -221,9 +221,6 @@
       {% when 'zotero_username' %}
         {% capture link %}https://www.zotero.org/{{ social[1] }}{% endcapture %}
         {% assign sameaslinks = sameaslinks | push: link %}
-      {% when 'projecteuler_username' %}
-        {% capture link %}https://projecteuler.net/profile/{{ social[1] }}.png{% endcapture %}
-        {% assign sameaslinks = sameaslinks | push: link %}
       {% else %}
         {% assign sameaslinks = sameaslinks | push: social[1].url %}
     {% endcase %}
