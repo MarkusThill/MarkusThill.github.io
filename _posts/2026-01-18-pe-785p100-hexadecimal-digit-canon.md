@@ -92,8 +92,9 @@ $$
 \boxed{\texttt{42F7A7A9}}.
 $$
 
+<br>
 
-
+## Solution Sketch
 ### A first (naive) implementation
 
 Before attempting any optimizations, it is helpful to translate the problem statement **as literally as possible** into code. The following implementation does exactly that: it follows the definition of the function $$f(d)$$ and the cumulative sum $$S(n)$$ step by step, without attempting to reduce the computational cost.
@@ -305,6 +306,7 @@ S(n)         = 4077C0
 ```
 
 <br>
+
 #### Counting Distinct Values (Naive Approach)
 
 As a small extension of the previous brute-force method, the following code counts how many **distinct values of $$f(d)$$** appear when considering all numbers with at most $$n$$ digits in a given base (8, 10, or 16).
@@ -369,7 +371,8 @@ n=5  num_distinct=15503
 
 
 <br>
-### Counting Distinct Values: Closed form
+
+#### Counting Distinct Values: Closed form
 
 We fix a base $$b \in \{8,10,16\}$$ with digits $$0,1,\dots,b-1$$. For a number $$d$$ with exactly $$m$$ digits in base $$b$$, let
 
@@ -456,7 +459,7 @@ $$
 $$
 
 
-#### Special cases
+##### Special Cases
 
 - Base $b=10$ (decimal):
   $$
@@ -571,9 +574,9 @@ This observation will allow us, in the next section, to replace brute-force enum
 
 <br>
 
-## Computing $S(n)$ by enumerating distinct $f(d)$ values (and their multiplicities)
+### Computing $S(n)$ by enumerating distinct $f(d)$ values (and their multiplicities)
 
-The definition of $f(d)$ is “sort digits ascending and remove zeros”.  
+The definition of $f(d)$ is "sort digits ascending and remove zeros”.  
 This means that many different numbers $d$ collapse to the same value $f(d)$: any
 permutation of the non-zero digits and any placement of zeros produces the same
 sorted, zero-free output.
@@ -583,7 +586,7 @@ The key idea of the algorithm is therefore:
 
 This splits the problem into two conceptually clean parts.
 
-### 1) Enumerating all distinct outputs $f(d)$
+#### 1) Enumerating all distinct outputs $f(d)$
 
 A value $f(d)$ is exactly a finite **nondecreasing digit string** over the alphabet
 $\{1,2,\dots,b-1\}$.
@@ -606,7 +609,7 @@ The algorithm generates these sequences via a FIFO queue:
 Each distinct value of $f(d)$ is generated exactly once.
 
 
-### 2) Counting how many numbers map to a fixed $f_d$
+#### 2) Counting how many numbers map to a fixed $f_d$
 
 Fix one distinct output $f_d$ and let:
 
@@ -616,7 +619,7 @@ Fix one distinct output $f_d$ and let:
 Now consider all original numbers $d$ that map to this fixed $f_d$.
 
 
-#### (a) Permuting the non-zero digits
+##### (a) Permuting the non-zero digits
 
 Ignoring zeros for the moment, the number of distinct permutations of the $k$
 non-zero digits with multiplicities $(c_1,\dots,c_{b-1})$ is
@@ -627,7 +630,7 @@ $$
 
 This counts all ways the non-zero digits can appear relative to each other.
 
-#### (b) Inserting zeros without creating leading zeros
+##### (b) Inserting zeros without creating leading zeros
 
 Let $c_0$ denote the number of zeros inserted.  
 Then the total digit length of $d$ is
@@ -654,7 +657,7 @@ $$
 
 ---
 
-### 3) Combining both contributions
+#### 3) Combining both contributions
 
 For a fixed $f_d$, the total number of original numbers $d$ mapping to it is
 
@@ -802,7 +805,7 @@ S(0xA) in base 16 = 0x12C698E48B4FC2A01358
 This solution would already win us the Bronze 🥉 medal 🚀.
 
 
-## TODO: Towards a faster solution: Write a better title here
+### TODO: Towards a faster solution: Write a better title here
 
 Fix a base $b$ ($b=16$) and a digit-count vector
 
@@ -819,7 +822,7 @@ number of non-zero digits (the ones that survive in $f(d)$).
 
 *Step 1: Count all permutations of the multiset of digits*
 
-If we ignore the “no leading zero” rule, then the number of distinct permutations
+If we ignore the "no leading zero” rule, then the number of distinct permutations
 of the multiset containing:
 
 - $c_0$ zeros,
@@ -1101,11 +1104,11 @@ For each fixed $k$:
 
 - the constraint $c_1+\cdots+c_{b-1}=k$ enumerates all possible **multisets of $k$ non-zero digits**
   (equivalently, all distinct values of $f(d)$ of length $k$),
-- the factor $1/\prod c_i!$ is the “multiset correction” coming from the multinomial counting,
+- the factor $1/\prod c_i!$ is the "multiset correction” coming from the multinomial counting,
 - and $f(c_1,\dots,c_{b-1})$ is the actual numeric value contributed by that multiset.
 
 So $B(k)$ is a weighted sum over all distinct outputs of $f(d)$ having exactly $k$
-digits, capturing “how large those $f(d)$ values are on average” under the natural
+digits, capturing "how large those $f(d)$ values are on average” under the natural
 weights induced by the multinomial coefficients.
 
 In the next step we will show how to compute $B(k)$ efficiently without enumerating
@@ -1113,7 +1116,7 @@ all $(c_1,\dots,c_{b-1})$ patterns explicitly.
 
 <br>
 
-## Computing $B(k)$ efficiently (DP)
+### Computing $B(k)$ efficiently (DP)
 
 Recall the definition (base $b$):
 
@@ -1154,7 +1157,130 @@ So $B(k)$ is just $B[k]$.
 
 We will compute both arrays up to $t=n$.
 
+---
 
+<br>
+
+**<Worked Example: Why we need the weight $W[t]$>**
+
+Assume we are working in base $10$ for simplicity, and that at some DP stage we have the following weighted sum for patterns of length $t$:
+
+$$
+B[t]
+=
+\frac{1122}{2!\,2!}
++
+\frac{1112}{3!\,1!}.
+$$
+
+This means we have two different digit-multiplicity patterns of length $t$,
+each contributing its numeric value divided by the product of factorials of its
+digit counts.
+
+Now suppose we want to **append two copies of digit $3$**, i.e. we append the suffix
+``33``. For any old value $x$, this transforms the number as
+
+$$
+x \;\longmapsto\; x\cdot 10^2 + 33.
+$$
+
+Because we are appending $c=2$ identical digits, this choice carries the weight
+factor $1/2!$.
+
+So the contribution to $B[t+2]$ is
+
+$$
+B[t+2]
+=
+\frac{1}{2!}
+\left(
+\frac{1122\cdot 10^2 + 33}{2!\,2!}
++
+\frac{1112\cdot 10^2 + 33}{3!\,1!}
+\right).
+$$
+
+Split the sum into the "old value” part and the "new suffix” part:
+
+$$
+\begin{aligned}
+B[t+2]
+&=
+\frac{1}{2!}
+\Bigg(
+10^2
+\left(
+\frac{1122}{2!\,2!}
++
+\frac{1112}{3!\,1!}
+\right)
++
+33
+\left(
+\frac{1}{2!\,2!}
++
+\frac{1}{3!\,1!}
+\right)
+\Bigg).
+\end{aligned}
+$$
+
+Now observe:
+
+- The first parenthesis is exactly $B[t]$.
+- The second parenthesis is the same sum **without the numeric values**.
+  This motivates defining the *weight*
+
+$$
+W[t]
+=
+\frac{1}{2!\,2!}
++
+\frac{1}{3!\,1!}.
+$$
+
+With this notation, the update becomes
+
+$$
+\boxed{
+B[t+2]
+=
+\frac{1}{2!}
+\left(
+10^2\,B[t] + 33\,W[t]
+\right).
+}
+$$
+
+In base $b$, appending $c$ copies of digit $d$:
+
+- shifts old values by $b^c$,
+- adds the suffix
+  $$
+  d\,(1+b+\dots+b^{c-1}) = d\,\frac{b^c-1}{b-1},
+  $$
+- and introduces the weight factor $1/c!$.
+
+Thus the general update rule is
+
+$$
+\boxed{
+B[t+c]
+\;\leftarrow\;
+B[t+c] + 
+\left(
+B[t]\cdot b^c
++
+W[t]\cdot d\cdot\frac{b^c-1}{b-1}
+\right)\cdot \frac{1}{c!}.
+}
+$$
+
+This illustrates precisely why the auxiliary array $W[t]$ is needed: the constant suffix contribution must be multiplied by the **total weight** of all patterns of length $t$, not by their individual numeric values.
+
+**</ End of Example>**
+
+---
 
 *2) Process digits incrementally*
 
@@ -1269,3 +1395,433 @@ So the entire computation reduces to:
 
 This avoids explicit enumeration of all $(c_1,\dots,c_{b-1})$ patterns while still
 producing exactly the same $B(k)$ values.
+
+```python
+from __future__ import annotations
+
+import math
+from fractions import Fraction
+
+
+def S(n: int, base: int) -> int:
+    """Compute S(n) exactly using the A(k) / B(k) decomposition (rational DP).
+
+    We use the identity
+
+        S(n) = sum_{k=1..n}  k * A(k) * B(k),
+
+    where
+
+        A(k) = sum_{m=k..n} (m-1)! / (m-k)!,
+
+    and B(k) is the weighted sum over all digit-multiplicity patterns
+    (c_1, ..., c_{base-1}) with sum c_i = k:
+
+        B(k) = sum_{c_1+...+c_{base-1}=k}  f(c_1,...,c_{base-1}) / prod_i c_i!.
+
+    Instead of enumerating all (c_1,...,c_{base-1}), we compute B(k) via a DP
+    over digits d = 1..base-1, maintaining two arrays:
+
+      - W[t] = sum_{patterns of length t}  1 / prod c_i!
+      - B[t] = sum_{patterns of length t}  f(pattern) / prod c_i!
+
+    Both W and B are Fractions to keep the derivation exact.
+    """
+    # -------------------------------------------------------------------------
+    # 1) Compute A[k] for k=1..n:
+    #
+    #    A(k) = sum_{m=k..n} (m-1)! / (m-k)!
+    #
+    # This quantity depends only on lengths, not on digit composition.
+    # We store A[0]=0 unused for convenience.
+    # -------------------------------------------------------------------------
+    A: list[Fraction] = [Fraction(0, 1)] * (n + 1)
+
+    for k in range(1, n + 1):
+        # Sum over total lengths m (total digits, including zeros).
+        # Note: (m-1)!/(m-k)! is an integer, but we keep Fraction for uniformity.
+        for m in range(k, n + 1):
+            A[k] += Fraction(math.factorial(m - 1), math.factorial(m - k))
+
+    # -------------------------------------------------------------------------
+    # 2) Compute B[k] for k=0..n via DP over digits d=1..base-1.
+    #
+    # DP state after processing digits 1..(d-1):
+    #   W[t] = sum_{c_1+...+c_{d-1}=t}  1 / (c_1! ... c_{d-1}!)
+    #   B[t] = sum_{c_1+...+c_{d-1}=t}  f(c_1,...,c_{d-1}) / (c_1! ... c_{d-1}!)
+    #
+    # Initialization (no digits chosen yet):
+    #   - empty pattern of length 0 has weight 1
+    #   - its value-sum is 0 (there is no number yet)
+    # -------------------------------------------------------------------------
+    W: list[Fraction] = [Fraction(0, 1)] * (n + 1)
+    B: list[Fraction] = [Fraction(0, 1)] * (n + 1)
+    W[0] = Fraction(1, 1)
+
+    # Process each possible non-zero digit exactly once.
+    for d in range(1, base):
+        newW: list[Fraction] = [Fraction(0, 1)] * (n + 1)
+        newB: list[Fraction] = [Fraction(0, 1)] * (n + 1)
+
+        # We may append digit d exactly c times, where c >= 0.
+        # If current non-zero length is t, then t+c must be <= n.
+        for t in range(0, n + 1):
+            if W[t] == 0 and B[t] == 0:
+                # Small skip: no patterns of this length exist in the current DP state.
+                continue
+
+            for c in range(0, n - t + 1):
+                # Each digit multiplicity contributes the factor 1/c!
+                coef = Fraction(1, math.factorial(c))
+
+                # Appending c digits to the right in base `base` multiplies by base^c.
+                p_base = base**c
+
+                # The suffix consisting of c copies of digit d has value:
+                #   d * (1 + base + base^2 + ... + base^(c-1))
+                # The geometric sum factor is:
+                #   rep = (base^c - 1) / (base - 1)
+                # Example (base 16): c=2 => rep = 1 + 16 = 0x11
+                rep = (p_base - 1) // (base - 1)
+
+                # Weight update:
+                #   W_new[t+c] += W[t] * (1/c!)
+                newW[t + c] += W[t] * coef
+
+                # Value-sum update:
+                #
+                # For each old pattern/value x of length t:
+                #   new_value = x * base^c + d * rep
+                #
+                # Aggregating over all patterns of length t:
+                #   B[t] aggregates sum(x / weight_den)
+                #   W[t] aggregates sum(1 / weight_den)
+                #
+                # Thus:
+                #   B_new[t+c] += (B[t] * base^c + W[t] * d * rep) * (1/c!)
+                newB[t + c] += (B[t] * p_base + W[t] * d * rep) * coef
+
+        W, B = newW, newB
+
+    # Now B[k] equals the desired B(k) after processing digits 1..base-1.
+
+    # -------------------------------------------------------------------------
+    # 3) Assemble S(n) = sum_{k=1..n} k * A[k] * B[k]
+    # -------------------------------------------------------------------------
+    total = Fraction(0, 1)
+    for k in range(1, n + 1):
+        total += k * A[k] * B[k]
+
+    # The math guarantees the result is an integer.
+    return int(total)
+
+
+# Example usage: compute S(n) for hexadecimal numbers
+# Example usage: compute S(n) for hexadecimal numbers
+for n_test in (3, 5, 0xA, 0xAA):
+    value = S(n_test, base=16)
+    print(f"S(0x{format_answer(n_test, base)}) in base 16 = 0x{format_answer(value, base)}")
+```
+
+Output:
+
+```text
+S(0x3) in base 16 = 0x4077C0
+S(0x5) in base 16 = 0x286D8F92C0
+S(0xA) in base 16 = 0x12C698E48B4FC2A01358
+S(0xAA) in base 16 = 0x26F887F38798EE82871999ED23144B390724614ECAF1D11BF47A1ECBE23E8CE07533AFFEACBFE440346B4335A5A30FCDE3A3DB92E838CB57FE2B4FA6795EA57ABD4FCFB80DB43E6001A7153FD484ACD473AFCDF93BEA247F908BE8B05F836C118486D59BB38D2349DAE0CAE1D7040F1B27CE2D2E45F0520D9EF0285FDF9BA9CBF46A2420B1DA749B761D2A9EFB8EC37F04D580D1210F929386720E61EF28351655758C184BF42958
+```
+
+This is already good enough to secure the silver 🥈 medal (although the code does run a few seconds already).
+
+
+<br>
+
+---
+
+### Eliminating Fractions: Scaling away the Factorial Denominators
+
+The DP we derived for $B(k)$ used rational weights of the form $1/c!$, which naturally
+led to `Fraction` arithmetic:
+
+- $W[t]$ aggregated $\sum 1/\prod c_i!$ over all patterns of length $t$,
+- $B[t]$ aggregated $\sum f(\mathbf c)/\prod c_i!$ over the same patterns.
+
+This is mathematically clean but computationally expensive, because `Fraction` objects constantly normalize numerators/denominators via gcd. The key observation is that all denominators are factorials and therefore we can remove them by a global scaling.
+
+
+*1) Define integer-scaled DP arrays*
+
+Define scaled (integer) versions of the DP states by multiplying by $t!$:
+
+$$
+\widetilde{W}[t] := t!\,W[t],
+\qquad
+\widetilde{B}[t] := t!\,B[t].
+$$
+
+Intuition:
+
+- Every term contributing to $W[t]$ looks like $1/\prod c_i!$.
+- Multiplying by $t!$ converts this into the multinomial coefficient
+  $t!/\prod c_i!$, which is an integer.
+- Same for $B[t]$: each value gets multiplied by the same integer weight.
+
+So $\widetilde{W}[t]$ and $\widetilde{B}[t]$ can be maintained using pure integers.
+
+Initialization becomes
+
+$$
+\begin{align*}
+\widetilde{W}[0] = 0! \qquad W[0] = 1, \\
+\widetilde{B}[0] = 0! \qquad B[0] = 0.
+\end{align*}
+$$
+
+
+
+*2) Start from the rational DP update*
+
+From the previous derivation, when processing digit $d$ and choosing multiplicity $c$,
+we had for each $t$:
+
+$$
+W_{\text{new}}[t+c] \;{+}{=}\; W[t]\cdot \frac{1}{c!},
+$$
+
+and
+
+$$
+B_{\text{new}}[t+c]
+\;\leftarrow\; B_{\text{new}}[t+c] + 
+\left(B[t]\cdot b^c + W[t]\cdot d\cdot R_c \right)\cdot \frac{1}{c!},
+\qquad
+R_c := \frac{b^c-1}{b-1}.
+$$
+
+Now multiply the whole update for index $t+c$ by $(t+c)!$ to convert it to the scaled variables.
+
+---
+
+*3) Derive the integer coefficient*
+
+For the weight update:
+
+$$
+\begin{align}
+\widetilde{W}_{\text{new}}[t+c]
+=
+(t+c)! \,
+W_{\text{new}}[t+c]
+\;\leftarrow\; \widetilde{W}_{\text{new}}[t+c] + 
+(t+c)!\,W[t]\cdot \frac{1}{c!}.
+\end{align}
+$$
+
+Substitute $W[t] = \widetilde{W}[t]/t!$ (since our sequence gets longer we have to correct the factor by dividing through $t!$ and multiplying with $(t+c)!$):
+
+$$
+\begin{align}
+\widetilde{W}_{\text{new}}[t+c]
+\; \leftarrow\; \widetilde{W}_{\text{new}}[t+c] +
+(t+c)!\,\frac{\widetilde{W}[t]}{t!}\cdot \frac{1}{c!}
+=
+\widetilde{W}[t]\cdot \frac{(t+c)!}{t!\,c!}.
+\end{align}
+$$
+
+But
+
+$$
+\frac{(t+c)!}{t!\,c!} = \binom{t+c}{c}.
+$$
+
+So the scaled weight update is:
+
+$$
+\boxed{
+\widetilde{W}_{\text{new}}[t+c]
+\; \leftarrow\; \widetilde{W}_{\text{new}}[t+c] + 
+\widetilde{W}[t]\cdot \binom{t+c}{c}.
+}
+$$
+
+
+*4) Derive the integer update for $\widetilde{B}$*
+
+Start from the rational update and multiply by $(t+c)!$:
+
+$$
+\widetilde{B}_{\text{new}}[t+c]
+\; \leftarrow \; \widetilde{B}_{\text{new}}[t+c] + 
+(t+c)!\left(B[t]\cdot b^c + W[t]\cdot d\cdot R_c\right)\frac{1}{c!}.
+$$
+
+Substitute $B[t]=\widetilde{B}[t]/t!$ and $W[t]=\widetilde{W}[t]/t!$:
+
+$$
+\widetilde{B}_{\text{new}}[t+c]
+\; \leftarrow \; \widetilde{B}_{\text{new}}[t+c] + 
+\frac{(t+c)!}{t!\,c!}\left(\widetilde{B}[t]\cdot b^c + \widetilde{W}[t]\cdot d\cdot R_c\right).
+$$
+
+Again the prefactor is $\binom{t+c}{c}$, so:
+
+$$
+\boxed{
+\widetilde{B}_{\text{new}}[t+c]
+\; \leftarrow \; \widetilde{B}_{\text{new}}[t+c] + 
+\left(\widetilde{B}[t]\cdot b^c + \widetilde{W}[t]\cdot d\cdot R_c\right)\binom{t+c}{c}.
+}
+$$
+
+*5) Recovering $B(k)$ and assembling $S(n)$*
+
+By definition,
+
+$$
+\widetilde{B}[k] = k!\,B(k).
+$$
+
+So whenever the final formula requires $B(k)$, we can use
+
+$$
+B(k) = \frac{\widetilde{B}[k]}{k!}.
+$$
+
+The overall decomposition remains
+
+$$
+S(n) = \sum_{k=1}^{n} k\cdot A(k)\cdot B(k),
+$$
+
+so substituting $B(k)=\widetilde{B}[k]/k!$ yields the integer-friendly form
+
+$$
+\boxed{
+S(n) = \sum_{k=1}^{n} k\cdot A(k)\cdot \frac{\widetilde{B}[k]}{k!}.
+}
+$$
+
+This is exactly why the last line in the reference code divides by `factorial(k)`.
+
+---
+
+*Why this is faster*
+
+- All intermediate DP values are integers (or later, integers modulo $M$).
+- We avoid gcd reductions and normalization inherent to fractions (`Fraction` class in Python 3).
+- The only "division” left is by $k!$ at the very end, which can be handled either
+  exactly (since the expression is guaranteed to be an integer) or, for the modular
+  version, via modular inverses.
+
+This turns the elegant but slow rational DP into a practical integer DP that is
+ready to be upgraded to the final modulo-$M$ computation.
+
+
+```python
+from __future__ import annotations
+
+import math
+
+
+def S(n: int, base: int) -> int:
+    """Compute S(n) exactly using the integer-scaled DP (no Fractions).
+
+    We use the decomposition
+        S(n) = sum_{k=1..n} k * A(k) * B(k),
+
+    but compute B(k) via scaled integers:
+        B_scaled[k] = k! * B(k).
+
+    DP meaning (after processing digits 1..d):
+      - W_scaled[t] = t! * sum_{patterns length t} 1 / prod c_i!
+      - B_scaled[t] = t! * sum_{patterns length t} f(pattern) / prod c_i!
+
+    The digit-extension update (append digit d exactly c times) becomes integer-only:
+        coef = C(t+c, c)
+        W_scaled_new[t+c] += W_scaled[t] * coef
+        B_scaled_new[t+c] += (B_scaled[t] * base^c + W_scaled[t] * d * rep(c)) * coef
+
+    where rep(c) = (base^c - 1)/(base - 1) = 1 + base + ... + base^(c-1).
+
+    Finally, since B_scaled[k] = k! * B(k), we have:
+        S(n) = sum_{k=1..n} k * A(k) * B_scaled[k] / k!
+
+    The division is exact by construction.
+    """
+    # -------------------------------------------------------------------------
+    # 1) Precompute A[k] = sum_{m=k..n} (m-1)!/(m-k)!   (pure integers)
+    # -------------------------------------------------------------------------
+    A = [0] * (n + 1)
+    for k in range(1, n + 1):
+        # (m-1)!/(m-k)! = (m-k)(m-k+1)...(m-1) is an integer rising product of length (k-1).
+        for m in range(k, n + 1):
+            A[k] += math.factorial(m - 1) // math.factorial(m - k)
+
+    # -------------------------------------------------------------------------
+    # 2) Compute scaled B via DP over digits d=1..base-1.
+    #
+    # W_scaled[0]=1 represents the empty pattern (length 0) with weight 1.
+    # B_scaled[0]=0 because the empty pattern has value 0.
+    # -------------------------------------------------------------------------
+    W_scaled = [0] * (n + 1)
+    B_scaled = [0] * (n + 1)
+    W_scaled[0] = 1
+
+    for d in range(1, base):  # digits 1..9 (base10), 1..7 (base8), 1..15 (base16), ...
+        newW = [0] * (n + 1)
+        newB = [0] * (n + 1)
+
+        # For each existing length t, we may add c copies of digit d, keeping total <= n.
+        for t in range(0, n + 1):
+            if W_scaled[t] == 0 and B_scaled[t] == 0:
+                continue
+
+            for c in range(0, n - t + 1):
+                # coef = (t+c)!/(t! c!) = C(t+c, c)
+                # This is exactly the scaling factor that removes the 1/c! fractions
+                # after we multiply everything by (t+c)!.
+                coef = math.comb(t + c, c)
+
+                # Appending c digits shifts old values by base^c.
+                p_base = base**c
+
+                # Value of suffix "ddd...d" (c times) in base `base`:
+                # d * (1 + base + ... + base^(c-1)) = d * ((base^c - 1)/(base - 1))
+                rep = (p_base - 1) // (base - 1)
+
+                # Update weights (scaled): only depends on how many patterns we had at length t.
+                newW[t + c] += W_scaled[t] * coef
+
+                # Update value-sums (scaled):
+                # - old aggregated values shift by base^c
+                # - plus the suffix contribution, scaled by the total weight mass W_scaled[t]
+                newB[t + c] += (B_scaled[t] * p_base + W_scaled[t] * d * rep) * coef
+
+        W_scaled, B_scaled = newW, newB
+
+    # -------------------------------------------------------------------------
+    # 3) Assemble S(n) using B_scaled[k] = k! * B(k)
+    # -------------------------------------------------------------------------
+    ans = 0
+    for k in range(1, n + 1):
+        ans += k * A[k] * B_scaled[k] // math.factorial(k)
+
+    return ans
+
+
+# Example usage: compute S(n) for hexadecimal numbers
+for n_test in (3, 5, 0xA, 0xAA):
+    value = S(n_test, base=16)
+    print(f"S(0x{format_answer(n_test, base)}) in base 16 = 0x{format_answer(value, base)}")
+```
+
+Also here, we get the same output as before (but faster):
+
+```text
+S(0x3) in base 16 = 0x4077C0
+S(0x5) in base 16 = 0x286D8F92C0
+S(0xA) in base 16 = 0x12C698E48B4FC2A01358
+S(0xAA) in base 16 = 0x26F887F38798EE82871999ED23144B390724614ECAF1D11BF47A1ECBE23E8CE07533AFFEACBFE440346B4335A5A30FCDE3A3DB92E838CB57FE2B4FA6795EA57ABD4FCFB80DB43E6001A7153FD484ACD473AFCDF93BEA247F908BE8B05F836C118486D59BB38D2349DAE0CAE1D7040F1B27CE2D2E45F0520D9EF0285FDF9BA9CBF46A2420B1DA749B761D2A9EFB8EC37F04D580D1210F929386720E61EF28351655758C184BF42958
+```
