@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
+            },{id: "post-the-hexadecimal-digit-canon-challenge",
+        
+          title: "The Hexadecimal Digit Canon Challenge",
+        
+        description: "A combinatorial programming challenge set in base 16: define a digit-canonical form for hexadecimal numbers and compute the cumulative sum of these canonical values across rapidly growing digit ranges. Simple to state, but requiring careful counting and optimization at scale.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon/";
+          
+        },
+      },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
         
           title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
         
