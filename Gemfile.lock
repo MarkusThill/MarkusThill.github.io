@@ -124,7 +124,7 @@ GEM
       safe_yaml (~> 1.0)
       terminal-table (>= 1.8, < 4.0)
       webrick (~> 1.7)
-    jekyll-archives-v2 (0.0.6)
+    jekyll-archives-v2 (0.0.7)
       activesupport
       jekyll (>= 3.6, < 5.0)
     jekyll-cache-bust (0.0.1)
@@ -158,7 +158,7 @@ GEM
       jekyll (~> 4.0)
     jekyll-sitemap (1.4.0)
       jekyll (>= 3.7, < 5.0)
-    jekyll-socials (0.0.5)
+    jekyll-socials (0.0.6)
       jekyll (>= 3.6, < 5.0)
     jekyll-tabs (1.2.1)
       jekyll (>= 3.0, < 5.0)
@@ -175,8 +175,8 @@ GEM
     json (2.18.0)
     json-minify (0.0.3)
       json (> 0)
-    kramdown (2.5.1)
-      rexml (>= 3.3.9)
+    kramdown (2.5.2)
+      rexml (>= 3.4.4)
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     latex-decode (0.4.2)
@@ -280,4 +280,4 @@ DEPENDENCIES
   ostruct
 
 BUNDLED WITH
-   2.6.9
+  4.0.4
