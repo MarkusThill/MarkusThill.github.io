@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2026-01-20T29:00:51+01:00
+date: 2026-01-20T19:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
@@ -1619,15 +1619,17 @@ Now multiply the whole update for index $t+c$ by $(t+c)!$ to convert it to the s
 For the weight update:
 
 $$
-\begin{align}
-\widetilde{W}_{\text{new}}[t+c]
-=
-(t+c)! \,
-W_{\text{new}}[t+c]
-\;\leftarrow\; \widetilde{W}_{\text{new}}[t+c] + 
-(t+c)!\,W[t]\cdot \frac{1}{c!}.
-\end{align}
+\widetilde{W}_{\text{new}}[t+c] := (t+c)!\,W_{\text{new}}[t+c].
 $$
+
+$$
+\widetilde{W}_{\text{new}}[t+c]
+\;\leftarrow\;
+\widetilde{W}_{\text{new}}[t+c]
+\;+\;
+(t+c)!\,W[t]\cdot \frac{1}{c!}.
+$$
+
 
 Substitute $W[t] = \widetilde{W}[t]/t!$ (since our sequence gets longer we have to correct the factor by dividing through $t!$ and multiplying with $(t+c)!$):
 
