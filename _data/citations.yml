@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2026-01-19'
+  last_updated: '2026-01-21'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 56
@@ -10,11 +10,11 @@ papers:
     title: 'Temporal difference learning methods with automatic step-size adaption for strategic board games: Connect-4 and Dots-and-Boxes'
     year: '2015'
   Bu5eFxQAAAAJ:IjCSPb-OGe4C:
-    citations: 40
+    citations: 43
     title: Time Series Anomaly Detection with Discrete Wavelet Transforms and Maximum Likelihood Estimation
     year: '2017'
   Bu5eFxQAAAAJ:LkGwnXOMwfcC:
-    citations: 22
+    citations: 23
     title: 'MarkusThill/MGAB: The Mackey-Glass Anomaly Benchmark'
     year: '2020'
   Bu5eFxQAAAAJ:Se3iqnhoufwC:
@@ -30,7 +30,7 @@ papers:
     title: "Reinforcement Learning mit N-Tupel-Systemen f\xFCr Vier Gewinnt"
     year: Unknown Year
   Bu5eFxQAAAAJ:W7OEmFMy1HYC:
-    citations: 34
+    citations: 35
     title: Anomaly Detection in Electrocardiogram Readings with Stacked LSTM Networks.
     year: '2019'
   Bu5eFxQAAAAJ:WF5omc3nYNoC:
@@ -38,7 +38,7 @@ papers:
     title: Machine Learning and Deep Learning Approaches for Multivariate Time Series Prediction and Anomaly Detection
     year: '2022'
   Bu5eFxQAAAAJ:Y0pCki6q_DkC:
-    citations: 4
+    citations: 5
     title: Online adaptable time series anomaly detection with discrete wavelet transforms and multivariate gaussian distributions
     year: '2018'
   Bu5eFxQAAAAJ:YsMSGLbcyi4C:
@@ -54,7 +54,7 @@ papers:
     title: Temporal difference learning with eligibility traces for the game connect four
     year: '2014'
   Bu5eFxQAAAAJ:eQOLeE2rZwMC:
-    citations: 251
+    citations: 253
     title: Temporal convolutional autoencoder for unsupervised anomaly detection in time series
     year: '2021'
   Bu5eFxQAAAAJ:qjMakFHDy7sC:
