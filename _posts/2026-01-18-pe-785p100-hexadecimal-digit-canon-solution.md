@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2026-01-20T19:00:51+01:00
+date: 2026-01-29T20:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
@@ -319,7 +319,7 @@ S(n)         = 286D8F92C0
 
 <br>
 
-#### Counting Distinct Values: Naive Approach
+*Counting Distinct Values: Naive Approach*
 
 As a small extension of the previous brute-force method, the following code counts how many **distinct values of $$f(d)$$** appear when considering all numbers with at most $$n$$ digits in a given base (8, 10, or 16).
 
@@ -384,7 +384,7 @@ n=5  num_distinct=15503
 
 <br>
 
-#### Counting Distinct Values: Closed Form
+*Counting Distinct Values: Closed Form*
 
 We fix a base $$b \in \{8,10,16\}$$ with digits $$0,1,\dots,b-1$$. For a number $$d$$ with exactly $$m$$ digits in base $$b$$, let
 
@@ -598,7 +598,7 @@ The key idea of the algorithm is therefore:
 
 This splits the problem into two conceptually clean parts.
 
-#### 1) Enumerating all distinct outputs $f(d)$
+*1) Enumerating all distinct outputs $f(d)$*
 
 A value $f(d)$ is exactly a finite **nondecreasing digit string** over the alphabet
 $\{1,2,\dots,b-1\}$.
@@ -621,7 +621,7 @@ The algorithm generates these sequences via a FIFO queue:
 Each distinct value of $f(d)$ is generated exactly once.
 
 
-#### 2) Counting how many numbers map to a fixed $f_d$
+*2) Counting how many numbers map to a fixed $f_d$*
 
 Fix one distinct output $f_d$ and let:
 
@@ -631,7 +631,7 @@ Fix one distinct output $f_d$ and let:
 Now consider all original numbers $d$ that map to this fixed $f_d$.
 
 
-##### (a) Permuting the non-zero digits
+*(a) Permuting the non-zero digits*
 
 Ignoring zeros for the moment, the number of distinct permutations of the $k$
 non-zero digits with multiplicities $(c_1,\dots,c_{b-1})$ is
@@ -642,7 +642,7 @@ $$
 
 This counts all ways the non-zero digits can appear relative to each other.
 
-##### (b) Inserting zeros without creating leading zeros
+*(b) Inserting zeros without creating leading zeros*
 
 Let $c_0$ denote the number of zeros inserted.  
 Then the total digit length of $d$ is
@@ -667,9 +667,7 @@ $$
 \binom{k+c_0-1}{c_0}.
 $$
 
----
-
-#### 3) Combining both contributions
+*3) Combining both contributions*
 
 For a fixed $f_d$, the total number of original numbers $d$ mapping to it is
 
@@ -817,7 +815,7 @@ S(0xA) in base 16 = 0x12C698E48B4FC2A01358
 This solution would already win us the Bronze 🥉 medal.
 
 
-### TODO: Towards a faster solution: Write a better title here
+### From Brute Force to Digit Dynamics: Building a Much Faster Solution
 
 Fix a base $b$ ($b=16$) and a digit-count vector
 
@@ -1292,7 +1290,6 @@ This illustrates precisely why the auxiliary array $W[t]$ is needed: the constan
 
 **</ End of Example>**
 
----
 
 *2) Process digits incrementally*
 
