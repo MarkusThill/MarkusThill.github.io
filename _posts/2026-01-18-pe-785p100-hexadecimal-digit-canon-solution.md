@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2026-01-29T20:00:51+01:00
+date: 2026-01-20T20:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
@@ -86,10 +86,13 @@ Compute $$S(n)$$ for the following four difficulty tiers:
 |------|------------------------------|---------------------------|
 | 🎗 Warm-up | $$n = \; \texttt{0x5}$$ | $$S(n) = \;\_\_\_\_\_\_\_\_\_\_\_\_$$ |
 | 🥉 Bronze | $$n = \; \texttt{0xA}$$ | $$S(n) = \;\_\_\_\_\_\_\_\_\_\_\_\_$$ |
-| 🥈 Silver | $$n = \; \texttt{0xAA}$$ | $$S(n) = \;\_\_\_\_\_\_\_\_\_\_\_\_$$ |
+| 🥈 Silver | $$n = \; \texttt{0xAA}$$ | $$S(n) = \;\_\_\_\_\_\_\_\_\_\_\_\_\, \, $$ (first & last 10 hex digits) |
 | 🥇 Gold | $$n = \; \texttt{0xAAA}$$ | $$S(n) \equiv \;\_\_\_\_\_\_\_\_\_\_\_\_  \pmod{\texttt{0x1FFFFFFFFFFFFFFF}} $$ |
 
 <br> 
+
+For the **silver** medal, report **only** the **first 10** and **last 10** hexadecimal digits of $$S(n)$$.  
+Here, "first 10" means the first 10 digits of the standard hexadecimal representation of $$S(n)$$, and "last 10" means the last 10 digits (equivalently $$S(n) \bmod 16^{10}$$). The problem is designed so that **neither part has leading zeros**, and both substrings consist of exactly 10 hexadecimal digits.
 
 For the **gold** medal, report your hexadecimal answer **modulo** $$\texttt{0x1FFFFFFFFFFFFFFF}.$$
 
@@ -1857,7 +1860,7 @@ S(0xAA) in base 16 = 0x6CFD29A04AFAB77
 
 ---
 
-### Modular Solution – Part I: Using Modular Inverses
+### Modular Solution – Part I: Using Modular Inverses (Intentionally Unoptimized)
 
 Up to this point, we have derived exact formulas for  
 
@@ -1965,7 +1968,7 @@ This modular formulation is mathematically sound provided that
 - $M$ is prime, and
 - $M > n$.
 
-Under these conditions, every factorial and constant appearing in a denominator has a modular inverse, so all divisions are well-defined. For the given problem, the modulus $\mbox{0x1FFFFFFFFFFFFFFF}$ is prime and much larger than $n = 18$, so the modular approach applies without restriction.
+Under these conditions, every factorial and constant appearing in a denominator has a modular inverse, so all divisions are well-defined. For the given problem, the modulus $\mbox{0x1FFFFFFFFFFFFFFF}$ is prime (a so-called [Mersenne prime](https://en.wikipedia.org/wiki/Mersenne_prime) with the value $2^{61}-1$) and much larger than $n = 18$, so the modular approach applies without restriction.
 
 At this point, we already have a fully correct modular solution.  In the next section, we will refine it further by reducing redundant computations and improving performance, leading to the final optimized implementation.
 
