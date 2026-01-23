@@ -243,3 +243,4 @@ async function checkSilver() {
 }
 </script>
 
+💡 Solution coming soon: A full, step-by-step solution—including the underlying combinatorics and an efficient implementation—will be published on this blog shortly. Stay tuned!
