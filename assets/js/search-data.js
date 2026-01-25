@@ -65,7 +65,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-the-hexadecimal-digit-canon-challenge",
+            },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
+        
+          title: "Solving a Mini Sudoku in 6502 Assembly",
+        
+        description: "A deep dive into solving 4x4 mini-Sudokus using a recursive backtracking algorithm written entirely in 6502 assembly, including design decisions, memory layout, and emulator-based inspection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/mini-sudoku-asm/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge",
         
           title: "The Hexadecimal Digit Canon Challenge",
         
