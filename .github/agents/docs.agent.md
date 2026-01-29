@@ -14,24 +14,49 @@ You are a documentation specialist for the al-folio Jekyll theme project.
 
 ## Project knowledge
 
-- **Tech Stack:** Jekyll 4.x (Ruby-based static site generator), Liquid templating, YAML configuration, SCSS/CSS, JavaScript
-- **Key Dependencies:** jekyll-scholar, jekyll-archives-v2, jekyll-paginate-v2, MathJax, Bootstrap
+- **Tech Stack:** Jekyll 4.x (Ruby-based static site generator), Liquid templating, YAML configuration, SCSS/CSS, JavaScript, Docker
+- **Key Dependencies:** jekyll-scholar, jekyll-archives-v2, jekyll-paginate-v2, MathJax, Bootstrap, Prettier, pre-commit hooks
 - **File Structure:**
   - `_config.yml` – Main Jekyll configuration file
-  - `*.md` (root) – Documentation files: `README.md`, `INSTALL.md`, `CUSTOMIZE.md`, `FAQ.md`, `CONTRIBUTING.md`
+  - `*.md` (root) – Documentation files: `README.md`, `INSTALL.md`, `CUSTOMIZE.md`, `FAQ.md`, `CONTRIBUTING.md`, `QUICKSTART.md`, `ANALYTICS.md`, `SEO.md`, `TROUBLESHOOTING.md`
   - `_pages/` – Website pages (Markdown with frontmatter)
   - `_posts/` – Blog posts
-  - `_projects/`, `_news/`, `_books/` – Jekyll collections
-  - `_layouts/`, `_includes/` – Liquid templates
-    - `_includes/cv/` – Unified CV component renderers (awards, education, experience, skills, languages, etc.)
+  - `_projects/`, `_news/`, `_books/`, `_teachings/` – Jekyll collections
+  - `_layouts/` – Liquid layouts for different page types
+  - `_includes/` – Liquid template components:
+    - `_includes/cv/` – Unified CV component renderers (awards, education, experience, skills, languages, certificates, references, projects, interests, publications, etc.)
+    - `_includes/repository/` – Repository display components
+    - Core includes: header, footer, metadata, scripts, etc.
   - `_sass/` – SCSS stylesheets
   - `_data/` – YAML data files:
     - `cv.yml` – CV/resume in RenderCV format
-    - `repositories.yml`, `socials.yml`, `coauthors.yml`, `venues.yml` – Other data
+    - `socials.yml` – Social media links
+    - `repositories.yml` – GitHub repositories
+    - `coauthors.yml` – Coauthor information
+    - `venues.yml` – Publication venue abbreviations
+    - `citations.yml` – Citation metrics
+  - `_plugins/` – Custom Jekyll plugins for extended functionality
   - `_bibliography/` – BibTeX files for publications
-  - `assets/json/resume.json` – JSONResume format (alternative to RenderCV; syncing between formats is a template maintainer task, not a user responsibility)
-  - `assets/rendercv/` – RenderCV configuration files and generated PDFs
-  - `.github/workflows/` – GitHub Actions for deployment, CI, and CV PDF generation
+  - `assets/` – Static assets:
+    - `assets/json/` – JSON files (resume.json in JSONResume format, table_data.json)
+    - `assets/rendercv/` – RenderCV configuration files and generated PDFs
+    - `assets/img/`, `assets/pdf/` – Images and PDFs
+    - `assets/css/`, `assets/js/` – Custom stylesheets and scripts
+    - `assets/fonts/`, `assets/webfonts/` – Font files
+    - `assets/bibliography/`, `assets/libs/` – Support files
+    - `assets/audio/`, `assets/video/`, `assets/jupyter/`, `assets/plotly/`, `assets/html/` – Multimedia and embedded content
+  - `.github/` – GitHub configuration:
+  - `.github/workflows/` – GitHub Actions (deployment, CI/CD, CV PDF generation, link checking, code quality, Copilot environment setup)
+  - `.github/agents/` – AI agent configuration files (customize.agent.md, docs.agent.md)
+  - `.github/instructions/` – Path-specific Copilot custom instructions for different file types
+    - `.github/ISSUE_TEMPLATE/` – GitHub issue templates
+  - `_scripts/` – Helper scripts and utilities
+  - `bin/` – Executable scripts
+  - `.devcontainer/` – Development container configuration
+  - `.pre-commit-config.yaml` – Pre-commit hooks for code quality
+  - `Dockerfile`, `docker-compose.yml`, `docker-compose-slim.yml` – Docker configuration
+  - `Gemfile`, `Gemfile.lock`, `.ruby-version` – Ruby dependencies
+  - `package.json` – Node.js dependencies
 
 ## Documentation standards
 
@@ -79,11 +104,37 @@ You are a documentation specialist for the al-folio Jekyll theme project.
 
 ## Documentation file purposes
 
-- `README.md` – Project overview, features showcase, quick start links
-- `INSTALL.md` – Installation and deployment instructions (Docker, GitHub Pages, local setup)
-- `CUSTOMIZE.md` – Customization guide (configuration, adding content, styling)
-- `FAQ.md` – Frequently asked questions and troubleshooting
-- `CONTRIBUTING.md` – Guidelines for contributors
+- `ANALYTICS.md` – Analytics and tracking configuration options
+- `CONTRIBUTING.md` – Guidelines for contributors and development
+- `CUSTOMIZE.md` – Comprehensive customization guide (configuration, adding content, styling, CV management, publications)
+- `FAQ.md` – Frequently asked questions and common issues
+- `INSTALL.md` – Installation and deployment instructions (Docker, GitHub Pages, local setup, upgrading)
+- `QUICKSTART.md` – Get started in 5 minutes (repository setup, personalization, deployment)
+- `README.md` – Project overview, features showcase, community examples, quick start links
+- `SEO.md` – Search engine optimization guide
+- `TROUBLESHOOTING.md` – Detailed troubleshooting guide for deployment, build, styling, and feature issues
+
+## GitHub Copilot Custom Instructions
+
+This repository includes custom instruction files to enhance GitHub Copilot's effectiveness when working with specific file types. These files are located in `.github/instructions/` and `.github/copilot-instructions.md`:
+
+**Main Instructions:**
+
+- `.github/copilot-instructions.md` – Repository-wide guidance including tech stack versions, Docker build process, project layout, CI/CD pipelines, common pitfalls, and file format specifications
+
+**Path-Specific Instructions (applies to files matching specific patterns):**
+
+- `.github/instructions/liquid-templates.instructions.md` (applies to `**/*.liquid`) – Guidance for Liquid templating, common patterns, validation, and testing
+- `.github/instructions/yaml-configuration.instructions.md` (applies to `_config.yml,_data/**/*.yml`) – Guidance for YAML syntax, feature flags, BibTeX keywords, and configuration best practices
+- `.github/instructions/bibtex-bibliography.instructions.md` (applies to `**/*.bib,_bibliography/**`) – Guidance for BibTeX entry syntax, custom keywords, field specifications, and publication frontmatter
+- `.github/instructions/markdown-content.instructions.md` (applies to content collections) – Guidance for creating content in `_books/`, `_news/`, `_pages/`, `_posts/`, `_projects/`, and `_teachings/` with appropriate frontmatter and formatting
+- `.github/instructions/javascript-scripts.instructions.md` (applies to `_scripts/**/*.js`) – Guidance for JavaScript and Liquid+JavaScript hybrid files, ES6 patterns, and script debugging
+
+**Environment Setup:**
+
+- `.github/workflows/copilot-setup-steps.yml` – GitHub Actions workflow that pre-configures the Copilot environment with Ruby 3.3.5, Python 3.13, Node.js, ImageMagick, and nbconvert before agent execution
+
+These instruction files help Copilot agents understand project-specific conventions, build requirements, validation procedures, and common patterns without requiring them to explore the codebase.
 
 ## Writing style
 

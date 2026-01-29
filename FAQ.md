@@ -18,7 +18,6 @@ Here are some frequently asked questions. If you have a different question, plea
   - [I am trying to deploy my site, but it fails with Could not find gem 'jekyll-diagrams' in locally installed gems. How do I fix that?](#i-am-trying-to-deploy-my-site-but-it-fails-with-could-not-find-gem-jekyll-diagrams-in-locally-installed-gems-how-do-i-fix-that)
   - [How can I update Academicons version on the template](#how-can-i-update-academicons-version-on-the-template)
   - [How can I update Font Awesome version on the template](#how-can-i-update-font-awesome-version-on-the-template)
-  - [How can I update Tabler Icons version on the template](#how-can-i-update-tabler-icons-version-on-the-template)
   - [What do all these GitHub actions/workflows mean?](#what-do-all-these-github-actionsworkflows-mean)
   - [How can I use Google Search Console ID on the template?](#how-can-i-use-google-search-console-id-on-the-template)
   - [What are Code Wiki and DeepWiki?](#what-are-code-wiki-and-deepwiki)
@@ -111,10 +110,6 @@ To update the Academicons version, you need to download the latest release from 
 ## How can I update Font Awesome version on the template
 
 To update the Font Awesome version, you need to download the latest release "for the web" from the [Font Awesome website](https://fontawesome.com/download). After downloading, extract the zip file and copy the `scss/` directory content to `_sass/font-awesome/` and the `webfonts/` content to `assets/webfonts/`.
-
-## How can I update Tabler Icons version on the template
-
-To update the Tabler Icons version, you need to download the latest release from the [Tabler Icons website](https://tabler.io/icons). After downloading, extract the zip file and copy the files `tabler-icons-filled.scss`, `tabler-icons-outline.scss`, and `tabler-icons.scss` from the `webfont/` directory to `_sass/tabler-icons/`, and all the files from `webfont/fonts/` to `assets/fonts/`.
 
 ## What do all these GitHub actions/workflows mean?
 
