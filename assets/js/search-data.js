@@ -65,18 +65,7 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
-        
-          title: "The Hexadecimal Digit Canon Challenge: Solution",
-        
-        description: "",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/";
-          
-        },
-      },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
+            },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
         
           title: "Solving a Mini Sudoku in 6502 Assembly",
         
