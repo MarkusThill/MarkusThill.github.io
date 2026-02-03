@@ -10,7 +10,7 @@ giscus_comments: true
 toc:
   beginning: true
 share: true
-date: 2026-02-15T20:00:51+01:00
+date: 2026-02-28T20:00:51+01:00
 pretty_table: false
 related_posts: true
 tabs: true
