@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2026-01-21'
+  last_updated: '2026-02-27'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 56
@@ -10,12 +10,12 @@ papers:
     title: 'Temporal difference learning methods with automatic step-size adaption for strategic board games: Connect-4 and Dots-and-Boxes'
     year: '2015'
   Bu5eFxQAAAAJ:IjCSPb-OGe4C:
-    citations: 43
+    citations: 46
     title: Time Series Anomaly Detection with Discrete Wavelet Transforms and Maximum Likelihood Estimation
     year: '2017'
   Bu5eFxQAAAAJ:LkGwnXOMwfcC:
-    citations: 23
-    title: 'MarkusThill/MGAB: The Mackey-Glass Anomaly Benchmark'
+    citations: 26
+    title: 'Markusthill/mgab: the mackey-glass anomaly benchmark'
     year: '2020'
   Bu5eFxQAAAAJ:Se3iqnhoufwC:
     citations: 0
@@ -29,8 +29,12 @@ papers:
     citations: 0
     title: "Reinforcement Learning mit N-Tupel-Systemen f\xFCr Vier Gewinnt"
     year: Unknown Year
+  Bu5eFxQAAAAJ:UebtZRa9Y70C:
+    citations: 5
+    title: 'Markusthill/mgab: The mackey-glass anomaly benchmark, apr 2020'
+    year: Unknown Year
   Bu5eFxQAAAAJ:W7OEmFMy1HYC:
-    citations: 35
+    citations: 38
     title: Anomaly Detection in Electrocardiogram Readings with Stacked LSTM Networks.
     year: '2019'
   Bu5eFxQAAAAJ:WF5omc3nYNoC:
@@ -38,11 +42,11 @@ papers:
     title: Machine Learning and Deep Learning Approaches for Multivariate Time Series Prediction and Anomaly Detection
     year: '2022'
   Bu5eFxQAAAAJ:Y0pCki6q_DkC:
-    citations: 5
+    citations: 6
     title: Online adaptable time series anomaly detection with discrete wavelet transforms and multivariate gaussian distributions
     year: '2018'
   Bu5eFxQAAAAJ:YsMSGLbcyi4C:
-    citations: 66
+    citations: 70
     title: Time series encodings with temporal convolutional networks
     year: '2020'
   Bu5eFxQAAAAJ:_FxGoFyzp5QC:
@@ -54,18 +58,22 @@ papers:
     title: Temporal difference learning with eligibility traces for the game connect four
     year: '2014'
   Bu5eFxQAAAAJ:eQOLeE2rZwMC:
-    citations: 253
+    citations: 264
     title: Temporal convolutional autoencoder for unsupervised anomaly detection in time series
     year: '2021'
+  Bu5eFxQAAAAJ:hqOjcs7Dif8C:
+    citations: 0
+    title: Time Series Encodings with Temporal
+    year: '2020'
   Bu5eFxQAAAAJ:qjMakFHDy7sC:
     citations: 0
     title: Temporal Coherence in TD-Learning for Strategic Board Games
     year: '2014'
   Bu5eFxQAAAAJ:u-x6o8ySG0sC:
-    citations: 31
+    citations: 32
     title: Online adaptable learning rates for the game Connect-4
     year: '2014'
   Bu5eFxQAAAAJ:u5HHmVD_uO8C:
-    citations: 33
+    citations: 35
     title: Reinforcement learning with n-tuples on the game Connect-4
     year: '2012'
