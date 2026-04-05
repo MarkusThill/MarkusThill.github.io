@@ -4,6 +4,7 @@
 
 - [Installing and Deploying](#installing-and-deploying)
   - [Recommended Approach](#recommended-approach)
+    - [Template vs. Fork: Which Should I Use?](#template-vs-fork-which-should-i-use)
     - [Important Notes for GitHub Pages Sites](#important-notes-for-github-pages-sites)
     - [Automatic Deployment](#automatic-deployment)
     - [Local Development](#local-development)
@@ -31,6 +32,16 @@
 The recommended approach for using **al-folio** is to first create your own site using the template with as few changes as possible, and only when it is up and running customize it however you like. This way it is easier to pinpoint what causes a potential issue in case of a bug.
 
 **For the quickest setup**, follow the [Quick Start Guide](QUICKSTART.md), which will have you up and running in 5 minutes.
+
+### Template vs. Fork: Which Should I Use?
+
+**Use the "Use this template" button** (recommended) when creating your own al-folio site. This creates a clean, independent copy that is not linked to the main al-folio repository.
+
+**If you already forked the repository**, your fork will work fine, but you should be aware of a common pitfall:
+
+- Forks maintain a connection to the original repository, which can make it easy to accidentally submit pull requests to al-folio with your personal site changes
+- **Solution:** When making changes to your fork, always create a new branch (e.g., `git checkout -b my-site-updates`) and verify that you're pushing to **your own fork** before submitting pull requests
+- Only submit pull requests to `alshedivat/al-folio` if you're intentionally contributing improvements that benefit the entire al-folio community
 
 ### Important Notes for GitHub Pages Sites
 
