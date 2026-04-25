@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Markus Thill - Notes on Math, ML &amp; Programming</title>
+  <desc id="desc">Social preview image for search and social cards.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1020" cy="120" r="180" fill="#22d3ee" opacity="0.15" />
+  <circle cx="180" cy="520" r="220" fill="#38bdf8" opacity="0.12" />
+  <text x="80" y="220" fill="#e2e8f0" font-size="56" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="700">
+    Markus Thill
+  </text>
+  <text x="80" y="295" fill="#bae6fd" font-size="44" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="500">
+    Notes on Math, ML &amp; Programming
+  </text>
+  <text x="80" y="365" fill="#93c5fd" font-size="30" font-family="Inter, Segoe UI, Arial, sans-serif">
+    markusthill.github.io
+  </text>
+</svg>
