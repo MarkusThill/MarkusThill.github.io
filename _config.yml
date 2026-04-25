@@ -92,7 +92,7 @@ openpanel_analytics: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX
 # <meta name="google-site-verification" content="YOUR_TOKEN" />
 # Example: if content is "abc123xyz", set google_site_verification: abc123xyz
 # Docs: https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag
-google_site_verification: # your google-site-verification token (Google Search Console)
+google_site_verification: E-cxXp9JBE8VIacUnRQwevqTkuNkkzBBa1HqjqIIgt4 # your google-site-verification token (Google Search Console)
 bing_site_verification: # your bing-site-verification token (Bing Webmaster)
 
 # -----------------------------------------------------------------------------
