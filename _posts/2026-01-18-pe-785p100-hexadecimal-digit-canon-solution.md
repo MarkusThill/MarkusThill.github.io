@@ -5,7 +5,7 @@ modified:
 categories: [programming, algorithms, mathematics]
 description: ""
 tags: [combinatorics, discrete-math, algorithms, optimization, python]
-thumbnail:
+thumbnail: assets/img/2026-01-17-hexadecimal-digit-canon-solution.png
 giscus_comments: true
 toc:
   beginning: true
