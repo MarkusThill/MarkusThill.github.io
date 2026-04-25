@@ -69,7 +69,7 @@ ninja.data = [{
         
           title: "The Hexadecimal Digit Canon Challenge: Solution",
         
-        description: "",
+        description: "A complete solution to the Hexadecimal Digit Canon challenge, including the canonicalization rules, combinatorial reasoning, optimization strategy, and a Python implementation.",
         section: "Posts",
         handler: () => {
           
