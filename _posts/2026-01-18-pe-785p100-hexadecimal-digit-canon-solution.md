@@ -3,7 +3,7 @@ layout: post
 title: "The Hexadecimal Digit Canon Challenge: Solution"
 modified:
 categories: [programming, algorithms, mathematics]
-description: ""
+description: "A complete solution to the Hexadecimal Digit Canon challenge, including the canonicalization rules, combinatorial reasoning, optimization strategy, and a Python implementation."
 tags: [combinatorics, discrete-math, algorithms, optimization, python]
 thumbnail: assets/img/2026-01-17-hexadecimal-digit-canon-solution.png
 giscus_comments: true
