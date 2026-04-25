@@ -2,9 +2,9 @@
 layout: post
 title: Stack Overflow Vulnerabilities
 modified:
-categories:
+categories: [security, programming]
 description: "This blog post explores the fundamentals of buffer overflows, including how they arise in C and C++ programs, the role of process memory layout and the x86/IA-32 architecture, and the significance of stack frames. It covers common overflow types — stack-based, off-by-one, BSS, and heap — and shows how attackers use techniques like NOP-sledding to gain elevated privileges. Finally, it illustrates how to craft a working exploit by injecting shellcode into a vulnerable application’s memory space."
-tags: []
+tags: [buffer-overflow, c-cpp, exploitation, memory-safety, x86]
 giscus_comments: true
 featured: true
 thumbnail: assets/img/buffer-overflow.webp
