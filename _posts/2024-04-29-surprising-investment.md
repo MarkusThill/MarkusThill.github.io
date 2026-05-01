@@ -4,7 +4,7 @@ title: Surprising Bank Investment
 modified:
 categories: [math]
 description: Discover how investing in a startup turned into a financial rollercoaster. Your bank offers you a chance to invest in a new venture, with the promise of keeping all the profits if successful. Excited, you dive in with $1,000,000, providing 99% of the investment while the bank chips in the remaining 1%.
-tags: []
+tags: [word-problem, percentage, finance-math, algebra, puzzle]
 thumbnail: assets/img/bank.jpg
 giscus_comments: true
 share:

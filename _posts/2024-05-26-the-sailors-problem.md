@@ -6,6 +6,7 @@ categories: [math, riddles]
 description: "Three sailors and a monkey are stranded on a deserted island. They gather a pile of coconuts to divide the next morning. During the night, each sailor wakes up, divides the pile into three parts, gives the extra coconut to the monkey, hides his share, and restacks the remaining coconuts. In the morning, the remaining coconuts are again divided into three parts, with one coconut left over, which is given to the monkey.
 
 The question is: how many coconuts were originally in the pile?"
+tags: [number-theory, recurrence, puzzle, diophantine-equations]
 thumbnail: assets/img/monkey-coconut-problem.webp
 giscus_comments: true
 toc:
