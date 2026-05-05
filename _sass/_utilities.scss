@@ -433,6 +433,14 @@ nav[data-toggle="toc"] {
   color: var(--global-text-color);
 }
 
+// Centered images
+
+.imgcenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 // Other utilities
 
 .unloaded {
@@ -600,6 +608,6 @@ figure.cover {
   }
 }
 
-mjx-container[jax="CHTML"][display="true"] {
-  overflow-x: auto;
-}
+// mjx-container[jax="CHTML"][display="true"] {
+//  overflow-x: auto;
+// }
