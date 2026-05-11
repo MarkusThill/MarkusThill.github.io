@@ -8,7 +8,7 @@ middle_name:
 last_name: Thill
 email:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Personal notes and code snippets on math, ML & programming. Based on [*folio](https://github.com/bogoli/-folio) design.
+  Technical blog by Markus Thill on number theory, machine learning, algorithms, and mathematical puzzles — with proofs and Python implementations.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.

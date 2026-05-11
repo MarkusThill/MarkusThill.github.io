@@ -410,3 +410,6 @@ Try it out! For exampe, I get the following results in the following for the fol
 [1] 365435296162
 ``` 
 
+---
+
+**Related posts:** Fibonacci and Lucas numbers appear in unexpected places — for instance, the leg lengths of [almost-equal isosceles triangles](/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/) turn out to be half-Fibonacci numbers, connected through Pell equations and the golden ratio. For computing Fibonacci numbers at large or sparse indices via matrix exponentiation, see [Efficient Computation of Sparse Fibonacci Subsequences](/blog/2024/fibo-subsequences/).
