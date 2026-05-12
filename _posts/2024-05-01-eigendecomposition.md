@@ -89,6 +89,7 @@ $$
 
 Eq. \eqref{eq:eigendecomposition} is also called the eigendecomposition of matrix $$\mathbf{A}$$.
 
+**Related posts:** Eigendecomposition is the key ingredient behind efficient matrix exponentiation — used to compute [sparse Fibonacci subsequences](/blog/2024/fibo-subsequences/) and [lagged Fibonacci generators](/blog/2024/lagged-fibo-sequences/) at large indices. It also reveals why solutions to certain Pell equations grow as powers of the golden ratio in [Almost-Equal Isosceles Triangles](/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/).
 
 <!--- Move to CSS  --->
 <style>

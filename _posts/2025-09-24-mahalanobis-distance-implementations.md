@@ -29,6 +29,7 @@ images:
 
 👉 A more theoretical discussion of the Mahalanobis distance and its connection to the Chi-square distribution can be found **[here]({% post_url 2025-09-25-mahalanobis-distance %})**.
 
+👉 For estimating the covariance matrix and mean in a streaming or batch-incremental fashion, see [Online and Batch-Incremental Estimation of Covariance Matrices](/blog/2025/online-batch-estimate-cov-mu/).
 
 <!--- Move to CSS  --->
 <style>

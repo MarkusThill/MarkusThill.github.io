@@ -71,6 +71,4 @@ The techniques applied here — truth table construction, Quine-McCluskey minimi
 
 Note that while this approach effectively demonstrates the concept for 8-bit integers, it becomes increasingly impractical to scale for larger bit-widths (e.g., 16-bit or higher) due to the exponential growth in the truth table size and the corresponding complexity of the Boolean function. This limitation lies in the nature of prime numbers themselves, as they lack a simple, deterministic function to identify them, requiring inherently complex and resource-intensive algorithms or representations.
 
-
-
-
+**Related posts:** For a deeper look at the Boolean algebra behind these circuits, see [Some Interesting Properties of the Exclusive Or](/blog/2024/a-few-properties-of-the-exclusive-or/). More bitwise techniques are covered in [A Few Bit-Twiddling Tricks](/blog/2024/soa-few-bit-twiddling-tricks/).

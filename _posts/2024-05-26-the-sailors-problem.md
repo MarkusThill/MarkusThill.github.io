@@ -343,3 +343,5 @@ q \cdot t + 1 &= r \cdot t \\
 $$
 
 Since we required $$t>1$$, we have a contradiction, which means that the two neighbored numbers $$k$$ and $$k+1$$ are relatively prime and a fraction containing these two numbers in the numerator and denominator cannot be reduced. Furthermore, since the prime factorization of $$k$$ and $$k+1$$ returns two disjoint sets of primes $$P_{k}$$ and $$P_{k+1}$$ ($$P_{k} \cap P_{k+1} = \emptyset$$), it can also be trivially shown that the powers $$k^i$$ and $$(k+1)^j$$, with $$i,j \in \mathbb{N_+}$$ are also relatively prime.
+
+**Related posts:** The coprimality argument above relies on the greatest common divisor — for a proof of why Euclid's algorithm correctly computes the GCD, see [Understanding Euclid's GCD Algorithm](/blog/2025/euclids-algorithm/). For another Diophantine problem connecting geometry and number theory, see [Almost-Equal Isosceles Triangles](/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/).

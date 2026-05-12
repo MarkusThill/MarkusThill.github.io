@@ -25,6 +25,8 @@ images:
 
 > The goal is to provide both the mathematical background and practical insights for applying online covariance and mean estimation in real-world scenarios such as anomaly detection, adaptive systems, and streaming analytics.
 
+**Related posts:** The covariance matrix estimated here is a key ingredient for the [Mahalanobis distance](/blog/2025/mahalanobis-distance/) — which connects to the Chi-square distribution for anomaly detection thresholds. For Python implementations and benchmarks, see [Implementing the Mahalanobis Distance in Python](/blog/2025/mahalanobis-distance-implementations/).
+
 <!--- Move to CSS  --->
 <style>
   .jupyter-child-ext {

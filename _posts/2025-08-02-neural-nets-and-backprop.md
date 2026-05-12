@@ -2241,6 +2241,8 @@ These topics build on the foundations presented in this post and are good entry 
 # Accompanying Jupyter Notebook (Code Companion)
 
 
+**Related posts:** A compact derivation of the softmax gradient for the cross-entropy loss is given in [Gradient of the Softmax Function for the Cross-Entropy Loss](/blog/2024/gradient-softmax-function-with-cross-entropy/).
+
 <!--- Move to CSS  --->
 <style>
   .jupyter-child-ext {

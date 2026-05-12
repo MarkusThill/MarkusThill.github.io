@@ -20,6 +20,8 @@ With a foundation in linear algebra, this approach not only improves runtime but
 
 Follow along in the Jupyter notebook below:
 
+**Related posts:** The same matrix exponentiation technique is used to compute [sparse Fibonacci subsequences](/blog/2024/fibo-subsequences/) at large indices. For the mathematical background on why this works, see [eigendecomposition](/blog/2024/eigendecomposition/). A closed-form derivation of the classical Fibonacci sequence via the Z-transform is covered in [Deriving a Closed-Form Solution of the Fibonacci Sequence](/blog/2024/fibonacci-closed/).
+
 <!--- Move to CSS  --->
 <style>
   .jupyter-child-ext {

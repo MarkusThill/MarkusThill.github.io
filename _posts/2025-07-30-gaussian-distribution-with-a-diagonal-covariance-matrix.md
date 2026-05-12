@@ -102,3 +102,5 @@ f_x(x_1, \ldots, x_k)
 $$
 
 This shows that under the assumption of a diagonal covariance matrix, the multivariate Gaussian density factorizes into a product of independent univariate Gaussian densities.
+
+**Related posts:** The full (non-diagonal) covariance matrix plays a central role in the [Mahalanobis distance](/blog/2025/mahalanobis-distance/), which measures how far a point lies from a distribution — with applications to anomaly detection. For Python implementations and benchmarks, see [Implementing the Mahalanobis Distance in Python](/blog/2025/mahalanobis-distance-implementations/).

@@ -123,6 +123,8 @@ The R-Code for generating the above figure is listed in the Jupyter notebook bel
 }
 </style>
 
+**Related posts:** If you're interested in more DIY electronics, see [Building a Smart Adapter Plug with ESP8266 and MQTT](/blog/2025/control-an-adapter-plug-with-an-esp8266-and-mqtt/) — a project where the ESP8266 module controls a relay over WiFi.
+
 {::nomarkdown}
 <div class="jupyter-child-ext">
 {% assign jupyter_path = "assets/jupyter/MarkusThill.github.io-jupyter/2024_03_31_voltage_divider.ipynb" | relative_url %}

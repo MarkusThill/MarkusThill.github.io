@@ -243,4 +243,4 @@ async function checkSilver() {
 }
 </script>
 
-💡 Solution coming soon: A full, step-by-step solution—including the underlying combinatorics and an efficient implementation—will be published on this blog shortly. Stay tuned!
+💡 The full, step-by-step solution — including the underlying combinatorics and an efficient Python implementation — is available here: [The Hexadecimal Digit Canon Challenge: Solution](/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/).

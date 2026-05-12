@@ -179,3 +179,5 @@ uint64_t modPow2(uint64_t x, uint64_t n) {
   return x & ((1UL << n) - 1);
 }
 {% endhighlight %}
+
+**Related posts:** For a deeper dive into the XOR operation and its algebraic properties, see [Some Interesting Properties of the Exclusive Or](/blog/2024/a-few-properties-of-the-exclusive-or/). Bit-fields are also central to the board representation in [Solving Peg Solitaire with Efficient Bit-Board Representations](/blog/2024/solving-peg-solitaire/).

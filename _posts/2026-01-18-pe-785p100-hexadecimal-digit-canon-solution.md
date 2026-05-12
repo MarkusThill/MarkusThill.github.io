@@ -2390,3 +2390,5 @@ S(0xAAA) in base 16 = 0x103528902352939
 which finally earns us the Gold!!! 🥇 medal 🎉🥳!
 
 While there is still some room for further optimization, we stop here, as the final solution already runs in feasible time. Additional speed-ups are left to the interested reader.
+
+**Related posts:** The problem statement with interactive verification is in [The Hexadecimal Digit Canon Challenge](/blog/2026/pe-785p100-hexadecimal-digit-canon/).

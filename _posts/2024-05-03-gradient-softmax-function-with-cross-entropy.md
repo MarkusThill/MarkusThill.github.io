@@ -87,3 +87,5 @@ $$
 &= o_i  - y^*_i.
 \end{align*}
 $$
+
+**Related posts:** For a complete treatment of feed-forward neural networks and vectorized backpropagation — including how the softmax gradient fits into the full training loop — see [Backpropagation from Scratch](/blog/2025/neural-nets-and-backprop/).

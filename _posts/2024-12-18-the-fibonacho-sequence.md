@@ -84,3 +84,5 @@ What are the **first** and **last** $$100$$ digits of $$F_{4^{4^4}}$$, $$F_{5^{5
 ---
 
 Stay tuned, as I will reveal the solution and dive deeper into a few properties of the Fibonacho Sequence in a future blog post!
+
+**Related posts:** For a closed-form derivation of the classical Fibonacci sequence, see [Deriving a Closed-Form Solution of the Fibonacci Sequence](/blog/2024/fibonacci-closed/). Techniques for computing Fibonacci numbers at very large indices are discussed in [Efficient Computation of Sparse Fibonacci Subsequences](/blog/2024/fibo-subsequences/).

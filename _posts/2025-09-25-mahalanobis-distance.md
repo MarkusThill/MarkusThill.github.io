@@ -455,3 +455,5 @@ This means we can flag data points outside this ellipsoid as anomalies with a we
 More generally, the Mahalanobis distance provides a natural way to measure how unusual a point is relative to a multivariate distribution. Combined with the Chi-square connection, it gives both a geometric intuition (ellipsoids of equal distance) and a rigorous statistical tool for multivariate analysis.
 
 👉 A more detailed exploration of the Mahalanobis distance — including multiple Python implementations, benchmarks, and visualizations —  is covered in a separate blog post **[here]({% post_url 2025-09-24-mahalanobis-distance-implementations %})**.
+
+**Related posts:** For a simplified case where the covariance matrix is diagonal, see [The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix](/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/). If you need to estimate the covariance matrix in a streaming or online setting, see [Online and Batch-Incremental Estimation of Covariance Matrices](/blog/2025/online-batch-estimate-cov-mu/).

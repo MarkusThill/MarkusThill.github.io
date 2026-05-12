@@ -868,3 +868,5 @@ void WriteToFile(void) {
     file.close();
 }
 {% endhighlight %}
+
+**Related posts:** The bit-board representation used in this solver relies on bitwise operations — for more on these techniques, see [A Few Bit-Twiddling Tricks](/blog/2024/soa-few-bit-twiddling-tricks/) and [Some Interesting Properties of the Exclusive Or](/blog/2024/a-few-properties-of-the-exclusive-or/).

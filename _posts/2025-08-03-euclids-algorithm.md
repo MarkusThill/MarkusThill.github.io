@@ -164,3 +164,5 @@ $$
 $$
 
 This example illustrates how the algorithm quickly reduces the problem to a simpler one through successive remainders. You can cross-check the result by running one of the GCD functions above in your Python IDE.
+
+**Related posts:** The GCD and coprimality play a role in the [Monkey and Coconut Problem](/blog/2024/the-sailors-problem/), a classic Diophantine puzzle. Continued fractions — closely related to Euclid's algorithm — appear in the solution of Pell equations in [Almost-Equal Isosceles Triangles](/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/).

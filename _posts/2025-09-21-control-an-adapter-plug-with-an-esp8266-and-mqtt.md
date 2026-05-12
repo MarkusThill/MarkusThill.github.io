@@ -432,3 +432,5 @@ While this prototype is already functional, there are several improvements and e
 ## Conclusion
 
 In this project, we built a fully functional IoT adapter plug using the compact ESP8266-01 module. The key features include manual control via a push button and remote control via MQTT messages, making it a flexible solution for home automation. We walked through the main steps: wiring the ESP-01 and relay circuit, setting up the Arduino IDE, programming the ESP, and connecting it to WiFi and an MQTT broker. This project demonstrates how even minimal hardware can be used to create smart, networked devices, and provides a foundation for further enhancements like energy-efficient relays, smartphone apps, and integration with larger smart home systems.
+
+**Related posts:** For the theory behind choosing resistor values in sensor circuits, see [Choosing a Voltage Divider Resistor for a Light Dependent Resistor](/blog/2024/voltage-divider/).

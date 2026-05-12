@@ -461,3 +461,5 @@ f(x_1,x_2,x_3,x_4) &= f_\leftrightarrow(x_1,x_2,x_3) \nleftrightarrow x_4 \\
 &= x_1 \nleftrightarrow x_2 \nleftrightarrow x_3 \nleftrightarrow x_4
 \end{align*}
 $$
+
+**Related posts:** Several practical applications of XOR and other bitwise operations are covered in [A Few Bit-Twiddling Tricks](/blog/2024/soa-few-bit-twiddling-tricks/). Boolean algebra also plays a central role in [Designing an 8-Bit Integer Primality Test Using Logic Circuits](/blog/2024/primality-test-logical-circuit/).

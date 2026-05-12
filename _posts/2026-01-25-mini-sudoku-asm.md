@@ -788,3 +788,5 @@ return:	.RS $10              ; boolean return values
 ## Appendix
 
 I also wrote a bunch of tests for the code which are listed [here](https://github.com/MarkusThill/65-C-02-Assembly/blob/master/mini-sudokus/miniSudoku.asm).
+
+**Related posts:** For another 6502 assembly project — implementing Booth's multiplication algorithm in about 40 lines of code — see [Booth's Multiplication Algorithm in 6502 Assembly](/blog/2024/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/).

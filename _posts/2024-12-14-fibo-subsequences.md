@@ -36,6 +36,8 @@ $$
 
 Follow along in the Jupyter notebook below:
 
+**Related posts:** For a closed-form derivation of the Fibonacci sequence using the Z-transform, see [Deriving a Closed-Form Solution of the Fibonacci Sequence](/blog/2024/fibonacci-closed/). A similar matrix exponentiation approach applied to pseudo-random number generation is explored in [Optimizing Lagged Fibonacci Generators](/blog/2024/lagged-fibo-sequences/). The underlying [eigendecomposition](/blog/2024/eigendecomposition/) technique is what makes raising a matrix to a large power computationally tractable. For a surprising appearance of Fibonacci numbers in geometry, see [Almost-Equal Isosceles Triangles](/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/).
+
 <!--- Move to CSS  --->
 <style>
   .jupyter-child-ext {

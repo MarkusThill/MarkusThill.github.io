@@ -69,3 +69,5 @@ R: .WORD $0000	; The result. Needs two bytes.
 {% endhighlight %}
 
 In one of the following posts I will describe the ideas behind the Booth method in more detail.
+
+**Related posts:** For another 6502 assembly project — solving mini-Sudoku puzzles with recursive backtracking — see [Solving a Mini Sudoku in 6502 Assembly](/blog/2026/mini-sudoku-asm/).
