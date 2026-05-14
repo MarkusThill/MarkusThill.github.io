@@ -1,11 +1,11 @@
----
+<!-- ---
 layout: page
 permalink: /repositories/
 title: repositories
 description: My GitHub profile and repositories.
 nav: true
 nav_order: 4
----
+--- -->
 
 {% if site.data.repositories.github_users %}
 
