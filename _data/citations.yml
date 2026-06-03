@@ -1,8 +1,8 @@
 metadata:
-  last_updated: '2026-05-22'
+  last_updated: '2026-06-03'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
-    citations: 56
+    citations: 57
     title: 'Online anomaly detection on the webscope S5 dataset: A comparative study'
     year: '2017'
   Bu5eFxQAAAAJ:9yKSN-GCB0IC:
@@ -70,7 +70,7 @@ papers:
     title: Temporal Coherence in TD-Learning for Strategic Board Games
     year: '2014'
   Bu5eFxQAAAAJ:u-x6o8ySG0sC:
-    citations: 32
+    citations: 34
     title: Online adaptable learning rates for the game Connect-4
     year: '2014'
   Bu5eFxQAAAAJ:u5HHmVD_uO8C:
