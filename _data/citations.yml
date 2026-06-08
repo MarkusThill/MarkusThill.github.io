@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2026-06-03'
+  last_updated: '2026-06-08'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 57
@@ -58,7 +58,7 @@ papers:
     title: Temporal difference learning with eligibility traces for the game connect four
     year: '2014'
   Bu5eFxQAAAAJ:eQOLeE2rZwMC:
-    citations: 278
+    citations: 280
     title: Temporal convolutional autoencoder for unsupervised anomaly detection in time series
     year: '2021'
   Bu5eFxQAAAAJ:hqOjcs7Dif8C:
@@ -74,6 +74,6 @@ papers:
     title: Online adaptable learning rates for the game Connect-4
     year: '2014'
   Bu5eFxQAAAAJ:u5HHmVD_uO8C:
-    citations: 35
+    citations: 36
     title: Reinforcement learning with n-tuples on the game Connect-4
     year: '2012'
