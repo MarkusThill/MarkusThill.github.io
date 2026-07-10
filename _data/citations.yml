@@ -1,8 +1,8 @@
 metadata:
-  last_updated: '2026-07-03'
+  last_updated: '2026-07-10'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
-    citations: 58
+    citations: 59
     title: 'Online anomaly detection on the webscope S5 dataset: A comparative study'
     year: '2017'
   Bu5eFxQAAAAJ:9yKSN-GCB0IC:
@@ -10,11 +10,11 @@ papers:
     title: 'Temporal difference learning methods with automatic step-size adaption for strategic board games: Connect-4 and Dots-and-Boxes'
     year: '2015'
   Bu5eFxQAAAAJ:IjCSPb-OGe4C:
-    citations: 48
+    citations: 50
     title: Time Series Anomaly Detection with Discrete Wavelet Transforms and Maximum Likelihood Estimation
     year: '2017'
   Bu5eFxQAAAAJ:LkGwnXOMwfcC:
-    citations: 26
+    citations: 27
     title: 'Markusthill/mgab: the mackey-glass anomaly benchmark'
     year: '2020'
   Bu5eFxQAAAAJ:Se3iqnhoufwC:
