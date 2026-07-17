@@ -1,20 +1,24 @@
 metadata:
-  last_updated: '2026-07-10'
+  last_updated: '2026-07-17'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 59
     title: 'Online anomaly detection on the webscope S5 dataset: A comparative study'
     year: '2017'
+  Bu5eFxQAAAAJ:5nxA0vEk-isC:
+    citations: 0
+    title: Analysis of structural bias in differential evolution configurations
+    year: Unknown Year
   Bu5eFxQAAAAJ:9yKSN-GCB0IC:
     citations: 12
     title: 'Temporal difference learning methods with automatic step-size adaption for strategic board games: Connect-4 and Dots-and-Boxes'
     year: '2015'
   Bu5eFxQAAAAJ:IjCSPb-OGe4C:
-    citations: 50
+    citations: 51
     title: Time Series Anomaly Detection with Discrete Wavelet Transforms and Maximum Likelihood Estimation
     year: '2017'
   Bu5eFxQAAAAJ:LkGwnXOMwfcC:
-    citations: 27
+    citations: 28
     title: 'Markusthill/mgab: the mackey-glass anomaly benchmark'
     year: '2020'
   Bu5eFxQAAAAJ:Se3iqnhoufwC:
@@ -46,7 +50,7 @@ papers:
     title: Online adaptable time series anomaly detection with discrete wavelet transforms and multivariate gaussian distributions
     year: '2018'
   Bu5eFxQAAAAJ:YsMSGLbcyi4C:
-    citations: 72
+    citations: 73
     title: Time series encodings with temporal convolutional networks
     year: '2020'
   Bu5eFxQAAAAJ:_FxGoFyzp5QC:
@@ -74,6 +78,6 @@ papers:
     title: Online adaptable learning rates for the game Connect-4
     year: '2014'
   Bu5eFxQAAAAJ:u5HHmVD_uO8C:
-    citations: 36
+    citations: 35
     title: Reinforcement learning with n-tuples on the game Connect-4
     year: '2012'
