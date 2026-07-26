@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Draft] Almost-Equal Isosceles Triangles: When Height Nearly Matches Base"
+title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base"
 modified:
 categories: [math, number-theory]
 description: "An exploration of a curious class of integer-sided isosceles triangles whose height differs from the base by exactly one. What begins as a simple geometric question quickly leads to Pell equations and elegant recurrences."
@@ -18,9 +18,10 @@ images:
   compare: false
   slider: false
 ---
-<!--- TODO: Check the usage of $n$. There seem to be some collisions -->
 
-Consider an isosceles triangle with two equal legs of length $$L$$ and a base of length $$b$$. Drawing the altitude from the apex to the base bisects it into two right triangles, each with hypotenuse $$L$$, one leg of length $$b/2$$, and the other equal to the height $$h$$. From the Pythagorean theorem, the height is determined by
+We are looking for isosceles triangles whose side lengths are all integers and whose height differs from the base by exactly one unit. At first glance, such a restrictive condition seems unlikely to admit more than a handful of solutions—if any at all. As we will see, however, these triangles are intimately connected to one of the most beautiful Diophantine equations in number theory: the Pell equation.
+
+Consider an isosceles triangle with two equal legs of length $$L$$ and a base of length $$b$$. Let $$h$$ denote its height. Since the altitude from the apex bisects the base, it divides the triangle into two congruent right triangles, each with hypotenuse $$L$$, one leg of length $$b/2$$, and the other equal to the height $$h$$. Applying the Pythagorean theorem immediately gives
 
 $$
 h = \sqrt{L^2 - \left(\frac{b}{2}\right)^2}.
@@ -31,13 +32,13 @@ $$
    class="img-fluid rounded z-depth-1 imgcenter" 
    zoomable=true  
    width="50%" 
-   caption="An isosceles triangle with equal legs \(L\), base \(b\), and altitude \(h\). The height bisects the base, creating two congruent right triangles." 
+   caption="An isosceles triangle with equal legs $L$, base $b$, and altitude $h$. The height bisects the base, creating two congruent right triangles." 
 %}
 
-For most choices of integer side lengths, the height $$h$$ is irrational. Even when it does happen to be an integer, there is typically no simple relationship between $$h$$ and the base $$b$$. But what if we demand something very specific: that the height and the base are *almost equal* -- differing by exactly one?
+For most choices of integer side lengths, the height $$h$$ is irrational. Even when the height happens to be an integer, there is usually no simple relationship between $$h$$ and the base $$b$$. In this article, we investigate a much stronger condition: we require the height and the base to differ by exactly one unit,
 
 $$
-h = b \pm 1
+h = b \pm 1.
 $$
 
 <!--more-->
@@ -48,632 +49,1195 @@ At first glance, one might expect such triangles to be exceedingly rare, or perh
 |:---:|:---:|:---:|:---:|
 | 16 | 17 | 15 | $$h = b - 1$$ |
 
-Here, the two legs have length $$L = 17$$, the base is $$b = 16$$, and the height evaluates to $$h = \sqrt{17^2 - 8^2} = \sqrt{225} = 15 = b - 1$$. A perfect integer, off from the base by exactly one.
+Here, the two legs have length $$L = 17$$, the base is $$b = 16$$, and the height evaluates to
 
-Continuing the search, a second -- considerably larger -- solution appears:
+$$
+h = \sqrt{17^2 - 8^2}
+  = \sqrt{225}
+  = 15
+  = b - 1.
+$$
+
+Thus, the height is an integer and differs from the base by exactly one.
+
+Searching further reveals another solution—but it is already much larger:
 
 | $$b$$ | $$L$$ | $$h$$ | Relation |
 |:---:|:---:|:---:|:---:|
 | 16 | 17 | 15 | $$h = b - 1$$ |
 | 272 | 305 | 273 | $$h = b + 1$$ |
 
-This time, the height *exceeds* the base by one. Notice how the numbers have grown: the legs jumped from 17 to 305, and the base from 16 to 272. Is there a pattern behind this rapid growth? Are there infinitely many such triangles?
+This time, the height exceeds the base by one. Notice how rapidly the numbers have grown: the equal sides increased from 17 to 305, while the base jumped from 16 to 272.
 
-To understand where these solutions come from and whether infinitely many exist, we need to translate the geometric constraint into algebra. As we will see, this leads straight to a classical object in number theory: the **Pell equation**.
+Even these two examples raise several natural questions. Is this rapid growth merely coincidental, or do the solutions follow a hidden pattern? More fundamentally, are there infinitely many such triangles, and if so, how can we generate them efficiently?
 
-In the remainder of this post, we will:
+Searching for larger examples by brute force quickly becomes impractical. Instead, we seek an algebraic description of all such triangles. By translating the geometric constraint $$h = b \pm 1$$ into a Diophantine equation, we will arrive at a generalized Pell equation. This algebraic viewpoint not only explains the examples above but also provides a systematic way to generate infinitely many more.
 
-1. Derive a Pell equation from the geometric constraint $$h = b \pm 1$$
-2. Show how new solutions can be generated algebraically from known ones
-3. Implement the solution in Python, including a Pell equation solver based on continued fractions
-4. Tabulate the family of solutions and verify the results
+Our approach consists of four steps:
+
+1. Translate the geometric constraint $$h = b \pm 1$$ into a generalized Pell equation.
+2. Derive a recurrence that generates all solutions using the closely related classical Pell equation.
+3. Implement the algorithm in Python, including a Pell equation solver based on continued fractions.
+4. Generate and verify the resulting family of triangles.
 
 
 ## Deriving the Pell Equation
 
-We start from the Pythagorean relation for the right triangle formed by the altitude:
+To understand these triangles algebraically, we eliminate the height $h$ using the condition that it differs from the base by exactly one unit. Our goal is to transform the resulting equation into a well-studied Diophantine equation that we can solve systematically.
+
+We begin with the Pythagorean relation for the right triangle formed by the altitude:
 
 $$
 \begin{align}
-\left(\frac{b}{2}\right)^2 + h^2 = L^2
+\left(\frac{b}{2}\right)^2 + h^2 = L^2.
 \end{align}
 $$
 
-Replacing the height $$h$$ with $$h = b \pm 1$$:
+Instead of repeatedly writing $h=b\pm1$, we introduce the parameter
+
+$$
+\varepsilon \in \{-1,+1\},
+$$
+
+and write
+
+$$
+h = b + \varepsilon.
+$$
+
+Thus, $\varepsilon=-1$ corresponds to $h=b-1$, while $\varepsilon=+1$ corresponds to $h=b+1$. Since $\varepsilon^2=1$, substituting this expression for the height gives
 
 $$
 \begin{align}
-\frac{1}{4}b^2 + (b \pm 1)^2 &= L^2 \nonumber \\
-\frac{1}{4}b^2 + b^2 \pm 2b + 1 - L^2 &= 0 \nonumber \\
-\frac{5}{4}b^2 \pm 2b + 1 - L^2 &= 0 \nonumber \\
-5b^2 \pm 8b + 4 - 4L^2 &= 0 \label{eq:dioph}
+\frac{1}{4}b^2 + (b + \varepsilon)^2 &= L^2 \nonumber \\
+\frac{1}{4}b^2 + b^2 + 2\varepsilon b + \varepsilon^2 &= L^2 \nonumber \\
+\frac{5}{4}b^2 + 2\varepsilon b + 1 - L^2 &= 0.
 \end{align}
 $$
 
-To bring this into a recognizable form, we complete the square in $$b$$. Dividing by 5:
+Multiplying through by four removes the denominator:
 
 $$
 \begin{align}
-b^2 \pm \frac{8}{5}b + \frac{4}{5} - \frac{4}{5}L^2 &= 0 \nonumber \\
-\left(b \pm \frac{4}{5}\right)^2 - \frac{16}{25} + \frac{4}{5} - \frac{4}{5}L^2 &= 0
+5b^2 + 8\varepsilon b + 4 - 4L^2 &= 0.
+\label{eq:dioph}
 \end{align}
 $$
 
-Multiplying through by 25:
+Our goal is to transform this quadratic equation into the standard form of a Pell equation. We first divide by five so that the coefficient of $b^2$ becomes one, making it straightforward to complete the square:
 
 $$
 \begin{align}
-\left(5b \pm 4\right)^2 - 16 + 20 - 20L^2 &= 0 \nonumber \\
-\left(5b \pm 4\right)^2 + 4 - 20L^2 &= 0
+b^2 + \frac{8}{5}\varepsilon b + \frac{4}{5} - \frac{4}{5}L^2 &= 0 \nonumber \\
+\left(b + \frac{4}{5}\varepsilon\right)^2 - \frac{16}{25} + \frac{4}{5} - \frac{4}{5}L^2 &= 0.
 \end{align}
 $$
 
-With the substitution $$x = 5b \pm 4$$, this becomes:
+Multiplying through by 25 gives
 
 $$
 \begin{align}
-x^2 - 20L^2 = -4 \label{eq:pell}
+\left(5b + 4\varepsilon\right)^2 - 16 + 20 - 20L^2 &= 0 \nonumber \\
+\left(5b + 4\varepsilon\right)^2 + 4 - 20L^2 &= 0.
 \end{align}
 $$
 
-This is a **generalized Pell equation**. Here, we use $$x = 5b - 4$$ when the height is one less than the base ($$h = b - 1$$), and $$x = 5b + 4$$ when the height is one more ($$h = b + 1$$). We can verify our known solution: for $$b = 16$$, $$L = 17$$, $$h = b - 1 = 15$$, we get $$x = 5 \cdot 16 - 4 = 76$$, and indeed $$76^2 - 20 \cdot 17^2 = 5776 - 5780 = -4$$.
+The expression $5b+4\varepsilon$ now appears naturally as a perfect square, suggesting the substitution
 
-But how do we generate more solutions?
+$$
+x = 5b + 4\varepsilon.
+$$
+
+This transforms the equation into
+
+$$
+\begin{align}
+x^2 - 20L^2 = -4.
+\label{eq:pell}
+\end{align}
+$$
+
+This is a **generalized Pell equation**, i.e., an equation of the form
+
+$$
+x^2 - DL^2 = N,
+$$
+
+with $D=20$ and $N=-4$. Much is known about equations of this form, and we will exploit this structure to generate infinitely many solutions.
+
+As a sanity check, let us verify that our previously discovered triangle satisfies the equation. For $b=16$, $L=17$, and $\varepsilon=-1$, we obtain
+
+$$
+x = 5 \cdot 16 - 4 = 76,
+$$
+
+and indeed
+
+$$
+76^2 - 20 \cdot 17^2 = 5776 - 5780 = -4.
+$$
+
+Finding one solution is encouraging, but it does not tell us how to obtain the next one. The key observation is that generalized Pell equations are closely related to the classical Pell equation, whose solutions possess a remarkable multiplicative structure.
 
 
 ## Generating New Solutions from Known Ones
 
-One can show that if we have:
+We have transformed the original geometric problem into the generalized Pell equation
 
-- one solution $$(x_n, L_n)$$ of the generalized Pell equation $$x^2 - D \cdot L^2 = n$$, and
-- one solution $$(x', L')$$ of the classical Pell equation $$x'^2 - D \cdot L'^2 = 1$$,
+$$
+x^2 - DL^2 = N,
+$$
 
-then we can produce a *new* solution of $$x^2 - D \cdot L^2 = n$$ using the following multiplicative construction. Define:
+which, in our case, has the specific values $D=20$ and $N=-4$. We already know one non-trivial solution,
+
+$$
+(x_0,L_0)=(76,17).
+$$
+
+The remaining challenge is to generate additional solutions without solving the equation from scratch each time.
+
+### Representing Pell Solutions Algebraically
+
+The key idea is to associate each pair $(x,L)$ with the expression
+
+$$
+x+L\sqrt{D}.
+$$
+
+Its **conjugate** is obtained by changing the sign of the square-root term:
+
+$$
+\overline{x+L\sqrt{D}}=x-L\sqrt{D}.
+$$
+
+We define the **norm** of $x+L\sqrt{D}$ as the product of the expression and its conjugate:
 
 $$
 \begin{align}
-\alpha &= x_n + L_n \sqrt{D} \\
-\beta &= x' + L' \sqrt{D}
+\operatorname{Norm}(x+L\sqrt{D})
+&=(x+L\sqrt{D})(x-L\sqrt{D}) \nonumber\\
+&=x^2-DL^2.
 \end{align}
 $$
 
-Their product is:
+The norm is therefore exactly the left-hand side of the Pell equation. In particular, if $(x,L)$ satisfies
+
+$$
+x^2-DL^2=N,
+$$
+
+then the associated expression $x+L\sqrt{D}$ has norm $N$.
+
+The crucial property is that the norm of a product equals the product of the individual norms. To see this, let $\alpha$ and $\beta$ be two expressions of this form. Since conjugation distributes over multiplication,
+
+$$
+\overline{\alpha\beta}
+=
+\overline{\alpha}\,\overline{\beta}.
+$$
+
+Therefore,
 
 $$
 \begin{align}
-\alpha \cdot \beta &= (x_n + L_n\sqrt{D})(x' + L'\sqrt{D}) \nonumber \\
-&= x_n x' + x_n L'\sqrt{D} + x' L_n\sqrt{D} + L_n L' D \nonumber \\
-&= (x_n x' + L_n L' D) + (x_n L' + x' L_n)\sqrt{D}
+\operatorname{Norm}(\alpha\beta)
+&=(\alpha\beta)\overline{\alpha\beta} \nonumber\\
+&=(\alpha\beta)(\overline{\alpha}\,\overline{\beta}) \nonumber\\
+&=(\alpha\overline{\alpha})(\beta\overline{\beta}) \nonumber\\
+&=\operatorname{Norm}(\alpha)\operatorname{Norm}(\beta).
 \end{align}
 $$
 
-Reading off the integer and irrational parts, the new solution is:
+This is what is meant by saying that **norms are multiplicative**.
+
+Consequently, if $\alpha$ has norm $N$ and $\beta$ has norm $1$, then
+
+$$
+\operatorname{Norm}(\alpha\beta)
+=
+\operatorname{Norm}(\alpha)\operatorname{Norm}(\beta)
+=
+N\cdot1
+=
+N.
+$$
+
+Thus, multiplying a solution of the generalized Pell equation by a solution of the classical Pell equation preserves the value $N$ and produces another solution of the generalized equation.
+
+### Deriving the Recurrence
+
+More precisely, suppose we have
+
+- one solution $(x_k,L_k)$ of the generalized Pell equation
+
+  $$
+  x^2-DL^2=N,
+  $$
+
+- and one solution $(u,v)$ of the classical Pell equation
+
+  $$
+  u^2-Dv^2=1.
+  $$
+
+We associate these solutions with
 
 $$
 \begin{align}
-x_{n+1} &= x_n x' + L_n L' D \nonumber \\
-L_{n+1} &= x_n L' + x' L_n
+\alpha &= x_k+L_k\sqrt{D},\\
+\beta &= u+v\sqrt{D}.
 \end{align}
 $$
 
-Or, more compactly, in matrix form:
-
-$$
-\begin{pmatrix} x_{n+1} \\ L_{n+1} \end{pmatrix} = \begin{pmatrix} x' & L'D \\ L' & x' \end{pmatrix} \begin{pmatrix} x_n \\ L_n \end{pmatrix}
-$$
-
-**Proof.** We verify that the new pair $$(x_{n+1}, L_{n+1})$$ satisfies $$x^2 - DL^2 = n$$:
+Their product is
 
 $$
 \begin{align}
-x_{n+1}^2 - D \cdot L_{n+1}^2 &= (x_n x' + L_n L' D)^2 - D(x_n L' + x' L_n)^2 \nonumber \\
-&= x_n^2 x'^2 + 2x_n x' L_n L' D + L_n^2 L'^2 D^2 \nonumber \\
-&\quad - D x_n^2 L'^2 - 2D x_n L' x' L_n - D x'^2 L_n^2
+\alpha\beta
+&=(x_k+L_k\sqrt{D})(u+v\sqrt{D}) \nonumber\\
+&=x_ku+x_kv\sqrt{D}+uL_k\sqrt{D}+DL_kv \nonumber\\
+&=(ux_k+DvL_k)+(vx_k+uL_k)\sqrt{D}.
 \end{align}
 $$
 
-The cross terms $$2x_n x' L_n L' D$$ cancel, and factoring the remaining four terms:
+Comparing the integer part and the coefficient of $\sqrt{D}$ gives the new pair
 
 $$
 \begin{align}
-&= x_n^2(x'^2 - DL'^2) - DL_n^2(x'^2 - DL'^2) \nonumber \\
-&= (x_n^2 - DL_n^2)\underbrace{(x'^2 - DL'^2)}_{= \, 1} = n \qquad \square
+x_{k+1} &= ux_k+DvL_k, \nonumber\\
+L_{k+1} &= vx_k+uL_k.
 \end{align}
 $$
 
-So the strategy is clear: we need to find the fundamental solution of the classical Pell equation $$x'^2 - 20 L'^2 = 1$$, and then repeatedly apply the matrix recurrence starting from our initial solution $$(x_0, L_0) = (76, 17)$$.
+The recurrence can also be written in matrix form:
 
-A good explanation of solving the generalized Pell equation can also be found in [this video series](https://www.youtube.com/watch?v=s5RQj_Jcs0U&list=PLsT0BEyocS2L25-tI-XUrWOJVvf4N3Ivq&t=0s).
+$$
+\begin{pmatrix}
+x_{k+1}\\
+L_{k+1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+u & Dv\\
+v & u
+\end{pmatrix}
+\begin{pmatrix}
+x_k\\
+L_k
+\end{pmatrix}.
+$$
+
+### Verifying the Construction Directly
+
+The norm argument already proves that the new pair satisfies the generalized Pell equation. Nevertheless, it is useful to verify the result directly from the recurrence.
+
+Using
+
+$$
+x_{k+1}=ux_k+DvL_k
+$$
+
+and
+
+$$
+L_{k+1}=vx_k+uL_k,
+$$
+
+we obtain
+
+$$
+\begin{align}
+x_{k+1}^2-DL_{k+1}^2
+&=(ux_k+DvL_k)^2-D(vx_k+uL_k)^2 \nonumber\\
+&=u^2x_k^2+2uDv x_kL_k+D^2v^2L_k^2 \nonumber\\
+&\quad-Dv^2x_k^2-2Duvx_kL_k-Du^2L_k^2.
+\end{align}
+$$
+
+The mixed terms cancel:
+
+$$
+2uDv x_kL_k-2Duvx_kL_k=0.
+$$
+
+Factoring the remaining terms gives
+
+$$
+\begin{align}
+x_{k+1}^2-DL_{k+1}^2
+&=x_k^2(u^2-Dv^2)-DL_k^2(u^2-Dv^2) \nonumber\\
+&=(x_k^2-DL_k^2)(u^2-Dv^2).
+\end{align}
+$$
+
+Using the two equations satisfied by the original pairs,
+
+$$
+x_k^2-DL_k^2=N
+$$
+
+and
+
+$$
+u^2-Dv^2=1,
+$$
+
+we finally obtain
+
+$$
+x_{k+1}^2-DL_{k+1}^2
+=
+N\cdot1
+=
+N.
+\qquad\square
+$$
+
+This direct calculation is the coordinate form of the norm identity
+
+$$
+\operatorname{Norm}(\alpha\beta)
+=
+\operatorname{Norm}(\alpha)\operatorname{Norm}(\beta).
+$$
+
+The strategy is now clear. We first need to find the **fundamental solution** of the classical Pell equation
+
+$$
+u^2-20v^2=1.
+$$
+
+Once this solution is known, the recurrence above transforms any solution of
+
+$$
+x^2-20L^2=-4
+$$
+
+into another one. Starting from the initial solution
+
+$$
+(x_0,L_0)=(76,17),
+$$
+
+we can repeatedly apply the recurrence to generate further almost-equal isosceles triangles.
+
+> **Note.**
+> For readers interested in the general theory of Pell equations and continued fractions, a useful introduction can be found in [this video series](https://www.youtube.com/watch?v=s5RQj_Jcs0U&list=PLsT0BEyocS2L25-tI-XUrWOJVvf4N3Ivq&t=0s).
 
 
 ## Solving Pell's Equation with Continued Fractions
 
-The remaining piece of the puzzle is finding the fundamental solution $$(x', L')$$ of the classical Pell equation $$x'^2 - 20 L'^2 = 1$$. The standard method uses **continued fractions**, which we briefly introduce here.
-
-### What is a Continued Fraction?
-
-A continued fraction is a way of representing a number as a sequence of integer "layers":
+In the previous section, we derived a recurrence that turns one solution of the generalized Pell equation
 
 $$
-a_0 + \cfrac{1}{a_1 + \cfrac{1}{a_2 + \cfrac{1}{a_3 + \cdots}}}
+x^2-20L^2=-4
 $$
 
-This is written compactly as $$[a_0;\, a_1, a_2, a_3, \ldots]$$. The integers $$a_0, a_1, a_2, \ldots$$ are called the **coefficients** of the continued fraction. Every real number has a continued fraction expansion; for rational numbers it terminates, while for irrational numbers it goes on forever.
-
-What makes continued fractions special for our purposes is a remarkable property of square roots: the continued fraction of $$\sqrt{D}$$ (for any non-square integer $$D$$) is always **periodic**. For example:
-
-$$
-\sqrt{20} = [4;\, \overline{2, 8}] = [4;\, 2, 8, 2, 8, 2, 8, \ldots]
-$$
-
-The first coefficient $$a_0 = 4 = \lfloor\sqrt{20}\rfloor$$ is just the integer part of $$\sqrt{20} \approx 4.472$$. After that, the sequence $$2, 8$$ repeats forever (indicated by the overline).
-
-### Convergents: Rational Approximations
-
-By truncating a continued fraction after a finite number of terms and "folding it up," we obtain a rational number called a **convergent**. Each convergent is the best possible rational approximation to the original number for its denominator size.
-
-For $$\sqrt{20} = [4;\, \overline{2, 8}]$$, the first few convergents are computed by evaluating successively longer prefixes:
-
-$$
-\begin{array}{lcll}
-[4]       &=& \dfrac{4}{1}  &= 4.000 \\[10pt]
-[4;\, 2]     &=& 4 + \dfrac{1}{2} = \dfrac{9}{2}  &= 4.500 \\[10pt]
-[4;\, 2, 8]  &=& 4 + \cfrac{1}{2 + \cfrac{1}{8}} = \dfrac{76}{17} &\approx 4.471
-\end{array}
-$$
-
-Each convergent $$\frac{p_k}{q_k}$$ gets closer and closer to $$\sqrt{20}$$. In practice, the evaluation is done from right to left: start with the last coefficient, invert, add the previous coefficient, invert, and so on.
-
-### The Connection to Pell's Equation
-
-Why would continued fractions help solve $$x^2 - Dy^2 = 1$$? The connection runs through the idea of *good rational approximations*. Let us build it up step by step.
-
-#### Step 1: Pell Solutions are Good Approximations to $$\sqrt{D}$$
-
-Pell's equation $$x^2 - Dy^2 = 1$$ can be factored using the difference of squares:
-
-$$
-(x - y\sqrt{D})(x + y\sqrt{D}) = 1
-$$
-
-Now think about what this says. The second factor $$(x + y\sqrt{D})$$ is always a positive number. If $$x$$ and $$y$$ are both positive and not tiny, this factor is large. But the product of the two factors must equal exactly 1, so the first factor must be very small to compensate:
-
-$$
-x - y\sqrt{D} = \frac{1}{x + y\sqrt{D}}
-$$
-
-For example, if $$x = 9$$ and $$y = 2$$ (our solution for $$D = 20$$), the second factor is $$9 + 2\sqrt{20} \approx 17.94$$, so the first factor is $$1/17.94 \approx 0.056$$. Indeed, $$9 - 2\sqrt{20} \approx 0.056$$.
-
-Dividing both sides by $$y$$:
-
-$$
-\frac{x}{y} - \sqrt{D} = \frac{1}{y(x + y\sqrt{D})}
-$$
-
-The right-hand side is tiny, which means $$\frac{x}{y}$$ is very close to $$\sqrt{D}$$. In our example: $$\frac{9}{2} = 4.5$$, while $$\sqrt{20} \approx 4.472$$. Close!
-
-So we have established: **any solution $$(x, y)$$ of Pell's equation gives a rational number $$\frac{x}{y}$$ that is very close to $$\sqrt{D}$$.**
-
-
-#### Step 2: The Best Approximations are Convergents
-
-There is a classical theorem in number theory that says: the *best* rational approximations to any irrational number are exactly the **convergents** of its continued fraction. "Best" here means that no other fraction with a smaller-or-equal denominator gets closer to the target.
-
-Since Pell solutions produce excellent approximations to $$\sqrt{D}$$ (as we just showed in Step 1), they must appear among the convergents of the continued fraction of $$\sqrt{D}$$.
-
-This gives us a search strategy: compute convergents $$\frac{p_0}{q_0}, \frac{p_1}{q_1}, \frac{p_2}{q_2}, \ldots$$ of $$\sqrt{D}$$ one by one, and check each pair $$(p_k, q_k)$$ against $$p_k^2 - D q_k^2 = 1$$. If a convergent satisfies this, we have found the fundamental solution.
-
-But will the search actually succeed? Could it be that we keep checking convergents forever and never hit $$+1$$? Let us see why that cannot happen.
-
-
-#### Step 3: Convergents Always Have a Small Pell Residual
-
-Define the **Pell residual** of a convergent $$\frac{p_k}{q_k}$$ as the integer
-
-$$
-r_k = p_k^2 - D \cdot q_k^2.
-$$
-
-If $$r_k = 1$$ for some $$k$$, we have a Pell solution. But what can we say about $$r_k$$ in general?
-
-Using the factoring trick again:
-
-$$
-r_k = p_k^2 - D \cdot q_k^2 = \underbrace{(p_k - q_k\sqrt{D})}_{\text{first factor}} \cdot \underbrace{(p_k + q_k\sqrt{D})}_{\text{second factor}}
-$$
-
-Let us estimate each factor separately.
-
-**First factor.** Since $$\frac{p_k}{q_k} \approx \sqrt{D}$$, we have $$p_k \approx q_k\sqrt{D}$$, so the difference $$p_k - q_k\sqrt{D}$$ is close to zero. How close? A standard result about continued fractions gives a precise bound:
-
-$$
-\left|p_k - q_k\sqrt{D}\right| < \frac{1}{q_{k+1}}
-$$
-
-where $$q_{k+1}$$ is the denominator of the *next* convergent (which is always larger than $$q_k$$).
-
-**Second factor.** Since $$p_k \approx q_k\sqrt{D}$$, the sum $$p_k + q_k\sqrt{D}$$ is approximately $$q_k\sqrt{D} + q_k\sqrt{D} = 2q_k\sqrt{D}$$. For a precise upper bound, we can use the fact that consecutive convergents satisfy $$q_k < q_{k+1}$$ and $$p_k < p_{k+1} < q_{k+1}\sqrt{D} + 1$$, which gives $$p_k + q_k\sqrt{D} < 2q_{k+1}\sqrt{D}$$.
-
-**Combining both.** Multiplying the bounds:
-
-$$
-|r_k| = |p_k - q_k\sqrt{D}| \cdot (p_k + q_k\sqrt{D}) < \frac{1}{q_{k+1}} \cdot 2q_{k+1}\sqrt{D} = 2\sqrt{D}
-$$
-
-The $$q_{k+1}$$ cancels — this is why the bound depends only on $$D$$, not on which convergent we pick.
-
-So the residual is always bounded:
-
-$$
-|p_k^2 - D \cdot q_k^2| < 2\sqrt{D}
-$$
-
-For $$D = 20$$, this gives 
-
-$$
-\begin{align*}
-\big|r_k| < 2\sqrt{20} \approx 8.9
-\end{align*}.
-$$
-
-Since $$r_k$$ is always an integer, the only possible values are $$\{-8, -7, \ldots, -1, 0, 1, \ldots, 7, 8\}$$ — at most 17 distinct values.
-
-
-#### Step 4: Why $$+1$$ Must Appear
-
-**Goal.** We want to show that among the convergents of $$\sqrt{D}$$, there is always one whose numerator $$p_k$$ and denominator $$q_k$$ satisfy $$p_k^2 - Dq_k^2 = 1$$ exactly. This is what makes the continued fraction method a *guaranteed* algorithm for solving Pell's equation, not just a heuristic.
-
-**The pigeonhole argument.** We have established two facts:
-
-1. The continued fraction of $$\sqrt{D}$$ is periodic, so it produces **infinitely many** convergents $$\frac{p_0}{q_0}, \frac{p_1}{q_1}, \frac{p_2}{q_2}, \ldots$$
-2. Each convergent's Pell residual $$r_k = p_k^2 - Dq_k^2$$ lies in a **finite** set (at most $$2\lfloor 2\sqrt{D} \rfloor + 1$$ distinct integer values).
-
-Infinitely many convergents, but only finitely many possible residuals — by the pigeonhole principle, some residual value $$r$$ must occur at least twice. That is, there exist two *different* convergents $$i \ne j$$ with
-
-$$
-p_i^2 - Dq_i^2 = r \qquad \text{and} \qquad p_j^2 - Dq_j^2 = r.
-$$
-
-**Combining two convergents with the same residual.** We now show that from these two convergents we can construct a solution to $$X^2 - DY^2 = 1$$. The idea is to *divide* one by the other, which causes the shared residual $$r$$ to cancel.
-
-To each convergent, associate the expression $$\alpha_k = p_k + q_k\sqrt{D}$$. Its **conjugate** is $$\bar{\alpha}_k = p_k - q_k\sqrt{D}$$, and their product is:
-
-$$
-\alpha_k \cdot \bar{\alpha}_k = (p_k + q_k\sqrt{D})(p_k - q_k\sqrt{D}) = p_k^2 - Dq_k^2 = r_k
-$$
-
-This product $$\alpha_k \cdot \bar{\alpha}_k$$ is just the Pell residual $$r_k$$, written in factored form. Now consider the ratio of $$\alpha_i$$ and $$\alpha_j$$. We multiply by the conjugate of the denominator:
-
-$$
-\frac{\alpha_i}{\alpha_j} = \frac{p_i + q_i\sqrt{D}}{p_j + q_j\sqrt{D}} \cdot \frac{p_j - q_j\sqrt{D}}{p_j - q_j\sqrt{D}} = \frac{(p_i + q_i\sqrt{D})(p_j - q_j\sqrt{D})}{\underbrace{p_j^2 - Dq_j^2}_{= \, r}}
-$$
-
-The denominator is $$r_j = r$$. We expand the numerator:
-
-$$
-(p_i + q_i\sqrt{D})(p_j - q_j\sqrt{D}) = \underbrace{(p_i p_j - D q_i q_j)}_{A} + \underbrace{(q_i p_j - p_i q_j)}_{B} \cdot \sqrt{D}
-$$
-
-Dividing by $$r$$, the ratio has the form $$X + Y\sqrt{D}$$ with:
-
-$$
-X = \frac{p_i p_j - D q_i q_j}{r} = \frac{A}{r}, \qquad Y = \frac{q_i p_j - p_i q_j}{r} = \frac{B}{r}
-$$
-
-**Computing the residual of the new pair.** We want to show $$X^2 - DY^2 = 1$$. Recall from the difference-of-squares factoring that for *any* two numbers $$X, Y$$:
-
-$$
-X^2 - DY^2 = (X + Y\sqrt{D})(X - Y\sqrt{D})
-$$
-
-So if we can figure out what $$X + Y\sqrt{D}$$ and $$X - Y\sqrt{D}$$ are, we can compute $$X^2 - DY^2$$ without ever squaring $$X$$ and $$Y$$ individually.
-
-We already know $$X + Y\sqrt{D}$$: it is exactly the ratio we computed above,
-
-$$
-X + Y\sqrt{D} = \frac{\alpha_i}{\alpha_j} = \frac{p_i + q_i\sqrt{D}}{p_j + q_j\sqrt{D}}.
-$$
-
-What about $$X - Y\sqrt{D}$$? Since $$X$$ and $$Y$$ are specific real numbers (defined by the formulas above), the expression $$X - Y\sqrt{D}$$ is obtained by simply flipping the sign on the $$\sqrt{D}$$ term. This is the same as replacing every $$\sqrt{D}$$ with $$-\sqrt{D}$$ in the ratio, which gives:
-
-$$
-X - Y\sqrt{D} = \frac{p_i - q_i\sqrt{D}}{p_j - q_j\sqrt{D}} = \frac{\bar{\alpha}_i}{\bar{\alpha}_j}
-$$
-
-Now we multiply them:
+into another. However, the recurrence still requires one missing ingredient: a solution $(u,v)$ of the related classical Pell equation
 
 $$
 \begin{align}
-X^2 - DY^2 &= (X + Y\sqrt{D})(X - Y\sqrt{D}) \nonumber \\
-&= \frac{\alpha_i}{\alpha_j} \cdot \frac{\bar{\alpha}_i}{\bar{\alpha}_j} = \frac{\alpha_i \cdot \bar{\alpha}_i}{\alpha_j \cdot \bar{\alpha}_j} = \frac{r_i}{r_j} = \frac{r}{r} = 1
+u^2-20v^2=1.
+\label{eq:classical-pell}
 \end{align}
 $$
 
-Since both convergents have the same residual $$r$$, the ratio is exactly 1. So $$(X, Y)$$ solves $$X^2 - DY^2 = 1$$ — the classical Pell equation.
+More specifically, we need its **fundamental solution**, meaning the solution with the smallest positive value of $u$. Continued fractions provide a systematic way to find it.
 
-**What this proves — and what remains.** The argument above shows that $$X^2 - DY^2 = 1$$ as real numbers. But we defined $$X = A/r$$ and $$Y = B/r$$, and there is no guarantee yet that $$r$$ divides $$A$$ and $$B$$ — so $$X$$ and $$Y$$ might be fractions rather than integers. Also, the pair $$(X, Y)$$ was constructed by combining two convergents — it is not itself necessarily a convergent of $$\sqrt{D}$$. We address both points in turn.
+### Continued Fractions
 
-**Integrality.** To ensure $$r \mid A$$ and $$r \mid B$$, we sharpen the pigeonhole step. Since there are infinitely many convergents but only finitely many residual values, in fact some residual $$r$$ occurs *infinitely* often (not just twice). Among these infinitely many convergents, each also carries a pair of residue classes 
-
-$$
-\begin{equation*}
-(p_k \bmod |r|, \; q_k \bmod |r|), 
-\end{equation*}
-$$
-
-which takes at most $$\left\lvert r  \right\rvert ^2$$ values. By a second application of pigeonhole, two of them — $$(p_i, q_i)$$ and $$(p_j, q_j)$$ — must satisfy:
+A continued fraction represents a real number as a sequence of nested integer parts:
 
 $$
-p_i \equiv p_j \pmod{|r|}, \qquad q_i \equiv q_j \pmod{|r|}
+a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cdots}}}.
 $$
 
-With these congruences, divisibility follows immediately:
+This is written more compactly as
 
 $$
-A = p_ip_j - Dq_iq_j \equiv p_i^2 - Dq_i^2 = r \equiv 0 \pmod{|r|}
+[a_0;\,a_1,a_2,a_3,\ldots].
 $$
 
-$$
-B = q_ip_j - p_iq_j \equiv q_ip_i - p_iq_i = 0 \pmod{|r|}
-$$
+The integers $a_0,a_1,a_2,\ldots$ are called the **coefficients** of the continued fraction.
 
-So $$X$$ and $$Y$$ are genuine integers, and $$(X, Y)$$ is a solution to Pell's equation in positive integers.
-
-**The algorithm terminates.** We have now proved that a Pell solution exists. By Step 1, any such solution $$(X, Y)$$ satisfies $$X/Y \approx \sqrt{D}$$ with exceptional precision; by Step 2, the best rational approximations to $$\sqrt{D}$$ are exactly its convergents. Therefore $$X/Y$$ must appear as some convergent $$p_k/q_k$$, which means that convergent directly has residual $$+1$$. Our algorithm — computing convergents one by one and checking $$p_k^2 - Dq_k^2 = 1$$ — is guaranteed to find it.
-
-For $$D = 20$$, the algorithm succeeds immediately: the convergent $$[4;\, 2] = \frac{9}{2}$$ gives $$9^2 - 20 \cdot 2^2 = 1$$.
-
-
-### Worked Example: $$\sqrt{20}$$
-
-Let us see the full picture for our problem. The continued fraction of $$\sqrt{20}$$ is $$[4;\, \overline{2, 8}]$$, and for each convergent we compute the fraction, its decimal value, and the Pell residual:
-
-| Convergent | $$\frac{p_k}{q_k}$$ | Decimal | $$p_k^2 - 20 \cdot q_k^2$$ |
-|:---:|:---:|:---:|:---:|
-| $$[4]$$ | $$\frac{4}{1}$$ | $$4.000$$ | $$16 - 20 = -4$$ |
-| $$[4;\, 2]$$ | $$\frac{9}{2}$$ | $$4.500$$ | $$81 - 80 = 1$$ |
-| $$[4;\, 2, 8]$$ | $$\frac{76}{17}$$ | $$4.471$$ | $$5776 - 5780 = -4$$ |
-| $$[4;\, 2, 8, 2]$$ | $$\frac{161}{36}$$ | $$4.472$$ | $$25921 - 25920 = 1$$ |
-| $$[4;\, 2, 8, 2, 8]$$ | $$\frac{1364}{305}$$ | $$4.472$$ | $$1860496 - 1860500 = -4$$ |
-| $$[4;\, 2, 8, 2, 8, 2]$$ | $$\frac{2889}{646}$$ | $$4.472$$ | $$8346321 - 8346320 = 1$$ |
-
-As predicted, $$\lvert p_k^2 - 20 \cdot q_k^2 \rvert$$ stays small (always 4 or 1, well below the bound $$2\sqrt{20} \approx 8.9$$). The residuals alternate between $$-4$$ and $$+1$$ with perfect regularity, reflecting the period-2 structure of the continued fraction. The decimal values oscillate around $$\sqrt{20} \approx 4.4721$$, converging rapidly.
-
-Already at the second convergent we hit $$9^2 - 20 \cdot 2^2 = 1$$, so $$(x', L') = (9, 2)$$ is the fundamental solution.
-
-Notice also the third row: $$(76, 17)$$ satisfies $$x^2 - 20L^2 = -4$$, which is precisely the initial solution of *our* generalized Pell equation from Eq. \eqref{eq:pell}. This is not a coincidence. The same reasoning from Step 1 applies: any solution of $$x^2 - Dy^2 = n$$ with small $$\lvert n \rvert$$ gives a good rational approximation $$x/y \approx \sqrt{D}$$, since
+For square roots of non-square integers, the coefficients eventually repeat. In fact, their continued fractions are periodic. For our problem,
 
 $$
-\frac{x}{y} - \sqrt{D} = \frac{n}{y(x + y\sqrt{D})}
+\begin{align}
+\sqrt{20}=[4;\,\overline{2,8}]
+          =[4;\,2,8,2,8,2,8,\ldots].
+\label{eq:sqrt20-cf}
+\end{align}
 $$
 
-which is tiny whenever $$\lvert n \rvert$$ is small relative to the denominator. So such solutions must also appear among the convergents. In particular, we never needed to *guess* the initial solution $$(76, 17)$$ — scanning the convergents of $$\sqrt{20}$$ would have found it automatically, right alongside the classical Pell solution $$(9, 2)$$.
+Let us briefly see where these coefficients come from.
 
-More generally, for any generalized Pell equation $$x^2 - Dy^2 = n$$ where $$\lvert n \rvert < 2\sqrt{D}$$, solutions (if they exist) can be found by the same continued fraction search. The bound from Step 3 guarantees that $$n$$ is within the range of possible convergent residuals, and our algorithm can simply check for $$r_k = n$$ in addition to $$r_k = 1$$.
+The integer part of $\sqrt{20}\approx4.4721$ is
 
-Conversely, the convergent residuals also tell us when an equation has *no* solution. Since the continued fraction of $$\sqrt{D}$$ is periodic with some period $$s$$, the residual sequence $$r_0, r_1, r_2, \ldots$$ is eventually periodic with the same period. So one only needs to examine the first $$s + 1$$ convergents (one full period plus the initial term) to see every residual value that will ever occur. If a particular $$n$$ with $$\lvert n \rvert < 2\sqrt{D}$$ does not appear among these residuals, the equation $$x^2 - Dy^2 = n$$ has no integer solution. For $$D = 20$$, the period is $$s = 2$$ and the residuals cycle as $$-4, 1, -4, 1, \ldots$$ — so among all integers $$n$$ with $$\lvert n \rvert < 2\sqrt{20} \approx 8.9$$, only $$n = -4$$ and $$n = 1$$ yield solvable equations. For instance, $$x^2 - 20y^2 = -5$$ has no solution (which can also be confirmed by noting that $$x^2 \equiv 15 \pmod{20}$$ has no solution, since 15 is not a quadratic residue mod 20).
+$$
+a_0=\lfloor\sqrt{20}\rfloor=4.
+$$
+
+We subtract this integer part and invert the remainder:
+
+$$
+\frac{1}{\sqrt{20}-4}
+=
+\frac{\sqrt{20}+4}{20-16}
+=
+\frac{\sqrt{20}+4}{4}
+\approx2.118.
+$$
+
+Its integer part is therefore $a_1=2$. Subtracting $2$ and inverting again gives
+
+$$
+\begin{align}
+\frac{1}{
+\frac{\sqrt{20}+4}{4}-2
+}
+&=
+\frac{1}{
+\frac{\sqrt{20}-4}{4}
+} \nonumber\\
+&=
+\frac{4}{\sqrt{20}-4}
+=
+\sqrt{20}+4
+\approx8.472.
+\end{align}
+$$
+
+Thus, $a_2=8$. After subtracting $8$, the remainder is once again $\sqrt{20}-4$, so the same calculation repeats. This explains the period $\overline{2,8}$ in Eq. $\eqref{eq:sqrt20-cf}$.
+
+### Convergents
+
+By truncating a continued fraction after finitely many coefficients, we obtain a rational approximation called a **convergent**.
+
+The first few convergents of $\sqrt{20}$ are
+
+$$
+\begin{array}{lcll}
+[4]
+&=&
+\dfrac{4}{1}
+&=4.000,\\[10pt]
+
+[4;\,2]
+&=&
+4+\dfrac{1}{2}
+=
+\dfrac{9}{2}
+&=4.500,\\[10pt]
+
+[4;\,2,8]
+&=&
+4+\cfrac{1}{2+\cfrac{1}{8}}
+=
+\dfrac{76}{17}
+&\approx4.4706.
+\end{array}
+$$
+
+As more coefficients are included, the convergents approach
+
+$$
+\sqrt{20}\approx4.4721.
+$$
+
+But why should good rational approximations to $\sqrt{20}$ help us solve Pell's equation?
+
+### Why Pell Solutions Approximate $\sqrt{D}$
+
+Consider the classical Pell equation
+
+$$
+u^2-Dv^2=1.
+$$
+
+Factoring the left-hand side as a difference of squares gives
+
+$$
+(u-v\sqrt{D})(u+v\sqrt{D})=1.
+$$
+
+Since $u+v\sqrt{D}$ is positive, we can divide by it:
+
+$$
+u-v\sqrt{D}
+=
+\frac{1}{u+v\sqrt{D}}.
+$$
+
+Dividing once more by $v$ yields
+
+$$
+\begin{align}
+\frac{u}{v}-\sqrt{D}
+=
+\frac{1}{v(u+v\sqrt{D})}.
+\label{eq:pell-approximation}
+\end{align}
+$$
+
+Equation $\eqref{eq:pell-approximation}$ proves an important one-way implication:
+
+> Every solution $(u,v)$ of the Pell equation produces an exceptionally good rational approximation $u/v$ to $\sqrt D$.
+
+Indeed, since $u/v\approx\sqrt D$, the denominator on the right-hand side satisfies
+
+$$
+v(u+v\sqrt D)\approx2\sqrt D,v^2,
+$$
+
+so
+
+$$
+\left|\frac uv-\sqrt D\right|
+\approx
+\frac{1}{2\sqrt D,v^2}.
+$$
+
+This error is of order $1/v^2$, which is characteristic of the unusually accurate approximations produced by continued-fraction convergents. A standard theorem therefore implies that every Pell solution $u/v$ must occur among the convergents of $\sqrt D$.
+
+However, the approximation argument alone does not guarantee that an arbitrary convergent satisfies
+
+$$
+u^2-Dv^2=1.
+$$
+
+A convergent may instead produce another small residual. For example, when $D=20$,
+
+$$
+4^2-20\cdot1^2=-4,
+$$
+
+even though $4/1$ is a convergent of $\sqrt{20}$.
+
+The guarantee that a convergent with residual $1$ eventually appears comes from the periodicity of the continued fraction of $\sqrt D$. For every positive non-square integer $D$, the periodic continued fraction of $\sqrt D$ contains the fundamental Pell solution: it appears after one period when the period length is even, and after two periods when the period length is odd.
+
+Thus, the two ideas play different roles:
+
+$$
+\text{Pell solution}
+\Longrightarrow
+\text{exceptionally good approximation}
+\Longrightarrow
+\text{continued-fraction convergent},
+$$
+
+while periodicity guarantees that one of those convergents actually satisfies the Pell equation.
+
+A more detailed statement of this theorem and the general convergent algorithm are given in [Appendix A](#appendix-a-continued-fractions-and-pells-equation).
+
+### Finding the Fundamental Solution for $D=20$
+
+For our problem, we test the first convergents of $\sqrt{20}$:
+
+| Convergent | Fraction $\frac{p_k}{q_k}$ | Pell residual $p_k^2-20q_k^2$ |
+|:---:|:---:|:---:|
+| $[4]$ | $\frac{4}{1}$ | $4^2-20\cdot1^2=-4$ |
+| $[4;\,2]$ | $\frac{9}{2}$ | $9^2-20\cdot2^2=1$ |
+| $[4;\,2,8]$ | $\frac{76}{17}$ | $76^2-20\cdot17^2=-4$ |
+
+The second convergent already gives residual $1$:
+
+$$
+9^2-20\cdot2^2
+=
+81-80
+=
+1.
+$$
+
+Therefore, the fundamental solution of Eq. $\eqref{eq:classical-pell}$ is
+
+$$
+(u,v)=(9,2).
+$$
+
+The third convergent is also noteworthy:
+
+$$
+76^2-20\cdot17^2=-4.
+$$
+
+Thus, $(76,17)$ is exactly the generalized-Pell solution corresponding to our first non-degenerate triangle. In this particular problem, the continued fraction of $\sqrt{20}$ therefore reveals both the classical Pell multiplier $(9,2)$ and our initial generalized-Pell solution $(76,17)$.
+
+### Returning to the Triangle Recurrence
+
+We can now substitute
+
+$$
+D=20,\qquad u=9,\qquad v=2
+$$
+
+into the recurrence derived in the previous section:
+
+$$
+\begin{align}
+x_{k+1}
+&=ux_k+DvL_k \nonumber\\
+&=9x_k+40L_k,
+\label{eq:specific-x-recurrence}\\[6pt]
+L_{k+1}
+&=vx_k+uL_k \nonumber\\
+&=2x_k+9L_k.
+\label{eq:specific-l-recurrence}
+\end{align}
+$$
+
+Starting from
+
+$$
+(x_0,L_0)=(76,17),
+$$
+
+the next Pell solution is
+
+$$
+\begin{align}
+x_1
+&=9\cdot76+40\cdot17 \nonumber\\
+&=684+680 \nonumber\\
+&=1364,
+\end{align}
+$$
+
+and
+
+$$
+\begin{align}
+L_1
+&=2\cdot76+9\cdot17 \nonumber\\
+&=152+153 \nonumber\\
+&=305.
+\end{align}
+$$
+
+To recover the triangle, recall the substitution introduced when deriving the generalized Pell equation:
+
+$$
+x=5b+4\varepsilon,
+\qquad
+\varepsilon\in\{-1,+1\}.
+$$
+
+Since
+
+$$
+1364=5\cdot272+4,
+$$
+
+we have $\varepsilon=+1$ and therefore
+
+$$
+b=272,
+\qquad
+h=b+\varepsilon=273.
+$$
+
+This reproduces the second triangle from the introduction:
+
+$$
+(b,L,h)=(272,305,273).
+$$
+
+The continued fraction has therefore supplied exactly the missing multiplier needed by our recurrence. From this point onward, no further continued-fraction calculations are required: repeatedly applying Eqs. $\eqref{eq:specific-x-recurrence}$ and $\eqref{eq:specific-l-recurrence}$ generates the remaining triangles.
+
 
 
 ## Implementation in Python
 
-### Solving the Classical Pell Equation via Continued Fractions
-
-With the theory in place, we turn to implementation. The central routine is `cont_fraction_sqrt`, which computes the coefficients $$[a_0;\, a_1, a_2, \ldots]$$ of the continued fraction of $$\sqrt{n}$$.
-
-#### How the Algorithm Works
-
-Recall from the definition that a continued fraction is built by repeating three operations: given a number $$x_k > 1$$, (1) extract its integer part $$a_k = \lfloor x_k \rfloor$$, (2) subtract to get the fractional remainder $$x_k - a_k$$, and (3) invert to obtain the next number $$x_{k+1} = 1/(x_k - a_k)$$. This produces $$x_k = a_k + 1/x_{k+1}$$, which is exactly one layer of the continued fraction.
-
-Let us trace what happens when we apply this to $$\sqrt{n}$$.
-
-**First step.** We start with $$x_0 = \sqrt{n}$$. The integer part is $$a_0 = \lfloor\sqrt{n}\rfloor$$. Subtracting and inverting:
+We already know that the fundamental solution of the classical Pell equation
 
 $$
-x_1 = \frac{1}{\sqrt{n} - a_0}
+u^2-20v^2=1
 $$
 
-This involves an irrational denominator, so we rationalize by multiplying by $$(\sqrt{n} + a_0)/(\sqrt{n} + a_0)$$:
+is
 
 $$
-x_1 = \frac{\sqrt{n} + a_0}{(\sqrt{n})^2 - a_0^2} = \frac{\sqrt{n} + a_0}{n - a_0^2}
+(u,v)=(9,2).
 $$
 
-Notice the form: $$x_1 = (\sqrt{n} + m_1) / d_1$$ with $$m_1 = a_0$$ and $$d_1 = n - a_0^2$$. So after just one step, the tail of the continued fraction is a ratio involving $$\sqrt{n}$$ plus an integer, divided by another integer.
-
-**The key observation** is that this form is preserved at every subsequent step. If the current tail is
+For our specific triangle problem, we could therefore hard-code these two values. However, implementing the continued-fraction method gives us a reusable solver for the classical Pell equation
 
 $$
-x_k = \frac{\sqrt{n} + m_k}{d_k}
+u^2-Dv^2=1
 $$
 
-then extracting, subtracting, inverting, and rationalizing will produce $$x_{k+1} = (\sqrt{n} + m_{k+1})/d_{k+1}$$ for new integers $$m_{k+1}, d_{k+1}$$. The integers $$m_k$$ and $$d_k$$ always satisfy the invariant $$d_k \mid (n - m_k^2)$$, which guarantees that $$d_{k+1}$$ comes out as a positive integer (rather than a fraction).
+for any positive non-square integer $D$.
 
-Let us work through the general step to derive the update formulas.
+The implementation follows the two recurrences introduced earlier:
 
-At each step, we extract the next coefficient $$a_k$$ and update $$(m_k, d_k)$$:
+1. The variables $m$, $d$, and $a$ generate the coefficients of the periodic continued fraction of $\sqrt{D}$.
+2. The variables $p$ and $q$ generate its convergents.
 
-**1. Extract the integer part:**
-
-$$
-a_k = \left\lfloor \frac{\sqrt{n} + m_k}{d_k} \right\rfloor = \left\lfloor \frac{a_0 + m_k}{d_k} \right\rfloor
-$$
-
-where $$a_0 = \lfloor\sqrt{n}\rfloor$$. (The second equality holds because $$\sqrt{n}$$ and $$a_0$$ share the same fractional part behavior under the divisibility invariant.)
-
-**2. Compute the remainder and take its reciprocal.** After subtracting $$a_k$$, the remainder is:
+After computing each convergent $p/q$, we test whether
 
 $$
-\frac{\sqrt{n} + m_k}{d_k} - a_k = \frac{\sqrt{n} + m_k - a_k d_k}{d_k} = \frac{\sqrt{n} - (a_k d_k - m_k)}{d_k}
+p^2-Dq^2=1.
 $$
 
-Setting $$m_{k+1} = a_k d_k - m_k$$, the reciprocal of this remainder is:
+The first pair satisfying this equation is the fundamental solution $(u,v)$. The general theory in [Appendix A](#appendix-a-continued-fractions-and-pells-equation) guarantees that this search terminates.
+
+### Computing the Fundamental Pell Solution
+
+The continued-fraction coefficients are generated by the update rules
 
 $$
-\frac{d_k}{\sqrt{n} - m_{k+1}}
+\begin{align}
+m_{k+1} &= d_ka_k-m_k,\\
+d_{k+1} &= \frac{D-m_{k+1}^2}{d_k},\\
+a_{k+1} &= \left\lfloor
+\frac{a_0+m_{k+1}}{d_{k+1}}
+\right\rfloor,
+\end{align}
 $$
 
-**3. Rationalize the denominator.** Multiplying numerator and denominator by $$(\sqrt{n} + m_{k+1})$$:
+where
 
 $$
-\frac{d_k(\sqrt{n} + m_{k+1})}{n - m_{k+1}^2} = \frac{\sqrt{n} + m_{k+1}}{(n - m_{k+1}^2)/d_k}
+a_0=\lfloor\sqrt{D}\rfloor.
 $$
 
-Setting $$d_{k+1} = (n - m_{k+1}^2) / d_k$$, we arrive at:
+At the same time, the numerators and denominators of the convergents are updated using
 
 $$
-\frac{\sqrt{n} + m_{k+1}}{d_{k+1}}
+\begin{align}
+p_k &= a_kp_{k-1}+p_{k-2},\\
+q_k &= a_kq_{k-1}+q_{k-2}.
+\end{align}
 $$
 
-This has the same form as the starting expression, so we can repeat the process. The three update rules are:
-
-$$
-m_{k+1} = a_k d_k - m_k, \qquad d_{k+1} = \frac{n - m_{k+1}^2}{d_k}, \qquad a_{k+1} = \left\lfloor\frac{a_0 + m_{k+1}}{d_{k+1}}\right\rfloor
-$$
-
-**Why $$d_{k+1}$$ is always a positive integer.** The formula $$d_{k+1} = (n - m_{k+1}^2)/d_k$$ involves a division, so we should verify that it always produces a positive integer.
-
-*Integer:* We need to show that $$d_k \mid (n - m_k^2)$$ holds for all $$k \geq 0$$. We prove this by induction.
-
-**Base case.** The algorithm starts with $$m_0 = 0$$ and $$d_0 = 1$$. Since every integer is divisible by 1, we have $$d_0 \mid (n - m_0^2)$$ trivially. After the first iteration, $$m_1 = a_0$$ and $$d_1 = n - a_0^2$$, so $$d_1 \mid (n - m_1^2)$$ holds as well ($$n - a_0^2 = d_1$$ divides itself).
-
-**Inductive step.** Assume that $$d_k \mid (n - m_k^2)$$ holds at step $$k$$. We show it carries over to step $$k+1$$, i.e., that $$d_k \mid (n - m_{k+1}^2)$$ (which makes $$d_{k+1}$$ an integer) and then $$d_{k+1} \mid (n - m_{k+1}^2)$$ (which is the invariant at step $$k+1$$).
-
-1. Since $$m_{k+1} = a_k d_k - m_k$$, the term $$a_k d_k$$ is a multiple of $$d_k$$, so $$m_{k+1} \equiv -m_k \pmod{d_k}$$. Squaring both sides: $$m_{k+1}^2 \equiv m_k^2 \pmod{d_k}$$. Therefore $$n - m_{k+1}^2 \equiv n - m_k^2 \pmod{d_k}$$.
-2. By the inductive hypothesis, $$n - m_k^2 \equiv 0 \pmod{d_k}$$.
-
-Combining: $$n - m_{k+1}^2 \equiv 0 \pmod{d_k}$$, so the division $$d_{k+1} = (n - m_{k+1}^2)/d_k$$ produces an integer. And since $$d_{k+1} \cdot d_k = n - m_{k+1}^2$$, we also have $$d_{k+1} \mid (n - m_{k+1}^2)$$, establishing the invariant at step $$k+1$$. $$\square$$
-
-*Positive:* Since $$a_k = \lfloor(\sqrt{n} + m_k)/d_k\rfloor$$ and $$\sqrt{n}$$ is irrational, the floor is strictly less than the value: $$a_k < (\sqrt{n} + m_k)/d_k$$. Rearranging gives $$m_{k+1} = a_k d_k - m_k < \sqrt{n}$$, and therefore $$n - m_{k+1}^2 > 0$$. Since $$d_k > 0$$ as well, the quotient $$d_{k+1}$$ is positive.
-
-Since both $$m_k$$ and $$d_k$$ are bounded (one can show they stay below $$\sqrt{n}$$ and $$2\sqrt{n}$$ respectively), there are only finitely many possible states $$(m_k, d_k)$$. Eventually a state must repeat, at which point the coefficients begin to cycle — this is how the algorithm detects the period.
+The following function combines both recurrences:
 
 ```python
 from math import isqrt
 
 
-def cont_fraction_sqrt(n, max_coeffs=100):
-    """Compute the periodic continued fraction expansion of sqrt(n).
-    Returns (coefficients, period_length), or (None, 0) for perfect squares.
-    """
-    a0 = isqrt(n)
-    if a0 * a0 == n:
-        return None, 0
+def solve_pell(D: int) -> tuple[int, int]:
+    """Return the fundamental solution (u, v) of u^2 - D*v^2 = 1."""
 
-    coeffs = [a0]
-    seen = {}
+    if D <= 0:
+        raise ValueError("D must be a positive integer.")
+
+    a0 = isqrt(D)
+    if a0 * a0 == D:
+        raise ValueError("D must not be a perfect square.")
+
+    # State used to generate the continued-fraction coefficients of sqrt(D).
     m, d, a = 0, 1, a0
 
-    for i in range(max_coeffs):
-        m = d * a - m           # m_{k+1} = a_k * d_k - m_k
-        d = (n - m * m) // d    # d_{k+1} = (n - m_{k+1}^2) / d_k
-        a = (a0 + m) // d       # a_{k+1} = floor((a0 + m_{k+1}) / d_{k+1})
-        state = (m, d)
-        if state in seen:
-            return coeffs, i - seen[state]
-        seen[state] = i
-        coeffs.append(a)
+    # Initial values for the convergent recurrence.
+    p_prev2, p_prev1 = 0, 1
+    q_prev2, q_prev1 = 1, 0
 
-    return coeffs, None
+    while True:
+        # Current convergent p/q = [a0; a1, ..., ak].
+        p = a * p_prev1 + p_prev2
+        q = a * q_prev1 + q_prev2
 
+        # The first convergent with residual 1 is the fundamental solution.
+        if p * p - D * q * q == 1:
+            return p, q
 
-def evaluate_continued_fraction(coeffs):
-    """Evaluate [a0; a1, a2, ...] and return (numerator, denominator)."""
-    num, den = 1, 0
-    for a in reversed(coeffs):
-        num, den = den, num
-        num += a * den
-    return num, den
+        p_prev2, p_prev1 = p_prev1, p
+        q_prev2, q_prev1 = q_prev1, q
 
-
-def solve_pell(d):
-    """Find the fundamental solution (x, y) of x^2 - d*y^2 = 1
-    using the continued fraction expansion of sqrt(d).
-    """
-    coeffs, period = cont_fraction_sqrt(d)
-    if coeffs is None:
-        return None, None
-
-    extended = coeffs + coeffs[1:] * 2
-    for i in range(1, len(extended) + 1):
-        x, y = evaluate_continued_fraction(extended[:i])
-        if x * x - d * y * y == 1:
-            return x, y
-
-    return None, None
+        # Generate the next continued-fraction coefficient.
+        m = d * a - m
+        d = (D - m * m) // d
+        a = (a0 + m) // d
 ```
 
-For our problem, $$D = 20$$. The continued fraction of $$\sqrt{20}$$ is $$[4; \overline{2, 8}]$$ with period 2, and the algorithm finds the fundamental solution $$(x', L') = (9, 2)$$:
+For our problem, we call the solver with $D=20$:
 
 ```python
 D = 20
-xp, yp = solve_pell(D)
-print(f"Fundamental solution of x'^2 - {D}*y'^2 = 1: ({xp}, {yp})")
-print(f"Verification: {xp}^2 - {D}*{yp}^2 = {xp**2 - D * yp**2}")
+u, v = solve_pell(D)
+
+print(f"Fundamental solution of u^2 - {D}*v^2 = 1: ({u}, {v})")
+print(f"Verification: {u}^2 - {D}*{v}^2 = {u * u - D * v * v}")
 ```
 
-```
-Fundamental solution of x'^2 - 20*y'^2 = 1: (9, 2)
+This produces
+
+```text
+Fundamental solution of u^2 - 20*v^2 = 1: (9, 2)
 Verification: 9^2 - 20*2^2 = 1
 ```
 
-### Computing the Triangle Solutions
+Thus, the implementation recovers the multiplier
 
-With the fundamental solution in hand, we repeatedly apply the matrix recurrence to generate as many triangle solutions as desired. For each generated pair $$(x, L)$$, we recover $$b$$ by checking which of $$(x + 4)/5$$ or $$(x - 4)/5$$ yields an integer:
+$$
+(u,v)=(9,2)
+$$
+
+that we derived from the continued fraction of $\sqrt{20}$.
+
+### Recovering a Triangle from a Pell Solution
+
+The recurrence generates pairs $(x,L)$ satisfying
+
+$$
+x^2-20L^2=-4.
+$$
+
+To convert such a pair back into a triangle, recall the substitution used when deriving the generalized Pell equation:
+
+$$
+x=5b+4\varepsilon,
+\qquad
+\varepsilon\in\{-1,+1\},
+$$
+
+with
+
+$$
+h=b+\varepsilon.
+$$
+
+Solving the first equation for $b$ gives
+
+$$
+b=\frac{x-4\varepsilon}{5}.
+$$
+
+The correct value of $\varepsilon$ can be determined from the residue of $x$ modulo $5$:
+
+- If $x\equiv1\pmod5$, then $\varepsilon=-1$.
+- If $x\equiv4\pmod5$, then $\varepsilon=+1$.
+
+The conversion can therefore be implemented directly:
 
 ```python
-n_solutions = 20  # increase to generate more solutions
+def pell_solution_to_triangle(
+    x: int,
+    L: int,
+) -> tuple[int, int, int]:
+    """Convert a Pell solution (x, L) into a triangle (b, L, h)."""
 
-# Initial solution: b=16, L=17, h=b-1=15, giving x = 5*16 - 4 = 76
-x, L = 76, 17
-
-solutions = []
-for _ in range(n_solutions):
-    if (x + 4) % 5 == 0:
-        b = (x + 4) // 5
-        h = b - 1
+    if x % 5 == 1:
+        epsilon = -1
+    elif x % 5 == 4:
+        epsilon = 1
     else:
-        b = (x - 4) // 5
-        h = b + 1
-    solutions.append((b, L, h))
+        raise ValueError("The Pell solution does not encode a valid triangle.")
 
-    # Apply the recurrence: (x, L) -> (x*xp + L*yp*D, x*yp + L*xp)
-    x, L = x * xp + L * yp * D, x * yp + L * xp
+    b = (x - 4 * epsilon) // 5
+    h = b + epsilon
 
-# Display
-for i, (b, L, h) in enumerate(solutions, 1):
-    rel = "h = b - 1" if h == b - 1 else "h = b + 1"
-    print(f"{i:>2}. b={b}, L={L}, h={h}  ({rel})")
+    # Verify the original geometric conditions.
+    assert b % 2 == 0
+    assert h * h + (b // 2) ** 2 == L * L
+    assert abs(h - b) == 1
+
+    return b, L, h
 ```
 
-### Alternative: Direct Recurrence Relations
+The assertions verify the conditions from which the Pell equation was originally derived:
 
-An alternative approach avoids the continued fraction machinery entirely. The quadratic Diophantine equation $$5b^2 \pm 8b + 4 - 4L^2 = 0$$ can be fed into a [specialized solver](https://www.alpertron.com.ar/QUAD.HTM), which produces affine recurrence relations that act directly on $$(b, L)$$:
+- the base is even, so the altitude bisects it into two integer lengths;
+- the Pythagorean relation holds;
+- the height and base differ by exactly one.
+
+### Generating the Triangle Solutions
+
+With the fundamental solution $(u,v)$ available, we repeatedly apply the recurrence
+
+$$
+\begin{align}
+x_{k+1} &= ux_k+DvL_k,\\
+L_{k+1} &= vx_k+uL_k.
+\end{align}
+$$
+
+For $D=20$ and $(u,v)=(9,2)$, this is the concrete recurrence
+
+$$
+\begin{align}
+x_{k+1} &= 9x_k+40L_k,\\
+L_{k+1} &= 2x_k+9L_k.
+\end{align}
+$$
+
+We begin with the generalized-Pell solution
+
+$$
+(x_0,L_0)=(76,17),
+$$
+
+which corresponds to the triangle
+
+$$
+(b,L,h)=(16,17,15).
+$$
+
+The complete generator is:
 
 ```python
-def solver(b, L, cb, cL, n_runs=30):
-    """Apply an affine recurrence to generate L values."""
-    result = []
-    for _ in range(n_runs):
-        b, L = (cb[0]*b + cb[1]*L + cb[2],
-                cL[0]*b + cL[1]*L + cL[2])
-        if b > 0 and L > 0:
-            result.append(L)
-    return result
+def generate_triangles(count: int) -> list[tuple[int, int, int]]:
+    """Generate the first `count` almost-equal isosceles triangles."""
 
-all_L = sorted(
-    solver(0,  1, (-9, -8, -8), (-10, -9, -8)) +
-    solver(0,  1, (-9,  8, -8), ( 10, -9,  8)) +
-    solver(0, -1, (-9, -8,  8), (-10, -9,  8)) +
-    solver(0, -1, (-9,  8,  8), ( 10, -9, -8))
-)[:n_solutions]
+    if count < 0:
+        raise ValueError("count must be non-negative.")
+
+    D = 20
+    u, v = solve_pell(D)
+
+    # Initial solution:
+    # b=16, L=17, h=15, epsilon=-1, and x=5*16-4=76.
+    x, L = 76, 17
+
+    triangles = []
+
+    for _ in range(count):
+        triangles.append(pell_solution_to_triangle(x, L))
+
+        # Apply the Pell recurrence.
+        x, L = (
+            u * x + D * v * L,
+            v * x + u * L,
+        )
+
+    return triangles
 ```
 
-The four calls correspond to the four solution families of the two equations ($$\pm$$ in Eq. \eqref{eq:dioph}) with two sign choices each. This method is more compact but treats the recurrence coefficients as given rather than derived.
+We can now generate and display as many solutions as desired:
+
+```python
+for k, (b, L, h) in enumerate(generate_triangles(20), start=1):
+    relation = "h = b - 1" if h < b else "h = b + 1"
+    print(f"{k:>2}. b={b}, L={L}, h={h}  ({relation})")
+```
+
+The first few lines are
+
+```text
+ 1. b=16, L=17, h=15  (h = b - 1)
+ 2. b=272, L=305, h=273  (h = b + 1)
+ 3. b=4896, L=5473, h=4895  (h = b - 1)
+ 4. b=87840, L=98209, h=87841  (h = b + 1)
+ 5. b=1576240, L=1762289, h=1576239  (h = b - 1)
+```
+
+The implementation mirrors the mathematical construction directly:
+
+1. `solve_pell` finds the norm-$1$ multiplier $(u,v)$.
+2. The Pell recurrence generates a new pair $(x,L)$.
+3. `pell_solution_to_triangle` reverses the substitution
+   $$
+   x=5b+4\varepsilon
+   $$
+   and recovers $(b,L,h)$.
+4. The assertions verify that every generated result satisfies the original geometric conditions.
+
+
+### Alternative: A Direct Recurrence for the Triangle Variables
+
+The Pell variables are useful for deriving the solution, but they are not strictly necessary once the recurrence is known. We can eliminate $x_k$ and obtain a recurrence that acts directly on the geometric variables $b_k$ and $L_k$.
+
+Recall the substitution
+
+$$
+x_k=5b_k+4\varepsilon_k,
+\qquad
+\varepsilon_k\in\{-1,+1\},
+$$
+
+where
+
+$$
+h_k=b_k+\varepsilon_k.
+$$
+
+We also derived the Pell recurrence
+
+$$
+\begin{align}
+x_{k+1}&=9x_k+40L_k,\\
+L_{k+1}&=2x_k+9L_k.
+\end{align}
+$$
+
+We now substitute $x_k=5b_k+4\varepsilon_k$ into these equations.
+
+First, for the leg length,
+
+$$
+\begin{align}
+L_{k+1}
+&=2x_k+9L_k \nonumber\\
+&=2(5b_k+4\varepsilon_k)+9L_k \nonumber\\
+&=10b_k+9L_k+8\varepsilon_k.
+\label{eq:direct-l-recurrence}
+\end{align}
+$$
+
+To recover the recurrence for the base, we first determine how $\varepsilon_k$ changes. Reducing the recurrence for $x_k$ modulo $5$ gives
+
+$$
+x_{k+1}
+\equiv
+9x_k
+\equiv
+-x_k
+\pmod 5.
+$$
+
+Because $x_k=5b_k+4\varepsilon_k$, we also have
+
+$$
+x_k\equiv4\varepsilon_k\pmod5.
+$$
+
+It follows that the sign alternates:
+
+$$
+\begin{align}
+\varepsilon_{k+1}=-\varepsilon_k.
+\label{eq:epsilon-alternation}
+\end{align}
+$$
+
+Using this relation, the next Pell variable can be written as
+
+$$
+x_{k+1}
+=
+5b_{k+1}+4\varepsilon_{k+1}
+=
+5b_{k+1}-4\varepsilon_k.
+$$
+
+On the other hand, substituting $x_k=5b_k+4\varepsilon_k$ into the Pell recurrence gives
+
+$$
+\begin{align}
+x_{k+1}
+&=9x_k+40L_k \nonumber\\
+&=9(5b_k+4\varepsilon_k)+40L_k \nonumber\\
+&=45b_k+36\varepsilon_k+40L_k.
+\end{align}
+$$
+
+Equating the two expressions for $x_{k+1}$,
+
+$$
+5b_{k+1}-4\varepsilon_k
+=
+45b_k+36\varepsilon_k+40L_k,
+$$
+
+and solving for $b_{k+1}$ yields
+
+$$
+\begin{align}
+b_{k+1}
+=
+9b_k+8L_k+8\varepsilon_k.
+\label{eq:direct-b-recurrence}
+\end{align}
+$$
+
+Together, Eqs. $\eqref{eq:direct-b-recurrence}$, $\eqref{eq:direct-l-recurrence}$, and $\eqref{eq:epsilon-alternation}$ give the direct recurrence
+
+$$
+\boxed{
+\begin{aligned}
+b_{k+1}&=9b_k+8L_k+8\varepsilon_k,\\
+L_{k+1}&=10b_k+9L_k+8\varepsilon_k,\\
+\varepsilon_{k+1}&=-\varepsilon_k.
+\end{aligned}
+}
+$$
+
+Starting from
+
+$$
+(b_0,L_0,\varepsilon_0)=(16,17,-1),
+$$
+
+the next values are
+
+$$
+\begin{align}
+b_1
+&=9\cdot16+8\cdot17-8
+=272,\\
+L_1
+&=10\cdot16+9\cdot17-8
+=305,\\
+\varepsilon_1
+&=1.
+\end{align}
+$$
+
+Therefore,
+
+$$
+h_1=b_1+\varepsilon_1=273,
+$$
+
+and we recover the second triangle
+
+$$
+(b_1,L_1,h_1)=(272,305,273).
+$$
+
+This recurrence can be implemented without explicitly storing the Pell variable $x$:
+
+```python
+def generate_triangles_direct(
+    count: int,
+) -> list[tuple[int, int, int]]:
+    """Generate triangles directly from (b, L, epsilon)."""
+
+    if count < 0:
+        raise ValueError("count must be non-negative.")
+
+    b, L, epsilon = 16, 17, -1
+    triangles = []
+
+    for _ in range(count):
+        h = b + epsilon
+        triangles.append((b, L, h))
+
+        b, L, epsilon = (
+            9 * b + 8 * L + 8 * epsilon,
+            10 * b + 9 * L + 8 * epsilon,
+            -epsilon,
+        )
+
+    return triangles
+```
+
+The direct recurrence is convenient for generating triangles, but it does not replace the Pell derivation: its coefficients come directly from the Pell multiplier $(u,v)=(9,2)$. In other words, the Pell equation explains **why** the recurrence has this form and why it continues to produce valid solutions.
+
+A specialized quadratic Diophantine equation solver, such as the [Alpertron solver](https://www.alpertron.com.ar/QUAD.HTM), can also produce affine recurrence relations for the original equation
+
+$$
+5b^2+8\varepsilon b+4-4L^2=0.
+$$
+
+Such a solver is useful as an independent check or for exploring similar equations. Here, however, deriving the recurrence from the Pell construction keeps the coefficients transparent and connects the alternative method directly to the rest of the article.
 
 
 ## Results
 
-The first 15 solutions, sorted by $$L$$:
+The first 15 non-degenerate triangles generated by the recurrence are shown below. Each row has been verified against the original geometric conditions
+
+$$
+h^2+\left(\frac{b}{2}\right)^2=L^2
+$$
+
+and
+
+$$
+|h-b|=1.
+$$
 
 | # | $$b$$ | $$L$$ | $$h$$ | Relation |
 |:---:|---:|---:|---:|:---:|
@@ -693,92 +1257,764 @@ The first 15 solutions, sorted by $$L$$:
 | 14 | 304,056,783,818,718,320 | 339,945,818,819,306,129 | 304,056,783,818,718,321 | $$h = b + 1$$ |
 | 15 | 5,456,077,604,922,913,920 | 6,100,080,207,560,938,369 | 5,456,077,604,922,913,919 | $$h = b - 1$$ |
 
-The solutions alternate between $$h = b - 1$$ and $$h = b + 1$$, with the numbers growing rapidly — each successive $$L$$ is roughly 18 times the previous one. By increasing `n_solutions`, the code can generate arbitrarily many solutions in this family.
+As predicted by the recurrence
+
+$$
+\varepsilon_{k+1}=-\varepsilon_k,
+$$
+
+the solutions alternate between $h=b-1$ and $h=b+1$.
+
+The values also grow extremely quickly. The ratio $L_{k+1}/L_k$ approaches the Pell multiplier
+
+$$
+9+2\sqrt{20}
+=
+9+4\sqrt{5}
+\approx17.944.
+$$
+
+Thus, each leg length is approximately 18 times larger than the previous one. This growth factor is not accidental: in the next section, we will see that it equals $\phi^6$ and reflects a deeper connection to Fibonacci and Lucas numbers.
+
+Because the recurrence uses only exact integer arithmetic, it can generate arbitrarily many further solutions without introducing numerical approximation errors.
+
 
 
 ## Connection to Fibonacci and Lucas Numbers
 
-The factor of "roughly 18" is not a coincidence — it is $$\phi^6$$, where $$\phi = (1+\sqrt{5})/2$$ is the golden ratio. In fact, the entire solution family is intimately connected to Fibonacci and Lucas numbers.
+The growth factor of approximately $18$ is not a numerical coincidence. The family generated above has an exact description in terms of Fibonacci and Lucas numbers, and the Pell multiplier turns out to be the sixth power of the golden ratio.
 
-### The Link Through the Lucas–Fibonacci Identity
-
-Recall the classical identity relating Lucas numbers $$\mathcal{L}_n$$ and Fibonacci numbers $$F_n$$:
+Let
 
 $$
-\mathcal{L}_n^2 - 5 F_n^2 = 4(-1)^n
+\phi=\frac{1+\sqrt5}{2}
 $$
 
-Now compare this with our generalized Pell equation $$x^2 - 20y^2 = -4$$. Rewriting the latter by factoring $$20 = 4 \cdot 5$$:
+denote the golden ratio. We write the Fibonacci numbers as $F_n$ and the Lucas numbers as $\operatorname{Luc}_n$ to avoid confusing the Lucas sequence with the triangle leg $L$.
+
+### The Lucas–Fibonacci Identity
+
+Fibonacci and Lucas numbers satisfy the identity
 
 $$
-x^2 - 5(2y)^2 = -4
+\begin{align}
+\operatorname{Luc}_n^2-5F_n^2=4(-1)^n.
+\label{eq:lucas-fibonacci-identity}
+\end{align}
 $$
 
-Matching terms with the Lucas–Fibonacci identity (for odd $$n$$, where the right-hand side is $$-4$$):
+Our generalized Pell equation is
 
 $$
-x = \mathcal{L}_n, \qquad 2y = F_n \quad \Longrightarrow \quad y = \frac{F_n}{2}
+x^2-20L^2=-4.
 $$
 
-For $$y$$ to be an integer, we need $$F_n$$ to be even. Fibonacci numbers are even precisely when $$n \equiv 0 \pmod{3}$$. Combined with the requirement that $$n$$ be odd (for the $$-4$$ sign), we need:
+Since $20=4\cdot5$, we can rewrite it as
 
 $$
-n \equiv 3 \pmod{6}
+\begin{align}
+x^2-5(2L)^2=-4.
+\label{eq:pell-fibonacci-form}
+\end{align}
 $$
 
-That is, $$n = 9, 15, 21, 27, 33, \ldots$$ (skipping $$n = 3$$ which gives the degenerate solution with $$b = 0$$).
+Comparing Eq. $\eqref{eq:pell-fibonacci-form}$ with the Lucas–Fibonacci identity in Eq. $\eqref{eq:lucas-fibonacci-identity}$ suggests the identification
+
+$$
+x=\operatorname{Luc}_n,
+\qquad
+2L=F_n.
+$$
+
+Therefore,
+
+$$
+\begin{align}
+L=\frac{F_n}{2}.
+\label{eq:leg-fibonacci}
+\end{align}
+$$
+
+For the right-hand side of Eq. $\eqref{eq:lucas-fibonacci-identity}$ to equal $-4$, the index $n$ must be odd. In addition, $L$ is an integer only when $F_n$ is even.
+
+The Fibonacci sequence is even precisely at indices divisible by $3$. Combining both conditions gives
+
+$$
+n\equiv3\pmod6.
+$$
+
+Thus,
+
+$$
+n=3,9,15,21,27,\ldots
+$$
+
+The first admissible index, $n=3$, gives
+
+$$
+\operatorname{Luc}_3=4,
+\qquad
+F_3=2,
+$$
+
+and hence
+
+$$
+(x,L)=(4,1).
+$$
+
+Using the substitution
+
+$$
+x=5b+4\varepsilon,
+$$
+
+this corresponds to $b=0$ with $\varepsilon=1$. It is therefore the degenerate solution rather than a genuine triangle.
+
+The non-degenerate family begins at $n=9$. Writing
+
+$$
+n=6k+9,
+\qquad
+k=0,1,2,\ldots,
+$$
+
+we obtain the exact formulas
+
+$$
+\begin{align}
+\boxed{
+x_k=\operatorname{Luc}_{6k+9},
+\qquad
+L_k=\frac{F_{6k+9}}{2}.
+}
+\label{eq:pell-fibonacci-formulas}
+\end{align}
+$$
 
 ### Verification
 
-Let us check the first few cases against known Fibonacci and Lucas numbers:
+The first few indices reproduce the Pell variables and leg lengths found earlier:
 
-| $$n$$ | $$\mathcal{L}_n$$ | $$F_n$$ | $$y = F_n/2$$ | Matches $$L$$ in table? |
-|:---:|:---:|:---:|:---:|:---:|
-| 9 | 76 | 34 | 17 | $$\checkmark$$ |
-| 15 | 1364 | 610 | 305 | $$\checkmark$$ |
-| 21 | 24476 | 10946 | 5473 | $$\checkmark$$ |
-| 27 | 439204 | 196418 | 98209 | $$\checkmark$$ |
+| $k$ | $n=6k+9$ | $\operatorname{Luc}_n=x_k$ | $F_n$ | $L_k=F_n/2$ |
+|:---:|:---:|---:|---:|---:|
+| $0$ | $9$  | $76$      | $34$      | $17$ |
+| $1$ | $15$ | $1{,}364$ | $610$     | $305$ |
+| $2$ | $21$ | $24{,}476$ | $10{,}946$ | $5{,}473$ |
+| $3$ | $27$ | $439{,}204$ | $196{,}418$ | $98{,}209$ |
 
-Every leg length in the solution table is half a Fibonacci number, and the corresponding Pell variable $$x$$ is a Lucas number — both taken at indices $$9, 15, 21, 27, \ldots$$
-
-### Why the Growth Factor is $$\phi^6$$
-
-Recall that each new solution is obtained by multiplying the previous one by the recurrence matrix:
+Thus, every leg length in the generated family is half a Fibonacci number, while the corresponding Pell variable is a Lucas number. Both sequences are sampled every six indices:
 
 $$
-M = \begin{pmatrix} 9 & 40 \\ 2 & 9 \end{pmatrix}
+9,15,21,27,\ldots
 $$
 
-(using $$x' = 9$$, $$L' = 2$$, $$D = 20$$). The $$k$$-th solution is given by $$M^k \mathbf{v}_0$$, where $$\mathbf{v}_0 = (x_0, L_0)^T$$ is the initial solution. To understand the growth, we diagonalize $$M$$.
+### Closed Forms for the Complete Triangle
 
-The eigenvalues satisfy $$\det(M - \lambda I) = (9 - \lambda)^2 - 80 = 0$$, giving:
-
-$$
-\lambda_1 = 9 + 4\sqrt{5}, \qquad \lambda_2 = 9 - 4\sqrt{5}
-$$
-
-Since $$M$$ has two distinct eigenvalues, it admits a diagonalization $$M = P \Lambda P^{-1}$$ with $$\Lambda = \mathrm{diag}(\lambda_1, \lambda_2)$$. Raising to the $$k$$-th power becomes trivial:
+The sign variable alternates according to
 
 $$
-M^k = P \begin{pmatrix} \lambda_1^k & 0 \\ 0 & \lambda_2^k \end{pmatrix} P^{-1}
+\varepsilon_k=(-1)^{k+1}.
 $$
 
-The key observation is that $$\lambda_2 = 9 - 4\sqrt{5} \approx 0.056$$, so $$\lvert \lambda_2 \rvert < 1$$. As $$k$$ grows, $$\lambda_2^k \to 0$$ exponentially fast, leaving only the $$\lambda_1^k$$ term:
+Since
 
 $$
-\begin{pmatrix} x_k \\ L_k \end{pmatrix} = M^k \mathbf{v}_0 \;\approx\; \lambda_1^k \cdot P \begin{pmatrix} 1 \\ 0 \end{pmatrix} (P^{-1} \mathbf{v}_0)_1
+x_k=5b_k+4\varepsilon_k,
 $$
 
-In other words, both $$x_k$$ and $$L_k$$ grow asymptotically as $$\lambda_1^k$$, and the ratio $$L_{k+1}/L_k \to \lambda_1$$ rapidly. We can identify $$\lambda_1$$ directly with a power of the golden ratio:
+we can solve for the base:
 
 $$
-\phi^6 = \left(\frac{1+\sqrt{5}}{2}\right)^6 = (2 + \sqrt{5})^2 = 9 + 4\sqrt{5} = \lambda_1
+\begin{align}
+b_k
+&=\frac{x_k-4\varepsilon_k}{5} \nonumber\\
+&=\frac{\operatorname{Luc}_{6k+9}+4(-1)^k}{5}.
+\end{align}
 $$
 
-So the ratio $$L_{k+1}/L_k \to \phi^6 \approx 17.944$$, and the convergence is fast: already at the first step, $$L_2/L_1 = 305/17 \approx 17.941$$, which differs from $$\phi^6$$ only in the third decimal place (because $$\lambda_2^1 \approx 0.056$$ is already negligible). The solutions do not merely grow "roughly" by 18 — they grow by the sixth power of the golden ratio, a reflection of the Fibonacci/Lucas structure underlying the problem.
+The height is
+
+$$
+\begin{align}
+h_k
+&=b_k+\varepsilon_k \nonumber\\
+&=\frac{\operatorname{Luc}_{6k+9}-(-1)^k}{5}.
+\end{align}
+$$
+
+Therefore, the complete family of non-degenerate triangles generated by the recurrence has the closed form
+
+$$
+\begin{align}
+\boxed{
+\begin{aligned}
+b_k&=\frac{\operatorname{Luc}_{6k+9}+4(-1)^k}{5},\\[4pt]
+L_k&=\frac{F_{6k+9}}{2},\\[4pt]
+h_k&=\frac{\operatorname{Luc}_{6k+9}-(-1)^k}{5},
+\end{aligned}
+\qquad
+k=0,1,2,\ldots
+}
+\label{eq:triangle-closed-forms}
+\end{align}
+$$
+
+For $k=0$, these formulas give
+
+$$
+(b_0,L_0,h_0)=(16,17,15),
+$$
+
+and for $k=1$ they give
+
+$$
+(b_1,L_1,h_1)=(272,305,273).
+$$
+
+### Why the Growth Factor Is $\phi^6$
+
+The connection to the growth factor follows directly from the Binet identities
+
+$$
+\operatorname{Luc}_n=\phi^n+\psi^n,
+$$
+
+and
+
+$$
+F_n=\frac{\phi^n-\psi^n}{\sqrt5},
+$$
+
+where
+
+$$
+\psi=\frac{1-\sqrt5}{2}.
+$$
+
+Adding $\operatorname{Luc}_n$ and $F_n\sqrt5$ gives
+
+$$
+\begin{align}
+\operatorname{Luc}_n+F_n\sqrt5
+&=
+\left(\phi^n+\psi^n\right)
++
+\left(\phi^n-\psi^n\right) \nonumber\\
+&=
+2\phi^n.
+\label{eq:lucas-fibonacci-binet-combination}
+\end{align}
+$$
+
+For the indices $n=6k+9$, Eq. $\eqref{eq:pell-fibonacci-formulas}$ gives
+
+$$
+\begin{align}
+x_k+L_k\sqrt{20}
+&=
+\operatorname{Luc}_{6k+9}
++
+\frac{F_{6k+9}}{2}\sqrt{20} \nonumber\\
+&=
+\operatorname{Luc}_{6k+9}
++
+F_{6k+9}\sqrt5 \nonumber\\
+&=
+2\phi^{6k+9}.
+\label{eq:pell-solution-binet}
+\end{align}
+$$
+
+Advancing from $k$ to $k+1$ increases the Fibonacci and Lucas index by $6$. Therefore,
+
+$$
+\begin{align}
+\frac{x_{k+1}+L_{k+1}\sqrt{20}}
+{x_k+L_k\sqrt{20}}
+&=
+\frac{2\phi^{6(k+1)+9}}
+{2\phi^{6k+9}} \nonumber\\
+&=
+\phi^6.
+\end{align}
+$$
+
+A direct calculation shows that
+
+$$
+\begin{align}
+\phi^6
+&=
+\left(\frac{1+\sqrt5}{2}\right)^6 \nonumber\\
+&=
+9+4\sqrt5 \nonumber\\
+&=
+9+2\sqrt{20}.
+\label{eq:phi-six-pell-multiplier}
+\end{align}
+$$
+
+This is exactly the Pell multiplier obtained from the fundamental solution $(u,v)=(9,2)$:
+
+$$
+u+v\sqrt{20}
+=
+9+2\sqrt{20}.
+$$
+
+The six-step jump in the Fibonacci and Lucas indices and the Pell recurrence are therefore two descriptions of the same multiplication.
+
+For the leg lengths alone,
+
+$$
+\frac{L_{k+1}}{L_k}
+=
+\frac{F_{6k+15}}{F_{6k+9}}
+\longrightarrow
+\phi^6
+=
+9+4\sqrt5
+\approx17.944.
+$$
+
+For the first two non-degenerate triangles,
+
+$$
+\frac{305}{17}
+\approx17.941,
+$$
+
+which is already very close to the limiting factor. The solutions do not merely grow by “roughly 18”: their exponential growth is governed by the sixth power of the golden ratio.
+
+
 
 ### Summary
 
-What began as a geometric curiosity about isosceles triangles led through Pell equations and continued fractions to a surprising endpoint: the leg lengths of these triangles are Fibonacci numbers (divided by 2) at arithmetic-progression indices, the substitution variables are Lucas numbers at those same indices, and the explosive growth of solutions is governed by $$\phi^6$$. The golden ratio, often encountered in geometry through pentagons and spirals, appears here through a completely different door — the arithmetic of quadratic irrationals.
+What began as a geometric question about integer-sided isosceles triangles led through generalized Pell equations and continued fractions to an unexpected connection with Fibonacci and Lucas numbers. The leg lengths are given by
+
+$$
+L_k=\frac{F_{6k+9}}{2},
+$$
+
+while the corresponding Pell variables are
+
+$$
+x_k=\operatorname{Luc}_{6k+9}.
+$$
+
+The indices therefore advance as $9,15,21,\ldots$, increasing by six with each new triangle. This also explains the rapid growth of the solutions: their asymptotic growth factor is
+
+$$
+\phi^6=9+4\sqrt5,
+$$
+
+which is exactly the multiplier arising from the fundamental Pell solution. The golden ratio thus enters the problem not through a familiar geometric construction, but through the arithmetic of quadratic irrationalities.
+
+
+
+
+## Appendix A: Continued Fractions and Pell's Equation
+
+This appendix collects the general facts about continued fractions that underlie the method used above. They are useful for implementing a general Pell solver, but they are not required to follow the triangle construction itself.
+
+### Computing Convergents Efficiently
+
+Suppose
+
+$$
+\alpha=[a_0;\,a_1,a_2,\ldots].
+$$
+
+Its convergents are written as
+
+$$
+\frac{p_k}{q_k}
+=
+[a_0;\,a_1,\ldots,a_k].
+$$
+
+Instead of evaluating each nested fraction from scratch, the numerators and denominators can be generated recursively:
+
+$$
+\begin{align}
+p_k &= a_kp_{k-1}+p_{k-2},\\
+q_k &= a_kq_{k-1}+q_{k-2},
+\end{align}
+$$
+
+with initial values
+
+$$
+p_{-2}=0,\qquad p_{-1}=1,
+$$
+
+and
+
+$$
+q_{-2}=1,\qquad q_{-1}=0.
+$$
+
+For example, the coefficients of $\sqrt{20}$ begin as
+
+$$
+4,2,8,2,8,\ldots
+$$
+
+and produce
+
+| $k$ | $a_k$ | $p_k$ | $q_k$ | $\frac{p_k}{q_k}$ |
+|:---:|:---:|---:|---:|:---:|
+| $0$ | $4$ | $4$ | $1$ | $\frac41$ |
+| $1$ | $2$ | $9$ | $2$ | $\frac92$ |
+| $2$ | $8$ | $76$ | $17$ | $\frac{76}{17}$ |
+| $3$ | $2$ | $161$ | $36$ | $\frac{161}{36}$ |
+
+### Locating the Fundamental Pell Solution
+
+Let $D$ be a positive non-square integer and write
+
+$$
+\sqrt{D}
+=
+[a_0;\,\overline{a_1,\ldots,a_s}],
+$$
+
+where $s$ is the period length.
+
+A standard result from continued-fraction theory states that the fundamental solution of
+
+$$
+u^2-Dv^2=1
+$$
+
+is obtained from a convergent of $\sqrt{D}$:
+
+- If $s$ is even, the fundamental solution is given by
+
+  $$
+  \frac{u}{v}
+  =
+  [a_0;\,a_1,\ldots,a_{s-1}].
+  $$
+
+- If $s$ is odd, the period must be used twice:
+
+  $$
+  \frac{u}{v}
+  =
+  [a_0;\,a_1,\ldots,a_s,a_1,\ldots,a_{s-1}].
+  $$
+
+For $\sqrt{20}$, the periodic part is
+
+$$
+\overline{2,8},
+$$
+
+so the period length is $s=2$, which is even. Therefore,
+
+$$
+\frac{u}{v}
+=
+[4;\,2]
+=
+\frac92,
+$$
+
+giving
+
+$$
+(u,v)=(9,2).
+$$
+
+This parity rule guarantees that the continued-fraction algorithm terminates after at most two periods when solving the classical Pell equation.
+
+### What the Main Article Uses
+
+The triangle construction relies only on the following facts:
+
+1. The continued fraction of $\sqrt{20}$ is
+
+   $$
+   [4;\,\overline{2,8}].
+   $$
+
+2. Its convergent
+
+   $$
+   [4;\,2]=\frac92
+   $$
+
+   satisfies
+
+   $$
+   9^2-20\cdot2^2=1.
+   $$
+
+3. Therefore, $(u,v)=(9,2)$ can be used as the norm-$1$ multiplier in the recurrence.
+
+The more general theory explains why this procedure works for every classical Pell equation, while the main text only needs its concrete application to $D=20$.
+
+
+
+## Appendix B: Matrix Diagonalization and the Growth Factor
+
+The Fibonacci and Lucas identities give the most direct explanation of the closed forms and the factor $\phi^6$. The same growth can also be understood from the linear-algebraic structure of the Pell recurrence.
+
+The recurrence for $(x_k,L_k)$ is
+
+$$
+\begin{pmatrix}
+x_{k+1}\\
+L_{k+1}
+\end{pmatrix}
+=
+M
+\begin{pmatrix}
+x_k\\
+L_k
+\end{pmatrix},
+$$
+
+where
+
+$$
+\begin{align}
+M=
+\begin{pmatrix}
+9&40\\
+2&9
+\end{pmatrix}.
+\label{eq:pell-recurrence-matrix}
+\end{align}
+$$
+
+Starting from
+
+$$
+\mathbf v_0=
+\begin{pmatrix}
+76\\
+17
+\end{pmatrix},
+$$
+
+the $k$-th solution is
+
+$$
+\mathbf v_k
+=
+\begin{pmatrix}
+x_k\\
+L_k
+\end{pmatrix}
+=
+M^k\mathbf v_0.
+$$
+
+### Eigenvalues
+
+The eigenvalues of $M$ satisfy
+
+$$
+\det(M-\lambda I)=0.
+$$
+
+Using Eq. $\eqref{eq:pell-recurrence-matrix}$,
+
+$$
+\begin{align}
+\det
+\begin{pmatrix}
+9-\lambda&40\\
+2&9-\lambda
+\end{pmatrix}
+&=
+(9-\lambda)^2-80 \nonumber\\
+&=
+0.
+\end{align}
+$$
+
+Therefore,
+
+$$
+(9-\lambda)^2=80,
+$$
+
+and the two eigenvalues are
+
+$$
+\begin{align}
+\lambda_1=9+4\sqrt5,
+\qquad
+\lambda_2=9-4\sqrt5.
+\label{eq:pell-matrix-eigenvalues}
+\end{align}
+$$
+
+They satisfy
+
+$$
+\lambda_1\lambda_2=1,
+$$
+
+which reflects the determinant
+
+$$
+\det M=81-80=1.
+$$
+
+Moreover,
+
+$$
+\lambda_1=\phi^6
+$$
+
+and
+
+$$
+\lambda_2=\phi^{-6}.
+$$
+
+### Eigenvectors and Diagonalization
+
+For $\lambda_1=9+4\sqrt5$, an eigenvector is
+
+$$
+\mathbf w_1=
+\begin{pmatrix}
+2\sqrt5\\
+1
+\end{pmatrix},
+$$
+
+because
+
+$$
+M\mathbf w_1
+=
+(9+4\sqrt5)\mathbf w_1.
+$$
+
+Similarly, for $\lambda_2=9-4\sqrt5$, an eigenvector is
+
+$$
+\mathbf w_2=
+\begin{pmatrix}
+-2\sqrt5\\
+1
+\end{pmatrix}.
+$$
+
+Thus, we may define
+
+$$
+P=
+\begin{pmatrix}
+2\sqrt5&-2\sqrt5\\
+1&1
+\end{pmatrix}
+$$
+
+and
+
+$$
+\Lambda=
+\begin{pmatrix}
+\lambda_1&0\\
+0&\lambda_2
+\end{pmatrix}.
+$$
+
+Since the two eigenvalues are distinct, $P$ is invertible and
+
+$$
+M=P\Lambda P^{-1}.
+$$
+
+Consequently,
+
+$$
+\begin{align}
+M^k
+=
+P
+\begin{pmatrix}
+\lambda_1^k&0\\
+0&\lambda_2^k
+\end{pmatrix}
+P^{-1}.
+\label{eq:matrix-power-diagonalization}
+\end{align}
+$$
+
+### Asymptotic Growth
+
+Decompose the initial vector into the two eigendirections:
+
+$$
+\mathbf v_0
+=
+c_1\mathbf w_1+c_2\mathbf w_2.
+$$
+
+Applying $M^k$ gives
+
+$$
+\begin{align}
+\mathbf v_k
+=
+c_1\lambda_1^k\mathbf w_1
++
+c_2\lambda_2^k\mathbf w_2.
+\label{eq:eigenvector-solution}
+\end{align}
+$$
+
+Because
+
+$$
+\lambda_2
+=
+9-4\sqrt5
+\approx0.0557,
+$$
+
+we have
+
+$$
+\lambda_2^k\longrightarrow0.
+$$
+
+The second term in Eq. $\eqref{eq:eigenvector-solution}$ therefore becomes exponentially small, while the first term grows like
+
+$$
+\lambda_1^k
+=
+\phi^{6k}.
+$$
+
+Hence,
+
+$$
+x_k\sim C_x\phi^{6k},
+\qquad
+L_k\sim C_L\phi^{6k}
+$$
+
+for positive constants $C_x$ and $C_L$. In particular,
+
+$$
+\frac{L_{k+1}}{L_k}
+\longrightarrow
+\lambda_1
+=
+\phi^6.
+$$
+
+The matrix analysis therefore reaches the same conclusion as the Binet identities: the dominant eigenvalue of the Pell recurrence is precisely the sixth power of the golden ratio.
+
 
 **Related posts:** For a closed-form derivation of the Fibonacci sequence via the Z-transform, see [Deriving a Closed-Form Solution of the Fibonacci Sequence](/blog/2024/fibonacci-closed/). The matrix exponentiation technique used to compute Fibonacci numbers at arbitrary indices is explored in [Efficient Computation of Sparse Fibonacci Subsequences](/blog/2024/fibo-subsequences/). The [eigendecomposition](/blog/2024/eigendecomposition/) underlying the growth-factor analysis is derived there in detail. Another Diophantine problem — the Monkey and Coconut Problem — is solved in [The Monkey and Coconut Problem](/blog/2024/the-sailors-problem/).
