@@ -58,9 +58,9 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-draft-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
+            },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
         
-          title: "[Draft] Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
+          title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
         
         description: "An exploration of a curious class of integer-sided isosceles triangles whose height differs from the base by exactly one. What begins as a simple geometric question quickly leads to Pell equations and elegant recurrences.",
         section: "Posts",
