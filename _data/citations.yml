@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2026-07-27'
+  last_updated: '2026-08-07'
 papers:
   Bu5eFxQAAAAJ:2osOgNQ5qMEC:
     citations: 59
@@ -9,6 +9,10 @@ papers:
     citations: 0
     title: Analysis of structural bias in differential evolution configurations
     year: Unknown Year
+  Bu5eFxQAAAAJ:8k81kl-MbHgC:
+    citations: 6
+    title: MarkusThill
+    year: '2020'
   Bu5eFxQAAAAJ:9yKSN-GCB0IC:
     citations: 12
     title: 'Temporal difference learning methods with automatic step-size adaption for strategic board games: Connect-4 and Dots-and-Boxes'
@@ -18,7 +22,7 @@ papers:
     title: Time Series Anomaly Detection with Discrete Wavelet Transforms and Maximum Likelihood Estimation
     year: '2017'
   Bu5eFxQAAAAJ:LkGwnXOMwfcC:
-    citations: 28
+    citations: 30
     title: 'Markusthill/mgab: the mackey-glass anomaly benchmark'
     year: '2020'
   Bu5eFxQAAAAJ:Se3iqnhoufwC:
@@ -38,7 +42,7 @@ papers:
     title: 'Markusthill/mgab: The mackey-glass anomaly benchmark, apr 2020'
     year: Unknown Year
   Bu5eFxQAAAAJ:W7OEmFMy1HYC:
-    citations: 38
+    citations: 37
     title: Anomaly Detection in Electrocardiogram Readings with Stacked LSTM Networks.
     year: '2019'
   Bu5eFxQAAAAJ:WF5omc3nYNoC:
@@ -50,7 +54,7 @@ papers:
     title: Online adaptable time series anomaly detection with discrete wavelet transforms and multivariate gaussian distributions
     year: '2018'
   Bu5eFxQAAAAJ:YsMSGLbcyi4C:
-    citations: 73
+    citations: 71
     title: Time series encodings with temporal convolutional networks
     year: '2020'
   Bu5eFxQAAAAJ:_FxGoFyzp5QC:
@@ -62,7 +66,7 @@ papers:
     title: Temporal difference learning with eligibility traces for the game connect four
     year: '2014'
   Bu5eFxQAAAAJ:eQOLeE2rZwMC:
-    citations: 290
+    citations: 288
     title: Temporal convolutional autoencoder for unsupervised anomaly detection in time series
     year: '2021'
   Bu5eFxQAAAAJ:hqOjcs7Dif8C:
