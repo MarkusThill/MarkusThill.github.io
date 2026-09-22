@@ -110,7 +110,7 @@ Alpha-beta is not quite the end of the story, though. The recursive function abo
 somebody to decide *which window* to call it with at the root, and in the paired measurements
 of part 8 this engine's repeated null-window searches were faster on average than one search
 with a wide window. That driver, and the scoring convention that makes it work, are the subject
-of [part 7]({% post_url 2026-03-26-connect-4-mtdf-and-null-window-search %}).
+of {% include series_link.liquid part=7 text="part 7" %}.
 
 
 <br>

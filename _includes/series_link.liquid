@@ -1,0 +1,27 @@
+{%- comment -%}
+  Link to another instalment of a series, tolerating parts that are not
+  published yet.
+
+  Usage from a post body:
+      include series_link.liquid part=4 text="part 4"
+
+  The instalment is looked up by its `series_part` front matter instead of by
+  file name. Jekyll's post_url tag aborts the whole build when the target file
+  is missing, which makes it unusable while the later parts of a series are
+  still unpublished drafts. This include falls back to plain text in that case,
+  and the link appears by itself as soon as the part is committed.
+
+  Note: Liquid parses tags even inside a comment block, so neither the usage
+  example above nor the mention of post_url may be written with braces here --
+  a post_url tag without a valid argument aborts the build at parse time.
+
+  The series defaults to the Connect-4 search series and can be overridden with
+  `series="..."`.
+{%- endcomment -%}
+{%- assign series_name = include.series | default: 'connect4-search' -%}
+{%- assign target = site.posts | where: 'series', series_name | where: 'series_part', include.part | first -%}
+{%- if target -%}
+  <a href="{{ target.url | relative_url }}">{{ include.text }}</a>
+{%- else -%}
+  {{- include.text -}}
+{%- endif -%}

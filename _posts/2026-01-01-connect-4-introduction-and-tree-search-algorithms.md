@@ -68,7 +68,7 @@ learning agent estimates values from experience and may share what it has learne
 positions through its function approximator. The latter can reduce the need for
 position-specific search, but it does not remove the choices involved in representing the
 state or constructing the learner. This series takes the first route and pushes classical tree
-search until the game is solved perfectly; the [final part]({% post_url 2026-04-23-connect-4-final-considerations %})
+search until the game is solved perfectly; the {% include series_link.liquid part=9 text="final part" %}
 then explains how the resulting solver can serve as a reference for the learning agents.
 
 
@@ -181,13 +181,13 @@ perfect play).
 The core **Minimax search** is enhanced with several techniques, each of which gets its own
 instalment later in the series:
 
-- **Alpha-Beta Pruning**: [part 2]({% post_url 2026-01-15-connect-4-tree-search-algorithms %})
-- **Move Ordering**, **threat detection** and **symmetry exploitation**: [part 4]({% post_url 2026-02-12-connect-4-move-ordering %})
-- **Zobrist Hashing**, **two-stage transposition tables** and **enhanced transposition cutoffs (ETC)**: [part 5]({% post_url 2026-02-26-connect-4-transposition-tables %})
-- **Opening databases** and their Huffman encoding: [part 6]({% post_url 2026-03-12-connect-4-opening-databases %})
-- **MTD(f)** and **null-window search**, the drivers that sit on top of alpha-beta: [part 7]({% post_url 2026-03-26-connect-4-mtdf-and-null-window-search %})
+- **Alpha-Beta Pruning**: {% include series_link.liquid part=2 text="part 2" %}
+- **Move Ordering**, **threat detection** and **symmetry exploitation**: {% include series_link.liquid part=4 text="part 4" %}
+- **Zobrist Hashing**, **two-stage transposition tables** and **enhanced transposition cutoffs (ETC)**: {% include series_link.liquid part=5 text="part 5" %}
+- **Opening databases** and their Huffman encoding: {% include series_link.liquid part=6 text="part 6" %}
+- **MTD(f)** and **null-window search**, the drivers that sit on top of alpha-beta: {% include series_link.liquid part=7 text="part 7" %}
 - **Verification and benchmarking**, including independent checks and paired measurements:
-  [part 8]({% post_url 2026-04-09-connect-4-verification-and-benchmarking %})
+  {% include series_link.liquid part=8 text="part 8" %}
 
 ### Bit-board Representation
 
@@ -195,7 +195,7 @@ Both agents use **bitboards** as their main board representation. Conceptually, 
 bits identify the cells occupied by the two players, although the C++ implementation stores
 the occupied cells and the active player's cells instead of one board per colour. The
 advantage is not that every operation automatically becomes faster, but that the important
-ones can be expressed through a small number of whole-word shifts and masks. [Part 3]({% post_url 2026-01-29-connect-4-board-representations %})
+ones can be expressed through a small number of whole-word shifts and masks. {% include series_link.liquid part=3 text="Part 3" %}
 works through both layouts, including the guard bits deliberately left unused by the modern
 C++ engine.
 
@@ -208,7 +208,7 @@ LIFEBOOK N532 from 2012, again without an opening book, while the reference solv
 386.3 seconds under the same test setup. These figures come from different programs and
 machines, so they are context rather than a direct generational comparison; the full
 methodology and the less favourable benchmark rows are given in
-[part 8]({% post_url 2026-04-09-connect-4-verification-and-benchmarking %}).
+{% include series_link.liquid part=8 text="part 8" %}.
 
 <br>
 
