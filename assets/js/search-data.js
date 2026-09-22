@@ -58,7 +58,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
+            },{id: "post-binary-circles-hamiltonian-cycles-and-de-bruijn-sequences",
+        
+          title: "Binary Circles, Hamiltonian Cycles and de Bruijn Sequences",
+        
+        description: "A small combinatorial puzzle about circular binary words whose windows are all distinct turns out to be a question about Hamiltonian cycles in de Bruijn graphs. I count the arrangements, sum their numeric encodings up to a word length of 64 bits, and end with the multiplication trick that uses such a word to locate a set bit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/";
+          
+        },
+      },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
         
           title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
         
@@ -102,6 +113,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon/";
           
         },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
+        
+        description: "How alpha-beta search turns the Minimax recurrence into a practical Connect-4 solver, what its bounds mean, and how the real BitBully loop implements the cutoff.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-tree-search-algorithms/";
+          
+        },
       },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
         
           title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
@@ -133,6 +155,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/pe-844p100-divisors-sets/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
+        
+        description: "How a Java Connect-4 agent from 2012 led to the C++/Python solver BitBully, why the game is small enough to solve but large enough to make search engineering matter, and what this series will cover.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-introduction-and-tree-search-algorithms/";
           
         },
       },{id: "post-backpropagation-from-scratch-feed-forward-neural-networks-in-matrix-notation",
@@ -188,17 +221,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2025/mahalanobis-distance-implementations/";
-          
-        },
-      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
-        
-          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
-        
-        description: "Learn how the Alpha-Beta search algorithm optimizes Minimax for Connect-4 by pruning unnecessary branches, improving efficiency, and enabling stronger gameplay strategies.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/connect-4-tree-search-algorithms/";
           
         },
       },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
@@ -265,17 +287,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/";
-          
-        },
-      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
-        
-          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
-        
-        description: "A deep dive into the construction of intelligent agents for Connect-4. This introductory post covers the historical context, motivation, complexity of the game, and foundational concepts behind AI-based approaches—particularly tree search and reinforcement learning methods. Includes a preview of the full 7-part series and links to an open-source Python3/C++ framework.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/connect-4-introduction-and-tree-search-algorithms/";
           
         },
       },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
