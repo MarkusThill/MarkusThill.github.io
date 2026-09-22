@@ -80,6 +80,28 @@ ninja.data = [{
             window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
           
         },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
+        
+        description: "The remaining techniques, an honest accounting of what each optimization was actually worth, the ideas which did not work, and why a perfect-playing Connect-4 agent has learned nothing at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-final-considerations/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
+        
+        description: "How independent opening-book answers, mirror invariants and driver agreement provide evidence of correctness, followed by a paired timing comparison with stated statistical assumptions.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
       },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
         
           title: "The Hexadecimal Digit Canon Challenge: Solution",
@@ -89,6 +111,61 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-mtd-f-and-null-window-search",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; MTD(f) and Null-Window Search",
+        
+        description: "How a distance-aware score supplies game-derived bounds, and how MTD(f) and a binary null-window driver reconstruct exact values from narrow alpha-beta probes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
+        
+        description: "How the 8- and 12-ply opening books encode millions of solved positions in compact fixed-width records, and how the original database pipeline is used by BitBully today.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Transposition Tables",
+        
+        description: "Why the same Connect-4 position keeps reappearing in the search tree, how Zobrist hashing exploits three properties of the exclusive OR, and why the more recent solver manages without it entirely.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-transposition-tables/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
+        
+        description: "How the two solvers combine centre-first priorities, threat counts and parity heuristics, and how non-losing move generation removes branches before they reach alpha-beta.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Board Representations",
+        
+        description: "How CFour and BitBully encode a Connect-4 position in 64-bit words, and how guard bits, shifts, exact position codes, and generated masks change the operations used by the search.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-board-representations/";
           
         },
       },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
