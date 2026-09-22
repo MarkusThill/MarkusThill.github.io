@@ -1,0 +1,40 @@
+{%- comment -%}
+  Series header for the "Building Intelligent Agents for Connect-4" series.
+
+  Usage (from a post body):
+      {% include series_connect4.liquid %}
+
+  The post declares its own position in the series via front matter:
+      series: connect4-search
+      series_part: 3
+
+  Every post carrying `series: connect4-search` is picked up automatically and
+  ordered by `series_part`, so adding an instalment means adding one post --
+  not editing a hard-coded list in nine places.
+
+  The list is emitted as literal HTML rather than as a Markdown ordered list:
+  Markdown lists are whitespace-sensitive, and `prettier` reindents Liquid tag
+  bodies, which silently turns the list into a paragraph. HTML does not care.
+{%- endcomment -%}
+
+{%- assign series_posts = site.posts | where: 'series', 'connect4-search' | sort: 'series_part' -%}
+{%- assign n_parts = series_posts | size -%}
+{%- assign ordinals = '1st,2nd,3rd,4th,5th,6th,7th,8th,9th,10th' | split: ',' -%}
+{%- assign this_index = page.series_part | minus: 1 -%}
+{%- assign this_ordinal = ordinals[this_index] -%}
+
+<p>This post is the {{ this_ordinal }} part of a series of {{ n_parts }} articles:</p>
+
+<ol>
+  {%- for post in series_posts %}
+    <li>
+      {%- if post.url == page.url -%}
+        <strong
+          ><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong
+        >
+      {%- else -%}
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      {%- endif -%}
+    </li>
+  {%- endfor %}
+</ol>

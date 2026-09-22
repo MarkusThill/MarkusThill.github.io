@@ -1,0 +1,98 @@
+[
+  {
+    "n_ply": 12,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 640894.8333333334,
+      "ms_per_position": 66.43898656669384
+    },
+    "negamax": {
+      "nodes_per_position": 813711.9,
+      "ms_per_position": 88.07176306872861
+    },
+    "null_window": {
+      "nodes_per_position": 699985.9666666667,
+      "ms_per_position": 80.41402993209583
+    }
+  },
+  {
+    "n_ply": 14,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 119037.43333333333,
+      "ms_per_position": 16.214296667991828
+    },
+    "negamax": {
+      "nodes_per_position": 149675.3,
+      "ms_per_position": 20.80443996868174
+    },
+    "null_window": {
+      "nodes_per_position": 124740.43333333333,
+      "ms_per_position": 19.667753299775843
+    }
+  },
+  {
+    "n_ply": 16,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 69480.43333333333,
+      "ms_per_position": 9.424760001032459
+    },
+    "negamax": {
+      "nodes_per_position": 91583.16666666667,
+      "ms_per_position": 12.56524336640723
+    },
+    "null_window": {
+      "nodes_per_position": 70279.63333333333,
+      "ms_per_position": 11.179633333328335
+    }
+  },
+  {
+    "n_ply": 18,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 31786.766666666666,
+      "ms_per_position": 4.556179998326115
+    },
+    "negamax": {
+      "nodes_per_position": 37026.0,
+      "ms_per_position": 5.2950033350498416
+    },
+    "null_window": {
+      "nodes_per_position": 36540.96666666667,
+      "ms_per_position": 5.281463299373475
+    }
+  },
+  {
+    "n_ply": 20,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 9169.033333333333,
+      "ms_per_position": 1.5370499992665525
+    },
+    "negamax": {
+      "nodes_per_position": 11185.566666666668,
+      "ms_per_position": 1.7987033332853266
+    },
+    "null_window": {
+      "nodes_per_position": 11067.833333333334,
+      "ms_per_position": 1.782873334013857
+    }
+  },
+  {
+    "n_ply": 22,
+    "n_positions": 30,
+    "mtdf": {
+      "nodes_per_position": 1505.1333333333334,
+      "ms_per_position": 0.3405366660444997
+    },
+    "negamax": {
+      "nodes_per_position": 1634.5333333333333,
+      "ms_per_position": 0.37358000020806986
+    },
+    "null_window": {
+      "nodes_per_position": 1727.2333333333333,
+      "ms_per_position": 0.3774233341876728
+    }
+  }
+]

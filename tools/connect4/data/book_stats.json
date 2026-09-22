@@ -1,0 +1,85 @@
+{
+  "books": [
+    {
+      "book": "8-ply",
+      "file": "book_8ply.dat",
+      "entries": 34515,
+      "stones": 8,
+      "file_bytes": 103545,
+      "bytes_per_entry": 3.0,
+      "naive_bytes": 379665,
+      "compression": 3.6666666666666665,
+      "with_distances": false
+    },
+    {
+      "book": "12-ply",
+      "file": "book_12ply.dat",
+      "entries": 1735945,
+      "stones": 12,
+      "file_bytes": 6943780,
+      "bytes_per_entry": 4.0,
+      "naive_bytes": 19095395,
+      "compression": 2.75,
+      "with_distances": false
+    },
+    {
+      "book": "12-ply-dist",
+      "file": "book_12ply_distances.dat",
+      "entries": 4200899,
+      "stones": 12,
+      "file_bytes": 21004495,
+      "bytes_per_entry": 5.0,
+      "naive_bytes": 50410788,
+      "compression": 2.4,
+      "with_distances": true
+    }
+  ],
+  "distributions": [
+    {
+      "book": "8-ply",
+      "sampled": 3000,
+      "counts": {
+        "loss": 896,
+        "draw": 319,
+        "win": 1785
+      },
+      "moves_to_end_min": null,
+      "moves_to_end_max": null
+    },
+    {
+      "book": "12-ply",
+      "sampled": 3000,
+      "counts": {
+        "loss": 1160,
+        "win": 1590,
+        "draw": 250
+      },
+      "moves_to_end_min": null,
+      "moves_to_end_max": null
+    },
+    {
+      "book": "12-ply-dist",
+      "sampled": 3000,
+      "counts": {
+        "win": 1669,
+        "loss": 1115,
+        "draw": 216
+      },
+      "moves_to_end_min": 2,
+      "moves_to_end_max": 30
+    }
+  ],
+  "timing": {
+    "with book": {
+      "seconds_per_position": 6.826249955338426e-5,
+      "nodes_per_position": 20.825
+    },
+    "without book": {
+      "seconds_per_position": 0.2046272690011392,
+      "nodes_per_position": 1829632.625
+    },
+    "speedup": 2997.652742573713,
+    "n_ply": 10,
+    "n_positions": 40
+  }
+}

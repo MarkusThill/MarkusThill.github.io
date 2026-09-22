@@ -1,0 +1,20 @@
+{
+  "summary": {
+    "n_positions": 300,
+    "n_book_positions": 400,
+    "failures": {
+      "drivers": 0,
+      "mirror": 0,
+      "moves_left": 0,
+      "book": 0
+    },
+    "total_failures": 0
+  },
+  "detail": {
+    "drivers": [],
+    "mirror": [],
+    "moves_left": [],
+    "book": [],
+    "book_compared": 400
+  }
+}

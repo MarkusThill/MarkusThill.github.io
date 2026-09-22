@@ -165,6 +165,31 @@ int bitPos(uint64_t x) {
 {% endhighlight %}
 
 
+There is also a way to avoid the loop entirely. It uses a so-called de Bruijn sequence of order 6, a 64-bit constant with the property that shifting it to the left by $$k$$ positions leaves a different 6-bit pattern in its topmost bits for every one of the 64 possible values of $$k$$. Since multiplying by a power of two is nothing but a left shift, multiplying this constant by a variable with a single set bit at position $$k$$ and then keeping the upper six bits yields a fingerprint of $$k$$, and a table with 64 entries translates the fingerprint back into the position. The table is filled once by carrying out the same shifts explicitly:
+
+{% highlight C %}
+/*
+ * Position of a single set bit in a 64bit variable, with one multiplication,
+ * one shift and one table lookup. The constant is a de Bruijn sequence of
+ * order 6: shifted by k, its topmost 6 bits differ for every k.
+ ****/
+const uint64_t DEBRUIJN64 = 0x0218a392cd3d5dbfULL;
+int deBruijnIdx[64];
+
+void initBitPosTable() {
+    for (int k = 0; k < 64; k++) {
+        deBruijnIdx[(DEBRUIJN64 << k) >> 58] = k;
+    }
+}
+
+int bitPosDeBruijn(uint64_t x) {  // x must have exactly one bit set
+    return deBruijnIdx[(x * DEBRUIJN64) >> 58];
+}
+{% endhighlight %}
+
+The lookup consists of one multiplication, one shift and one access to a small table, and it contains no branches at all. The multiplication overflows for most inputs, which is intended rather than a defect: the wraparound modulo $$2^{64}$$ discards exactly those bits that a shift would have pushed out of the register, and for unsigned types C defines this behaviour. If the input may have more than one bit set, the common way to use the function is `bitPosDeBruijn(x & -x)`, since `x & -x` isolates the lowest set bit, so that the two together count the trailing zeros of `x`. On recent hardware, an intrinsic such as `__builtin_ctzll` compiles to a single instruction and is the better choice, but the trick remains useful where no such instruction is available. Where the magic constant comes from, and why every de Bruijn sequence yields one, is the topic of [Binary Circles, Hamiltonian Cycles and de Bruijn Sequences](/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/).
+
+
 
 ## Modulo Operations for Divisors of Powers of Two
 Similar to the decimal system, where a modulo operation with a divisor of 10 returns the last digit (assuming the dividend is positive), and a modulo operation with 100 returns the last two digits (and so on), a modulo operation with a binary $$(10)_2$$ (which is 2 in the decimal system) and $$(100)_2$$ (which is 4 in the decimal system) would return the last binary digit and the last two binary digits, respectively. 
@@ -180,4 +205,4 @@ uint64_t modPow2(uint64_t x, uint64_t n) {
 }
 {% endhighlight %}
 
-**Related posts:** For a deeper dive into the XOR operation and its algebraic properties, see [Some Interesting Properties of the Exclusive Or](/blog/2024/a-few-properties-of-the-exclusive-or/). Bit-fields are also central to the board representation in [Solving Peg Solitaire with Efficient Bit-Board Representations](/blog/2024/solving-peg-solitaire/).
+**Related posts:** For a deeper dive into the XOR operation and its algebraic properties, see [Some Interesting Properties of the Exclusive Or](/blog/2024/a-few-properties-of-the-exclusive-or/). Bit-fields are also central to the board representation in [Solving Peg Solitaire with Efficient Bit-Board Representations](/blog/2024/solving-peg-solitaire/). The de Bruijn constant used above is enumerated from scratch in [Binary Circles, Hamiltonian Cycles and de Bruijn Sequences](/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/).
