@@ -52,7 +52,7 @@ uncertain physical environment.
 
 A historical curiosity is the so-called *Mechanical Turk*, built in 1769 by the Hungarian
 inventor Wolfgang von Kempelen in the Habsburg Monarchy. Claimed to be an automated
-chess-playing machine, it captivated audiences across Europe, until it was later revealed that a
+chess-playing machine, it captivated audiences across Europe until it was revealed that a
 human operator was hidden inside. Much later, during World War II, Konrad Zuse described a
 [chess program in his own programming language *Plankalkül*](https://zuse-z1.zib.de/simulations/plankalkuel/chess/applet/applet.html);
 the original version checked the legality of moves rather than evaluating them.

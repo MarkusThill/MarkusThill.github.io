@@ -289,8 +289,8 @@
   outline-offset: 1px;
 }
 .c4bb-current {
-  outline: 3px solid var(--global-theme-color);
-  outline-offset: -3px;
+  outline: 5px solid #000;
+  outline-offset: -5px;
 }
 
 /* ---- transposition / hashing explorer (part 5) ------------------------ */
