@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Board Representations"
 modified: 2026-06-16T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How CFour and BitBully encode a Connect-4 position in 64-bit words, and how guard bits, shifts, exact position codes, and generated masks change the operations used by the search."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/2026-01-29-connect-4-board-representations/thumbnail.png

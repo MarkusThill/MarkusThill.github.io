@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Tree Search Algorithms"
 modified: 2025-09-24T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How alpha-beta search turns the Minimax recurrence into a practical Connect-4 solver, what its bounds mean, and how the real BitBully loop implements the cutoff."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/project_bitbully/c4-3.png

@@ -2,7 +2,7 @@
 layout: post
 title: "Conway's Game of Life"
 modified: 2025-08-01T23:50:48+02:00
-categories: [Programming]
+categories: [programming]
 description: "An introduction to Conway’s Game of Life with an implementation in R. We explore the simple rules behind this zero-player cellular automaton, simulate its evolution on a 100×100 grid, and visualize emerging patterns and population dynamics over time."
 tags: [Conway's Game of Life, cellular automata, R programming, simulation, computer science, mathematical modeling, zero-player games, game theory, dynamic systems, grid-based models]
 thumbnail: "https://github.com/MarkusThill/Game-Of-Life/blob/master/img/animation4.gif?raw=true"

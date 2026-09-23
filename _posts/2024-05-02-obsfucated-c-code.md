@@ -2,7 +2,7 @@
 layout: post
 title: Obfuscating a Function &#8211; How not to write Code
 modified:
-categories: [Programming]
+categories: [programming]
 description: "A while back, I created a straightforward function to convert an integer into a new format, resulting in clear code. However, I inexplicably chose to obscure its purpose, leading to the following outcome: Read more in this post..."
 tags: [c-language, obfuscation, clean-code, refactoring, roman-numerals]
 thumbnail: assets/img/computer-program-code_1385-530.jpg

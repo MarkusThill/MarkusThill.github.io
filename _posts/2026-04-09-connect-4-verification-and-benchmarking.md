@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Verification and Benchmarking"
 modified: 2026-07-21T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How independent opening-book answers, mirror invariants and driver agreement provide evidence of correctness, followed by a paired timing comparison with stated statistical assumptions."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, benchmarking, wilcoxon, testing, transposition tables, opening databases, bitboards]
 thumbnail: assets/img/project_bitbully/c4-1.png

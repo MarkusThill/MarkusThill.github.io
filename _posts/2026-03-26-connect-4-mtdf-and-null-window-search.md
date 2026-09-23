@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; MTD(f) and Null-Window Search"
 modified: 2026-07-14T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How a distance-aware score supplies game-derived bounds, and how MTD(f) and a binary null-window driver reconstruct exact values from narrow alpha-beta probes."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, mtdf, null-window, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/project_bitbully/c4-2.png

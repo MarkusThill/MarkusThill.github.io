@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Final Considerations"
 modified: 2026-07-28T06:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "The remaining techniques, an honest accounting of what each optimization was actually worth, the ideas which did not work, and why a perfect-playing Connect-4 agent has learned nothing at all."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, reinforcement learning, temporal difference learning, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/2026-01-01-connect-4-introduction-and-tree-search-algorithms/C4-example-position.png

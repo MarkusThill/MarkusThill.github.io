@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Transposition Tables"
 modified: 2026-06-30T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "Why the same Connect-4 position keeps reappearing in the search tree, how Zobrist hashing exploits three properties of the exclusive OR, and why the more recent solver manages without it entirely."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards, zobrist hashing]
 thumbnail: assets/img/project_bitbully/c4-3.png

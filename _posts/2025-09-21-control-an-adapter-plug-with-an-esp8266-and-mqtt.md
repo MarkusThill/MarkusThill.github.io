@@ -2,10 +2,10 @@
 layout: post
 title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT"
 modified:
-categories: [Programming, Electronics]
+categories: [programming, electronics]
 description: "A DIY IoT project using the ESP8266-01 module to build a network-controlled adapter plug from scratch. This project demonstrates how to create connected devices with minimal hardware and effort using Wi-Fi and MQTT."
 
-tags: [IoT, Electronics, ESP8266]
+tags: [IoT, electronics, ESP8266]
 
 thumbnail: assets/img/2025-09-21-control-an-adapter-plug-with-an-esp8266-and-mqtt/electronics06.jpg
 giscus_comments: true

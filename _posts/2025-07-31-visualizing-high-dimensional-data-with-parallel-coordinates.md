@@ -2,7 +2,7 @@
 layout: post
 title: "Visualizing High-Dimensional Data Using Parallel Coordinates"
 modified: 2025-07-31T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "A deep dive into the visualization technique of Parallel Coordinates (||-Coordinates), exploring its strengths, challenges, and practical applications in data mining. Through detailed case studies—including wine quality analysis and the MiniBooNe particle dataset—we demonstrate how this powerful tool can reveal hidden structures, correlations, and clusters in high-dimensional data. With insights into alpha blending, axis reordering, outlier handling, and visual classification, this post offers both theoretical background and hands-on use cases for using Parallel Coordinates effectively."
 tags: [parallel coordinates, data visualization, high-dimensional data, alpha blending, axis reordering, outlier detection, clustering]
 thumbnail: assets/img/2025-07-31-visualizing-high-dimensional-data-with-parallel-coordinates/parallelcoor.jpg

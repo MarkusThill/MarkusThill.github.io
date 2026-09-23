@@ -3,7 +3,7 @@ layout: post
 title: "Math Challenge: The Sequence of Fibonacho"
 modified:
 categories: 
-tags: [fibonacci, number theory, math, python, programming]
+tags: [fibonacci, number-theory, math, python, programming]
 description: "The Fibonacho Sequence is a playful and intriguing twist on the classical Fibonacci numbers. Unlike its better-known cousin, the Fibonacho Sequence does not follow the same simple recurrence relation. Instead, it introduces a slightly different structure, making it a entertaining puzzle for math enthusiasts and programmers alike. Are you ready to dive into the challenge?"
 thumbnail: assets/img/fibonacho-thumbnail.webp
 giscus_comments: true

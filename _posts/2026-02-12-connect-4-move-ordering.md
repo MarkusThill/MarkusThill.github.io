@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Move Ordering"
 modified: 2026-06-23T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How the two solvers combine centre-first priorities, threat counts and parity heuristics, and how non-losing move generation removes branches before they reach alpha-beta."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/2026-02-12-connect-4-move-ordering/possibleChains.png

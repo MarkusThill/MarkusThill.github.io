@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; First Steps"
 modified: 2025-07-04T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How a Java Connect-4 agent from 2012 led to the C++/Python solver BitBully, why the game is small enough to solve but large enough to make search engineering matter, and what this series will cover."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards]
 thumbnail: assets/img/project_bitbully/c4-3.png

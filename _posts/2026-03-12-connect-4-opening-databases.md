@@ -2,7 +2,7 @@
 layout: post
 title: "Building Intelligent Agents for Connect-4&#58; Opening Databases"
 modified: 2026-07-07T09:00:51+01:00
-categories: [Programming]
+categories: [programming]
 description: "How the 8- and 12-ply opening books encode millions of solved positions in compact fixed-width records, and how the original database pipeline is used by BitBully today."
 tags: [Connect-4, AI, tree-search, alpha-beta, minimax, transposition tables, opening databases, move ordering, bitboards, huffman coding]
 thumbnail: assets/img/2026-03-12-connect-4-opening-databases/huffman.png

@@ -3,7 +3,7 @@ layout: post
 title: "Short Notes: Installing GCC 13 on Debian and Ubuntu"
 modified:
 categories: 
-tags: [c++, c, debian, ubuntu]
+tags: [cpp, c, debian, ubuntu]
 description: "Learn how to install and configure the latest GNU GCC/G++ compiler on Debian and Ubuntu systems. This step-by-step guide covers updating packages, adding the Toolchain Test PPA, installing GCC 13, verifying the installation, and setting it as the default compiler."
 thumbnail: 
 giscus_comments: true
