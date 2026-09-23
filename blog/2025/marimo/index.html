@@ -32,7 +32,7 @@
 <span class="n">slider</span>
 </code></pre></div> </div> <div class="language-python highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="n">mo</span><span class="p">.</span><span class="nf">md</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">The first </span><span class="si">{</span><span class="n">slider</span><span class="p">.</span><span class="n">value</span><span class="si">}</span><span class="s"> squares: </span><span class="si">{</span><span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">slider</span><span class="p">.</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
 </code></pre></div> </div> </div> <p>Until the runtime has moved those blocks into place the container stays hidden, so readers never see the raw source flash before it becomes a notebook.</p> <h2 id="embedding-a-hosted-notebook">Embedding a hosted notebook</h2> <p>If you already publish a notebook — on <code class="language-plaintext highlighter-rouge">marimo.app</code> or your own WASM host — embed it instead:</p> <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">{%</span><span class="w"> </span><span class="nt">al_marimo_embed</span><span class="w"> </span><span class="na">src</span><span class="o">=</span><span class="s2">"https://marimo.app/l/your-notebook"</span><span class="w"> </span><span class="na">height</span><span class="o">=</span><span class="s2">"700px"</span><span class="w"> </span><span class="na">caption</span><span class="o">=</span><span class="s2">"Sampling demo"</span><span class="w"> </span><span class="cp">%}</span>
-</code></pre></div></div> <p>The frame is sandboxed <strong>without</strong> <code class="language-plaintext highlighter-rouge">allow-same-origin</code>, so the embedded notebook cannot reach this page’s storage or cookies.</p> <h2 id="a-note-on-what-this-loads">A note on what this loads</h2> <p>The <code class="language-plaintext highlighter-rouge">marimo-snippets</code> runtime is vendored into the plugin at a pinned version and served from your own site, rather than pulled from a CDN — so no third-party origin executes script in your readers’ pages. Running a notebook does contact marimo’s host, which is worth knowing before you opt a page in.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/">The Hexadecimal Digit Canon Challenge: Solution</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-mtdf-and-null-window-search/">Building Intelligent Agents for Connect-4: MTD(f) and Null-Window Search</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-opening-databases/">Building Intelligent Agents for Connect-4: Opening Databases</a> </li> </ul> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: September 23, 2026. </div> </footer> <script>
+</code></pre></div></div> <p>The frame is sandboxed <strong>without</strong> <code class="language-plaintext highlighter-rouge">allow-same-origin</code>, so the embedded notebook cannot reach this page’s storage or cookies.</p> <h2 id="a-note-on-what-this-loads">A note on what this loads</h2> <p>The <code class="language-plaintext highlighter-rouge">marimo-snippets</code> runtime is vendored into the plugin at a pinned version and served from your own site, rather than pulled from a CDN — so no third-party origin executes script in your readers’ pages. Running a notebook does contact marimo’s host, which is worth knowing before you opt a page in.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/online-inverse-covariance/">Online Estimation: Updating the Inverse Covariance Matrix</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/memory-of-exponential-estimators/">Online Estimation: The Memory of an Exponentially Weighted Estimator</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/covariance-of-weighted-means/">Online Estimation: The Covariance of a Weighted Mean</a> </li> </ul> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: September 23, 2026. </div> </footer> <script>
   window.alFolio = {
     compatBootstrap: false
   };
@@ -137,6 +137,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
           
         },
+      },{id: "post-online-estimation-amp-58-updating-the-inverse-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; Updating the Inverse Covariance Matrix",
+        
+        description: "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-inverse-covariance/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
@@ -148,6 +159,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-final-considerations/";
           
         },
+      },{id: "post-online-estimation-amp-58-the-memory-of-an-exponentially-weighted-estimator",
+        
+          title: "Online Estimation&amp;#58; The Memory of an Exponentially Weighted Estimator",
+        
+        description: "Deriving the finite and limiting effective sample size of an exponentially weighted estimator step by step, revisiting the 100-versus-199 experiment, and stating carefully what the memory interpretation does and does not establish.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/memory-of-exponential-estimators/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
@@ -157,6 +179,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-covariance-of-a-weighted-mean",
+        
+          title: "Online Estimation&amp;#58; The Covariance of a Weighted Mean",
+        
+        description: "Deriving the covariance of a weighted sample mean line by line, stating the independence assumptions it needs, and showing why the covariance denominator must not be used to normalize the weights of a mean.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/covariance-of-weighted-means/";
           
         },
       },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
@@ -181,6 +214,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
           
         },
+      },{id: "post-online-estimation-amp-58-exponential-forgetting",
+        
+          title: "Online Estimation&amp;#58; Exponential Forgetting",
+        
+        description: "Deriving exponentially decaying mean and covariance estimates in full, correcting the unrolled historical expansion, and distinguishing decay applied once per batch from decay applied once per observation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/exponentially-weighted-estimation/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
@@ -190,6 +234,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-weighted-observations-and-mini-batches",
+        
+          title: "Online Estimation&amp;#58; Weighted Observations and Mini-Batches",
+        
+        description: "Carrying the weighted scatter derivation from the thesis through in full, to obtain exact single-observation and mini-batch updates, together with a four-point example which catches an incorrect batch formula.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/weighted-mean-and-covariance/";
           
         },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
@@ -203,6 +258,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-transposition-tables/";
           
         },
+      },{id: "post-online-estimation-amp-58-the-mean-and-the-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; The Mean and the Covariance Matrix",
+        
+        description: "Deriving a running mean and scatter matrix from the definitions, carrying every step of the algebra through, and distinguishing the unbiased covariance from the Gaussian maximum-likelihood estimate.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-mean-and-covariance/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
@@ -212,6 +278,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-learning-from-a-changing-data-stream",
+        
+          title: "Online Estimation&amp;#58; Learning from a Changing Data Stream",
+        
+        description: "Why streaming anomaly detection needs incremental statistics, and how this series connects means, covariances, forgetting and inverse updates back to Appendix B.2 of my PhD thesis.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-estimation-introduction/";
           
         },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",

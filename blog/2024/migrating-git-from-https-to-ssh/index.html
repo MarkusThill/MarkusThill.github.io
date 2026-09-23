@@ -26,7 +26,7 @@
 </code></pre></div></div> <p>Then, add the key to your GitHub account:</p> <ul> <li>Go to <strong>Settings</strong> &gt; <strong>SSH and GPG Keys</strong> on GitHub.</li> <li>Click <strong>New SSH Key</strong>, paste the key, and save.</li> </ul> <h3 id="3-remove-stored-github-credentials-optional">3. Remove Stored GitHub Credentials (Optional)</h3> <p>If you’ve used HTTPS before, your system might have cached your GitHub credentials. To avoid conflicts:</p> <ul> <li>On macOS or Linux: Look for credentials in your credential manager or <code class="language-plaintext highlighter-rouge">~/.git-credentials</code> and remove them.</li> <li>On Windows: Clear stored credentials via the Credential Manager.</li> </ul> <p>This step is optional but helps ensure a clean transition to SSH.</p> <h3 id="4-update-the-remote-url">4. Update the Remote URL</h3> <p>Convert your Git repository’s remote URL from HTTPS to SSH:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote set-url origin &lt;SSH url&gt;
 </code></pre></div></div> <p>For example, if your HTTPS URL is: <code class="language-plaintext highlighter-rouge">https://github.com/username/repo_name.git</code></p> <p>Convert it to: <code class="language-plaintext highlighter-rouge">git@github.com:username/repo_name.git</code></p> <h3 id="5-verify-the-new-remote-url">5. Verify the New Remote URL</h3> <p>Ensure your repository is now configured to use SSH:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote -v
 </code></pre></div></div> <p>The output should display the SSH URL.</p> <h3 id="6-test-your-ssh-connection">6. Test Your SSH Connection</h3> <p>Run the following command to test the SSH connection:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -T git@github.com
-</code></pre></div></div> <p>If everything is set up correctly, you’ll see a message like: Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.</p> <h3 id="7-enter-your-ssh-key-passcode">7. Enter Your SSH Key Passcode</h3> <p>The first time you interact with GitHub via SSH, you’ll be prompted for your key’s passcode if you set one.</p> <hr> <p>Switching from HTTPS to SSH not only improves security but also streamlines your Git workflow by eliminating the need for repeated credential input. Follow these steps to make the transition smooth and hassle-free.</p> <p>Happy coding!</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/">The Hexadecimal Digit Canon Challenge: Solution</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-mtdf-and-null-window-search/">Building Intelligent Agents for Connect-4: MTD(f) and Null-Window Search</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-opening-databases/">Building Intelligent Agents for Connect-4: Opening Databases</a> </li> </ul> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script>
+</code></pre></div></div> <p>If everything is set up correctly, you’ll see a message like: Hi username! You’ve successfully authenticated, but GitHub does not provide shell access.</p> <h3 id="7-enter-your-ssh-key-passcode">7. Enter Your SSH Key Passcode</h3> <p>The first time you interact with GitHub via SSH, you’ll be prompted for your key’s passcode if you set one.</p> <hr> <p>Switching from HTTPS to SSH not only improves security but also streamlines your Git workflow by eliminating the need for repeated credential input. Follow these steps to make the transition smooth and hassle-free.</p> <p>Happy coding!</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/online-inverse-covariance/">Online Estimation: Updating the Inverse Covariance Matrix</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/memory-of-exponential-estimators/">Online Estimation: The Memory of an Exponentially Weighted Estimator</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/covariance-of-weighted-means/">Online Estimation: The Covariance of a Weighted Mean</a> </li> </ul> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script>
     (function setupGiscus() {
       function determineGiscusTheme() {
         var theme = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme") || "system";
@@ -165,6 +165,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
           
         },
+      },{id: "post-online-estimation-amp-58-updating-the-inverse-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; Updating the Inverse Covariance Matrix",
+        
+        description: "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-inverse-covariance/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
@@ -176,6 +187,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-final-considerations/";
           
         },
+      },{id: "post-online-estimation-amp-58-the-memory-of-an-exponentially-weighted-estimator",
+        
+          title: "Online Estimation&amp;#58; The Memory of an Exponentially Weighted Estimator",
+        
+        description: "Deriving the finite and limiting effective sample size of an exponentially weighted estimator step by step, revisiting the 100-versus-199 experiment, and stating carefully what the memory interpretation does and does not establish.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/memory-of-exponential-estimators/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
@@ -185,6 +207,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-covariance-of-a-weighted-mean",
+        
+          title: "Online Estimation&amp;#58; The Covariance of a Weighted Mean",
+        
+        description: "Deriving the covariance of a weighted sample mean line by line, stating the independence assumptions it needs, and showing why the covariance denominator must not be used to normalize the weights of a mean.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/covariance-of-weighted-means/";
           
         },
       },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
@@ -209,6 +242,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
           
         },
+      },{id: "post-online-estimation-amp-58-exponential-forgetting",
+        
+          title: "Online Estimation&amp;#58; Exponential Forgetting",
+        
+        description: "Deriving exponentially decaying mean and covariance estimates in full, correcting the unrolled historical expansion, and distinguishing decay applied once per batch from decay applied once per observation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/exponentially-weighted-estimation/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
@@ -218,6 +262,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-weighted-observations-and-mini-batches",
+        
+          title: "Online Estimation&amp;#58; Weighted Observations and Mini-Batches",
+        
+        description: "Carrying the weighted scatter derivation from the thesis through in full, to obtain exact single-observation and mini-batch updates, together with a four-point example which catches an incorrect batch formula.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/weighted-mean-and-covariance/";
           
         },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
@@ -231,6 +286,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/connect-4-transposition-tables/";
           
         },
+      },{id: "post-online-estimation-amp-58-the-mean-and-the-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; The Mean and the Covariance Matrix",
+        
+        description: "Deriving a running mean and scatter matrix from the definitions, carrying every step of the algebra through, and distinguishing the unbiased covariance from the Gaussian maximum-likelihood estimate.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-mean-and-covariance/";
+          
+        },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
         
           title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
@@ -240,6 +306,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-learning-from-a-changing-data-stream",
+        
+          title: "Online Estimation&amp;#58; Learning from a Changing Data Stream",
+        
+        description: "Why streaming anomaly detection needs incremental statistics, and how this series connects means, covariances, forgetting and inverse updates back to Appendix B.2 of my PhD thesis.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-estimation-introduction/";
           
         },
       },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",

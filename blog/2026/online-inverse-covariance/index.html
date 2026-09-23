@@ -1,0 +1,941 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta name="google-site-verification" content="E-cxXp9JBE8VIacUnRQwevqTkuNkkzBBa1HqjqIIgt4"> <meta http-equiv="Permissions-Policy" content="interest-cohort=()"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Online Estimation: Updating the Inverse Covariance Matrix | Markus Thill </title> <meta name="author" content="Markus Thill"> <meta name="description" content="Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R."> <meta name="keywords" content="machine-learning, mathematics, algorithms, programming, technical-tutorials, engineering-notes"> <meta property="og:site_name" content="Markus Thill"> <meta property="og:type" content="article"> <meta property="og:title" content="Markus Thill | Online Estimation: Updating the Inverse Covariance Matrix"> <meta property="og:url" content="https://MarkusThill.github.io/blog/2026/online-inverse-covariance/"> <meta property="og:description" content="Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R."> <meta property="og:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Online Estimation: Updating the Inverse Covariance Matrix"> <meta name="twitter:description" content="Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R."> <meta name="twitter:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Markus Thill"
+        },
+        "url": "https://MarkusThill.github.io/blog/2026/online-inverse-covariance/",
+        "@type": "BlogPosting",
+        "description": "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R.",
+        "headline": "Online Estimation&#58; Updating the Inverse Covariance Matrix",
+        
+        "sameAs": ["https://github.com/MarkusThill","https://www.linkedin.com/in/markus-thill-a4991090","https://www.researchgate.net/profile/Markus-Thill/","https://scholar.google.com/citations?user=Bu5eFxQAAAAJ","https://projecteuler.net/"],
+        
+        "name": "Markus Thill",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 1000px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8D%95&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://markusthill.github.io/blog/2026/online-inverse-covariance/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Markus</span> Thill </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"> </a> </li> <li class="nav-item "> <a class="nav-link" href="/about">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/index.html">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-nav-dropdown-toggle="true" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/publications/">publications</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/projects/">projects</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Online Estimation: Updating the Inverse Covariance Matrix</h1> <p class="post-meta"> Created on April 26, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/online-estimation"> <i class="fa-solid fa-hashtag fa-sm"></i> online estimation</a>   <a href="/blog/tag/covariance"> <i class="fa-solid fa-hashtag fa-sm"></i> covariance</a>   <a href="/blog/tag/inverse-covariance"> <i class="fa-solid fa-hashtag fa-sm"></i> inverse covariance</a>   <a href="/blog/tag/woodbury"> <i class="fa-solid fa-hashtag fa-sm"></i> Woodbury</a>   <a href="/blog/tag/sherman-morrison"> <i class="fa-solid fa-hashtag fa-sm"></i> Sherman-Morrison</a>   <a href="/blog/tag/mahalanobis"> <i class="fa-solid fa-hashtag fa-sm"></i> Mahalanobis</a>   <a href="/blog/tag/data-streams"> <i class="fa-solid fa-hashtag fa-sm"></i> data streams</a>   <a href="/blog/tag/math"> <i class="fa-solid fa-hashtag fa-sm"></i> math</a>   <a href="/blog/tag/python"> <i class="fa-solid fa-hashtag fa-sm"></i> python</a>   <a href="/blog/tag/r"> <i class="fa-solid fa-hashtag fa-sm"></i> R</a>   ·   <a href="/blog/category/math"> <i class="fa-solid fa-tag fa-sm"></i> math</a>   <a href="/blog/category/stats"> <i class="fa-solid fa-tag fa-sm"></i> stats</a>   <a href="/blog/category/ml"> <i class="fa-solid fa-tag fa-sm"></i> ML</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#from-scatter-to-covariance-and-precision">From Scatter to Covariance and Precision</a></li> <li class="toc-entry toc-h2"><a href="#the-batch-update-in-matrix-form">The Batch Update in Matrix Form</a></li> <li class="toc-entry toc-h2"><a href="#applying-the-woodbury-identity">Applying the Woodbury Identity</a></li> <li class="toc-entry toc-h2"><a href="#the-single-observation-specialization">The Single-Observation Specialization</a></li> <li class="toc-entry toc-h2"><a href="#the-update-rules-in-summary">The Update Rules in Summary</a></li> <li class="toc-entry toc-h2"><a href="#an-inverse-cannot-be-initialized-independently">An Inverse cannot be Initialized Independently</a></li> <li class="toc-entry toc-h2"><a href="#verifying-the-covariance-that-is-actually-reported">Verifying the Covariance that is Actually Reported</a></li> <li class="toc-entry toc-h2"><a href="#cost-and-numerical-limits">Cost and Numerical Limits</a></li> <li class="toc-entry toc-h2"><a href="#references">References</a></li> </ul> </div> <hr> <div id="markdown-content"> <p>This post is the 7th part of a series of 7 articles:</p> <ol> <li><a href="/blog/2026/online-estimation-introduction/">Online Estimation: Learning from a Changing Data Stream</a></li> <li><a href="/blog/2026/online-mean-and-covariance/">Online Estimation: The Mean and the Covariance Matrix</a></li> <li><a href="/blog/2026/weighted-mean-and-covariance/">Online Estimation: Weighted Observations and Mini-Batches</a></li> <li><a href="/blog/2026/exponentially-weighted-estimation/">Online Estimation: Exponential Forgetting</a></li> <li><a href="/blog/2026/covariance-of-weighted-means/">Online Estimation: The Covariance of a Weighted Mean</a></li> <li><a href="/blog/2026/memory-of-exponential-estimators/">Online Estimation: The Memory of an Exponentially Weighted Estimator</a></li> <li><strong><a href="/blog/2026/online-inverse-covariance/">Online Estimation: Updating the Inverse Covariance Matrix</a></strong></li> </ol> <p>In practice one often needs the inverse of a covariance matrix rather than the covariance itself, the Mahalanobis distance being the obvious example. In a fully online setting, recomputing that inverse for every arriving observation is expensive, since inverting a \(d\times d\) matrix costs about \(O(d^3)\), only slightly less in the more elaborate algorithms. Appendix B.2.2.1 of my thesis <a class="citation" href="#thill2022machine">(Thill, 2022)</a> shows that this is avoidable in two senses: the covariance itself need never be formed if only its inverse is wanted, and the inverse can be updated incrementally. The tools are the Woodbury identity <a class="citation" href="#woodbury1950inverting">(Woodbury, 1950)</a> for batches and its Sherman-Morrison specialization <a class="citation" href="#sherman1950adjustment">(Sherman &amp; Morrison, 1950)</a> for a single observation, and the results below are stated for the general weighted, exponentially decaying estimator.</p> <p>Both identities require an existing inverse to update, which means that handling the first observations is part of the algorithm rather than an implementation detail to be papered over. That turns out to be where the practical difficulty lies, and this article spends as much space on initialization as on the identities themselves.</p> <p><br></p> <h2 id="from-scatter-to-covariance-and-precision">From Scatter to Covariance and Precision</h2> <p>We now write \(\bar{\mathbf{M}}_n\) in place of \(\bar{\mathbf{M}}^{(n)}\), moving the superscript to the index as the thesis does at this point, so that inverses can be written without ambiguity. If the covariance estimate is \(\bar{\boldsymbol{\Sigma}}_n=\bar{\mathbf{M}}_n/c_n\) for a positive scalar \(c_n\), then</p> \[\bar{\boldsymbol{\Sigma}}_n^{-1}=c_n\bar{\mathbf{M}}_n^{-1},\] <p>where \(c_n=W_n\) gives the population normalization and \(c_n=W_n-W_n^{(2)}/W_n\) the reliability-weight correction. Note that scaling the inverse requires <strong>multiplication</strong> by \(c_n\) rather than division, which is easy to get backwards when switching between the two normalizations. It is also worth stating that the inverse of an unbiased covariance estimate is not generally an unbiased estimate of the population precision; unbiasedness does not survive matrix inversion, and nothing in this article claims that it does.</p> <p><br></p> <h2 id="the-batch-update-in-matrix-form">The Batch Update in Matrix Form</h2> <p>The scatter recurrence from the fourth article is a sum of \(\mu\) outer products, and writing it as a single matrix product is what exposes its low-rank structure. For an incoming batch of size \(\mu\), define the two \(\mu\times d\) matrices</p> \[\mathbf{D}_n= \begin{pmatrix}\boldsymbol{\Delta}_k&amp;\boldsymbol{\Delta}_{k+1}&amp;\cdots&amp;\boldsymbol{\Delta}_n\end{pmatrix}^T, \qquad \boldsymbol{\mathcal{X}}_n= \begin{pmatrix}\mathbf{x}_k-\bar{\mathbf{x}}_n&amp;\mathbf{x}_{k+1}-\bar{\mathbf{x}}_n&amp;\cdots&amp; \mathbf{x}_n-\bar{\mathbf{x}}_n\end{pmatrix}^T,\] <p>where \(k=n-\mu+1\) and \(\boldsymbol{\Delta}_i=\mathbf{x}_i-\bar{\mathbf{x}}_{n-\mu}\) as before. The first collects the residuals against the old mean as its rows and the second those against the new mean, so that</p> \[\begin{aligned} \bar{\mathbf{M}}_n &amp;=\lambda\bar{\mathbf{M}}_{n-\mu}+\sum_{i=k}^n\boldsymbol{\Delta}_i(\mathbf{x}_i-\bar{\mathbf{x}}_n)^T\\ &amp;=\lambda\bar{\mathbf{M}}_{n-\mu}+\mathbf{D}_n^T\mathbf{I}\,\boldsymbol{\mathcal{X}}_n, \end{aligned}\] <p>in which the product \(\mathbf{D}_n^T\boldsymbol{\mathcal{X}}_n\) has size \(d\times d\), as required, while its inner dimension is only \(\mu\). The identity matrix is written explicitly because it is what plays the role of \(\mathbf{C}\) below. For arbitrary incoming weights, replace \(\boldsymbol{\mathcal{X}}_n\) by \(\operatorname{diag}(w'_k,\ldots,w'_n)\boldsymbol{\mathcal{X}}_n\).</p> <p><br></p> <h2 id="applying-the-woodbury-identity">Applying the Woodbury Identity</h2> <p>For compatible matrices possessing the needed inverses, the Woodbury identity reads</p> \[\begin{equation} (\mathbf{A}+\mathbf{U}\mathbf{C}\mathbf{V})^{-1} =\mathbf{A}^{-1}-\mathbf{A}^{-1}\mathbf{U} \big(\mathbf{C}^{-1}+\mathbf{V}\mathbf{A}^{-1}\mathbf{U}\big)^{-1} \mathbf{V}\mathbf{A}^{-1}. \label{eq:woodbury} \end{equation}\] <p>The expression inside the inner inverse contains the <strong>product</strong> \(\mathbf{V}\mathbf{A}^{-1}\mathbf{U}\). The thesis prints a plus sign where the second multiplication belongs, giving \(\mathbf{C}^{-1}+\mathbf{V}\mathbf{A}^{-1}+\mathbf{U}\), which is not even dimensionally defined for the rectangular batch matrices above, since \(\mathbf{V}\mathbf{A}^{-1}\) is \(\mu\times d\) while \(\mathbf{U}\) is \(d\times\mu\). The specialized batch update which the thesis then derives already carries the correct product, so this is a typographical slip in the statement of the general identity rather than an error in the result. With</p> \[\mathbf{A}=\lambda\bar{\mathbf{M}}_{n-\mu},\qquad \mathbf{U}=\mathbf{D}_n^T,\qquad \mathbf{C}=\mathbf{I}_\mu,\qquad \mathbf{V}=\boldsymbol{\mathcal{X}}_n,\] <p>substitution into \eqref{eq:woodbury} gives, using \(\mathbf{A}^{-1}=\lambda^{-1}\bar{\mathbf{M}}_{n-\mu}^{-1}\) in three places,</p> \[\begin{aligned} \bar{\mathbf{M}}_n^{-1} &amp;=\frac{1}{\lambda}\bar{\mathbf{M}}_{n-\mu}^{-1} -\frac{1}{\lambda^2}\bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T \left(\mathbf{I}_\mu^{-1}+\frac{1}{\lambda}\boldsymbol{\mathcal{X}}_n \bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T\right)^{-1} \boldsymbol{\mathcal{X}}_n\bar{\mathbf{M}}_{n-\mu}^{-1}\\ &amp;=\frac{1}{\lambda}\bar{\mathbf{M}}_{n-\mu}^{-1} -\frac{1}{\lambda}\bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T \left(\lambda\mathbf{I}_\mu+\boldsymbol{\mathcal{X}}_n \bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T\right)^{-1} \boldsymbol{\mathcal{X}}_n\bar{\mathbf{M}}_{n-\mu}^{-1}. \end{aligned}\] <p>The step between the two lines pulls a factor \(\lambda\) out of the inner inverse: writing \(\mathbf{B}=\boldsymbol{\mathcal{X}}_n\bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T\), we have \(\big(\mathbf{I}+\lambda^{-1}\mathbf{B}\big)^{-1} =\big(\lambda^{-1}(\lambda\mathbf{I}+\mathbf{B})\big)^{-1} =\lambda\big(\lambda\mathbf{I}+\mathbf{B}\big)^{-1}\), and that factor cancels one of the two powers of \(\lambda\) in front. Writing \(\mathbf{P}_{\mathrm{old}}=\bar{\mathbf{M}}_{n-\mu}^{-1}\) and collecting, the update is</p> \[\bar{\mathbf{M}}_n^{-1} =\frac{1}{\lambda}\left[\mathbf{P}_{\mathrm{old}} -\mathbf{P}_{\mathrm{old}}\mathbf{D}_n^T \big(\lambda\mathbf{I}_\mu+\boldsymbol{\mathcal{X}}_n\mathbf{P}_{\mathrm{old}}\mathbf{D}_n^T\big)^{-1} \boldsymbol{\mathcal{X}}_n\mathbf{P}_{\mathrm{old}}\right].\] <p>The inner system has dimension \(\mu\) rather than \(d\), which is the entire point of the exercise, and in code one should solve that system rather than explicitly forming its inverse. Since an inverse still has to be computed somewhere, the identity is only worth using when the batch size \(\mu\) is appreciably smaller than the dimension \(d\) of the observations.</p> <p><br></p> <h2 id="the-single-observation-specialization">The Single-Observation Specialization</h2> <p>For \(\mu=1\) the inner system is scalar, and the Woodbury identity reduces to the Sherman-Morrison formula,</p> \[(\mathbf{A}+\mathbf{u}\mathbf{v}^T)^{-1} =\mathbf{A}^{-1}-\frac{\mathbf{A}^{-1}\mathbf{u}\mathbf{v}^T\mathbf{A}^{-1}} {1+\mathbf{v}^T\mathbf{A}^{-1}\mathbf{u}}.\] <p>Reading the fully online scatter recurrence \(\bar{\mathbf{M}}_n=\lambda\bar{\mathbf{M}}_{n-1}+\boldsymbol{\Delta}_n(\mathbf{x}_n-\bar{\mathbf{x}}_n)^T\) as \(\mathbf{A}+\mathbf{u}\mathbf{v}^T\), we identify</p> \[\mathbf{A}=\lambda\bar{\mathbf{M}}_{n-1},\qquad \mathbf{u}=\boldsymbol{\Delta}_n,\qquad \mathbf{v}=\mathbf{x}_n-\bar{\mathbf{x}}_n,\] <p>and substituting \(\mathbf{A}^{-1}=\lambda^{-1}\bar{\mathbf{M}}_{n-1}^{-1}\) gives a numerator carrying \(\lambda^{-2}\) and a denominator \(1+\lambda^{-1}\mathbf{v}^T\bar{\mathbf{M}}_{n-1}^{-1}\mathbf{u} =\lambda^{-1}\big(\lambda+\mathbf{v}^T\bar{\mathbf{M}}_{n-1}^{-1}\mathbf{u}\big)\). One power of \(\lambda\) cancels between them, leaving</p> \[\bar{\mathbf{M}}_n^{-1} =\frac{1}{\lambda}\left[ \bar{\mathbf{M}}_{n-1}^{-1}- \frac{\bar{\mathbf{M}}_{n-1}^{-1}\boldsymbol{\Delta}_n (\mathbf{x}_n-\bar{\mathbf{x}}_n)^T\bar{\mathbf{M}}_{n-1}^{-1}} {\lambda+(\mathbf{x}_n-\bar{\mathbf{x}}_n)^T\bar{\mathbf{M}}_{n-1}^{-1}\boldsymbol{\Delta}_n} \right].\] <p>The two matrix-vector products should be computed first and only then combined into an outer product. This is worth saying because a left-associated sequence of matrix multiplications, which is what one gets by transcribing the formula naively, quietly introduces a dense matrix-matrix multiplication into what should be an \(O(d^2)\) update, and the resulting implementation can be slower than simply calling a solver.</p> <p><br></p> <h2 id="the-update-rules-in-summary">The Update Rules in Summary</h2> <p>Processed in this order, a batch running from \(k=n-\mu+1\) to \(n\) gives</p> \[\begin{aligned} W_n&amp;=\lambda W_{n-\mu}+\mu,\\ W_n^{(2)}&amp;=\lambda^2W_{n-\mu}^{(2)}+\mu,\\ \boldsymbol{\Delta}_i&amp;=\mathbf{x}_i-\bar{\mathbf{x}}_{n-\mu},\\ \bar{\mathbf{x}}_n&amp;=\bar{\mathbf{x}}_{n-\mu}+\frac{\sum_{i=k}^n\boldsymbol{\Delta}_i}{W_n},\\ \bar{\mathbf{M}}_n&amp;=\lambda\bar{\mathbf{M}}_{n-\mu}+\mathbf{D}_n^T\boldsymbol{\mathcal{X}}_n,\\ \bar{\mathbf{M}}_n^{-1}&amp;=\frac{1}{\lambda}\bar{\mathbf{M}}_{n-\mu}^{-1} -\frac{1}{\lambda}\bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T \big(\lambda\mathbf{I}_\mu+\boldsymbol{\mathcal{X}}_n\bar{\mathbf{M}}_{n-\mu}^{-1}\mathbf{D}_n^T\big)^{-1} \boldsymbol{\mathcal{X}}_n\bar{\mathbf{M}}_{n-\mu}^{-1},\\ \bar{\boldsymbol{\Sigma}}_n&amp;=\frac{\bar{\mathbf{M}}_n}{W_n},\qquad \bar{\boldsymbol{\Sigma}}_n^{-1}=W_n\bar{\mathbf{M}}_n^{-1}, \end{aligned}\] <p>and for the fully online case \(\mu=1\), \(k=n\), these simplify to</p> \[\begin{aligned} W_n&amp;=\lambda W_{n-1}+1,\\ W_n^{(2)}&amp;=\lambda^2W_{n-1}^{(2)}+1,\\ \boldsymbol{\Delta}_n&amp;=\mathbf{x}_n-\bar{\mathbf{x}}_{n-1},\\ \bar{\mathbf{x}}_n&amp;=\bar{\mathbf{x}}_{n-1}+\frac{\boldsymbol{\Delta}_n}{W_n},\\ \bar{\mathbf{M}}_n&amp;=\lambda\bar{\mathbf{M}}_{n-1}+\boldsymbol{\Delta}_n(\mathbf{x}_n-\bar{\mathbf{x}}_n)^T,\\ \bar{\mathbf{M}}_n^{-1}&amp;=\frac{1}{\lambda}\left[\bar{\mathbf{M}}_{n-1}^{-1} -\frac{\bar{\mathbf{M}}_{n-1}^{-1}\boldsymbol{\Delta}_n(\mathbf{x}_n-\bar{\mathbf{x}}_n)^T \bar{\mathbf{M}}_{n-1}^{-1}} {\lambda+(\mathbf{x}_n-\bar{\mathbf{x}}_n)^T\bar{\mathbf{M}}_{n-1}^{-1}\boldsymbol{\Delta}_n}\right],\\ \bar{\boldsymbol{\Sigma}}_n&amp;=\frac{\bar{\mathbf{M}}_n}{W_n},\qquad \bar{\boldsymbol{\Sigma}}_n^{-1}=W_n\bar{\mathbf{M}}_n^{-1}. \end{aligned}\] <p>Both summaries use the population normalization in the last line; for an unbiased covariance use the reliability-weight denominator \(W_n-W_n^{(2)}/W_n\) instead, and remember to multiply rather than divide when converting the inverse. Both squared-weight recurrences carry the previous <strong>sum of squared weights</strong> on their right-hand side, which is the missing superscript noted in the fourth article.</p> <p><br></p> <h2 id="an-inverse-cannot-be-initialized-independently">An Inverse cannot be Initialized Independently</h2> <p>A centered sample scatter has rank at most \(\min(d,n-1)\), so in 300 dimensions a first batch of 10 to 19 observations is necessarily singular, and no choice of solver repairs it. Since the identities above update an existing inverse rather than producing one, the first few observations need an explicit decision.</p> <p>Setting the scatter to zero while setting its inverse to \(c\mathbf{I}\) is not such a decision, because those two matrices are not a matrix and its inverse in any sense: their product is zero rather than the identity. Subsequent Woodbury updates then track the inverse of a scatter carrying an implicit initial ridge \(c^{-1}\mathbf{I}\), whose remaining contribution after \(t\) forgetting updates is \(\lambda^tc^{-1}\mathbf{I}\). The difficulty is not the ridge itself, which is a perfectly reasonable thing to want, but that the reported covariance does not include it, so the maintained inverse and the reported covariance describe two different matrices.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-online-estimation/inverse-initialization-480.webp 480w,/assets/img/2026-online-estimation/inverse-initialization-800.webp 800w,/assets/img/2026-online-estimation/inverse-initialization-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-online-estimation/inverse-initialization.png" class="img-fluid rounded z-depth-1 imgcenter" width="85%" height="auto" alt="Diagnostic plot of an implicit ridge mismatch, and the rank bound for a high-dimensional setup" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 1:</b> Left: diagnostic run exposing the implicit-ridge mismatch. An implementation that initializes the scatter to zero and its inverse to a scaled identity is fed a seeded small-variance dataset. After enough observations, the maintained inverse differs from the reported unregularized covariance’s actual inverse by about 21.9 percent, but agrees with the inverse of the scatter plus the implicit initial ridge. Right: the rank bound. A centered scatter from n observations in d dimensions has rank at most min(d, n-1), so in 300 dimensions the scatter remains singular until at least 301 observations have arrived, and no inverse exists before that. <a href="/assets/img/2026-online-estimation/inverse-initialization.svg">SVG version</a>. </figcaption> </figure> <p>There are two defensible choices, and the important thing is to make one of them explicitly:</p> <ul> <li> <strong>Warm up from zero scatter.</strong> Accumulate observations until the scatter is positive definite and sufficiently well conditioned, initialize its inverse by a direct solve, and only then update it incrementally.</li> <li> <strong>Use a declared regularized scatter.</strong> Initialize \(\bar{\mathbf{M}}_0=\rho\mathbf{I}\) together with \(\bar{\mathbf{M}}_0^{-1}=\rho^{-1}\mathbf{I}\), state whether that ridge decays, and report the covariance corresponding to the regularized scatter rather than to an unregularized one.</li> </ul> <p>The Python implementation uses warm-up, initializing the inverse only after a Cholesky check and a declared condition limit of \(10^{10}\). The adapted <a href="/assets/code/2026-online-estimation/inverse-covariance.R">R example</a> illustrates the second choice with \(\rho=0.01\) and hence an initial inverse of \(100\mathbf{I}\); initializing both matrices to \(0.01\mathbf{I}\), which is the natural-looking but inconsistent choice, gives a product of \(10^{-4}\mathbf{I}\). Forgetting does hide such a discrepancy after a long run, but the early estimates then do not describe the same matrix, so the script compares the maintained inverse against the inverse of the same regularized scatter throughout rather than only at the end. Its regularized covariance is not labeled an unbiased sample covariance.</p> <p><br></p> <h2 id="verifying-the-covariance-that-is-actually-reported">Verifying the Covariance that is Actually Reported</h2> <p>Run the following beside <a href="/assets/code/2026-online-estimation/online_estimation.py">online_estimation.py</a>:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">online_estimation</span> <span class="kn">import</span> <span class="n">IncrementalMoments</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">default_rng</span><span class="p">(</span><span class="mi">20260426</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">.</span><span class="mi">01</span><span class="o">*</span><span class="n">rng</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">state</span> <span class="o">=</span> <span class="nc">IncrementalMoments</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">track_inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">state</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">state</span><span class="p">.</span><span class="n">scatter_inverse</span> <span class="ow">is</span> <span class="bp">None</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">np</span><span class="p">.</span><span class="nf">array_split</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">4</span><span class="p">:],</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="n">state</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="n">reference_cov</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">reference_precision</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">solve</span><span class="p">(</span><span class="n">reference_cov</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="nf">covariance</span><span class="p">(),</span> <span class="n">reference_cov</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="nf">precision</span><span class="p">(),</span> <span class="n">reference_precision</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+<span class="n">np</span><span class="p">.</span><span class="n">testing</span><span class="p">.</span><span class="nf">assert_allclose</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="nf">covariance</span><span class="p">()</span> <span class="o">@</span> <span class="n">state</span><span class="p">.</span><span class="nf">precision</span><span class="p">(),</span> <span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+</code></pre></div></div> <p>With forgetting enabled, the reference must be an explicitly weighted one rather than <code class="language-plaintext highlighter-rouge">np.cov(X)</code> without weights, which otherwise produces a comparison that can only fail for reasons unrelated to the update. The <a href="/blog/2025/online-batch-estimate-cov-mu/">companion notebook</a> checks variable batches and scales, inverse residuals, symmetry, startup, and the no-forgetting limit, across 450 inverse comparisons whose maximum relative error is about \(1.97\cdot10^{-13}\) and whose maximum covariance-times-precision residual is about \(1.50\cdot10^{-12}\).</p> <p><br></p> <h2 id="cost-and-numerical-limits">Cost and Numerical Limits</h2> <p>A batch update still requires matrix products in addition to the smaller solve, at an approximate cost of \(O(d^2\mu+d\mu^2+\mu^3)\), so whether it is actually faster depends on the dimensions, the implementation and the hardware. A small batch can certainly help, but \(\mu&lt;d\) on its own guarantees nothing, and the timings in the notebook are machine-specific for exactly this reason.</p> <p>The identities are exact algebraically, while repeated inverse updates accumulate floating-point error, and the two statements are not in conflict. In a long-running system it is worth monitoring conditioning and residuals and refactoring the inverse when necessary. Symmetrizing a result can remove small roundoff asymmetries but cannot repair a genuinely singular estimate, and when only a few Mahalanobis scores are needed, applying a Cholesky solve may well be preferable to storing a full inverse at all.</p> <p>This completes the path from ordinary sample statistics through weighted batches, forgetting, uncertainty of the mean and finally inverse updates. Each stage uses the same mean-and-scatter state, with the statistical interpretation and the startup conditions kept explicit throughout.</p> <p><em>Source: thesis Appendix B.2.2.1. The general Woodbury identity is stated with the product \(\mathbf{V}\mathbf{A}^{-1}\mathbf{U}\) inside the inner inverse, and the inverse initialization is made consistent with the scatter it is supposed to invert.</em></p> <p><br></p> <h2 id="references">References</h2> <div class="publications"> <ol class="bibliography"> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="thill2022machine" class="col-sm-8"> <div class="title">Machine Learning and Deep Learning Approaches for Multivariate Time Series Prediction and Anomaly Detection</div> <div class="author"> Markus Thill </div> <div class="periodical"> <em>Leiden University</em>, 2022 </div> <div class="periodical"> </div> <div class="links"> <a href="https://hdl.handle.net/1887/3279161" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">HTML</a> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="woodbury1950inverting" class="col-sm-8"> <div class="title">Inverting Modified Matrices</div> <div class="author"> Max A. Woodbury </div> <div class="periodical"> 1950 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="sherman1950adjustment" class="col-sm-8"> <div class="title">Adjustment of an Inverse Matrix Corresponding to a Change in One Element of a Given Matrix</div> <div class="author"> Jack Sherman and Winifred J. Morrison </div> <div class="periodical"> <em>The Annals of Mathematical Statistics</em>, 1950 </div> <div class="periodical"> </div> <div class="links"> <a href="https://doi.org/10.1214/aoms/1177729893" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">DOI</a> </div> </div> </div> </li> </ol> </div> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/memory-of-exponential-estimators/">Online Estimation: The Memory of an Exponentially Weighted Estimator</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/covariance-of-weighted-means/">Online Estimation: The Covariance of a Weighted Mean</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/">The Hexadecimal Digit Canon Challenge: Solution</a> </li> </ul> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script>
+    (function setupGiscus() {
+      function determineGiscusTheme() {
+        var theme = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme") || "system";
+if (theme === "dark") return "dark";
+if (theme === "light") return "light";
+var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+return prefersDark ? "dark" : "light";
+
+      }
+
+      var giscusTheme = determineGiscusTheme();
+      var attrs = {
+        src: "https://giscus.app/client.js",
+        "data-repo": "MarkusThill/MarkusThill.github.io",
+        "data-repo-id": "R_kgDOLnMaxQ",
+        "data-category": "General",
+        "data-category-id": "DIC_kwDOLnMaxc4CeUxG",
+        "data-mapping": "title",
+        "data-strict": "1",
+        "data-reactions-enabled": "1",
+        "data-emit-metadata": "0",
+        "data-input-position": "bottom",
+        "data-theme": giscusTheme,
+        "data-lang": "en",
+        crossorigin: "anonymous",
+        async: true
+      };
+
+      var giscusScript = document.createElement("script");
+      Object.entries(attrs).forEach(function(entry) { giscusScript.setAttribute(entry[0], entry[1]); });
+      var host = document.getElementById("giscus_thread");
+      if (host) host.appendChild(giscusScript);
+    })();
+  </script> <noscript> Please enable JavaScript to view the <a href="http://giscus.app/?ref_noscript" rel="external nofollow noopener" target="_blank">comments powered by giscus.</a> </noscript> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: September 23, 2026. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=c938e61a06fc1f4229e56a041da8f266"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPFK8PMRXH"></script> <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-RPFK8PMRXH");
+</script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-",
+    title: "",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-about",
+          title: "about",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/about";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/index.html";
+          },
+        },{id: "nav-publications",
+          title: "publications",
+          description: "publications by categories in reversed chronological order. generated by jekyll-scholar.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "A growing collection of some of my small fun projects.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "dropdown-publications",
+              title: "publications",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/publications/";
+              },
+            },{id: "dropdown-projects",
+              title: "projects",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/";
+              },
+            },{id: "dropdown-blog",
+              title: "blog",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/blog/";
+              },
+            },{id: "post-constructing-a-linear-classifier-from-known-decision-boundary-points",
+        
+          title: "Constructing a Linear Classifier from Known Decision-Boundary Points",
+        
+        description: "Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/linear-classifier-from-decision-boundary-points/";
+          
+        },
+      },{id: "post-binary-circles-hamiltonian-cycles-and-de-bruijn-sequences",
+        
+          title: "Binary Circles, Hamiltonian Cycles and de Bruijn Sequences",
+        
+        description: "A small combinatorial puzzle about circular binary words whose windows are all distinct turns out to be a question about Hamiltonian cycles in de Bruijn graphs. I count the arrangements, sum their numeric encodings up to a word length of 64 bits, and end with the multiplication trick that uses such a word to locate a set bit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/";
+          
+        },
+      },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
+        
+          title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
+        
+        description: "An exploration of a curious class of integer-sided isosceles triangles whose height differs from the base by exactly one. What begins as a simple geometric question quickly leads to Pell equations and elegant recurrences.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-updating-the-inverse-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; Updating the Inverse Covariance Matrix",
+        
+        description: "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-inverse-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
+        
+        description: "The remaining techniques, an honest accounting of what each optimization was actually worth, the ideas which did not work, and why a perfect-playing Connect-4 agent has learned nothing at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-final-considerations/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-memory-of-an-exponentially-weighted-estimator",
+        
+          title: "Online Estimation&amp;#58; The Memory of an Exponentially Weighted Estimator",
+        
+        description: "Deriving the finite and limiting effective sample size of an exponentially weighted estimator step by step, revisiting the 100-versus-199 experiment, and stating carefully what the memory interpretation does and does not establish.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/memory-of-exponential-estimators/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
+        
+        description: "How independent opening-book answers, mirror invariants and driver agreement provide evidence of correctness, followed by a paired timing comparison with stated statistical assumptions.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-covariance-of-a-weighted-mean",
+        
+          title: "Online Estimation&amp;#58; The Covariance of a Weighted Mean",
+        
+        description: "Deriving the covariance of a weighted sample mean line by line, stating the independence assumptions it needs, and showing why the covariance denominator must not be used to normalize the weights of a mean.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/covariance-of-weighted-means/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
+        
+          title: "The Hexadecimal Digit Canon Challenge: Solution",
+        
+        description: "A complete solution to the Hexadecimal Digit Canon challenge, including the canonicalization rules, combinatorial reasoning, optimization strategy, and a Python implementation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-mtd-f-and-null-window-search",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; MTD(f) and Null-Window Search",
+        
+        description: "How a distance-aware score supplies game-derived bounds, and how MTD(f) and a binary null-window driver reconstruct exact values from narrow alpha-beta probes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-exponential-forgetting",
+        
+          title: "Online Estimation&amp;#58; Exponential Forgetting",
+        
+        description: "Deriving exponentially decaying mean and covariance estimates in full, correcting the unrolled historical expansion, and distinguishing decay applied once per batch from decay applied once per observation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/exponentially-weighted-estimation/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
+        
+        description: "How the 8- and 12-ply opening books encode millions of solved positions in compact fixed-width records, and how the original database pipeline is used by BitBully today.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-weighted-observations-and-mini-batches",
+        
+          title: "Online Estimation&amp;#58; Weighted Observations and Mini-Batches",
+        
+        description: "Carrying the weighted scatter derivation from the thesis through in full, to obtain exact single-observation and mini-batch updates, together with a four-point example which catches an incorrect batch formula.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/weighted-mean-and-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Transposition Tables",
+        
+        description: "Why the same Connect-4 position keeps reappearing in the search tree, how Zobrist hashing exploits three properties of the exclusive OR, and why the more recent solver manages without it entirely.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-transposition-tables/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-mean-and-the-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; The Mean and the Covariance Matrix",
+        
+        description: "Deriving a running mean and scatter matrix from the definitions, carrying every step of the algebra through, and distinguishing the unbiased covariance from the Gaussian maximum-likelihood estimate.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-mean-and-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
+        
+        description: "How the two solvers combine centre-first priorities, threat counts and parity heuristics, and how non-losing move generation removes branches before they reach alpha-beta.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-learning-from-a-changing-data-stream",
+        
+          title: "Online Estimation&amp;#58; Learning from a Changing Data Stream",
+        
+        description: "Why streaming anomaly detection needs incremental statistics, and how this series connects means, covariances, forgetting and inverse updates back to Appendix B.2 of my PhD thesis.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-estimation-introduction/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Board Representations",
+        
+        description: "How CFour and BitBully encode a Connect-4 position in 64-bit words, and how guard bits, shifts, exact position codes, and generated masks change the operations used by the search.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-board-representations/";
+          
+        },
+      },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
+        
+          title: "Solving a Mini Sudoku in 6502 Assembly",
+        
+        description: "A deep dive into solving 4x4 mini-Sudokus using a recursive backtracking algorithm written entirely in 6502 assembly, including design decisions, memory layout, and emulator-based inspection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/mini-sudoku-asm/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge",
+        
+          title: "The Hexadecimal Digit Canon Challenge",
+        
+        description: "A combinatorial programming challenge set in base 16: define a digit-canonical form for hexadecimal numbers and compute the cumulative sum of these canonical values across rapidly growing digit ranges. Simple to state, but requiring careful counting and optimization at scale.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
+        
+        description: "How alpha-beta search turns the Minimax recurrence into a practical Connect-4 solver, what its bounds mean, and how the real BitBully loop implements the cutoff.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-tree-search-algorithms/";
+          
+        },
+      },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
+        
+          title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
+        
+        description: "We study how splitting an integer into equal parts affects the maximum attainable product and how arithmetic properties of the optimum emerge. In particular, we relate a continuous optimization problem to the decimal structure of the resulting rational values.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-83p100-quanity-equal-parts/";
+          
+        },
+      },{id: "post-short-notes-on-a-curious-prefix-sum-problem",
+        
+          title: "Short Notes: On a Curious Prefix-Sum Problem",
+        
+        description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-818p100-generalized-parity-recurrence/";
+          
+        },
+      },{id: "post-short-notes-summing-non-isolated-divisors-across-all-subsets",
+        
+          title: "Short Notes: Summing Non-Isolated Divisors Across All Subsets",
+        
+        description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-844p100-divisors-sets/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
+        
+        description: "How a Java Connect-4 agent from 2012 led to the C++/Python solver BitBully, why the game is small enough to solve but large enough to make search engineering matter, and what this series will cover.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-introduction-and-tree-search-algorithms/";
+          
+        },
+      },{id: "post-backpropagation-from-scratch-feed-forward-neural-networks-in-matrix-notation",
+        
+          title: "Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation",
+        
+        description: "A notation-first walkthrough of feed-forward neural networks and vectorized backpropagation, focusing on how the math translates directly into clean, correct implementations. Covers forward pass, backprop, batching, and practical training considerations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/neural-nets-and-backprop/";
+          
+        },
+      },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
+        
+          title: "Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python",
+        
+        description: "Learn how to estimate the mean, covariance, and inverse covariance matrices in an online or batch-incremental fashion. This post explains the theory behind forgetting factors and effective memory, provides Python implementations for both online and batch estimators, and investigates their accuracy and efficiency through experiments and visualizations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/online-batch-estimate-cov-mu/";
+          
+        },
+      },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
+        
+          title: "The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution",
+        
+        description: "This post explores why the squared Mahalanobis distance of Gaussian data follows a Chi-square distribution. We cover the theory step by step, show empirical evidence, and explain how this relationship provides a principled way to set anomaly detection thresholds using quantiles.A companion Jupyter Notebook with code, benchmarks, and visualizations is provided to put the theory into practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance/";
+          
+        },
+      },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
+        
+          title: "Notes on the Runtime Complexity of Latin Hypercube Sampling",
+        
+        description: "Exploring the runtime complexity of the Latin Hypercube Sampling (LHS) algorithm, this post investigates how computation time scales with the number of design points. By measuring runtimes, applying log-log transformations, and using weighted linear regression, we estimate the polynomial order of growth and provide practical insights into the expected performance of LHS for larger datasets.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-few-notes-on-the-runtime-complexity-of-latin-hypercube-sampling/";
+          
+        },
+      },{id: "post-implementing-the-mahalanobis-distance-in-python",
+        
+          title: "Implementing the Mahalanobis Distance in Python",
+        
+        description: "A hands-on Jupyter Notebook implementation of the Mahalanobis distance in Python. Covers theory, multiple implementations (NumPy, JAX, TensorFlow, SciPy), benchmarking on low- and high-dimensional data, visualizations, and its connection to the Chi-square distribution for anomaly detection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance-implementations/";
+          
+        },
+      },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
+        
+          title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT...",
+        
+        description: "A DIY IoT project using the ESP8266-01 module to build a network-controlled adapter plug from scratch. This project demonstrates how to create connected devices with minimal hardware and effort using Wi-Fi and MQTT.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/control-an-adapter-plug-with-an-esp8266-and-mqtt/";
+          
+        },
+      },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
+        
+          title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches",
+        
+        description: "Discover the Seychelles’ most stunning beaches from a new perspective. From the iconic Anse Source d’Argent on La Digue to the sweeping Anse Intendance on Mahé, these drone shots capture some of the islands’ breathtaking beauty.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/seychelles-images/";
+          
+        },
+      },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
+        
+          title: "Short Notes: Understanding Euclid’s GCD Algorithm",
+        
+        description: "A concise walkthrough of why Euclid’s Algorithm correctly computes the greatest common divisor (GCD), using basic properties of divisibility and remainders.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/euclids-algorithm/";
+          
+        },
+      },{id: "post-conway-39-s-game-of-life",
+        
+          title: "Conway&#39;s Game of Life",
+        
+        description: "An introduction to Conway’s Game of Life with an implementation in R. We explore the simple rules behind this zero-player cellular automaton, simulate its evolution on a 100×100 grid, and visualize emerging patterns and population dynamics over time.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/conways-game-of-life/";
+          
+        },
+      },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
+        
+          title: "Visualizing High-Dimensional Data Using Parallel Coordinates",
+        
+        description: "A deep dive into the visualization technique of Parallel Coordinates (||-Coordinates), exploring its strengths, challenges, and practical applications in data mining. Through detailed case studies—including wine quality analysis and the MiniBooNe particle dataset—we demonstrate how this powerful tool can reveal hidden structures, correlations, and clusters in high-dimensional data. With insights into alpha blending, axis reordering, outlier handling, and visual classification, this post offers both theoretical background and hands-on use cases for using Parallel Coordinates effectively.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/visualizing-high-dimensional-data-with-parallel-coordinates/";
+          
+        },
+      },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
+        
+          title: "Short Notes: The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix",
+        
+        description: "This post explores how a multivariate Gaussian distribution simplifies when the covariance matrix is diagonal. By breaking down the math, we show how the density function factorizes into a product of independent univariate Gaussians—making both interpretation and computation more tractable.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/";
+          
+        },
+      },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
+        
+          title: "Understanding Bootstrap Sampling: Where Euler’s Number Meets Random Forests",
+        
+        description: "A common problem involves drawing a sample of size n from a set of n elements, with replacement. For example, in Random Forests, each decision tree is trained on a bootstrap sample drawn n times with replacement from the training data. A natural question is: how many unique examples can we expect in such a sample? Since sampling is done with replacement, some examples are likely selected multiple times, while others may not be selected at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/sampling-with-replacement-random-forest/";
+          
+        },
+      },{id: "post-beyond-3d-generalizing-the-vector-cross-product",
+        
+          title: "Beyond 3D: Generalizing the Vector Cross Product",
+        
+        description: "Imagine you are working in three-dimensional space and have two directions. You want to find a third direction that is perpendicular to both of them. In this setting, there&#39;s a well-known solution: the cross product. When applied to the two original directions, it produces a new one that is exactly orthogonal to both.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-generalization-of-the-vector-cross-product/";
+          
+        },
+      },{id: "post-a-post-with-marimo-snippets",
+        
+          title: "a post with marimo snippets",
+        
+        description: "running Python in the browser with marimo",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/marimo/";
+          
+        },
+      },{id: "post-math-challenge-the-sequence-of-fibonacho",
+        
+          title: "Math Challenge: The Sequence of Fibonacho",
+        
+        description: "The Fibonacho Sequence is a playful and intriguing twist on the classical Fibonacci numbers. Unlike its better-known cousin, the Fibonacho Sequence does not follow the same simple recurrence relation. Instead, it introduces a slightly different structure, making it a entertaining puzzle for math enthusiasts and programmers alike. Are you ready to dive into the challenge?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/the-fibonacho-sequence/";
+          
+        },
+      },{id: "post-short-notes-upgrade-your-github-workflow-migrate-from-https-to-ssh",
+        
+          title: "Short Notes: Upgrade Your GitHub Workflow - Migrate from HTTPS to SSH",
+        
+        description: "A step-by-step guide to transitioning from HTTPS to SSH for secure and seamless GitHub repository management.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/migrating-git-from-https-to-ssh/";
+          
+        },
+      },{id: "post-designing-an-8-bit-integer-primality-test-using-logic-circuits",
+        
+          title: "Designing an 8-Bit Integer Primality Test Using Logic Circuits",
+        
+        description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/primality-test-logical-circuit/";
+          
+        },
+      },{id: "post-short-notes-installing-gcc-13-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing GCC 13 on Debian and Ubuntu",
+        
+        description: "Learn how to install and configure the latest GNU GCC/G++ compiler on Debian and Ubuntu systems. This step-by-step guide covers updating packages, adding the Toolchain Test PPA, installing GCC 13, verifying the installation, and setting it as the default compiler.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-gcc/";
+          
+        },
+      },{id: "post-short-notes-installing-the-latest-cmake-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing the Latest CMake on Debian and Ubuntu",
+        
+        description: "Learn how to install the latest version of CMake on Debian-based systems. This guide covers prerequisites, removing older versions, compiling from source, and verifying the installation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-cmake/";
+          
+        },
+      },{id: "post-stack-overflow-vulnerabilities",
+        
+          title: "Stack Overflow Vulnerabilities",
+        
+        description: "This blog post explores the fundamentals of buffer overflows, including how they arise in C and C++ programs, the role of process memory layout and the x86/IA-32 architecture, and the significance of stack frames. It covers common overflow types — stack-based, off-by-one, BSS, and heap — and shows how attackers use techniques like NOP-sledding to gain elevated privileges. Finally, it illustrates how to craft a working exploit by injecting shellcode into a vulnerable application’s memory space.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/buffer-overflows/";
+          
+        },
+      },{id: "post-a-short-implementation-of-booth-39-s-multiplication-algorithm-in-6502-assembly",
+        
+          title: "A short Implementation of Booth&#39;s Multiplication Algorithm in 6502 Assembly",
+        
+        description: "I implemented a 6502 assembly routine for multiplying two one-byte integers using Booth&#39;s algorithm. While the algorithm itself wasn&#39;t difficult to implement, it took time to create a solution that fit within 40 lines of code. I also wrote a test routine to verify the multiplication, covering various predefined combinations, edge cases, and scenarios where one factor is zero.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/";
+          
+        },
+      },{id: "post-optimizing-lagged-fibonacci-generators-for-large-scale-computations",
+        
+          title: "Optimizing Lagged Fibonacci Generators for Large-Scale Computations",
+        
+        description: "Lagged Fibonacci Generators (LFGs) are powerful tools for generating pseudo-random sequences in simulations and cryptography. While traditional implementations become inefficient when computing sparse terms at large indices, this blog explores an optimized approach using matrix exponentiation and modular arithmetic. By encoding the recurrence relation in a transformation matrix and leveraging GPU acceleration, the method achieves scalability and speed, making it ideal for large-scale applications.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/lagged-fibo-sequences/";
+          
+        },
+      },{id: "post-some-interesting-properties-of-the-exclusive-or-xor",
+        
+          title: "Some Interesting Properties of the Exclusive Or (XOR)",
+        
+        description: "The exclusive-OR — also known as exclusive disjunction (short: XOR) or antivalence — is a Boolean operation that outputs true only when exactly one of its two inputs is true (i.e., when the inputs differ). XOR has numerous applications, including cryptography, Gray codes, parity checks, and CRC checks, among others. In this blog post, we will explore some of its interesting properties that can be useful in practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-few-properties-of-the-exclusive-or/";
+          
+        },
+      },{id: "post-efficient-computation-of-sparse-fibonacci-subsequences",
+        
+          title: "Efficient Computation of Sparse Fibonacci Subsequences",
+        
+        description: "The Fibonacci sequence is a cornerstone of mathematics, defined by its elegant recurrence relation. While traditionally computed iteratively or recursively, obtaining specific terms like the 1000th or 2000th number seems to require calculating all preceding terms. But is this really necessary?In this post, we explore a powerful technique to compute arbitrary Fibonacci terms directly — bypassing the need for sequential computation. We’ll also tackle an exciting challenge: efficiently finding one thousand Fibonacci numbers modulo a given value, corresponding to every 10th prime greater than a trillion.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibo-subsequences/";
+          
+        },
+      },{id: "post-don-39-t-drink-and-derive-amp-58-a-simple-proof-that-1-2",
+        
+          title: "Don&#39;t Drink and Derive&amp;#58; A Simple Proof that 1 = 2",
+        
+        description: "In this blog post, we present a fun little proof that 1 is actually equal to 2. Or is it?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-simple-proof-that-1-2/";
+          
+        },
+      },{id: "post-cuda-basics-decoding-dtmf-signals",
+        
+          title: "CUDA Basics: Decoding DTMF Signals",
+        
+        description: "Discover the fundamentals of CUDA programming through a dual-tone multi-frequency (DTMF) signaling example. Learn how to generate DTMF signals, save them as .wav files, design FIR bandpass filters, and decode dialed keys. This project includes a CUDA/C++ implementation (dtmfCuda.cu) to showcase the power of parallel computing for signal processing.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/dtmf-cuda/";
+          
+        },
+      },{id: "post-a-few-bit-twiddling-tricks",
+        
+          title: "A few Bit-Twiddling Tricks",
+        
+        description: "When working with bit-fields, there are several techniques that can significantly speed up code — beyond the inherent performance benefits that bit-fields provide for many problems. In this post, I will introduce a few bit-twiddling tricks that I occasionally use, which can be useful for a variety of tasks.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/soa-few-bit-twiddling-tricks/";
+          
+        },
+      },{id: "post-the-monkey-and-coconut-problem",
+        
+          title: "The Monkey and Coconut Problem",
+        
+        description: "Three sailors and a monkey are stranded on a deserted island. They gather a pile of coconuts to divide the next morning. During the night, each sailor wakes up, divides the pile into three parts, gives the extra coconut to the monkey, hides his share, and restacks the remaining coconuts. In the morning, the remaining coconuts are again divided into three parts, with one coconut left over, which is given to the monkey.The question is: how many coconuts were originally in the pile?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/the-sailors-problem/";
+          
+        },
+      },{id: "post-google-gemini-updates-flash-1-5-gemma-2-and-project-astra",
+        
+          title: 'Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "We’re sharing updates across our Gemini family of models and a glimpse of Project Astra, our vision for the future of AI assistants.",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/", "_blank");
+          
+        },
+      },{id: "post-short-notes-gradient-of-the-softmax-function-for-the-cross-entropy-loss",
+        
+          title: "Short Notes: Gradient of the Softmax Function for the Cross-Entropy Loss",
+        
+        description: "The softmax function in neural networks ensures outputs sum to one and are within [0,1]. Here&#39;s how to compute its gradients when the cross-entropy loss is applied.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/gradient-softmax-function-with-cross-entropy/";
+          
+        },
+      },{id: "post-obfuscating-a-function-amp-8211-how-not-to-write-code",
+        
+          title: "Obfuscating a Function &amp;#8211; How not to write Code",
+        
+        description: "A while back, I created a straightforward function to convert an integer into a new format, resulting in clear code. However, I inexplicably chose to obscure its purpose, leading to the following outcome: Read more in this post...",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/obsfucated-c-code/";
+          
+        },
+      },{id: "post-short-notes-eigendecomposition-of-a-matrix",
+        
+          title: "Short Notes: Eigendecomposition of a Matrix",
+        
+        description: "The derivation of the eigendecomposition is surprisingly simple. Read more here!",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/eigendecomposition/";
+          
+        },
+      },{id: "post-surprising-bank-investment",
+        
+          title: "Surprising Bank Investment",
+        
+        description: "Discover how investing in a startup turned into a financial rollercoaster. Your bank offers you a chance to invest in a new venture, with the promise of keeping all the profits if successful. Excited, you dive in with $1,000,000, providing 99% of the investment while the bank chips in the remaining 1%.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/surprising-investment/";
+          
+        },
+      },{id: "post-solving-peg-solitaire-with-efficient-bit-board-representations",
+        
+          title: "Solving Peg Solitaire with efficient Bit-Board Representations",
+        
+        description: "Many of us might now the board game peg solitaire and might even have one of its many variants at home. Peg solitaire is a one-player game played on a board with n holes and n - 1 pegs. The number of holes depends on the board variant. For example, the English variant consists of 33 holes while the typical diamond variant consists of 41 holes. The rules of the game are rather easy.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/solving-peg-solitaire/";
+          
+        },
+      },{id: "post-choosing-a-voltage-divider-resistor-for-a-light-dependent-resistor",
+        
+          title: "Choosing a Voltage Divider Resistor for a Light Dependent Resistor",
+        
+        description: "Imagine that you are planning to use a Light Dependent Resistor (LDR) for your new IoT prototype in order to detect whether or not a lamp is turned on in a (otherwise dark) room. A common way to solve this problem is the usage of a voltage divider circuit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/voltage-divider/";
+          
+        },
+      },{id: "post-deriving-a-closed-form-solution-of-the-fibonacci-sequence",
+        
+          title: "Deriving a Closed-Form Solution of the Fibonacci Sequence",
+        
+        description: "The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibonacci-closed/";
+          
+        },
+      },{id: "post-یک-نوشتهٔ-راست-چین",
+        
+          title: "یک نوشتهٔ راست‌چین",
+        
+        description: "نمونه‌ای از پشتیبانی زبان‌های راست‌چین",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2022/rtl/";
+          
+        },
+      },{id: "post-displaying-external-posts-on-your-al-folio-blog",
+        
+          title: 'Displaying External Posts on Your al-folio Blog <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
+          
+        },
+      },{id: "books-the-godfather",
+          title: 'The Godfather',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/the_godfather/";
+            },},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully Preview v0.0.38 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_2/";
+            },},{id: "news-bitbully-databases-0-0-2-released-opening-databases-for-the-board-game-connect-4",
+          title: 'bitbully-databases 0.0.2 released: Opening Databases for the Board Game Connect-4.',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_3/";
+            },},{id: "news-bitbully-v0-0-74-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully v0.0.74 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_1/";
+            },},{id: "projects-bitbully",
+          title: 'BitBully',
+          description: "One of the fastest and perfect-playing Connect-4 solvers around",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/0_bitbully/";
+            },},{id: "projects-bitbully-databases",
+          title: 'BitBully Databases',
+          description: "Precomputed Connect-4 opening books with millions of evaluated positions",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_bitbully_databases/";
+            },},{id: "teachings-data-science-fundamentals",
+          title: 'Data Science Fundamentals',
+          description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/data-science-fundamentals/";
+            },},{id: "teachings-introduction-to-machine-learning",
+          title: 'Introduction to Machine Learning',
+          description: "This course provides an introduction to machine learning concepts, algorithms, and applications. Students will learn about supervised and unsupervised learning, model evaluation, and practical implementations.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/introduction-to-machine-learning/";
+            },},{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/MarkusThill", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/markus-thill-a4991090", "_blank");
+        },
+      },{
+        id: 'social-researchgate',
+        title: 'ResearchGate',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.researchgate.net/profile/Markus-Thill/", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=Bu5eFxQAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-projecteuler',
+        title: 'Projecteuler',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://projecteuler.net/", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
