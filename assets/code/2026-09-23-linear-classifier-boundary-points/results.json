@@ -1,0 +1,61 @@
+{
+  "scenario": "Synthetic light-triggered relay; not measured experimental data",
+  "seed": 20171006,
+  "feature_scaling": "Each lamp setting is normalized to the interval [0, 1]",
+  "boundary_count": 18,
+  "orientation_label_count": 4,
+  "boundary_measurement_noise_std_per_coordinate": 0.018,
+  "true_unnormalized_weights": [
+    0.65,
+    0.9
+  ],
+  "true_unnormalized_intercept": -0.75,
+  "decision_rule": "ON (+1) for a positive score; OFF (-1) otherwise",
+  "versions": {
+    "python": "3.12.12",
+    "numpy": "2.5.3",
+    "matplotlib": "3.11.2"
+  },
+  "fitted_unit_normal": [
+    0.5816819096001133,
+    0.8134163485226773
+  ],
+  "fitted_intercept": -0.6754088737055162,
+  "true_unit_normal": [
+    0.5854905538443584,
+    0.8106792283998809
+  ],
+  "true_unit_intercept": -0.6755660236665674,
+  "orientation_error_degrees": 0.2687265995149189,
+  "boundary_rms_distance": 0.017098377379817276,
+  "test_correct": 240,
+  "test_count": 240,
+  "test_accuracy": 1.0,
+  "misclassified_log_ids": [],
+  "first_three_predictions": [
+    {
+      "log_id": 0,
+      "x1": 0.15,
+      "x2": 0.2,
+      "signed_distance": -0.4254733175609637,
+      "predicted_label": -1,
+      "true_label": -1
+    },
+    {
+      "log_id": 1,
+      "x1": 0.8,
+      "x2": 0.8,
+      "signed_distance": 0.4406697327927165,
+      "predicted_label": 1,
+      "true_label": 1
+    },
+    {
+      "log_id": 2,
+      "x1": 0.5,
+      "x2": 0.47,
+      "signed_distance": -0.0022622350998011687,
+      "predicted_label": -1,
+      "true_label": -1
+    }
+  ]
+}

@@ -10,3 +10,6 @@ _data/citations.yml
 
 # Ignore the override ledger written by `al-folio upgrade overrides accept`
 .al-folio-overrides.yml
+
+# Ignore JSON written by the post example generators (assets/code/*/generate_example.py)
+assets/code/*/results.json
