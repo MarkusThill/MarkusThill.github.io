@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Carrying the weighted scatter derivation from the thesis through in full, to obtain exact single-observation and mini-batch updates, together with a four-point example which catches an incorrect batch formula."
 tags: [online estimation, covariance, data streams, mini-batch, weighted statistics, math, python]
-thumbnail: assets/img/2026-online-estimation/stats.jpg
+thumbnail: assets/img/2026-online-estimation/thumbnails/weighted-observations.webp
 giscus_comments: true
 toc:
   beginning: true

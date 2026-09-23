@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving a running mean and scatter matrix from the definitions, carrying every step of the algebra through, and distinguishing the unbiased covariance from the Gaussian maximum-likelihood estimate."
 tags: [online estimation, covariance, data streams, scatter matrix, math, python, R]
-thumbnail: assets/img/2026-online-estimation/python-convergence.png
+thumbnail: assets/img/2026-online-estimation/thumbnails/mean-and-covariance.webp
 giscus_comments: true
 toc:
   beginning: true

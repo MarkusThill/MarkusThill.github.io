@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving the covariance of a weighted sample mean line by line, stating the independence assumptions it needs, and showing why the covariance denominator must not be used to normalize the weights of a mean."
 tags: [online estimation, covariance, data streams, standard error, weighted statistics, math, python]
-thumbnail: assets/img/2026-online-estimation/mean-weight-normalization.png
+thumbnail: assets/img/2026-online-estimation/thumbnails/covariance-of-weighted-means.webp
 giscus_comments: true
 toc:
   beginning: true

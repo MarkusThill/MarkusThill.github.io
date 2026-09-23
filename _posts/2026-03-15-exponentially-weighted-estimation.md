@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving exponentially decaying mean and covariance estimates in full, correcting the unrolled historical expansion, and distinguishing decay applied once per batch from decay applied once per observation."
 tags: [online estimation, covariance, data streams, forgetting factor, mini-batch, math, python, R]
-thumbnail: assets/img/2026-online-estimation/batch-forgetting.png
+thumbnail: assets/img/2026-online-estimation/thumbnails/exponential-forgetting.webp
 giscus_comments: true
 toc:
   beginning: true

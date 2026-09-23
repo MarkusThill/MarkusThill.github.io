@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R."
 tags: [online estimation, covariance, inverse covariance, Woodbury, Sherman-Morrison, Mahalanobis, data streams, math, python, R]
-thumbnail: assets/img/2026-online-estimation/inverse-initialization.png
+thumbnail: assets/img/2026-online-estimation/thumbnails/inverse-covariance.webp
 giscus_comments: true
 toc:
   beginning: true

@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Why streaming anomaly detection needs incremental statistics, and how this series connects means, covariances, forgetting and inverse updates back to Appendix B.2 of my PhD thesis."
 tags: [online estimation, covariance, data streams, anomaly detection, forgetting factor, math]
-thumbnail: assets/img/2026-online-estimation/stats.jpg
+thumbnail: assets/img/2026-online-estimation/thumbnails/data-stream.webp
 giscus_comments: true
 toc:
   beginning: true

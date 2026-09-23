@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving the finite and limiting effective sample size of an exponentially weighted estimator step by step, revisiting the 100-versus-199 experiment, and stating carefully what the memory interpretation does and does not establish."
 tags: [online estimation, covariance, data streams, forgetting factor, effective sample size, math, python, R]
-thumbnail: assets/img/2026-online-estimation/notebook-memory-comparison.png
+thumbnail: assets/img/2026-online-estimation/thumbnails/estimator-memory.webp
 giscus_comments: true
 toc:
   beginning: true
