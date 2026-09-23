@@ -186,10 +186,55 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
+    // Local override: jekyll-jupyter-notebook sizes the container once, from an
+    // inline `onload` handler. MathJax typesets inside the iframe *after* that,
+    // so the notebook ends up taller than the box measured for it and the iframe
+    // grows a vertical scrollbar. Keep the container synced to the real content.
+    const syncNotebookHeight = () => {
+      const iframeDocument = iframe.contentDocument;
+      const container = iframe.parentElement;
+      if (!iframeDocument || !container) {
+        return;
+      }
+
+      const content = Math.max(iframeDocument.documentElement?.scrollHeight || 0, iframeDocument.body?.scrollHeight || 0);
+      if (!content) {
+        return;
+      }
+
+      const target = content + 10;
+      const current = parseFloat(container.style.paddingBottom) || 0;
+      // Only react to real changes -- a sub-pixel churn here would feed back into
+      // the iframe viewport height and could oscillate.
+      if (Math.abs(current - target) < 4) {
+        return;
+      }
+      container.style.paddingBottom = target + "px";
+    };
+
+    const observeNotebookHeight = () => {
+      const iframeDocument = iframe.contentDocument;
+      if (!iframeDocument?.body || typeof ResizeObserver === "undefined") {
+        return;
+      }
+
+      syncNotebookHeight();
+      const observer = new ResizeObserver(syncNotebookHeight);
+      observer.observe(iframeDocument.documentElement);
+      observer.observe(iframeDocument.body);
+      // MathJax can finish after the observer attaches without changing the
+      // observed boxes, so re-measure a couple of times as a safety net.
+      [250, 1000, 2500].forEach((delay) => window.setTimeout(syncNotebookHeight, delay));
+    };
+
     if (iframe.contentDocument?.readyState === "complete") {
       applyNotebookStyling();
+      observeNotebookHeight();
     }
-    iframe.addEventListener("load", applyNotebookStyling);
+    iframe.addEventListener("load", () => {
+      applyNotebookStyling();
+      observeNotebookHeight();
+    });
   });
 
   if (window.AlFolioUi && typeof window.AlFolioUi.initPopovers === "function") {
