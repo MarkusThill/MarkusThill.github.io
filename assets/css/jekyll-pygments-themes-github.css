@@ -156,7 +156,10 @@
 } /* Literal.String.Interpol */ /* Literal.String.Other */
 .highlight .sr {
   color: #009926;
-} /* Literal.String.Regex */ /* Literal.String.Single */
+} /* Literal.String.Regex */
+.highlight .s1 {
+  color: #d01040;
+} /* Literal.String.Single */
 .highlight .ss {
   color: #990073;
 } /* Literal.String.Symbol */
