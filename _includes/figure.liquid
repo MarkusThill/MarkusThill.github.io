@@ -78,15 +78,15 @@
       {% elsif site.lazy_loading_images %}
         loading="lazy"
       {% endif %}
-      onerror="this.onerror=null; $('.responsive-img-srcset').remove();"
+      onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"
     >
   </picture>
 
   {% if include.caption %}
-    <!-- - Changed by Markus - -->
+    <!-- Local override: numbered captions with inline Markdown -->
     <figcaption class="caption">
       <b>Figure {{ img_counter }}:</b> {{ include.caption | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines }}
     </figcaption>
-    {% capture img_counter %}{{ img_counter | plus:1 }}{% endcapture %}
+    {% capture img_counter %}{{ img_counter | plus: 1 }}{% endcapture %}
   {% endif %}
 </figure>
