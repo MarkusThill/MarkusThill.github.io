@@ -1,0 +1,116 @@
+{
+  "notebook": "/tmp/claude-1000/-home-mthill-MarkusThill-github-io/cf956242-d926-49a9-b848-a1fde0ffb328/scratchpad/smoke.ipynb",
+  "sha256": "b0a76aa4ec590c7ad8057d6ab4fd41ff70cabc6fa01ad39c3b63e5ad6da3d00f",
+  "execution": "All plain Python code cells, sequentially in a fresh namespace; stdout and figures captured. No Jupyter kernel required.",
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "seconds": 111.99267988099746,
+  "code_cells": 16,
+  "cells": [
+    {
+      "cell": 2,
+      "execution_count": 1,
+      "stdout": "numpy 2.2.6 | jax.numpy available: False\n"
+    },
+    {
+      "cell": 3,
+      "execution_count": 2,
+      "stdout": ""
+    },
+    {
+      "cell": 5,
+      "execution_count": 3,
+      "stdout": ""
+    },
+    {
+      "cell": 6,
+      "execution_count": 4,
+      "stdout": "Time needed: 0.77 seconds\nInverse scatter available: True\n"
+    },
+    {
+      "cell": 7,
+      "execution_count": 5,
+      "stdout": "error_mu 5.95180372001125e-16\nerror_sigma 4.6803353158158746e-15\nerror_sigma_inv 9.839619643536889e-14\n"
+    },
+    {
+      "cell": 9,
+      "execution_count": 6,
+      "stdout": "max |\u03a3\u0302 - np.cov|          : 2.710505431213761e-20\nmax |\u03a3\u0302 \u00b7 \u03a3\u0302\u207b\u00b9 - I|         : 4.440892098500626e-16\n"
+    },
+    {
+      "cell": 11,
+      "execution_count": 7,
+      "stdout": ""
+    },
+    {
+      "cell": 12,
+      "execution_count": 8,
+      "stdout": "Using the already defined covariance matrix with shape (200, 200) and the already defined mean vector.\n"
+    },
+    {
+      "cell": 13,
+      "execution_count": 9,
+      "stdout": "Time needed: 10.45 seconds\n"
+    },
+    {
+      "cell": 14,
+      "execution_count": 10,
+      "stdout": "error_mu 8.390206931996325e-16\nerror_sigma 2.5118172034780274e-15\nerror_sigma_inv 1.6413798664276522e-16\n"
+    },
+    {
+      "cell": 16,
+      "execution_count": 11,
+      "stdout": ""
+    },
+    {
+      "cell": 17,
+      "execution_count": 12,
+      "stdout": "Limiting memory of the fully online estimator with \u03bb=0.99: n_mem=199\nFinite-sample memory after n=500 observations:           n_mem=196.402\n(the sum of weights W_n converges to 100, which is a different quantity)\nTime needed: 42.38 seconds\n"
+    },
+    {
+      "cell": 18,
+      "execution_count": 13,
+      "stdout": "expected_Sigma_mean:\n [[ 0.01527479 -0.01527479]\n [-0.01527479  0.01782059]]\n\nactual_Sigma_mean:\n [[ 0.01501401 -0.01502693]\n [-0.01502693  0.01755839]]\n\n1 / sum(w_i^2) = 196.402 = n_mem after 500 observations\n\nUsing the covariance denominator instead would predict 0.01543153\nthe correct value is                                     0.01527479\nthe simulation gives                                     0.01501401\nsmoke: mean abs diff 0.0002546793535509002\n"
+    },
+    {
+      "cell": 19,
+      "execution_count": 14,
+      "stdout": ""
+    },
+    {
+      "cell": 21,
+      "execution_count": 15,
+      "stdout": "Time needed: 44.47 seconds\n"
+    },
+    {
+      "cell": 23,
+      "execution_count": 16,
+      "stdout": "empirical std of the online mean : [0.12251125 0.13248598]\npredicted std of the online mean : [0.12359123 0.13349379]\nempirical std of the offline mean: [0.12100109 0.1310314 ]\n"
+    }
+  ],
+  "finite_effective_size": 196.40201774745364,
+  "limiting_effective_size": 199.0,
+  "decay": 0.99,
+  "observations_per_experiment": 500.0,
+  "experiments": 3000.0,
+  "predicted_mean_covariance": [
+    [
+      0.01527479215543291,
+      -0.01527479215543291
+    ],
+    [
+      -0.01527479215543291,
+      0.017820590848005063
+    ]
+  ],
+  "empirical_mean_covariance": [
+    [
+      0.015014010331183105,
+      -0.015026925286724384
+    ],
+    [
+      -0.015026925286724384,
+      0.01755838899546832
+    ]
+  ]
+}

@@ -23,7 +23,7 @@ images:
 
 > In this Jupyter Notebook below, we explore fully online and batch-incremental estimators for the mean and covariance matrix, including their inverses. We look at how these algorithms work, why they are useful, and how they can adapt to non-stationary data through a forgetting factor. Importantly, these approaches allow us to update estimates efficiently without recomputing matrix inverses from scratch.
 
-The revised companion uses seeded NumPy experiments to check weighted online and batch estimates against direct calculations. Inverse updates begin after sufficient rank is available. The examples distinguish forgetting per batch from forgetting per observation, and compare finite-sample memory with its limiting value. The notebook is the runnable companion to the seven-part series [Online Estimation](/blog/2026/online-estimation-introduction/), which derives all of these updates from Appendix B.2 of my PhD thesis.
+> The goal is to provide both the mathematical background and practical insights for applying online covariance and mean estimation in real-world scenarios such as anomaly detection, adaptive systems, and streaming analytics.
 
 **Related posts:** The covariance matrix estimated here is a key ingredient for the [Mahalanobis distance](/blog/2025/mahalanobis-distance/) — which connects to the Chi-square distribution for anomaly detection thresholds. For Python implementations and benchmarks, see [Implementing the Mahalanobis Distance in Python](/blog/2025/mahalanobis-distance-implementations/).
 
@@ -39,7 +39,7 @@ The revised companion uses seeded NumPy experiments to check weighted online and
 {::nomarkdown}
 <div class="jupyter-child-ext">
 {% assign jupyter_path = "assets/jupyter/MarkusThill.github.io-jupyter/2025_09_27_online_estimate_cov_mu.ipynb" | relative_url %}
-{% capture notebook_exists %}{% file_exists assets/jupyter/MarkusThill.github.io-jupyter/2025_09_27_online_estimate_cov_mu.ipynb %}{% endcapture %}
+{% capture notebook_exists %}{% file_exists assets/jupyter/MarkusThill.github.io-jupyter/2025_09_26_mahalanobis.ipynb %}{% endcapture %}
 {% if notebook_exists == "true" %}
 {% jupyter_notebook jupyter_path %}
 {% else %}

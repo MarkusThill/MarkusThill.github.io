@@ -1,0 +1,51 @@
+{
+  "python": "3.10.12",
+  "numpy": "2.2.6",
+  "notebook": "/home/mthill/MarkusThill.github.io/assets/jupyter/MarkusThill.github.io-jupyter/backups/2025_09_27_online_estimate_cov_mu.ipynb.before-2026-series.bak",
+  "legacy": "/home/mthill/MarkusThill.github.io/assets/code/2026-online-estimation/legacy/mahalanobis.py",
+  "notebook_sha256": "70149cded8eeb5bf1379b5f5c8f23d9ffb8e5955eca73edf84c1452ce7d9815c",
+  "legacy_sha256": "febd87b1623308bd91721397da6e17bdf2397627f63000a4553706b4e919b76e",
+  "execution_scope": "Extracted original NumPy classes; annotations postponed; no GPU claims.",
+  "annotation_definition": "TypeError: Parameters to generic types must be types. Got <module 'numpy' from '/home/mthill/MarkusThill.github.io/tools/.venv/lib/python3.10/site-packages/nu.",
+  "legacy_first_batch": "Singular matrix",
+  "legacy_example_rank_bound": {
+    "dimension": 300,
+    "first_batch_size_range": [
+      10,
+      19
+    ],
+    "first_scatter_rank_at_most": 18
+  },
+  "updated_small_scale_batch": {
+    "covariance_max_absolute_error": 4.0657581468206416e-20,
+    "precision_relative_error_against_advertised_covariance": 0.21900629828381551,
+    "precision_relative_error_against_implicit_ridge": 2.9186734951750785e-16,
+    "inverse_identity_residual_frobenius": 0.38785530459804685
+  },
+  "decaying_implicit_ridge_relative_errors": {
+    "OnlineCovarianceMeanEstimator": 5.094967946425477e-16,
+    "BatchCovarianceMeanEstimator": 4.58095310379969e-16
+  },
+  "original_class_mean_and_covariance_max_absolute_errors": {
+    "updated_online": 8.881784197001252e-16,
+    "updated_batch": 4.440892098500626e-16,
+    "legacy_online": 8.881784197001252e-16,
+    "legacy_batch": 4.440892098500626e-16
+  },
+  "memory_normalization": {
+    "lambda": 0.99,
+    "observations": 500,
+    "normalized_weight_sum": 1.0,
+    "notebook_weight_sum": 1.0051176544210123,
+    "finite_effective_sample_size": 196.4020177474536,
+    "correct_mean_variance_first_component": 0.01527479215543291,
+    "notebook_mean_variance_first_component": 0.015431534423355932,
+    "relative_variance_overstatement": 0.010261499228797932
+  },
+  "reference_checks": {
+    "prefix_states": 432,
+    "inverse_comparisons": 396,
+    "maximum_relative_covariance_error": 7.927091523298525e-16,
+    "maximum_relative_inverse_error": 2.4289393890002332e-14
+  }
+}

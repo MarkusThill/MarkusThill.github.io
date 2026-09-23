@@ -13,3 +13,8 @@ _data/citations.yml
 
 # Ignore JSON written by the post example generators (assets/code/*/generate_example.py)
 assets/code/*/results.json
+
+# Ignore JSON written by the online-estimation audit, figure and notebook runners
+assets/code/2026-online-estimation/audit-results.json
+assets/code/2026-online-estimation/figure-results.json
+assets/code/2026-online-estimation/notebook-validation.json

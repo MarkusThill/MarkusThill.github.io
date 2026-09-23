@@ -1,0 +1,70 @@
+{
+  "posts": [
+    {
+      "file": "_posts/2026-02-01-online-estimation-introduction.md",
+      "date": "2026-02-01",
+      "site_asset_links": 2,
+      "python_blocks": 0,
+      "display_math_blocks": 1,
+      "word_count_approx": 1042
+    },
+    {
+      "file": "_posts/2026-02-15-online-mean-and-covariance.md",
+      "date": "2026-02-15",
+      "site_asset_links": 6,
+      "python_blocks": 1,
+      "display_math_blocks": 7,
+      "word_count_approx": 1191
+    },
+    {
+      "file": "_posts/2026-03-01-weighted-mean-and-covariance.md",
+      "date": "2026-03-01",
+      "site_asset_links": 2,
+      "python_blocks": 1,
+      "display_math_blocks": 12,
+      "word_count_approx": 1131
+    },
+    {
+      "file": "_posts/2026-03-15-exponentially-weighted-estimation.md",
+      "date": "2026-03-15",
+      "site_asset_links": 6,
+      "python_blocks": 1,
+      "display_math_blocks": 7,
+      "word_count_approx": 1250
+    },
+    {
+      "file": "_posts/2026-03-29-covariance-of-weighted-means.md",
+      "date": "2026-03-29",
+      "site_asset_links": 4,
+      "python_blocks": 1,
+      "display_math_blocks": 8,
+      "word_count_approx": 986
+    },
+    {
+      "file": "_posts/2026-04-12-memory-of-exponential-estimators.md",
+      "date": "2026-04-12",
+      "site_asset_links": 7,
+      "python_blocks": 1,
+      "display_math_blocks": 8,
+      "word_count_approx": 1257
+    },
+    {
+      "file": "_posts/2026-04-26-online-inverse-covariance.md",
+      "date": "2026-04-26",
+      "site_asset_links": 5,
+      "python_blocks": 1,
+      "display_math_blocks": 8,
+      "word_count_approx": 1520
+    }
+  ],
+  "notebook_links_resolve_in": "destination repository (intentionally not duplicated in working repository)",
+  "original_sources_unchanged": true,
+  "backup_hashes_verified": true,
+  "notebook_core_matches_module": true,
+  "ruby_jekyll_run": false,
+  "R_executed": false,
+  "article_python_examples_executed": 6,
+  "documentation_markdown_and_links_checked": 5,
+  "notebook_execution_hash_verified": true,
+  "formula_braces_and_inline_delimiters_checked": true
+}
