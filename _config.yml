@@ -258,7 +258,6 @@ exclude:
   - README.md
   - readme_preview/
   - SETUP_LOCAL.md
-  - UPDATING.md
   - tools/
   - gems/
   - migrations/
