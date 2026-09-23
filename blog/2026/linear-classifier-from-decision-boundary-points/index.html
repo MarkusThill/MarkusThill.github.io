@@ -1,0 +1,867 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta name="google-site-verification" content="E-cxXp9JBE8VIacUnRQwevqTkuNkkzBBa1HqjqIIgt4"> <meta http-equiv="Permissions-Policy" content="interest-cohort=()"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Constructing a Linear Classifier from Known Decision-Boundary Points | Markus Thill </title> <meta name="author" content="Markus Thill"> <meta name="description" content="Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares."> <meta name="keywords" content="machine-learning, mathematics, algorithms, programming, technical-tutorials, engineering-notes"> <meta property="og:site_name" content="Markus Thill"> <meta property="og:type" content="article"> <meta property="og:title" content="Markus Thill | Constructing a Linear Classifier from Known Decision-Boundary Points"> <meta property="og:url" content="https://MarkusThill.github.io/blog/2026/linear-classifier-from-decision-boundary-points/"> <meta property="og:description" content="Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares."> <meta property="og:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Constructing a Linear Classifier from Known Decision-Boundary Points"> <meta name="twitter:description" content="Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares."> <meta name="twitter:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Markus Thill"
+        },
+        "url": "https://MarkusThill.github.io/blog/2026/linear-classifier-from-decision-boundary-points/",
+        "@type": "BlogPosting",
+        "description": "Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares.",
+        "headline": "Constructing a Linear Classifier from Known Decision-Boundary Points",
+        
+        "sameAs": ["https://github.com/MarkusThill","https://www.linkedin.com/in/markus-thill-a4991090","https://www.researchgate.net/profile/Markus-Thill/","https://scholar.google.com/citations?user=Bu5eFxQAAAAJ","https://projecteuler.net/"],
+        
+        "name": "Markus Thill",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 1000px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8D%95&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://markusthill.github.io/blog/2026/linear-classifier-from-decision-boundary-points/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Markus</span> Thill </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"> </a> </li> <li class="nav-item "> <a class="nav-link" href="/about">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/index.html">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-nav-dropdown-toggle="true" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/publications/">publications</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/projects/">projects</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Constructing a Linear Classifier from Known Decision-Boundary Points</h1> <p class="post-meta"> Created on September 23, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/classification"> <i class="fa-solid fa-hashtag fa-sm"></i> classification</a>   <a href="/blog/tag/hyperplane"> <i class="fa-solid fa-hashtag fa-sm"></i> hyperplane</a>   <a href="/blog/tag/svd"> <i class="fa-solid fa-hashtag fa-sm"></i> svd</a>   <a href="/blog/tag/orthogonal-least-squares"> <i class="fa-solid fa-hashtag fa-sm"></i> orthogonal-least-squares</a>   <a href="/blog/tag/geometry"> <i class="fa-solid fa-hashtag fa-sm"></i> geometry</a>   <a href="/blog/tag/high-dimensional-data"> <i class="fa-solid fa-hashtag fa-sm"></i> high-dimensional data</a>   <a href="/blog/tag/multi-dimensionality"> <i class="fa-solid fa-hashtag fa-sm"></i> multi dimensionality</a>   <a href="/blog/tag/python"> <i class="fa-solid fa-hashtag fa-sm"></i> python</a>   ·   <a href="/blog/category/stats"> <i class="fa-solid fa-tag fa-sm"></i> stats</a>   <a href="/blog/category/ml"> <i class="fa-solid fa-tag fa-sm"></i> ML</a>   <a href="/blog/category/math"> <i class="fa-solid fa-tag fa-sm"></i> math</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#a-hyperplane-through-n-affinely-independent-points">A Hyperplane Through n Affinely Independent Points</a></li> <li class="toc-entry toc-h2"><a href="#from-the-parametric-form-to-a-normal-vector">From the Parametric Form to a Normal Vector</a></li> <li class="toc-entry toc-h2"><a href="#signed-distances-and-the-hesse-normal-form">Signed Distances and the Hesse Normal Form</a></li> <li class="toc-entry toc-h2"><a href="#choosing-the-orientation-and-classifying">Choosing the Orientation and Classifying</a></li> <li class="toc-entry toc-h2"><a href="#fitting-noisy-boundary-estimates">Fitting Noisy Boundary Estimates</a></li> <li class="toc-entry toc-h2"><a href="#limitations-and-the-complete-procedure">Limitations and the Complete Procedure</a></li> <li class="toc-entry toc-h2"><a href="#related-work">Related Work</a></li> <li class="toc-entry toc-h2"><a href="#a-synthetic-application-calibrating-a-light-triggered-relay">A Synthetic Application: Calibrating a Light-Triggered Relay</a></li> <li class="toc-entry toc-h2"><a href="#a-runnable-python-example">A Runnable Python Example</a></li> <li class="toc-entry toc-h2"><a href="#references">References</a></li> </ul> </div> <hr> <div id="markdown-content"> <p>Suppose we have data points \(\vec x_k \in \mathbb{R}^n\) belonging to two classes. Some points have known class labels, and the remaining points need to be classified. In addition, we have a set of points known to lie on, or close to, the decision boundary. Such boundary estimates might come from domain knowledge or experiments that locate a transition between the two classes.</p> <p>If an affine hyperplane is a reasonable approximation to the decision boundary, we can construct it from the boundary points and use the labeled observations to identify the class on each side. We first derive the exact construction from \(n\) boundary points, then extend it to fit a hyperplane to a larger set of noisy boundary estimates.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-09-23-linear-classifier-boundary-points/problem-480.webp 480w,/assets/img/2026-09-23-linear-classifier-boundary-points/problem-800.webp 800w,/assets/img/2026-09-23-linear-classifier-boundary-points/problem-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-09-23-linear-classifier-boundary-points/problem.png" class="img-fluid rounded z-depth-1 imgcenter" width="85%" height="auto" alt="Two classes, unlabeled observations, and estimated boundary points with a candidate separating line" data-zoomable="" loading="eager" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 1:</b> Two classes, unlabeled observations, and estimated boundary points with a candidate separating line. </figcaption> </figure> <p>The filled orange circles and blue crosses represent the two known classes. The hollow circles are unlabeled observations, and the gray stars are estimated boundary points. The gray line illustrates a possible linear decision boundary. Some labeled observations lie on the opposite side from most members of their class, so we should not expect perfect separation.</p> <h2 id="a-hyperplane-through-n-affinely-independent-points">A Hyperplane Through n Affinely Independent Points</h2> <p>To construct an exact hyperplane, we need \(n\) <strong>affinely independent</strong> points \(\vec p_1,\ldots,\vec p_n \in \mathbb{R}^n\). This means that the \(n-1\) difference vectors</p> \[\vec p_1-\vec p_2,\ldots,\vec p_1-\vec p_n\] <p>are linearly independent. The condition concerns these differences, not the position vectors themselves. For example, \((0,0)\) and \((1,0)\) determine a unique line even though their position vectors are linearly dependent. If the difference vectors are dependent, the points lie in a lower-dimensional affine subspace and do not determine a unique hyperplane.</p> <p>Let us start with two distinct points in two dimensions. The line through them has the parametric form</p> \[\vec x=\vec p_1+t(\vec p_1-\vec p_2),\qquad t\in\mathbb{R}.\] <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-09-23-linear-classifier-boundary-points/supportvec-480.webp 480w,/assets/img/2026-09-23-linear-classifier-boundary-points/supportvec-800.webp 800w,/assets/img/2026-09-23-linear-classifier-boundary-points/supportvec-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-09-23-linear-classifier-boundary-points/supportvec.png" class="img-fluid rounded z-depth-1 imgcenter" width="60%" height="auto" alt="Position vectors p1 and p2 point to P1 and P2; the direction vector p1 minus p2 points from P2 to P1" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 2:</b> Position vectors p<sub>1</sub> and p<sub>2</sub> point to P<sub>1</sub> and P<sub>2</sub>; the direction vector p<sub>1</sub> − p<sub>2</sub> points from P<sub>2</sub> to P<sub>1</sub>. </figcaption> </figure> <p>Here, \(\vec p_1\) is an anchor point and \(\vec p_1-\vec p_2\) is a direction vector. In three dimensions, three noncollinear points similarly define the plane</p> \[\vec x=\vec p_1+t(\vec p_1-\vec p_2)+s(\vec p_1-\vec p_3), \qquad t,s\in\mathbb{R}.\] <p>For \(n\) affinely independent points in \(\mathbb{R}^n\), the corresponding hyperplane is</p> \[\begin{equation} \vec x=\vec p_1+\sum_{i=2}^{n}t_i(\vec p_1-\vec p_i), \qquad t_i\in\mathbb{R}. \label{eq:parametricPlane} \end{equation}\] <h2 id="from-the-parametric-form-to-a-normal-vector">From the Parametric Form to a Normal Vector</h2> <p>The parametric form describes all points on the hyperplane. For classification, however, it is more convenient to use an equation of the form</p> \[\vec w^{\top}\vec x+b=0,\] <p>where \(\vec w\in\mathbb{R}^n\) is a nonzero normal vector and \(b\in\mathbb{R}\) is an intercept. This is the form of the decision boundary used by linear classifiers, including logistic regression. Knowing the boundary determines these coefficients only up to a nonzero common factor; it does not determine logistic-regression probabilities.</p> <p>To obtain this form, we need a normal vector orthogonal to every direction vector in equation $\eqref{eq:parametricPlane}$. Arrange the direction vectors as the rows of a matrix:</p> \[\mathbf A= \begin{pmatrix} (\vec p_1-\vec p_2)^{\top}\\ \vdots\\ (\vec p_1-\vec p_n)^{\top} \end{pmatrix} \in\mathbb{R}^{(n-1)\times n}.\] <p>A normal vector is any nonzero solution of \(\mathbf A\vec n=\vec 0\). Since affine independence gives \(\operatorname{rank}(\mathbf A)=n-1\), the null space is one-dimensional. We normalize a solution to obtain</p> \[\vec n_0=\frac{\vec n}{\lVert\vec n\rVert_2},\qquad \lVert\vec n_0\rVert_2=1.\] <p>In three dimensions, a cross product of the two direction vectors gives a normal. A <a href="/blog/2025/a-generalization-of-the-vector-cross-product/">generalized cross product</a> extends this construction to \(n-1\) direction vectors in \(\mathbb{R}^n\). For numerical computation, we can instead obtain the null space using a singular value decomposition (SVD). With the full decomposition \(\mathbf A=\mathbf U\mathbf\Sigma\mathbf V^{\top}\), the last column of the \(n\times n\) matrix \(\mathbf V\) is a unit normal. A reduced decomposition can omit that null-space vector, so we need the full set of right singular vectors here.</p> <p>Taking the inner product of equation $\eqref{eq:parametricPlane}$ with \(\vec n_0\) eliminates every direction term:</p> \[\begin{align} \vec n_0^{\top}(\vec x-\vec p_1) &amp;=\sum_{i=2}^{n}t_i\underbrace{\vec n_0^{\top}(\vec p_1-\vec p_i)}_{=0} \nonumber \\ &amp;=0. \end{align}\] <p>Therefore, the desired coefficients are simply</p> \[\begin{equation} \vec w=\vec n_0,\qquad b=-\vec n_0^{\top}\vec p_1. \label{eq:classifierWeights} \end{equation}\] <h2 id="signed-distances-and-the-hesse-normal-form">Signed Distances and the Hesse Normal Form</h2> <p>There is also a useful geometric interpretation. Define the <strong>signed offset</strong> \(d=\vec n_0^{\top}\vec p_1\). The hyperplane equation becomes</p> \[\begin{equation} \vec n_0^{\top}\vec x=d. \label{eq:hesse} \end{equation}\] <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-09-23-linear-classifier-boundary-points/hessenormal-480.webp 480w,/assets/img/2026-09-23-linear-classifier-boundary-points/hessenormal-800.webp 800w,/assets/img/2026-09-23-linear-classifier-boundary-points/hessenormal-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-09-23-linear-classifier-boundary-points/hessenormal.png" class="img-fluid rounded z-depth-1 imgcenter" width="60%" height="auto" alt="A unit normal and the perpendicular projection from the origin onto a line, illustrated with a positive signed offset" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 3:</b> A unit normal and the perpendicular projection from the origin onto a line, illustrated with a positive signed offset. </figcaption> </figure> <p>The point with position vector \(d\vec n_0\) is the perpendicular projection of the origin onto the hyperplane. The figure illustrates \(d&gt;0\), but \(d\) can also be negative or zero. Because the normal has unit length, the ordinary distance from the origin to the hyperplane is \(\lvert d\rvert\).</p> <p>For an arbitrary point \(\vec r\), let \(d_r\) denote its signed distance to the hyperplane. Its perpendicular projection onto the hyperplane is</p> \[\vec x=\vec r-d_r\vec n_0.\] <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-09-23-linear-classifier-boundary-points/hessedistance-480.webp 480w,/assets/img/2026-09-23-linear-classifier-boundary-points/hessedistance-800.webp 800w,/assets/img/2026-09-23-linear-classifier-boundary-points/hessedistance-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-09-23-linear-classifier-boundary-points/hessedistance.png" class="img-fluid rounded z-depth-1 imgcenter" width="60%" height="auto" alt="A point with positive signed distance from a line, in the direction of the unit normal" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 4:</b> A point with positive signed distance from a line, in the direction of the unit normal. </figcaption> </figure> <p>Substituting this projection into equation $\eqref{eq:hesse}$ gives</p> \[\begin{align} \vec n_0^{\top}(\vec r-d_r\vec n_0)&amp;=d, \nonumber \\ \vec n_0^{\top}\vec r-d_r&amp;=d, \nonumber \\ d_r&amp;=\vec n_0^{\top}\vec r-d =\vec w^{\top}\vec r+b. \label{eq:hesseDist} \end{align}\] <p>A positive value places \(\vec r\) on the side toward which \(\vec n_0\) points; a negative value places it on the other side. The ordinary Euclidean distance is \(\lvert d_r\rvert\). For general coefficients with \(\lVert\vec w\rVert_2\ne 1\), the corresponding formulas are</p> \[\begin{equation} s(\vec r)=\frac{\vec w^{\top}\vec r+b}{\lVert\vec w\rVert_2}, \qquad \operatorname{dist}(\vec r,H)=\frac{\lvert\vec w^{\top}\vec r+b\rvert}{\lVert\vec w\rVert_2}, \label{eq:generalDistance} \end{equation}\] <p>where \(H\) denotes the hyperplane. The denominator contains only the normal-vector coefficients, not the intercept.</p> <p>For example, the boundary points \(\vec p_1=(1,0)^{\top}\) and \(\vec p_2=(0,1)^{\top}\) determine the line \(x_1+x_2=1\). Choosing \(\vec n_0=(1,1)^{\top}/\sqrt{2}\) gives \(d=1/\sqrt{2}\) and</p> \[s(\vec r)=\frac{r_1+r_2-1}{\sqrt{2}}.\] <p>Thus, \((1,1)^{\top}\) and \((0,0)^{\top}\) lie on opposite sides, each at distance \(1/\sqrt{2}\) from the line.</p> <h2 id="choosing-the-orientation-and-classifying">Choosing the Orientation and Classifying</h2> <p>We still need to assign a class to each side. Replacing \((\vec w,b)\) with \((-\vec w,-b)\) preserves the boundary but reverses every signed distance. Boundary points alone cannot resolve this ambiguity. We use the labeled observations to choose the orientation: for example, assign labels \(+1\) and \(-1\) to the two classes and choose the orientation that produces fewer classification errors on those observations. A tie requires additional information or an explicit convention.</p> <p>Once the orientation is fixed, classify a new point as \(+1\) when \(\vec w^{\top}\vec r+b&gt;0\) and as \(-1\) when it is negative. A point exactly on the boundary requires a tie-breaking rule or can be left unclassified. In numerical calculations, a small distance tolerance can also define an uncertain region around the boundary. Evaluate the resulting classifier on held-out labeled observations when enough labels are available.</p> <p>The magnitude of the distance measures a geometric margin. Interpreting that margin as confidence requires assumptions about the class distributions; obtaining calibrated class probabilities requires additional modeling using labeled data.</p> <h2 id="fitting-noisy-boundary-estimates">Fitting Noisy Boundary Estimates</h2> <p>So far, we have assumed exact boundary points. If we have more than \(n\) estimates and they only lie <em>near</em> the boundary, selecting exactly \(n\) of them discards information and can make the result sensitive to noise. A useful extension is <strong>orthogonal least squares</strong>: fit a hyperplane that minimizes the sum of squared perpendicular distances to all the boundary estimates.</p> <p>Let \(\vec p_1,\ldots,\vec p_m\) be these estimates, with \(m\ge n\), and define their mean and centered data matrix by</p> \[\bar{\vec p}=\frac{1}{m}\sum_{j=1}^{m}\vec p_j, \qquad \mathbf B= \begin{pmatrix} (\vec p_1-\bar{\vec p})^{\top}\\ \vdots\\ (\vec p_m-\bar{\vec p})^{\top} \end{pmatrix}.\] <p>For a unit normal \(\vec n\), the squared-distance objective is \(\sum_{j=1}^{m}(\vec n^{\top}\vec p_j+b)^2\). Minimizing over \(b\) gives \(b=-\vec n^{\top}\bar{\vec p}\), so an optimal plane passes through the mean. The remaining problem is</p> \[\begin{equation} \min_{\lVert\vec n\rVert_2=1}\lVert\mathbf B\vec n\rVert_2^2 =\min_{\lVert\vec n\rVert_2=1}\sum_{j=1}^{m} \left[\vec n^{\top}(\vec p_j-\bar{\vec p})\right]^2. \label{eq:orthogonalFit} \end{equation}\] <p>If \(\mathbf B=\mathbf U\mathbf\Sigma\mathbf V^{\top}\) has singular values in descending order, the last column of \(\mathbf V\) is a minimizing unit normal. Set \(\vec w=\vec n_0\) and \(b=-\vec n_0^{\top}\bar{\vec p}\), then compute signed distances and choose the class orientation exactly as before. Unlike the exact construction, the fitted plane need not pass through individual boundary estimates.</p> <p>This is closely related to principal component analysis (PCA): the normal is the direction with the smallest variance among the centered boundary estimates. The <a href="https://pcl.readthedocs.io/projects/tutorials/en/pcl-1.12.0/normal_estimation.html" rel="external nofollow noopener" target="_blank">Point Cloud Library tutorial</a> describes the corresponding covariance-based plane-fitting method, and the <a href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html" rel="external nofollow noopener" target="_blank">NumPy SVD documentation</a> explains the full and reduced decompositions.</p> <h2 id="limitations-and-the-complete-procedure">Limitations and the Complete Procedure</h2> <p>There are several practical limitations. If the boundary points span fewer than \(n-1\) affine dimensions, the normal is not uniquely determined. Nearly dependent directions make the exact construction unstable; in the noisy fit, a small gap between the two smallest singular values similarly indicates a poorly determined normal.</p> <p>Feature scaling determines what Euclidean distance means, so choose suitable units or scaling before fitting and apply the same transformation to new observations. Distances are then measured in that transformed coordinate system. Squared-distance fitting is also sensitive to outliers, and a curved boundary may require a more flexible model.</p> <p>The complete procedure is:</p> <ol> <li>Choose the feature scaling and check that an affine boundary is a reasonable model.</li> <li>For the exact construction, select \(n\) affinely independent boundary points and form the direction matrix \(\mathbf A\). For noisy estimates, use all available boundary points to form the centered matrix \(\mathbf B\).</li> <li>Find a unit normal from the null space of \(\mathbf A\) or the right singular vector of \(\mathbf B\) corresponding to its smallest singular value, checking for degeneracy or poor conditioning.</li> <li>Set \(\vec w=\vec n_0\) and compute the intercept from the anchor point or, for the noisy fit, from the mean.</li> <li>Use known class labels to choose which side corresponds to each class.</li> <li>Classify new points by the sign of \(\vec w^{\top}\vec r+b\), with an explicit policy for points on or very close to the boundary. Use equation $\eqref{eq:generalDistance}$ when geometric distances are needed.</li> <li>Assess classification performance on held-out labeled observations, separately from how closely the plane fits the boundary estimates.</li> </ol> <p>In the motivating problem, a hyperplane through selected boundary points worked well as a simple baseline. Fitting all available boundary estimates extends that idea to noisy data, while the labeled observations provide the orientation and the evidence needed to judge its usefulness as a classifier.</p> <h2 id="related-work">Related Work</h2> <p>The construction above connects to methods for fitting geometric models and to classifiers that learn from explicit boundary annotations. These connections suggest ways to handle noisy points, outliers, and nonlinear boundaries.</p> <p><strong>Learning from decision-boundary annotations.</strong> Huijser and van Gemert’s <em>Active Decision Boundary Annotation with Deep Generative Models</em> <a class="citation" href="#HuijserGemert17">(Huijser &amp; van Gemert, 2017)</a> combines labeled examples with annotated boundary points. A generative model helps annotators locate class transitions; the classifier then jointly optimizes a hinge loss on labels and a squared residual loss on boundary annotations.</p> <p>An adaptation of their joint objective (equations 1–3) to our notation uses \(f(\vec x)=\vec w^{\top}\vec x+b\), \(N\) labeled observations with \(y_i\in\{-1,+1\}\), and \(m\) boundary estimates:</p> \[\begin{equation} \min_{\vec w,b}\; \lambda\lVert\vec w\rVert_2^2 +\frac{C}{N}\sum_{i=1}^{N}\max\left(0,1-y_i f(\vec x_i)\right) +\frac{\mu}{m}\sum_{j=1}^{m}f(\vec p_j)^2. \label{eq:jointBoundaryLearning} \end{equation}\] <p>The nonnegative coefficients \(\lambda\), \(C\), and \(\mu\) balance regularization, classification, and boundary fit. This formulation lets labels influence the plane’s position and orientation, beyond choosing which side represents each class. All three terms are convex. The boundary term penalizes raw scores; squared perpendicular distances would require division by \(\lVert\vec w\rVert_2^2\). Thus, this objective differs from the orthogonal fit in equation $\eqref{eq:orthogonalFit}$.</p> <p><strong>Orthogonal least squares, total least squares, and PCA.</strong> The noisy-point extension above is an affine orthogonal least-squares fit, also viewed as total least squares when errors are allowed in every coordinate. Centering the boundary estimates and selecting their smallest-variance direction yields the normal. The <a href="https://pcl.readthedocs.io/projects/tutorials/en/pcl-1.12.0/normal_estimation.html" rel="external nofollow noopener" target="_blank">Point Cloud Library tutorial on normal estimation</a> describes the covariance/PCA formulation of this plane-fitting problem. With exactly \(n\) affinely independent boundary points, the fit recovers the interpolating hyperplane. With more noisy estimates, it minimizes squared perpendicular distances. Here, PCA is applied specifically to the boundary estimates, not to the entire classification dataset.</p> <p><strong>Robust fitting with RANSAC.</strong> The exact construction can serve as the model-estimation step in RANSAC, introduced by Fischler and Bolles <a class="citation" href="#FischlerBolles81">(Fischler &amp; Bolles, 1981)</a>. Applied here, it repeatedly samples \(n\) affinely independent boundary estimates, constructs their hyperplane, and counts how many remaining estimates lie within a chosen perpendicular-distance tolerance. The plane with the strongest support can then be refitted using those inliers. This is useful when some supplied boundary estimates are outliers. The <a href="https://www.open3d.org/html/tutorial/geometry/pointcloud.html#plane-segmentation" rel="external nofollow noopener" target="_blank">Open3D plane-segmentation documentation</a> illustrates the method in three dimensions; the same sampling procedure extends to hyperplanes in higher dimensions. Its sampling cost can grow quickly with dimension because a successful minimal sample requires \(n\) inliers. Labeled observations are still needed to assign class names to the two sides.</p> <p><strong>Nonlinear boundaries through implicit surface fitting.</strong> Turk, Dinh, O’Brien, and Yngve’s <em>Implicit Surfaces that Interpolate</em> <a class="citation" href="#Turk2001">(Turk et al., 2001)</a> describes surfaces represented by the zero set of a function built from radial basis functions. Their constraint formulation combines zero values at boundary points with positive and negative values at interior and exterior points. For the classification setting considered here, this suggests replacing the affine score with a nonlinear function, using boundary estimates as zero targets and labeled observations to constrain its sign. Nonzero targets or suitable additional constraints are essential: prescribing only zeros can admit the trivial solution \(f\equiv0\). This connection provides a route to curved decision boundaries, although the resulting function values are not automatically signed distances or calibrated probabilities.</p> <h2 id="a-synthetic-application-calibrating-a-light-triggered-relay">A Synthetic Application: Calibrating a Light-Triggered Relay</h2> <p>Consider a relay that switches on when a light sensor receives enough illumination from two adjustable lamps. Historical logs record the lamp settings, but not whether the relay was on or off. We want to reconstruct those missing states. Assume the sensor response is approximately linear, its threshold has remained stable, and there is no hysteresis. This is an invented example for illustrating the method, not the original application or a specification for a real device.</p> <p>A calibration sweep provides the unusual information this method needs. Hold lamp 1 at a fixed setting and increase lamp 2 until the relay switches. The pair of settings at that transition estimates a point on the decision boundary. Repeating this at several lamp-1 settings provides boundary points across the operating range. A few separate observations with known ON/OFF states identify the class on each side.</p> <p>Let \(x_1\) and \(x_2\) denote lamp settings normalized to the interval \([0,1]\). For this simulation, the relay is ON when</p> \[0.65x_1+0.90x_2-0.75&gt;0\] <p>and OFF otherwise. These coefficients are used to generate the data and evaluate the predictions; they are not supplied to the fitting function. The fixed random seed is <code class="language-plaintext highlighter-rouge">20171006</code>. We generate 18 boundary measurements with independent Gaussian noise of standard deviation \(0.018\) in each recorded coordinate, four labeled controls, and 240 logged settings. The first three logged settings are chosen for illustration; the other 237 are sampled uniformly from the unit square. Their true labels are kept in a separate evaluation file.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-09-23-linear-classifier-boundary-points/calibration-and-predictions-480.webp 480w,/assets/img/2026-09-23-linear-classifier-boundary-points/calibration-and-predictions-800.webp 800w,/assets/img/2026-09-23-linear-classifier-boundary-points/calibration-and-predictions-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-09-23-linear-classifier-boundary-points/calibration-and-predictions.png" class="img-fluid rounded z-depth-1 imgcenter" width="100%" height="auto" alt="Synthetic relay example: noisy boundary measurements and four labeled controls on the left; predicted ON/OFF states and a perpendicular-distance example on the right" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 5:</b> Synthetic relay example: noisy boundary measurements and four labeled controls on the left; predicted ON/OFF states and a perpendicular-distance example on the right. </figcaption> </figure> <p>The stars are noisy switching-point measurements. Blue circles represent OFF and orange squares represent ON: the left panel shows known labels, while the right panel shows predictions. The dashed line is the simulator’s true boundary, included only as an evaluation reference. It nearly overlaps the fitted line. A <a href="/assets/img/2026-09-23-linear-classifier-boundary-points/calibration-and-predictions.svg">vector version of the figure</a> is available for download.</p> <p>Fitting the boundary points and choosing the orientation from the four labeled controls gives the following classifier, with coefficients rounded to six decimal places:</p> \[f(\vec x)=0.581682x_1+0.813416x_2-0.675409.\] <p>The unrounded normal has unit length, so the score is the signed distance in the normalized feature coordinates. Positive scores predict ON; zero or negative scores predict OFF. The first three predictions are:</p> <table> <thead> <tr> <th>Log ID</th> <th>Lamp 1</th> <th>Lamp 2</th> <th>Signed distance</th> <th>Predicted state</th> </tr> </thead> <tbody> <tr> <td>0</td> <td>0.15</td> <td>0.20</td> <td>-0.425473</td> <td>OFF</td> </tr> <tr> <td>1</td> <td>0.80</td> <td>0.80</td> <td>+0.440670</td> <td>ON</td> </tr> <tr> <td>2</td> <td>0.50</td> <td>0.47</td> <td>-0.002262</td> <td>OFF</td> </tr> </tbody> </table> <p>Log 2 lies very close to the fitted boundary, so a small measurement change could alter its predicted state. Its distance is not a probability. With this seed, all 240 predictions match the simulator, and the root-mean-square distance of the boundary measurements to the fitted line is about \(0.0171\). This deliberately simple example demonstrates the workflow; it is not a benchmark of performance on real data.</p> <h2 id="a-runnable-python-example">A Runnable Python Example</h2> <p>The implementation is split into <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/boundary_classifier.py">boundary_classifier.py</a>, which fits and orients the hyperplane, and <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/generate_example.py">generate_example.py</a>, which creates the synthetic data, evaluates predictions, and produces the figure. The fitting function accepts points in any dimension; the demonstration uses two dimensions so that its geometry can be plotted.</p> <p>The core calculation below can be run from the example directory. It reads only boundary measurements, orientation labels, and unlabeled settings:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">boundary_classifier</span> <span class="kn">import</span> <span class="n">fit_hyperplane</span><span class="p">,</span> <span class="n">orient_hyperplane</span>
+
+<span class="n">boundary</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">boundary_points.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">controls</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">orientation_points.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">logs</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">loadtxt</span><span class="p">(</span><span class="sh">"</span><span class="s">unlabeled_points.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="sh">"</span><span class="s">,</span><span class="sh">"</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">w</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nf">fit_hyperplane</span><span class="p">(</span><span class="n">boundary</span><span class="p">)</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nf">orient_hyperplane</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">controls</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">controls</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="n">signed_distances</span> <span class="o">=</span> <span class="n">logs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">@</span> <span class="n">w</span> <span class="o">+</span> <span class="n">b</span>  <span class="c1"># The first column is the log ID.
+</span><span class="n">predicted_labels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="n">signed_distances</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">column_stack</span><span class="p">((</span><span class="n">logs</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">signed_distances</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">predicted_labels</span><span class="p">[:</span><span class="mi">3</span><span class="p">])))</span>
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">fit_hyperplane</code> centers the points and uses the last right singular vector as the unit normal. It checks for insufficient affine rank and a numerically non-unique smallest singular direction. <code class="language-plaintext highlighter-rouge">orient_hyperplane</code> compares the two possible orientations against the known labels and reports a tie instead of choosing a class assignment arbitrarily. The centered matrix has at least as many rows as columns, so its reduced SVD retains every right singular vector. This differs from applying a reduced SVD to the wide direction matrix in the exact construction earlier in the article.</p> <p>Download and extract the <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/boundary-example.zip">complete example bundle</a>. From its <code class="language-plaintext highlighter-rouge">boundary-points</code> directory, the following commands create an environment, run the classifier on the supplied CSV files, and regenerate the data and figure:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3.12 <span class="nt">-m</span> venv .venv
+<span class="nb">.</span> .venv/bin/activate
+python <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+python boundary_classifier.py
+python generate_example.py
+</code></pre></div></div> <p>The example was run with Python 3.12.12. The generator resolves output paths relative to its own file, and accepts <code class="language-plaintext highlighter-rouge">--output-dir</code> to write a separate copy or <code class="language-plaintext highlighter-rouge">--seed</code> to try another sample. Regeneration overwrites its named output files. The supplied <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/requirements.txt">requirements.txt</a> records the NumPy and Matplotlib versions used here, and the <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/README.md">README</a> documents the commands and file schemas.</p> <p>All data and results are also available individually:</p> <ul> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/boundary_points.csv">boundary_points.csv</a>: the 18 noisy boundary measurements used for fitting.</li> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/orientation_points.csv">orientation_points.csv</a>: four labeled controls used to assign ON/OFF to the two sides.</li> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/unlabeled_points.csv">unlabeled_points.csv</a>: the 240 logged settings to classify.</li> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/evaluation_truth.csv">evaluation_truth.csv</a>: simulator labels and true distances, used only for evaluation.</li> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/predictions.csv">predictions.csv</a>: predicted labels and signed distances, matched to the input logs by <code class="language-plaintext highlighter-rouge">log_id</code>.</li> <li> <a href="/assets/code/2026-09-23-linear-classifier-boundary-points/results.json">results.json</a>: full-precision coefficients, the random seed, noise settings, diagnostics, and software versions.</li> </ul> <h2 id="references">References</h2> <div class="publications"> <ol class="bibliography"> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="HuijserGemert17" class="col-sm-8"> <div class="title">Active Decision Boundary Annotation with Deep Generative Models</div> <div class="author"> Miriam Huijser and Jan C. van Gemert </div> <div class="periodical"> <em>In Proceedings of the IEEE International Conference on Computer Vision (ICCV)</em>, 2017 </div> <div class="periodical"> </div> <div class="links"> <a href="http://arxiv.org/abs/1703.06971" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">arXiv</a> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="FischlerBolles81" class="col-sm-8"> <div class="title">Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography</div> <div class="author"> Martin A. Fischler and Robert C. Bolles </div> <div class="periodical"> <em>Communications of the ACM</em>, 1981 </div> <div class="periodical"> </div> <div class="links"> <a href="https://doi.org/10.1145/358669.358692" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">DOI</a> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="Turk2001" class="col-sm-8"> <div class="title">Implicit Surfaces that Interpolate</div> <div class="author"> Greg Turk, Huong Quynh Dinh, James F. O’Brien, and <span class="more-authors" title="click to view 1 more author" onclick=" var element=this; element.setAttribute('title', ''); var more_authors_text=element.textContent == '1 more author' ? 'Gary Yngve' : '1 more author'; var cursorPosition=0; var textAdder=setInterval(function(){ element.innerHTML = more_authors_text.substring(0, cursorPosition + 1); if (++cursorPosition == more_authors_text.length){ clearInterval(textAdder); } }, '10'); ">1 more author</span> </div> <div class="periodical"> <em>In Proceedings of the International Conference on Shape Modeling and Applications (SMI)</em>, 2001 </div> <div class="periodical"> </div> <div class="links"> <a href="https://doi.org/10.1109/SMA.2001.923376" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">DOI</a> <a href="https://graphics.berkeley.edu/papers/Turk-ISI-2001-05/index.html" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">HTML</a> </div> </div> </div> </li> </ol> </div> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-verification-and-benchmarking/">Building Intelligent Agents for Connect-4: Verification and Benchmarking</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/">The Hexadecimal Digit Canon Challenge: Solution</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-mtdf-and-null-window-search/">Building Intelligent Agents for Connect-4: MTD(f) and Null-Window Search</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-opening-databases/">Building Intelligent Agents for Connect-4: Opening Databases</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-transposition-tables/">Building Intelligent Agents for Connect-4: Transposition Tables</a> </li> </ul> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script>
+    (function setupGiscus() {
+      function determineGiscusTheme() {
+        var theme = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme") || "system";
+if (theme === "dark") return "dark";
+if (theme === "light") return "light";
+var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+return prefersDark ? "dark" : "light";
+
+      }
+
+      var giscusTheme = determineGiscusTheme();
+      var attrs = {
+        src: "https://giscus.app/client.js",
+        "data-repo": "MarkusThill/MarkusThill.github.io",
+        "data-repo-id": "R_kgDOLnMaxQ",
+        "data-category": "General",
+        "data-category-id": "DIC_kwDOLnMaxc4CeUxG",
+        "data-mapping": "title",
+        "data-strict": "1",
+        "data-reactions-enabled": "1",
+        "data-emit-metadata": "0",
+        "data-input-position": "bottom",
+        "data-theme": giscusTheme,
+        "data-lang": "en",
+        crossorigin: "anonymous",
+        async: true
+      };
+
+      var giscusScript = document.createElement("script");
+      Object.entries(attrs).forEach(function(entry) { giscusScript.setAttribute(entry[0], entry[1]); });
+      var host = document.getElementById("giscus_thread");
+      if (host) host.appendChild(giscusScript);
+    })();
+  </script> <noscript> Please enable JavaScript to view the <a href="http://giscus.app/?ref_noscript" rel="external nofollow noopener" target="_blank">comments powered by giscus.</a> </noscript> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: September 23, 2026. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script defer src="/assets/js/table-engine.js?v=c52129a997ab5b8a3622ec0506761421" type="text/javascript"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=c938e61a06fc1f4229e56a041da8f266"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPFK8PMRXH"></script> <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-RPFK8PMRXH");
+</script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-",
+    title: "",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-about",
+          title: "about",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/about";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/index.html";
+          },
+        },{id: "nav-publications",
+          title: "publications",
+          description: "publications by categories in reversed chronological order. generated by jekyll-scholar.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "A growing collection of some of my small fun projects.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "dropdown-publications",
+              title: "publications",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/publications/";
+              },
+            },{id: "dropdown-projects",
+              title: "projects",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/";
+              },
+            },{id: "dropdown-blog",
+              title: "blog",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/blog/";
+              },
+            },{id: "post-constructing-a-linear-classifier-from-known-decision-boundary-points",
+        
+          title: "Constructing a Linear Classifier from Known Decision-Boundary Points",
+        
+        description: "Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/linear-classifier-from-decision-boundary-points/";
+          
+        },
+      },{id: "post-binary-circles-hamiltonian-cycles-and-de-bruijn-sequences",
+        
+          title: "Binary Circles, Hamiltonian Cycles and de Bruijn Sequences",
+        
+        description: "A small combinatorial puzzle about circular binary words whose windows are all distinct turns out to be a question about Hamiltonian cycles in de Bruijn graphs. I count the arrangements, sum their numeric encodings up to a word length of 64 bits, and end with the multiplication trick that uses such a word to locate a set bit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/";
+          
+        },
+      },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
+        
+          title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
+        
+        description: "An exploration of a curious class of integer-sided isosceles triangles whose height differs from the base by exactly one. What begins as a simple geometric question quickly leads to Pell equations and elegant recurrences.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
+        
+        description: "The remaining techniques, an honest accounting of what each optimization was actually worth, the ideas which did not work, and why a perfect-playing Connect-4 agent has learned nothing at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-final-considerations/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
+        
+        description: "How independent opening-book answers, mirror invariants and driver agreement provide evidence of correctness, followed by a paired timing comparison with stated statistical assumptions.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
+        
+          title: "The Hexadecimal Digit Canon Challenge: Solution",
+        
+        description: "A complete solution to the Hexadecimal Digit Canon challenge, including the canonicalization rules, combinatorial reasoning, optimization strategy, and a Python implementation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-mtd-f-and-null-window-search",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; MTD(f) and Null-Window Search",
+        
+        description: "How a distance-aware score supplies game-derived bounds, and how MTD(f) and a binary null-window driver reconstruct exact values from narrow alpha-beta probes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
+        
+        description: "How the 8- and 12-ply opening books encode millions of solved positions in compact fixed-width records, and how the original database pipeline is used by BitBully today.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Transposition Tables",
+        
+        description: "Why the same Connect-4 position keeps reappearing in the search tree, how Zobrist hashing exploits three properties of the exclusive OR, and why the more recent solver manages without it entirely.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-transposition-tables/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
+        
+        description: "How the two solvers combine centre-first priorities, threat counts and parity heuristics, and how non-losing move generation removes branches before they reach alpha-beta.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Board Representations",
+        
+        description: "How CFour and BitBully encode a Connect-4 position in 64-bit words, and how guard bits, shifts, exact position codes, and generated masks change the operations used by the search.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-board-representations/";
+          
+        },
+      },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
+        
+          title: "Solving a Mini Sudoku in 6502 Assembly",
+        
+        description: "A deep dive into solving 4x4 mini-Sudokus using a recursive backtracking algorithm written entirely in 6502 assembly, including design decisions, memory layout, and emulator-based inspection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/mini-sudoku-asm/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge",
+        
+          title: "The Hexadecimal Digit Canon Challenge",
+        
+        description: "A combinatorial programming challenge set in base 16: define a digit-canonical form for hexadecimal numbers and compute the cumulative sum of these canonical values across rapidly growing digit ranges. Simple to state, but requiring careful counting and optimization at scale.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
+        
+        description: "How alpha-beta search turns the Minimax recurrence into a practical Connect-4 solver, what its bounds mean, and how the real BitBully loop implements the cutoff.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-tree-search-algorithms/";
+          
+        },
+      },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
+        
+          title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
+        
+        description: "We study how splitting an integer into equal parts affects the maximum attainable product and how arithmetic properties of the optimum emerge. In particular, we relate a continuous optimization problem to the decimal structure of the resulting rational values.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-83p100-quanity-equal-parts/";
+          
+        },
+      },{id: "post-short-notes-on-a-curious-prefix-sum-problem",
+        
+          title: "Short Notes: On a Curious Prefix-Sum Problem",
+        
+        description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-818p100-generalized-parity-recurrence/";
+          
+        },
+      },{id: "post-short-notes-summing-non-isolated-divisors-across-all-subsets",
+        
+          title: "Short Notes: Summing Non-Isolated Divisors Across All Subsets",
+        
+        description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-844p100-divisors-sets/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
+        
+        description: "How a Java Connect-4 agent from 2012 led to the C++/Python solver BitBully, why the game is small enough to solve but large enough to make search engineering matter, and what this series will cover.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-introduction-and-tree-search-algorithms/";
+          
+        },
+      },{id: "post-backpropagation-from-scratch-feed-forward-neural-networks-in-matrix-notation",
+        
+          title: "Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation",
+        
+        description: "A notation-first walkthrough of feed-forward neural networks and vectorized backpropagation, focusing on how the math translates directly into clean, correct implementations. Covers forward pass, backprop, batching, and practical training considerations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/neural-nets-and-backprop/";
+          
+        },
+      },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
+        
+          title: "Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python",
+        
+        description: "Learn how to estimate the mean, covariance, and inverse covariance matrices in an online or batch-incremental fashion. This post explains the theory behind forgetting factors and effective memory, provides Python implementations for both online and batch estimators, and investigates their accuracy and efficiency through experiments and visualizations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/online-batch-estimate-cov-mu/";
+          
+        },
+      },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
+        
+          title: "The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution",
+        
+        description: "This post explores why the squared Mahalanobis distance of Gaussian data follows a Chi-square distribution. We cover the theory step by step, show empirical evidence, and explain how this relationship provides a principled way to set anomaly detection thresholds using quantiles.A companion Jupyter Notebook with code, benchmarks, and visualizations is provided to put the theory into practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance/";
+          
+        },
+      },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
+        
+          title: "Notes on the Runtime Complexity of Latin Hypercube Sampling",
+        
+        description: "Exploring the runtime complexity of the Latin Hypercube Sampling (LHS) algorithm, this post investigates how computation time scales with the number of design points. By measuring runtimes, applying log-log transformations, and using weighted linear regression, we estimate the polynomial order of growth and provide practical insights into the expected performance of LHS for larger datasets.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-few-notes-on-the-runtime-complexity-of-latin-hypercube-sampling/";
+          
+        },
+      },{id: "post-implementing-the-mahalanobis-distance-in-python",
+        
+          title: "Implementing the Mahalanobis Distance in Python",
+        
+        description: "A hands-on Jupyter Notebook implementation of the Mahalanobis distance in Python. Covers theory, multiple implementations (NumPy, JAX, TensorFlow, SciPy), benchmarking on low- and high-dimensional data, visualizations, and its connection to the Chi-square distribution for anomaly detection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance-implementations/";
+          
+        },
+      },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
+        
+          title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT...",
+        
+        description: "A DIY IoT project using the ESP8266-01 module to build a network-controlled adapter plug from scratch. This project demonstrates how to create connected devices with minimal hardware and effort using Wi-Fi and MQTT.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/control-an-adapter-plug-with-an-esp8266-and-mqtt/";
+          
+        },
+      },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
+        
+          title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches",
+        
+        description: "Discover the Seychelles’ most stunning beaches from a new perspective. From the iconic Anse Source d’Argent on La Digue to the sweeping Anse Intendance on Mahé, these drone shots capture some of the islands’ breathtaking beauty.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/seychelles-images/";
+          
+        },
+      },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
+        
+          title: "Short Notes: Understanding Euclid’s GCD Algorithm",
+        
+        description: "A concise walkthrough of why Euclid’s Algorithm correctly computes the greatest common divisor (GCD), using basic properties of divisibility and remainders.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/euclids-algorithm/";
+          
+        },
+      },{id: "post-conway-39-s-game-of-life",
+        
+          title: "Conway&#39;s Game of Life",
+        
+        description: "An introduction to Conway’s Game of Life with an implementation in R. We explore the simple rules behind this zero-player cellular automaton, simulate its evolution on a 100×100 grid, and visualize emerging patterns and population dynamics over time.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/conways-game-of-life/";
+          
+        },
+      },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
+        
+          title: "Visualizing High-Dimensional Data Using Parallel Coordinates",
+        
+        description: "A deep dive into the visualization technique of Parallel Coordinates (||-Coordinates), exploring its strengths, challenges, and practical applications in data mining. Through detailed case studies—including wine quality analysis and the MiniBooNe particle dataset—we demonstrate how this powerful tool can reveal hidden structures, correlations, and clusters in high-dimensional data. With insights into alpha blending, axis reordering, outlier handling, and visual classification, this post offers both theoretical background and hands-on use cases for using Parallel Coordinates effectively.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/visualizing-high-dimensional-data-with-parallel-coordinates/";
+          
+        },
+      },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
+        
+          title: "Short Notes: The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix",
+        
+        description: "This post explores how a multivariate Gaussian distribution simplifies when the covariance matrix is diagonal. By breaking down the math, we show how the density function factorizes into a product of independent univariate Gaussians—making both interpretation and computation more tractable.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/";
+          
+        },
+      },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
+        
+          title: "Understanding Bootstrap Sampling: Where Euler’s Number Meets Random Forests",
+        
+        description: "A common problem involves drawing a sample of size n from a set of n elements, with replacement. For example, in Random Forests, each decision tree is trained on a bootstrap sample drawn n times with replacement from the training data. A natural question is: how many unique examples can we expect in such a sample? Since sampling is done with replacement, some examples are likely selected multiple times, while others may not be selected at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/sampling-with-replacement-random-forest/";
+          
+        },
+      },{id: "post-beyond-3d-generalizing-the-vector-cross-product",
+        
+          title: "Beyond 3D: Generalizing the Vector Cross Product",
+        
+        description: "Imagine you are working in three-dimensional space and have two directions. You want to find a third direction that is perpendicular to both of them. In this setting, there&#39;s a well-known solution: the cross product. When applied to the two original directions, it produces a new one that is exactly orthogonal to both.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-generalization-of-the-vector-cross-product/";
+          
+        },
+      },{id: "post-a-post-with-marimo-snippets",
+        
+          title: "a post with marimo snippets",
+        
+        description: "running Python in the browser with marimo",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/marimo/";
+          
+        },
+      },{id: "post-math-challenge-the-sequence-of-fibonacho",
+        
+          title: "Math Challenge: The Sequence of Fibonacho",
+        
+        description: "The Fibonacho Sequence is a playful and intriguing twist on the classical Fibonacci numbers. Unlike its better-known cousin, the Fibonacho Sequence does not follow the same simple recurrence relation. Instead, it introduces a slightly different structure, making it a entertaining puzzle for math enthusiasts and programmers alike. Are you ready to dive into the challenge?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/the-fibonacho-sequence/";
+          
+        },
+      },{id: "post-short-notes-upgrade-your-github-workflow-migrate-from-https-to-ssh",
+        
+          title: "Short Notes: Upgrade Your GitHub Workflow - Migrate from HTTPS to SSH",
+        
+        description: "A step-by-step guide to transitioning from HTTPS to SSH for secure and seamless GitHub repository management.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/migrating-git-from-https-to-ssh/";
+          
+        },
+      },{id: "post-designing-an-8-bit-integer-primality-test-using-logic-circuits",
+        
+          title: "Designing an 8-Bit Integer Primality Test Using Logic Circuits",
+        
+        description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/primality-test-logical-circuit/";
+          
+        },
+      },{id: "post-short-notes-installing-gcc-13-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing GCC 13 on Debian and Ubuntu",
+        
+        description: "Learn how to install and configure the latest GNU GCC/G++ compiler on Debian and Ubuntu systems. This step-by-step guide covers updating packages, adding the Toolchain Test PPA, installing GCC 13, verifying the installation, and setting it as the default compiler.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-gcc/";
+          
+        },
+      },{id: "post-short-notes-installing-the-latest-cmake-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing the Latest CMake on Debian and Ubuntu",
+        
+        description: "Learn how to install the latest version of CMake on Debian-based systems. This guide covers prerequisites, removing older versions, compiling from source, and verifying the installation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-cmake/";
+          
+        },
+      },{id: "post-stack-overflow-vulnerabilities",
+        
+          title: "Stack Overflow Vulnerabilities",
+        
+        description: "This blog post explores the fundamentals of buffer overflows, including how they arise in C and C++ programs, the role of process memory layout and the x86/IA-32 architecture, and the significance of stack frames. It covers common overflow types — stack-based, off-by-one, BSS, and heap — and shows how attackers use techniques like NOP-sledding to gain elevated privileges. Finally, it illustrates how to craft a working exploit by injecting shellcode into a vulnerable application’s memory space.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/buffer-overflows/";
+          
+        },
+      },{id: "post-a-short-implementation-of-booth-39-s-multiplication-algorithm-in-6502-assembly",
+        
+          title: "A short Implementation of Booth&#39;s Multiplication Algorithm in 6502 Assembly",
+        
+        description: "I implemented a 6502 assembly routine for multiplying two one-byte integers using Booth&#39;s algorithm. While the algorithm itself wasn&#39;t difficult to implement, it took time to create a solution that fit within 40 lines of code. I also wrote a test routine to verify the multiplication, covering various predefined combinations, edge cases, and scenarios where one factor is zero.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/";
+          
+        },
+      },{id: "post-optimizing-lagged-fibonacci-generators-for-large-scale-computations",
+        
+          title: "Optimizing Lagged Fibonacci Generators for Large-Scale Computations",
+        
+        description: "Lagged Fibonacci Generators (LFGs) are powerful tools for generating pseudo-random sequences in simulations and cryptography. While traditional implementations become inefficient when computing sparse terms at large indices, this blog explores an optimized approach using matrix exponentiation and modular arithmetic. By encoding the recurrence relation in a transformation matrix and leveraging GPU acceleration, the method achieves scalability and speed, making it ideal for large-scale applications.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/lagged-fibo-sequences/";
+          
+        },
+      },{id: "post-some-interesting-properties-of-the-exclusive-or-xor",
+        
+          title: "Some Interesting Properties of the Exclusive Or (XOR)",
+        
+        description: "The exclusive-OR — also known as exclusive disjunction (short: XOR) or antivalence — is a Boolean operation that outputs true only when exactly one of its two inputs is true (i.e., when the inputs differ). XOR has numerous applications, including cryptography, Gray codes, parity checks, and CRC checks, among others. In this blog post, we will explore some of its interesting properties that can be useful in practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-few-properties-of-the-exclusive-or/";
+          
+        },
+      },{id: "post-efficient-computation-of-sparse-fibonacci-subsequences",
+        
+          title: "Efficient Computation of Sparse Fibonacci Subsequences",
+        
+        description: "The Fibonacci sequence is a cornerstone of mathematics, defined by its elegant recurrence relation. While traditionally computed iteratively or recursively, obtaining specific terms like the 1000th or 2000th number seems to require calculating all preceding terms. But is this really necessary?In this post, we explore a powerful technique to compute arbitrary Fibonacci terms directly — bypassing the need for sequential computation. We’ll also tackle an exciting challenge: efficiently finding one thousand Fibonacci numbers modulo a given value, corresponding to every 10th prime greater than a trillion.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibo-subsequences/";
+          
+        },
+      },{id: "post-don-39-t-drink-and-derive-amp-58-a-simple-proof-that-1-2",
+        
+          title: "Don&#39;t Drink and Derive&amp;#58; A Simple Proof that 1 = 2",
+        
+        description: "In this blog post, we present a fun little proof that 1 is actually equal to 2. Or is it?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-simple-proof-that-1-2/";
+          
+        },
+      },{id: "post-cuda-basics-decoding-dtmf-signals",
+        
+          title: "CUDA Basics: Decoding DTMF Signals",
+        
+        description: "Discover the fundamentals of CUDA programming through a dual-tone multi-frequency (DTMF) signaling example. Learn how to generate DTMF signals, save them as .wav files, design FIR bandpass filters, and decode dialed keys. This project includes a CUDA/C++ implementation (dtmfCuda.cu) to showcase the power of parallel computing for signal processing.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/dtmf-cuda/";
+          
+        },
+      },{id: "post-a-few-bit-twiddling-tricks",
+        
+          title: "A few Bit-Twiddling Tricks",
+        
+        description: "When working with bit-fields, there are several techniques that can significantly speed up code — beyond the inherent performance benefits that bit-fields provide for many problems. In this post, I will introduce a few bit-twiddling tricks that I occasionally use, which can be useful for a variety of tasks.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/soa-few-bit-twiddling-tricks/";
+          
+        },
+      },{id: "post-the-monkey-and-coconut-problem",
+        
+          title: "The Monkey and Coconut Problem",
+        
+        description: "Three sailors and a monkey are stranded on a deserted island. They gather a pile of coconuts to divide the next morning. During the night, each sailor wakes up, divides the pile into three parts, gives the extra coconut to the monkey, hides his share, and restacks the remaining coconuts. In the morning, the remaining coconuts are again divided into three parts, with one coconut left over, which is given to the monkey.The question is: how many coconuts were originally in the pile?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/the-sailors-problem/";
+          
+        },
+      },{id: "post-google-gemini-updates-flash-1-5-gemma-2-and-project-astra",
+        
+          title: 'Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "We’re sharing updates across our Gemini family of models and a glimpse of Project Astra, our vision for the future of AI assistants.",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/", "_blank");
+          
+        },
+      },{id: "post-short-notes-gradient-of-the-softmax-function-for-the-cross-entropy-loss",
+        
+          title: "Short Notes: Gradient of the Softmax Function for the Cross-Entropy Loss",
+        
+        description: "The softmax function in neural networks ensures outputs sum to one and are within [0,1]. Here&#39;s how to compute its gradients when the cross-entropy loss is applied.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/gradient-softmax-function-with-cross-entropy/";
+          
+        },
+      },{id: "post-obfuscating-a-function-amp-8211-how-not-to-write-code",
+        
+          title: "Obfuscating a Function &amp;#8211; How not to write Code",
+        
+        description: "A while back, I created a straightforward function to convert an integer into a new format, resulting in clear code. However, I inexplicably chose to obscure its purpose, leading to the following outcome: Read more in this post...",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/obsfucated-c-code/";
+          
+        },
+      },{id: "post-short-notes-eigendecomposition-of-a-matrix",
+        
+          title: "Short Notes: Eigendecomposition of a Matrix",
+        
+        description: "The derivation of the eigendecomposition is surprisingly simple. Read more here!",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/eigendecomposition/";
+          
+        },
+      },{id: "post-surprising-bank-investment",
+        
+          title: "Surprising Bank Investment",
+        
+        description: "Discover how investing in a startup turned into a financial rollercoaster. Your bank offers you a chance to invest in a new venture, with the promise of keeping all the profits if successful. Excited, you dive in with $1,000,000, providing 99% of the investment while the bank chips in the remaining 1%.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/surprising-investment/";
+          
+        },
+      },{id: "post-solving-peg-solitaire-with-efficient-bit-board-representations",
+        
+          title: "Solving Peg Solitaire with efficient Bit-Board Representations",
+        
+        description: "Many of us might now the board game peg solitaire and might even have one of its many variants at home. Peg solitaire is a one-player game played on a board with n holes and n - 1 pegs. The number of holes depends on the board variant. For example, the English variant consists of 33 holes while the typical diamond variant consists of 41 holes. The rules of the game are rather easy.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/solving-peg-solitaire/";
+          
+        },
+      },{id: "post-choosing-a-voltage-divider-resistor-for-a-light-dependent-resistor",
+        
+          title: "Choosing a Voltage Divider Resistor for a Light Dependent Resistor",
+        
+        description: "Imagine that you are planning to use a Light Dependent Resistor (LDR) for your new IoT prototype in order to detect whether or not a lamp is turned on in a (otherwise dark) room. A common way to solve this problem is the usage of a voltage divider circuit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/voltage-divider/";
+          
+        },
+      },{id: "post-deriving-a-closed-form-solution-of-the-fibonacci-sequence",
+        
+          title: "Deriving a Closed-Form Solution of the Fibonacci Sequence",
+        
+        description: "The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibonacci-closed/";
+          
+        },
+      },{id: "post-یک-نوشتهٔ-راست-چین",
+        
+          title: "یک نوشتهٔ راست‌چین",
+        
+        description: "نمونه‌ای از پشتیبانی زبان‌های راست‌چین",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2022/rtl/";
+          
+        },
+      },{id: "post-displaying-external-posts-on-your-al-folio-blog",
+        
+          title: 'Displaying External Posts on Your al-folio Blog <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
+          
+        },
+      },{id: "books-the-godfather",
+          title: 'The Godfather',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/the_godfather/";
+            },},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully Preview v0.0.38 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_2/";
+            },},{id: "news-bitbully-databases-0-0-2-released-opening-databases-for-the-board-game-connect-4",
+          title: 'bitbully-databases 0.0.2 released: Opening Databases for the Board Game Connect-4.',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_3/";
+            },},{id: "news-bitbully-v0-0-74-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully v0.0.74 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_1/";
+            },},{id: "projects-bitbully",
+          title: 'BitBully',
+          description: "One of the fastest and perfect-playing Connect-4 solvers around",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/0_bitbully/";
+            },},{id: "projects-bitbully-databases",
+          title: 'BitBully Databases',
+          description: "Precomputed Connect-4 opening books with millions of evaluated positions",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_bitbully_databases/";
+            },},{id: "teachings-data-science-fundamentals",
+          title: 'Data Science Fundamentals',
+          description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/data-science-fundamentals/";
+            },},{id: "teachings-introduction-to-machine-learning",
+          title: 'Introduction to Machine Learning',
+          description: "This course provides an introduction to machine learning concepts, algorithms, and applications. Students will learn about supervised and unsupervised learning, model evaluation, and practical implementations.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/introduction-to-machine-learning/";
+            },},{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/MarkusThill", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/markus-thill-a4991090", "_blank");
+        },
+      },{
+        id: 'social-researchgate',
+        title: 'ResearchGate',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.researchgate.net/profile/Markus-Thill/", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=Bu5eFxQAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-projecteuler',
+        title: 'Projecteuler',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://projecteuler.net/", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
