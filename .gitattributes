@@ -1,2 +1,20 @@
 # Force LF line endings, needed for Docker to work on Windows
 *.sh text eol=lf
+
+# ---------------------------------------------------------------------------
+# Files this fork regenerates itself. Upstream's copies are never wanted, so
+# always keep ours when merging upstream instead of resolving them by hand.
+#
+# Requires a one-time local config (it is not carried by a clone):
+#   git config merge.ours.driver true
+# Without it these silently fall back to a normal merge -- no error.
+# ---------------------------------------------------------------------------
+
+# Written by .github/workflows/update-citations.yml from your Scholar profile.
+_data/citations.yml merge=ours
+
+# Written weekly by .github/workflows/star-history.yml for THIS repo. The cron
+# trigger fires on the default branch, so it runs here even though the push
+# trigger only watches `main`.
+assets/img/star-history-light.svg merge=ours
+assets/img/star-history-dark.svg merge=ours
