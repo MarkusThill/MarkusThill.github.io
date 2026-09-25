@@ -5,7 +5,7 @@ modified:
 categories: [math, stats, ML]
 description: "Deriving a weighted recursive least squares estimator for batches of observations, with exponential forgetting and multiple outputs, together with its single-observation special case."
 tags: [Least Squares, Regression, Weighted Least Squares, RLS, online estimation, Woodbury, Sherman-Morrison]
-thumbnail: assets/img/2018-03-13-the-weighted-least-squares-algorithm/stats.jpg
+thumbnail: assets/img/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/weighted-rls-thumbnail.webp
 giscus_comments: true
 toc:
   beginning: true
@@ -320,7 +320,7 @@ $$
 \end{align}
 $$
 
-This means that the update rule performs a step in the parameter space, which is given by the gain matrix $$\boldsymbol{\Delta}_\mu$$ and scaled by the prediction errors $$\mathbf{e}_\mu$$ of the new batch. If the prediction errors are large, the step taken will also be large. If the current model already predicts all targets of the new batch without error, the parameter vector remains unaltered.
+This means that the update rule performs a step in the parameter space, which is given by the gain matrix $$\boldsymbol{\Delta}_\mu$$ and scaled by the prediction errors $$\mathbf{e}_\mu$$ of the new batch. Large prediction errors can produce a large step, but its size also depends on the gain, and contributions from different observations can cancel. For example, two identical input rows with equal weights and opposite residuals produce no coefficient update, however large those residuals are. If the current model already predicts all targets of the new batch without error, the parameter vector remains unaltered.
 
 ## Summary for a Single Output
 
@@ -360,7 +360,7 @@ Extending the above equations to the multivariate case with $$m$$ dimensions is 
 $$
 \begin{align}
 \mathbf{E}_\mu &= \mathbf{Y}_{\mu}  - \mathbf{X}_{\mu} \boldsymbol{\Theta}_{n}\\
-\boldsymbol{\Delta}_\mu &= \mathbf{A}_n^{-1} \mathbf{X}_{\mu}^T \big(\lambda_n \mathbf{I} + \mathbf{X}_{\mu} \mathbf{A}_n^{-1} \mathbf{X}_{\mu}^T \big)^{-1}\\
+\boldsymbol{\Delta}_\mu &= \mathbf{A}_n^{-1} \mathbf{X}_{\mu}^T \big(\lambda_n \mathbf{I}_\mu + \mathbf{X}_{\mu} \mathbf{A}_n^{-1} \mathbf{X}_{\mu}^T \big)^{-1}\\
 \boldsymbol{\Theta}_{n+\mu} &= \boldsymbol{\Theta}_{n} + \boldsymbol{\Delta}_\mu \mathbf{E}_\mu \\
 \mathbf{A}_{n+\mu}^{-1} &= \frac{1}{\lambda_n}\mathbf{A}_n^{-1} - \frac{1}{\lambda_n}\boldsymbol{\Delta}_\mu \mathbf{X}_{\mu}\mathbf{A}_n^{-1}
 \end{align}
@@ -408,7 +408,7 @@ $$
 \end{align}
 $$
 
-with $$\boldsymbol{\Theta}_0=\mathbf{0}_{k\times m}$$. The row vector $$\mathbf{E}_\mu\in\mathbb{R}^{1\times m}$$ contains the prediction errors of all outputs, and the coefficient update is the outer product of the gain vector with this row. Hence, every column of $$\boldsymbol{\Theta}$$ is corrected in the same direction $$\boldsymbol{\delta}_{n+1}$$, scaled by the prediction error of its own output. Since the gain and the update of $$\mathbf{A}^{-1}$$ are shared by all outputs, $$m$$ outputs cost hardly more than one.
+with $$\boldsymbol{\Theta}_0=\mathbf{0}_{k\times m}$$. The row vector $$\mathbf{E}_\mu\in\mathbb{R}^{1\times m}$$ contains the prediction errors of all outputs, and the coefficient update is the outer product of the gain vector with this row. Hence, every column of $$\boldsymbol{\Theta}$$ is corrected in the same direction $$\boldsymbol{\delta}_{n+1}$$, scaled by the prediction error of its own output. Since the gain and the update of $$\mathbf{A}^{-1}$$ are shared by all outputs, additional outputs reuse these computations. The full single-observation update costs $$O(k^2+km)$$, with $$O(km)$$ storage for the coefficients, so the extra cost is small when the number of outputs is small compared with the number of features.
 
 ## Python Implementation and Notebook
 
@@ -422,9 +422,9 @@ To make the equations above more tangible, I wrote a [Jupyter notebook]({{ '/ass
    caption="Noisy observations of a line arrive one after another. Left: the fitted line after 2, 5, 20 and 200 observations. Right: the estimated intercept and slope as functions of the number of observations. These coefficients were computed by refitting after every observation; the recursion reproduces them up to rounding errors without storing the data."
 %}
 
-Two practical aspects, which do not follow from the derivation itself, are also examined in the notebook. First, the initial regularization should be neither too large, since it holds the first estimates back, nor extremely small, since the huge entries of $$\mathbf{A}_0^{-1}=\rho^{-1}\mathbf{I}$$ then amplify the rounding errors of the first updates. Second, with forgetting, the inverse is divided by $$\lambda_n$$ in every update. If an implementation computes $$\mathbf{A}_n^{-1}\mathbf{x}_{n+1}$$ once and reuses it in place of $$\mathbf{x}_{n+1}^T\mathbf{A}_n^{-1}$$ (which is only equivalent for an exactly symmetric matrix), the asymmetric part of the rounding errors grows by the factor $$1/\lambda$$ in every update, and in the notebook the estimates become useless after a few hundred updates with $$\lambda=0.95$$. Replacing $$\mathbf{A}^{-1}$$ by its symmetric part after every update removes this problem at almost no cost.
+Two practical aspects, which do not follow from the derivation itself, are also examined in the notebook. First, the initial regularization should be neither too large, since it holds the first estimates back, nor extremely small, since the huge entries of $$\mathbf{A}_0^{-1}=\rho^{-1}\mathbf{I}$$ then amplify the rounding errors of the first updates. Second, with forgetting, the inverse is divided by $$\lambda_n$$ in every update. If an implementation computes $$\mathbf{A}_n^{-1}\mathbf{x}_{n+1}$$ once and reuses it in place of $$\mathbf{x}_{n+1}^T\mathbf{A}_n^{-1}$$ (which is only equivalent for an exactly symmetric matrix), the asymmetric part of the rounding errors grows by the factor $$1/\lambda$$ in every update, and in the notebook the estimates become useless after a few hundred updates with $$\lambda=0.95$$. Replacing $$\mathbf{A}^{-1}$$ by its symmetric part after every update removes this problem at almost no cost. This restores symmetry, but does not guarantee positive definiteness or prevent cancellation with poorly scaled or ill-conditioned inputs. Scaling the features helps; the notebook also includes a QR-based appendix that avoids forming the normal matrix or its inverse. Its examples focus on single precision, although QR can also help difficult double-precision problems.
 
-The notebook ends with a small class, `WeightedRLS`, which is also available as a [Python module]({{ '/assets/code/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/weighted_rls.py' | relative_url }}), together with [tests and a short description]({{ '/assets/code/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/README.md' | relative_url }}). It implements the batch equations for one or several outputs, with positive observation weights, forgetting and the first-update convention $$\lambda_0=1$$, and it symmetrizes $$\mathbf{A}^{-1}$$ after every update. The method `update` processes one batch (or a single observation) and returns the prediction errors computed before the update, `fit` processes a whole data set in batches, and `predict` evaluates the model. Without forgetting, batches give exactly the same result as single observations, and moderate batch sizes are considerably faster; very large batches become slower again, since the $$\mu\times\mu$$ matrix in the gain has to be inverted. The most common setup in practice, however, uses single observations, unit weights and a forgetting factor slightly below one, for example to predict a signal from its own past values while its dynamics change slowly:
+The notebook ends with a small class, `WeightedRLS`, which is also available as a [Python module]({{ '/assets/code/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/weighted_rls.py' | relative_url }}), together with [tests and a short description]({{ '/assets/code/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/README.md' | relative_url }}). It implements the batch equations for one or several outputs, with positive observation weights, forgetting and the first-update convention $$\lambda_0=1$$, and it symmetrizes $$\mathbf{A}^{-1}$$ after every update. The method `update` processes one batch (or a single observation) and returns the prediction errors computed before the update, `fit` processes a whole data set in batches, and `predict` evaluates the model. Without forgetting, batches give exactly the same result as single observations, and moderate batch sizes are considerably faster; very large batches become slower again, since the $$\mu\times\mu$$ matrix in the gain has to be inverted. The batch-size benchmark uses the generic batch routine even for $$\mu=1$$, including a $$1\times1$$ inverse, so its speedup is relative to that implementation; the specialized single-observation update has less overhead. The most common setup in practice, however, uses single observations, unit weights and a forgetting factor slightly below one, for example to predict a signal from its own past values while its dynamics change slowly:
 
 {% include figure.liquid
    path="assets/img/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/weighted-rls-signal-prediction.png"
@@ -432,7 +432,7 @@ The notebook ends with a small class, `WeightedRLS`, which is also available as 
    caption="One-step-ahead prediction of a noisy oscillation whose frequency increases slowly over 3,000 steps, with the two previous values as inputs. Left: the last 80 steps and the predictions with a forgetting factor of 0.99. Middle: the first estimated coefficient, which lags further and further behind the true value without forgetting. Right: the mean squared prediction error of the last 100 steps, which stays close to the noise variance with a forgetting factor of 0.99."
 %}
 
-Since the gain matrix and $$\mathbf{A}^{-1}$$ do not depend on the targets, several outputs cost hardly more than one. The notebook illustrates this with a closed curve whose two coordinates are learned jointly from noisy points, using sines and cosines of the curve parameter as inputs.
+Since the gain matrix and $$\mathbf{A}^{-1}$$ do not depend on the targets, several outputs share these computations, with the additional prediction and coefficient-update work growing linearly in the number of outputs. The notebook illustrates this with a closed curve whose two coordinates are learned jointly from noisy points, using sines and cosines of the curve parameter as inputs.
 
 {% include figure.liquid
    path="assets/img/2026-09-23-derivation-of-a-weighted-recursive-least-squares-estimator/weighted-rls-multi-output.png"
