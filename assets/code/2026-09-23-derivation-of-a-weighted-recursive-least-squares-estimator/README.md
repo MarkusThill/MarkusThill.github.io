@@ -9,6 +9,8 @@ Code for the blog post [Derivation of a Weighted Recursive Linear Least Squares 
 | `requirements.txt` | NumPy and Matplotlib versions used for the notebook and its figures. |
 | `RLSModel.R` | An R6 model class with a recursive least squares update and forgetting. It depends on its surrounding R project (for example the `IModel` base class) and does not run on its own. |
 
+The R file is a legacy application example with a nonzero initial coefficient vector and a custom warm-up. During its first 21 observations, the inverse is updated while coefficient updates are suppressed, and the accumulated corrections are cleared before being applied. It therefore does not reproduce the estimator derived in the post during initialization.
+
 The [companion notebook](https://github.com/MarkusThill/MarkusThill.github.io-jupyter/blob/main/2026_09_23_weighted_recursive_least_squares.ipynb) develops the class step by step from the equations in the post, with an example and a check against the direct solution after each step. It only needs NumPy and Matplotlib and can be [opened in Google Colab](https://colab.research.google.com/github/MarkusThill/MarkusThill.github.io-jupyter/blob/main/2026_09_23_weighted_recursive_least_squares.ipynb).
 
 ## Usage
@@ -31,6 +33,8 @@ print(rls.theta.ravel())         # approximately [1.0, 0.6]
 ```
 
 `update(X, Y, weights=None)` processes one batch (a 1-D `X` is a single observation) and returns the prediction errors computed before the update. `fit(X, Y, batch_size=1, weights=None)` processes a whole data set in consecutive batches, and `predict(X)` evaluates the model. The attributes `theta` and `A_inv` hold the current coefficients and the inverse of the regularized, weighted normal matrix.
+
+**Input-validation limitations.** Use a positive integer `batch_size`, a finite positive `ridge`, nonempty batches for `update`, and exactly matching numbers of input rows, targets and weights. The current implementation does not enforce all of these conditions: a negative batch size silently processes nothing, surplus targets or weights are ignored, an empty update applies forgetting after training has started, and `ridge=np.inf` prevents learning. If a later batch is invalid, `fit` can fail after earlier batches have already changed the model; validate the whole data set before calling it.
 
 ## Tests
 
