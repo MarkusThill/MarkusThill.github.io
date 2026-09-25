@@ -149,7 +149,10 @@
 } /* Literal.Number.Oct */ /* Literal.String.Backtick */
 .highlight .sc {
   color: #ed9d13;
-} /* Literal.String.Char */ /* Literal.String.Doc */
+} /* Literal.String.Char */
+.highlight .sd {
+  color: #ed9d13;
+} /* Literal.String.Doc */
 .highlight .s2 {
   color: #ed9d13;
 } /* Literal.String.Double */
