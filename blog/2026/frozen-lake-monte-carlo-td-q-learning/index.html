@@ -1,0 +1,1078 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta name="google-site-verification" content="E-cxXp9JBE8VIacUnRQwevqTkuNkkzBBa1HqjqIIgt4"> <meta http-equiv="Permissions-Policy" content="interest-cohort=()"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Crossing the Frozen Lake: Monte Carlo, TD(0) and Q-Learning | Markus Thill </title> <meta name="author" content="Markus Thill"> <meta name="description" content="Monte Carlo, TD(0) and Q-learning on an 8×8 Frozen Lake that is small enough to inspect every learned value: how experience turns into state values, why slippery ice changes them, and how action values lead to a policy that crosses the lake."> <meta name="keywords" content="machine-learning, mathematics, algorithms, programming, technical-tutorials, engineering-notes"> <meta property="og:site_name" content="Markus Thill"> <meta property="og:type" content="article"> <meta property="og:title" content="Markus Thill | Crossing the Frozen Lake: Monte Carlo, TD(0) and Q-Learning"> <meta property="og:url" content="https://MarkusThill.github.io/blog/2026/frozen-lake-monte-carlo-td-q-learning/"> <meta property="og:description" content="Monte Carlo, TD(0) and Q-learning on an 8×8 Frozen Lake that is small enough to inspect every learned value: how experience turns into state values, why slippery ice changes them, and how action values lead to a policy that crosses the lake."> <meta property="og:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <meta property="og:locale" content="en"> <meta name="twitter:card" content="summary"> <meta name="twitter:title" content="Crossing the Frozen Lake: Monte Carlo, TD(0) and Q-Learning"> <meta name="twitter:description" content="Monte Carlo, TD(0) and Q-learning on an 8×8 Frozen Lake that is small enough to inspect every learned value: how experience turns into state values, why slippery ice changes them, and how action values lead to a policy that crosses the lake."> <meta name="twitter:image" content="https://MarkusThill.github.io/assets/img/social-preview.svg"> <script type="application/ld+json">
+    {
+        "author":
+        {
+            "@type": "Person",
+            "name": "Markus Thill"
+        },
+        "url": "https://MarkusThill.github.io/blog/2026/frozen-lake-monte-carlo-td-q-learning/",
+        "@type": "BlogPosting",
+        "description": "Monte Carlo, TD(0) and Q-learning on an 8×8 Frozen Lake that is small enough to inspect every learned value: how experience turns into state values, why slippery ice changes them, and how action values lead to a policy that crosses the lake.",
+        "headline": "Crossing the Frozen Lake&#58; Monte Carlo, TD(0) and Q-Learning",
+        
+        "sameAs": ["https://github.com/MarkusThill","https://www.linkedin.com/in/markus-thill-a4991090","https://www.researchgate.net/profile/Markus-Thill/","https://scholar.google.com/citations?user=Bu5eFxQAAAAJ","https://projecteuler.net/"],
+        
+        "name": "Markus Thill",
+        "@context": "https://schema.org"
+    }
+  </script> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <style>
+  :root {
+    --max-content-width: 1000px;
+  }
+</style> <link rel="stylesheet" href="/assets/css/tailwind.css?v=50c64c15cbb9fd1ce6056fdb8bcb4b62"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css" integrity="sha256-MVopmdyC2tYTiJ8wlktf0uh0v4NgT+vNdyVFepi7Q0c=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.5/css/academicons.min.css" integrity="sha256-SzrCOBJbGVFMahewkgjwnApaV2+av1DwMAA+/QGLyZw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/scholar-icons@1.0.3/css/scholar-icons.css" integrity="sha256-VY3hHVj/hNX3fYG6wtbA6TcKJQl7+FthzGSyIB64klY=" crossorigin="anonymous"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%8D%95&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?v=3116ba77db9ee1581d05bb3e86fbf7f1"> <link rel="canonical" href="https://markusthill.github.io/blog/2026/frozen-lake-monte-carlo-td-q-learning/"> <script src="/assets/js/theme.js?v=5286c3e4c334d0ecb8fc0c40ff4fa7ec"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Markus</span> Thill </a> <button class="navbar-toggler collapsed navbar-toggler-main" type="button" data-nav-toggle="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse navbar-collapse-main" id="navbarNav"> <ul class="navbar-nav navbar-menu-list flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/"> </a> </li> <li class="nav-item "> <a class="nav-link" href="/about">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/index.html">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-nav-dropdown-toggle="true" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/publications/">publications</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/projects/">projects</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" type="button" title="Search" aria-label="Open search"> <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" type="button" title="Change theme" aria-label="Change color theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Crossing the Frozen Lake: Monte Carlo, TD(0) and Q-Learning</h1> <p class="post-meta"> Created on June 04, 2026 </p> <p class="post-tags"> <a href="/blog/2026"> <i class="fa-solid fa-calendar fa-sm"></i> 2026 </a>   ·   <a href="/blog/tag/reinforcement-learning"> <i class="fa-solid fa-hashtag fa-sm"></i> reinforcement learning</a>   <a href="/blog/tag/temporal-difference-learning"> <i class="fa-solid fa-hashtag fa-sm"></i> temporal difference learning</a>   <a href="/blog/tag/q-learning"> <i class="fa-solid fa-hashtag fa-sm"></i> Q-learning</a>   <a href="/blog/tag/monte-carlo"> <i class="fa-solid fa-hashtag fa-sm"></i> Monte Carlo</a>   <a href="/blog/tag/frozen-lake"> <i class="fa-solid fa-hashtag fa-sm"></i> frozen lake</a>   <a href="/blog/tag/connect-4"> <i class="fa-solid fa-hashtag fa-sm"></i> Connect-4</a>   <a href="/blog/tag/ai"> <i class="fa-solid fa-hashtag fa-sm"></i> AI</a>   <a href="/blog/tag/python"> <i class="fa-solid fa-hashtag fa-sm"></i> python</a>   ·   <a href="/blog/category/ml"> <i class="fa-solid fa-tag fa-sm"></i> ML</a>   <a href="/blog/category/programming"> <i class="fa-solid fa-tag fa-sm"></i> programming</a> </p> </header> <article class="post-content"> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#notation">Notation</a></li> <li class="toc-entry toc-h2"> <a href="#the-frozen-lake-environment">The Frozen Lake Environment</a> <ul> <li class="toc-entry toc-h4"><a href="#playing-on-the-lake-yourself">Playing on the Lake Yourself</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#policies-returns-and-state-values">Policies, Returns and State Values</a></li> <li class="toc-entry toc-h2"><a href="#monte-carlo-prediction">Monte Carlo Prediction</a></li> <li class="toc-entry toc-h2"> <a href="#temporal-difference-learning-with-td0">Temporal Difference Learning with TD(0)</a> <ul> <li class="toc-entry toc-h4"><a href="#monte-carlo-and-td0-on-the-same-experience">Monte Carlo and TD(0) on the Same Experience</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#slippery-ice">Slippery Ice</a></li> <li class="toc-entry toc-h2"><a href="#from-state-values-to-action-values">From State Values to Action Values</a></li> <li class="toc-entry toc-h2"><a href="#q-learning-with-an-%CE%B5-greedy-behavior">Q-Learning with an ε-greedy Behavior</a></li> <li class="toc-entry toc-h2"><a href="#evaluation-of-the-learned-policy">Evaluation of the Learned Policy</a></li> <li class="toc-entry toc-h2"><a href="#summary-and-outlook">Summary and Outlook</a></li> <li class="toc-entry toc-h2"><a href="#source-code">Source Code</a></li> <li class="toc-entry toc-h2"><a href="#references">References</a></li> </ul> </div> <hr> <div id="markdown-content"> <p>This post is the 3rd part of a series of 9 articles:</p> <ol> <li>Reinforcement Learning: Learning by Doing, Not by Labels</li> <li>Rewards, Returns and Value Functions: What Is the Agent Actually Maximizing?</li> <li><strong><a href="/blog/2026/frozen-lake-monte-carlo-td-q-learning/">Crossing the Frozen Lake: Monte Carlo, TD(0) and Q-Learning</a></strong></li> <li>When the Table Explodes: Function Approximation for Value Functions</li> <li>Eligibility Traces &amp; TD(λ): The Bias–Variance Dial</li> <li>The Deadly Triad: Moving Targets, Target Networks and DQN</li> <li>Connect-4 as a Reinforcement Learning Problem: Bitboards, Afterstates and N-Tuple Networks</li> <li>Self-Play That Learns: The TD(λ) Connect-4 Training Loop</li> <li>Train a Near-Perfect Connect-4 Agent in Minutes (with TD(λ) Self-Play)</li> </ol> <p>Before an agent can learn Connect-4 from self-play, the central ideas of temporal difference learning should be visible somewhere, and a game with trillions of positions is a poor place to look at them. In this post I therefore use a world which is small enough to print its complete value table: the Frozen Lake, a grid of \(8\times 8\) cells in which an agent has to walk from the upper left corner to a goal in the lower right corner without falling into one of the holes in the ice. With 64 cells and four possible moves in each of them, every number the algorithms below learn fits into a single figure, so that we can watch the estimates change and compare them with the exact values.</p> <p>The question which runs through the whole post is how experience alone can tell us which decisions are good. We first fix a way of behaving and estimate how good each cell is under it, once with the Monte Carlo method, which waits for the outcome of an episode, and once with TD(0), which updates its estimate after every single step. We then make the ice slippery, so that the same move can end in different cells, and finally change the objective from evaluating a fixed behavior to improving it, which leads to Q-learning. The returns and value functions of part 2 are recapped where they are needed, so that the post can also be read on its own. All experiments run within minutes on an old laptop CPU, and the code for each of them is linked at the end of the post.</p> <h2 id="notation">Notation</h2> <p>Upper-case letters denote the random quantities of an episode and lower-case letters particular values, following Sutton and Barto <a class="citation" href="#SuttonBarto18">(Sutton &amp; Barto, 2018)</a>. Estimates which are learned from experience are written without superscripts, e.g. \(V(s)\), whereas \(V^\pi(s)\) and \(V^*(s)\) denote the true values which they estimate.</p> <table> <thead> <tr> <th>Symbol</th> <th>Type</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td>\(s,\ s'\)</td> <td>state</td> <td>A cell of the lake, numbered row by row, \(s = 8\cdot\text{row}+\text{column}\in\{0,\dots,63\}\); \(s'\) denotes a successor state</td> </tr> <tr> <td>\(a\)</td> <td>action</td> <td>One of the four moves: 0 = left, 1 = down, 2 = right, 3 = up</td> </tr> <tr> <td>\(t,\ T\)</td> <td>time step</td> <td>\(t=0,1,\dots\) counts the steps of an episode; the episode ends at step \(T\)</td> </tr> <tr> <td>\(S_t,\ A_t\)</td> <td>random variables</td> <td>State and action at time step \(t\)</td> </tr> <tr> <td>\(R_{t+1}\)</td> <td>scalar</td> <td>Reward for the transition from \(S_t\) to \(S_{t+1}\): \(+1\) for entering the goal, \(-1\) for entering a hole, \(0\) otherwise</td> </tr> <tr> <td>\(\gamma\)</td> <td>scalar</td> <td>Reward discount, \(\gamma=0.9\) throughout the post</td> </tr> <tr> <td>\(G_t\)</td> <td>scalar</td> <td>Return: the discounted sum of the rewards from time step \(t\) until the end of the episode</td> </tr> <tr> <td>\(\pi(a\mid s)\)</td> <td>probability</td> <td>Policy: the probability of choosing action \(a\) in state \(s\)</td> </tr> <tr> <td>\(V^\pi(s)\)</td> <td>function</td> <td>State value: the expected return when starting in \(s\) and following \(\pi\)</td> </tr> <tr> <td>\(Q^\pi(s,a)\)</td> <td>function</td> <td>Action value: the expected return after taking \(a\) in \(s\) and following \(\pi\) afterwards</td> </tr> <tr> <td>\(V^*(s),\ Q^*(s,a)\)</td> <td>function</td> <td>State and action values of an optimal policy</td> </tr> <tr> <td>\(V(s),\ Q(s,a)\)</td> <td>table</td> <td>Current estimates, stored in a table with 64 or \(64\times 4\) entries</td> </tr> <tr> <td>\(N(s)\)</td> <td>counter</td> <td>Number of episodes in which state \(s\) has been visited so far</td> </tr> <tr> <td>\(\alpha\)</td> <td>scalar</td> <td>Step size of an update</td> </tr> <tr> <td>\(d_t\)</td> <td>0 or 1</td> <td>Termination flag: 1 if \(S_{t+1}\) is a hole or the goal</td> </tr> <tr> <td>\(y_t,\ \delta_t\)</td> <td>scalar</td> <td>Target of a TD update and the TD error \(\delta_t = y_t - V(S_t)\)</td> </tr> <tr> <td>\(\varepsilon\)</td> <td>probability</td> <td>Exploration rate of an \(\varepsilon\)-greedy policy</td> </tr> </tbody> </table> <p><br></p> <h2 id="the-frozen-lake-environment">The Frozen Lake Environment</h2> <p>The lake is shown in the next figure. The agent starts in cell 0 in the upper left corner and walks until it enters either the goal in cell 63 or one of the nine holes, which ends the episode. A cell is identified by a single number counted row by row from the top, so that cell \(s\) lies in row \(\lfloor s/8\rfloor\) and column \(s \bmod 8\). The rewards belong to transitions rather than to cells: entering the goal yields \(+1\), entering a hole \(-1\), and every other move \(0\). A move against the edge of the lake leaves the agent where it is. Since holes and goal end the episode, nothing can be earned after entering them, and their own value is zero by definition.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/lake-map-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/lake-map-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/lake-map-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/lake-map.png" class="img-fluid rounded z-depth-1 imgcenter" width="70%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 1:</b> The 8×8 lake used throughout this post, as rendered by the environment, with the state number s = 8·row + column added to each cell. The agent starts in cell 0 in the upper left corner. Entering the goal in cell 63 earns +1, entering one of the nine holes earns −1, and both end the episode; every other move earns 0. The elf and the stool are from franuka’s RPG snow tileset, all other tiles by Mel Tillery, as in Gymnasium’s Frozen Lake. </figcaption> </figure> <p>I use a slightly modified version of the Frozen Lake from the <a href="https://gymnasium.farama.org/environments/toy_text/frozen_lake/" rel="external nofollow noopener" target="_blank">Gymnasium</a> library, which my repository <a href="https://github.com/MarkusThill/techdays26/blob/c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49/src/techdays26/frozen_lake/frozen_lake_enhanced.py" rel="external nofollow noopener" target="_blank">techdays26</a> provides as <code class="language-plaintext highlighter-rouge">FrozenLakeEnv</code>. Three details differ from Gymnasium’s standard 8×8 task and change the learning problem, so they are worth stating explicitly: cell 42 is frozen instead of being a hole (nine holes instead of ten), entering a hole costs \(-1\) instead of nothing, and on slippery ice the agent moves in the intended direction with probability 0.75 instead of 1/3. The ice is not slippery in the first half of the post; we turn slipping on in the section on slippery ice. The following function creates the environment with these parameters:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">make_lake</span><span class="p">(</span><span class="n">slippery</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">max_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">The 8x8 lake with the task parameters used throughout the post.</span><span class="sh">"""</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="nc">FrozenLakeEnv</span><span class="p">(</span>
+        <span class="n">map_name</span><span class="o">=</span><span class="sh">"</span><span class="s">8x8</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">is_slippery</span><span class="o">=</span><span class="n">slippery</span><span class="p">,</span>
+        <span class="n">success_rate</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>  <span class="c1"># intended direction; each perpendicular one gets 0.125
+</span>        <span class="n">reward_schedule</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># (goal, hole, any other cell)
+</span>        <span class="n">render_mode</span><span class="o">=</span><span class="n">render_mode</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">env</span> <span class="k">if</span> <span class="n">max_steps</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="nc">TimeLimit</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="n">max_steps</span><span class="p">)</span>
+</code></pre></div></div> <p>The optional argument <code class="language-plaintext highlighter-rouge">max_steps</code> wraps the lake into Gymnasium’s <code class="language-plaintext highlighter-rouge">TimeLimit</code>. I use a limit of 200 steps only for the Q-learning agent and its evaluation, where we will see why cutting an episode off requires some care. Otherwise, the interaction follows the usual Gymnasium pattern: <code class="language-plaintext highlighter-rouge">reset</code> places the agent on the start cell and returns its state, and <code class="language-plaintext highlighter-rouge">step(action)</code> returns the next state, the reward, and the two flags <code class="language-plaintext highlighter-rouge">terminated</code> (a hole or the goal was entered) and <code class="language-plaintext highlighter-rouge">truncated</code> (the time limit cut the episode off). The function <code class="language-plaintext highlighter-rouge">run_episode</code> plays one episode with a given policy and records the visited states, actions and rewards, and all algorithms in this post learn from such records:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">policy</span><span class="p">:</span> <span class="n">Policy</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Play one episode; return the lists S_0..S_T, A_0..A_{T-1}, R_1..R_T.</span><span class="sh">"""</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">terminated</span> <span class="o">=</span> <span class="n">truncated</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="nf">policy</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">states</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="n">actions</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="n">rewards</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">float</span><span class="p">(</span><span class="n">reward</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">terminated</span>
+</code></pre></div></div> <p>The environment can also render the lake, and it can print a state value or the four action values onto each cell, in black for values near zero, turning red for negative and blue for positive values. All board figures in this post are produced with this renderer. The next video shows an agent which moves uniformly at random; it only illustrates states, moves and the ends of episodes, and nothing is learned in it.</p> <figure> <video src="/assets/video/2026-06-04-frozen-lake-monte-carlo-td-q-learning-random-walk.mp4" class="img-fluid rounded z-depth-1 imgcenter" width="400" height="auto" controls="" loop="" muted=""></video> <figcaption class="caption"> <b>Figure 2:</b> The rendered lake with an agent which chooses its moves uniformly at random on the deterministic lake. Whenever it falls into a hole or reaches the goal, the episode ends and a new one starts in the upper left corner. The clip only illustrates states, moves and the ends of episodes; nothing is learned in it. </figcaption> </figure> <h4 id="playing-on-the-lake-yourself">Playing on the Lake Yourself</h4> <p>The repository techdays26 also contains an introductory Jupyter notebook, <a href="https://github.com/MarkusThill/techdays26/blob/c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49/lab1/0_frozen_lake_problem.ipynb" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">lab1/0_frozen_lake_problem.ipynb</code></a>, which follows the same path as this post. In it, you can steer the agent across the lake with the arrow keys, let the two policies below walk on it, and watch the estimates of Monte Carlo, TD(0) and Q-learning appear on the cells while they are being learned. The notebook opens a Pygame window and waits for key presses, so it has to run locally on a computer with a display; it does not work in Google Colab, which cannot show such a window. It is meant as an interactive introduction: it renders every step, which makes the learning loops slow, and its code is kept simpler than the code quoted in this post, from which all numbers here are computed. With Python 3.11 or newer, the following commands set it up:</p> <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/MarkusThill/techdays26.git
+<span class="nb">cd </span>techdays26
+python <span class="nt">-m</span> venv venv
+<span class="nb">source </span>venv/bin/activate        <span class="c"># on Windows: venv\Scripts\activate</span>
+pip <span class="nb">install</span> <span class="nt">-e</span> <span class="s2">".[lab1]"</span> jupyterlab
+jupyter lab lab1/0_frozen_lake_problem.ipynb
+</code></pre></div></div> <p>The Pygame window only reacts to keys while it has the focus. <code class="language-plaintext highlighter-rouge">Esc</code> ends a session, <code class="language-plaintext highlighter-rouge">P</code> pauses it, and the keys <code class="language-plaintext highlighter-rouge">+</code> and <code class="language-plaintext highlighter-rouge">-</code> change the speed of the animation. For the longer training runs, <code class="language-plaintext highlighter-rouge">0</code> removes the speed limit (including the short pause after each episode), and <code class="language-plaintext highlighter-rouge">9</code> additionally switches the drawing off.</p> <p><br></p> <h2 id="policies-returns-and-state-values">Policies, Returns and State Values</h2> <p>A policy \(\pi(a\mid s)\) assigns a probability to each action in each state. I use two fixed policies in this post. The first, \(\pi_1\), ignores the state entirely and moves down or right with probability 0.45 each and left or up with probability 0.05 each, which is a random walk with a drift towards the goal. The second, \(\pi_2\), is deterministic: it moves right until it reaches the last column and then moves down. On the deterministic lake, \(\pi_2\) happens to follow a safe route along the upper and the right edge and always reaches the goal after 14 steps, which makes it a transparent example for calculations by hand, whereas the varied episodes of \(\pi_1\) are more informative for the learning experiments. Both policies receive a random number generator, since sampling from \(\pi_1\) requires one; \(\pi_2\) simply ignores it:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PI_1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>  <span class="c1"># ← ↓ → ↑
+</span>
+
+<span class="k">def</span> <span class="nf">pi_1</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Biased random walk: mostly down or right.</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="nf">int</span><span class="p">(</span><span class="n">rng</span><span class="p">.</span><span class="nf">choice</span><span class="p">(</span><span class="n">N_ACTIONS</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">PI_1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">pi_2</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Right until the last column, then down.</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="n">RIGHT</span> <span class="k">if</span> <span class="n">state</span> <span class="o">%</span> <span class="n">N_COLS</span> <span class="o">&lt;</span> <span class="n">N_COLS</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">DOWN</span>
+</code></pre></div></div> <p>The quantity which the agent should care about is the return, the discounted sum of all rewards from time step \(t\) until the episode ends at step \(T\):</p> <p>\begin{equation} G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{T-t-1} R_T = R_{t+1} + \gamma G_{t+1}, \qquad G_T = 0. \label{eq:return} \end{equation}</p> <p>The recursive form on the right is the one we will use in practice, since it allows us to compute all returns of an episode in a single backward pass. The state value \(V^\pi(s)=\mathbb{E}_\pi[G_t\mid S_t=s]\) is the expected return when the agent starts in \(s\) and follows \(\pi\) from there on. The expectation is needed because both the policy and, on slippery ice, the environment can produce different episodes from the same state. It is worth stressing that a value always belongs to a particular policy and a particular environment and not to a cell as such. Under \(\pi_2\) on the deterministic lake, for example, cell 16 has the value \(-0.81\), because \(\pi_2\) walks from there straight into the hole at cell 19, although cell 16 is perfectly safe for a policy which moves down instead.</p> <p>The next figure shows the route of \(\pi_2\) together with the values of all states under \(\pi_2\). Since the lake and the policy are both deterministic, each of these values is simply the return of the single episode which starts in that state, and along the route they are the returns observed from the start. The last three transitions are 39 → 47 → 55 → 63 with the rewards 0, 0 and +1, so that equation \eqref{eq:return} gives \(G = 1\) in state 55, \(G = 0 + 0.9\cdot 1 = 0.9\) in state 47, and \(G = 0 + 0.9\cdot 0.9 = 0.81\) in state 39. Continuing backwards, the return from the start is \(0.9^{13}\approx 0.254\), since the goal is worth less the further away it is. Note that the \(+1\) is attached to the transition into the goal and is therefore counted in the return of state 55, while the goal itself has a continuation value of zero, since the episode is over as soon as it has been entered. A transition into a hole works in the same way, with \(-1\) instead of \(+1\).</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/pi2-route-returns-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/pi2-route-returns-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/pi2-route-returns-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/pi2-route-returns.png" class="img-fluid rounded z-depth-1 imgcenter" width="70%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 3:</b> State values of π₂ on the deterministic lake (γ = 0.9), printed onto the cells by the environment’s renderer; the arrows mark the route of π₂ from the start in the upper left corner. Along the route, only the last transition, into the goal, is rewarded, and the values shrink by a factor of 0.9 per step of distance to the goal. From many cells in the lower rows, π₂ walks right into a hole, which gives them negative values. </figcaption> </figure> <p><br></p> <h2 id="monte-carlo-prediction">Monte Carlo Prediction</h2> <p>The Monte Carlo method estimates \(V^\pi(s)\) in the most direct way possible: it lets the agent follow \(\pi\), records the returns which are actually observed from each state, and averages them. After each complete episode, the returns are computed backwards with equation \eqref{eq:return}, and the estimate of every visited state is moved towards the return observed from it:</p> <p>\begin{equation} N(S_t) \leftarrow N(S_t) + 1, \qquad V(S_t) \leftarrow V(S_t) + \frac{1}{N(S_t)}\,\bigl(G_t - V(S_t)\bigr). \label{eq:mc} \end{equation}</p> <p>With the step \(1/N(S_t)\), this is simply an incremental way of computing the sample mean: after \(n\) updates, \(V(s)\) is exactly the average of the \(n\) returns observed from \(s\). A state can, however, be visited several times within one episode, for example when the agent bumps into the edge of the lake and stays where it is. Consider the episode 39 → 39 → 47 → 55 → 63, in which the first move to the right is blocked by the edge. State 39 is visited at \(t=0\) and at \(t=1\), with the returns \(G_0 = 0.9^3 = 0.729\) and \(G_1 = 0.9^2 = 0.81\). The first-visit variant, which I use here, counts only the return after the first visit, 0.729, so that each episode contributes at most one sample per state; the every-visit variant would use both returns. The implementation therefore computes all returns backwards but selects the first visits in chronological order. Collecting the states during the backward pass and skipping those already seen would look very similar, but it would record the last visit (0.81) instead of the first:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">returns</span><span class="p">(</span><span class="n">rewards</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">G_t = R_{t+1} + gamma * G_{t+1}, computed backwards from the end.</span><span class="sh">"""</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nf">reversed</span><span class="p">(</span><span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">))):</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">rewards</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">g</span>
+        <span class="n">G</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span>
+    <span class="k">return</span> <span class="n">G</span>
+
+
+<span class="k">def</span> <span class="nf">mc_first_visit_update</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">One first-visit Monte Carlo update from a complete episode.
+
+    With alpha=None, V(s) is the running mean of the returns observed in s (step 1/N(s));
+    otherwise V(s) moves a constant fraction alpha towards each new return.
+    </span><span class="sh">"""</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="nf">returns</span><span class="p">(</span><span class="n">rewards</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nf">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)):</span>  <span class="c1"># chronological order: first visits come first
+</span>        <span class="n">s</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">seen</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">N</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">N</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">alpha</span>
+        <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="n">step</span> <span class="o">*</span> <span class="p">(</span><span class="n">G</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+</code></pre></div></div> <p>The optional argument <code class="language-plaintext highlighter-rouge">alpha</code> replaces the step \(1/N(s)\) by a constant, which we will need for a comparison further below. For \(\pi_2\) on the deterministic lake, a single episode is already sufficient: every episode is the same, so the first one yields the exact values of all 14 states on the route. States which are never visited keep their initial estimate of zero, and it is important not to read this zero as a statement about the state, since it only means that nothing is known about it yet. For \(\pi_1\), whose episodes vary, the estimates converge to \(V^{\pi_1}\) as the number of visits grows, and each observed return is an unbiased sample of the quantity being estimated. The price is twofold. Nothing can be learned before an episode has ended, and the individual returns vary considerably, since each of them depends on all random decisions until the end of its episode.</p> <p><br></p> <h2 id="temporal-difference-learning-with-td0">Temporal Difference Learning with TD(0)</h2> <p>Temporal difference learning <a class="citation" href="#Sutton88">(Sutton, 1988)</a> starts from a different observation. Splitting the return into its first reward and the rest, \(G_t = R_{t+1} + \gamma G_{t+1}\), and taking expectations yields the Bellman equation of \(V^\pi\),</p> <p>\begin{equation} V^\pi(s) = \mathbb{E}<em>\pi\bigl[R</em>{t+1} + \gamma V^\pi(S_{t+1}) \,\big|\, S_t = s\bigr], \label{eq:bellman} \end{equation}</p> <p>which relates the value of a state to the values of its successors. TD(0) turns this relation into an update rule: after each single transition from \(S_t\) to \(S_{t+1}\), the observed reward plus the discounted current estimate of the next state serves as a sample of the right-hand side,</p> <p>\begin{equation} y_t = R_{t+1} + \gamma\,(1-d_t)\,V(S_{t+1}), \qquad \delta_t = y_t - V(S_t), \qquad V(S_t) \leftarrow V(S_t) + \alpha\,\delta_t. \label{eq:td0} \end{equation}</p> <p>The target \(y_t\) uses our own estimate \(V(S_{t+1})\) in place of the rest of the return, which is called bootstrapping. The flag \(d_t\) is one if \(S_{t+1}\) is a hole or the goal, so that the target then consists of the reward alone. A zero-initialized table would give the same result without the flag, since terminal entries are never updated, but the explicit flag keeps the update correct for any initialization. The difference \(\delta_t\) between the target and the current estimate is the TD error, and the step size \(\alpha\) determines how far the estimate moves towards the target:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">td0_update</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s_next</span><span class="p">,</span> <span class="n">terminated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">One TD(0) update after the transition s -&gt; s_next with reward r.</span><span class="sh">"""</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">terminated</span><span class="p">)</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="n">s_next</span><span class="p">]</span>  <span class="c1"># no bootstrap after termination
+</span>    <span class="n">delta</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+    <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">delta</span>
+    <span class="k">return</span> <span class="n">delta</span>
+</code></pre></div></div> <p>Let us again follow \(\pi_2\) on the deterministic lake, now with \(\alpha = 0.1\) and all estimates initialized to zero. During the first episode, every target is zero except the last one, so only the state before the goal changes: \(V(55) = 0 + 0.1\cdot(1 - 0) = 0.1\). In the second episode, the transition 47 → 55 has the target \(0 + 0.9\cdot 0.1 = 0.09\), so that \(V(47)\) becomes \(0.1\cdot 0.09 = 0.009\), and one step later \(V(55)\) moves on to \(0.1 + 0.1\cdot(1 - 0.1) = 0.19\). In contrast to Monte Carlo, TD(0) has updated a state before the episode was over, but it has also learned much less from the same two episodes, because the information about the goal travels backwards by only one state per episode. The next figure contrasts the two update schemes.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-vs-td-update-timing-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-vs-td-update-timing-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-vs-td-update-timing-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-vs-td-update-timing.png" class="img-fluid rounded z-depth-1 imgcenter" width="90%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 4:</b> When the two methods update. Monte Carlo waits until the episode has ended and then moves the estimate of each visited state towards its observed return G_t. TD(0) updates the estimate of S_t right after the transition to S_{t+1}, using the reward R_{t+1} and the current estimate V(S_{t+1}). Earlier TD(0) updates are not revisited: when the reward R_4 is observed, only the estimate of S_3 benefits from it in this episode. </figcaption> </figure> <p>How slowly this propagation proceeds on the route of \(\pi_2\) is shown in the next figure. The start state, 14 transitions away from the goal, changes for the first time in episode 14, and then only to about \(2.5\cdot10^{-15}\), since the reward of the goal has been multiplied by \(\alpha\) once for every state it had to pass on its way back. Even with \(\alpha = 1\), which copies each target into the table completely, 14 episodes would be required, one per state of the route. After 200 episodes the TD(0) estimates are close to the exact values, which Monte Carlo had after a single episode. The route is the credit-assignment problem of part 2 in its most concrete form: only the last of 14 decisions is rewarded directly, and TD(0) has to pass the credit back through all earlier states, one per episode. This slow flow of information backwards along a trajectory is a well-known weakness of one-step TD methods, and the eligibility traces of part 5 are one way to address it.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/td-reward-propagation-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/td-reward-propagation-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/td-reward-propagation-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/td-reward-propagation.png" class="img-fluid rounded z-depth-1 imgcenter" width="90%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 5:</b> Estimates of V(s) along the route of π₂ on the deterministic lake, after TD(0) with α = 0.1 has seen 1, 2, 5, 14, 50 and 200 identical episodes, compared with the Monte Carlo estimate after a single episode, which equals the exact values here. On this route, the reward of the goal travels backwards by one state per episode. </figcaption> </figure> <h4 id="monte-carlo-and-td0-on-the-same-experience">Monte Carlo and TD(0) on the Same Experience</h4> <p>The deterministic example is extreme, so let us compare the two methods on the more varied episodes of \(\pi_1\). Both learners receive exactly the same complete episodes, and their errors are plotted against the number of environment transitions (replaying a recorded episode gives the same TD(0) updates as learning during it, because \(\pi_1\) does not look at the estimates). The error is the root mean squared deviation over all 54 non-terminal states from the exact values \(V^{\pi_1}(s)\), which can be computed from the transition table of the environment (see the box below) but are never shown to the learners. All 54 states are reachable under \(\pi_1\), although the cells 56, 57 and 60 to 62 in the bottom row are visited in only about one percent of the episodes or less.</p> <p>One more variable has to be controlled. The sample mean in equation \eqref{eq:mc} uses the shrinking step \(1/N(s)\), whereas TD(0) is normally used with a constant step size, so a comparison of just these two would mix the target (a complete return versus a bootstrapped one-step target) with the step-size rule. I therefore add a third learner, Monte Carlo with the same constant step size \(\alpha=0.05\) as TD(0). Each run consists of 20,000 episodes (about 196,000 transitions on the deterministic lake and 236,000 on the slippery one of the next section) and is repeated with five seeds.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-td-prediction-error-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-td-prediction-error-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-td-prediction-error-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/mc-td-prediction-error.png" class="img-fluid rounded z-depth-1 imgcenter" width="100%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 6:</b> Root mean squared error of three learners of V^π₁ over the 54 non-terminal states, all fed with the same episodes of π₁, against the number of environment transitions (log scale). Left: deterministic lake; right: slippery lake. The lines show the mean over five seeds, the bands the range between the best and the worst seed. Monte Carlo with the sample mean uses the step 1/N(s); the other two learners use the constant step size α = 0.05. </figcaption> </figure> <p>The result is instructive in both directions. At the same constant step size, Monte Carlo is ahead during the first few thousand episodes. TD(0) starts from estimates which are all zero, and as we have seen, it needs many visits before the information about holes and goal has travelled back to the states near the start, so its early targets are built from estimates which are still uninformative. Later, however, the ordering reverses. After roughly 4,500 episodes on the deterministic lake and 3,000 on the slippery one, TD(0) has the lower average error, and it ends at 0.055 compared with 0.065 for Monte Carlo with a constant step size (0.049 and 0.060 on slippery ice), although the ranges of the individual seeds still overlap. With a constant step size, neither estimate ever settles exactly, since every new target moves it by a fixed fraction. The remaining error therefore reflects how much the targets vary, and the one-step targets of TD(0) vary less than complete returns, which accumulate the randomness of all remaining steps of an episode. In the usual terms, the Monte Carlo target is unbiased but has a high variance, whereas the TD target varies less but is biased as long as the estimate of the next state is wrong, and the early and the late part of the curves show the two sides of this trade-off, which part 4 takes up again and part 5 turns into an adjustable dial.</p> <p>The sample mean, finally, beats both of them over the whole run and ends at an error of 0.016 on the deterministic lake and 0.025 on the slippery one. This is less an advantage of the Monte Carlo target than one of the step-size rule: the step \(1/N(s)\) weights all returns ever observed equally, so that the error keeps shrinking, whereas a constant step size keeps forgetting old targets. The remaining error of the sample mean sits mostly in the rarely visited bottom row, whose five cells account for between a quarter and almost all of its final squared error, depending on the seed; for the two learners with a constant step size, the error is spread over the whole lake. Forgetting is exactly what is needed when the estimated quantity changes over time, which is the case as soon as the policy itself is being improved; this is why constant step sizes are the usual choice for control methods such as Q-learning below. Also, the comparison covers one small task, one policy and one step size, so it does not establish a general ranking of the two methods. In the random-walk example of Sutton and Barto <a class="citation" href="#SuttonBarto18">(Sutton &amp; Barto, 2018)</a>, for instance, TD(0) is ahead of constant-step Monte Carlo over a whole range of step sizes. In general, the advantages of bootstrapping show most clearly when episodes are long or never end, and when the estimates of the next states are already reasonable.</p> <details> <summary>How the exact values were computed</summary> <p>The environment stores its complete transition model in the attribute <code class="language-plaintext highlighter-rouge">env.P</code>, which maps each state and action to a list of tuples (probability, next state, reward, terminated). For a fixed policy, the Bellman equation \eqref{eq:bellman} is a linear system with one equation per state, \(\mathbf{v} = \mathbf{r}_\pi + \gamma\mathbf{P}_\pi\mathbf{v}\), in which \(\mathbf{P}_\pi\) contains the probabilities of moving from one state to another under \(\pi\) and \(\mathbf{r}_\pi\) the expected immediate rewards. The helper <code class="language-plaintext highlighter-rouge">model_arrays</code> reads \(\mathbf{P}\) and \(\mathbf{r}\) from <code class="language-plaintext highlighter-rouge">env.P</code> and removes all transitions into holes and goal, since they contribute no continuation value, so that the system has a unique solution:</p> <div class="language-python highlighter-rouge"> <div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy_values</span><span class="p">(</span><span class="n">pi</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">slippery</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Exact V for an arbitrary policy matrix pi(a|s).</span><span class="sh">"""</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="nf">model_arrays</span><span class="p">(</span><span class="n">slippery</span><span class="p">)</span>
+    <span class="n">P_pi</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">einsum</span><span class="p">(</span><span class="sh">"</span><span class="s">sa,sat-&gt;st</span><span class="sh">"</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="n">r_pi</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">R</span><span class="p">).</span><span class="nf">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">solve</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nf">eye</span><span class="p">(</span><span class="n">N_STATES</span><span class="p">)</span> <span class="o">-</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">P_pi</span><span class="p">,</span> <span class="n">r_pi</span><span class="p">)</span>
+</code></pre></div> </div> <p>The same arrays are used for value iteration, which computes the optimal action values \(Q^*\) in the last part of the post, and for the probabilities of reaching the goal quoted below. None of these computations is available to the learners.</p> </details> <p><br></p> <h2 id="slippery-ice">Slippery Ice</h2> <p>So far, every action had a single outcome. On slippery ice, the agent moves in the intended direction only with probability 0.75 and slips into each of the two perpendicular directions with probability 0.125, as shown in the next figure. A slip against the edge of the lake leaves the agent in place, so that near the edges several outcomes can lead to the same cell. It is important to keep two sources of randomness apart here: \(\pi_1\) chooses its actions at random, and the slippery environment adds a second random step after the action has been chosen. The reward definition, the discount and the algorithms remain exactly the same; only the call <code class="language-plaintext highlighter-rouge">make_lake(slippery=True)</code> differs. The right half of the error figure above shows that the three prediction learners behave as on the deterministic lake, although the rare states take longer to be covered (all 54 states had been visited after 359 to 3,095 episodes, depending on the seed, compared with 99 to 851 episodes on the deterministic lake).</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/slip-directions-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/slip-directions-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/slip-directions-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/slip-directions.png" class="img-fluid rounded z-depth-1 imgcenter" width="70%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 7:</b> Transition probabilities on slippery ice for the action ↓. Left: in an interior cell, the agent moves down with probability 0.75 and slips to the left or to the right with probability 0.125 each. Right: at the left edge of the lake, the slip to the left is blocked, and the agent stays in its cell with probability 0.125. </figcaption> </figure> <p>The next figure compares the exact values of both policies on the deterministic and on the slippery lake. The route of \(\pi_2\) collapses: its start value drops from 0.254 to \(-0.012\), and the probability of reaching the goal from the start falls from 1 to 0.63. The policy was never designed for slipping. Each slip moves the agent off its route, and in most of the rows below, walking to the right leads sooner or later into one of the holes. Even the cells directly below the former route therefore lose most of their value, and the left half of them becomes negative. A single successful trajectory says little about the expected value of a policy in a stochastic world.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/value-maps-deterministic-vs-slippery-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/value-maps-deterministic-vs-slippery-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/value-maps-deterministic-vs-slippery-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/value-maps-deterministic-vs-slippery.png" class="img-fluid rounded z-depth-1 imgcenter" width="100%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 8:</b> Exact state values of π₂ (top) and π₁ (bottom) on the deterministic lake (left) and the slippery lake (right), computed from the transition table and printed onto the cells by the environment’s renderer (blue for positive, red for negative values). Holes and goal are terminal and have no value of their own. The precise route of π₂ loses most of its value on slippery ice, whereas the values of the random walk π₁ change comparably little. </figcaption> </figure> <p>For \(\pi_1\) the picture is different and, at first sight, surprising, since its start value even increases from \(-0.426\) to \(-0.374\). Because \(\pi_1\) chooses its actions independently of the state, the slip merely changes the probabilities with which the four directions are actually taken, from (0.05, 0.45, 0.45, 0.05) to (0.1, 0.4, 0.4, 0.1). The left direction, for example, now results from choosing left and not slipping, \(0.05\cdot 0.75\), or from choosing down or up and slipping to the left, \(0.45\cdot 0.125 + 0.05\cdot 0.125\), which adds up to 0.1. Under \(\pi_1\), the slippery lake is therefore exactly equivalent to a deterministic lake with a slightly more hesitant random walk. This walk reaches the goal less often than before (in 5.1% instead of 8.2% of the episodes, again computed from the transition table), but it also takes longer on average (11.9 instead of 9.8 steps), so that the \(-1\) of the hole which ends most of its episodes is discounted more strongly. A higher value is therefore not the same as a higher probability of success. The value measures the discounted reward, and with \(\gamma = 0.9\) a late arrival is worth less than an early one, whether the arrival is good or bad. We will meet this distinction again when we evaluate the learned policy.</p> <p><br></p> <h2 id="from-state-values-to-action-values">From State Values to Action Values</h2> <p>The values of the previous sections evaluate a fixed policy. They tell us how good a state is if we continue to behave in the same way, but not which action we should choose in it. From now on, the objective changes: instead of estimating the consequences of a given behavior, we want to find a better one.</p> <p>For this purpose, it is convenient to learn a value for each pair of state and action. The action value \(Q^\pi(s,a)\) is the expected return when the agent takes action \(a\) in state \(s\) and follows \(\pi\) afterwards. The two kinds of values are related by</p> <p>\begin{equation} V^\pi(s) = \sum_a \pi(a\mid s)\,Q^\pi(s,a), \qquad V^<em>(s) = \max_a Q^</em>(s,a), \label{eq:vq} \end{equation}</p> <p>where the second equation holds for the optimal values \(V^*\) and \(Q^*\), i.e. the largest values that any policy can achieve. To choose an action with the help of state values alone, the agent would have to know where each action leads, \(\arg\max_a \sum_{s'} p(s'\mid s,a)\,[r(s,a,s') + \gamma V(s')]\), which requires the transition probabilities \(p(s'\mid s,a)\) of the environment. With action values, this comparison has already been made, and the greedy action is simply \(\arg\max_a Q(s,a)\). Our environment does in fact expose its transition model as <code class="language-plaintext highlighter-rouge">env.P</code>, and I use it for the exact reference values, but the learning algorithms in this post never look at it. Note also that state values are not useless for control in general. If the immediate consequence of an action is known exactly, as it is for a move in a board game, the agent can compare the values of the resulting positions directly. This is the afterstate idea on which the Connect-4 agent of part 7 is built.</p> <p>State 47, which lies directly above cell 55 and to the right of the hole at cell 46, illustrates what action values capture on slippery ice. Its optimal action values are \(Q^*(47,\downarrow) = 0.395\), \(Q^*(47,\rightarrow) = 0.382\), \(Q^*(47,\uparrow) = 0.139\) and \(Q^*(47,\leftarrow) = -0.634\). Moving down leads towards the goal, but a slip to the left drops the agent into the hole with probability 0.125. Moving right pushes against the edge of the lake: the agent mostly stays where it is, and its slips lead up or down, but never into a hole, so this move is completely safe but slow. With \(\gamma = 0.9\), the faster and riskier move is slightly better, and a single look at the four action values reveals this trade-off without any knowledge of the slip probabilities.</p> <p><br></p> <h2 id="q-learning-with-an-ε-greedy-behavior">Q-Learning with an ε-greedy Behavior</h2> <p>Q-learning <a class="citation" href="#Watkins89">(Watkins, 1989)</a> learns action values with a TD update which looks almost like equation \eqref{eq:td0}:</p> <p>\begin{equation} y_t = R_{t+1} + \gamma\,(1-d_t)\,\max_{a’} Q(S_{t+1},a’), \qquad Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \alpha\,\bigl[y_t - Q(S_t,A_t)\bigr]. \label{eq:qlearning} \end{equation}</p> <p>The maximum in the target means that the update bootstraps from the best action the agent currently knows in the next state, regardless of the action it will actually take there. If every pair of state and action is tried infinitely often and the step sizes decrease appropriately, \(Q\) converges to \(Q^*\) <a class="citation" href="#WatkinsDayan92">(Watkins &amp; Dayan, 1992)</a>. The first of these conditions points to the second ingredient of the method: the agent has to explore. If it always chose the action which currently looks best, it would never try the alternatives whose estimates are still zero, and it could settle on a mediocre route. The standard remedy is an \(\varepsilon\)-greedy behavior, in which the agent picks a uniformly random action with probability \(\varepsilon\) and the greedy one otherwise. Ties between equal action values are broken at random, which matters at the beginning, when all entries are zero and <code class="language-plaintext highlighter-rouge">np.argmax</code> would always return the first action, left:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">greedy_action</span><span class="p">(</span><span class="n">q_row</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">argmax with random tie-breaking (np.argmax would always prefer </span><span class="sh">'</span><span class="s">left</span><span class="sh">'</span><span class="s">).</span><span class="sh">"""</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">flatnonzero</span><span class="p">(</span><span class="n">q_row</span> <span class="o">==</span> <span class="n">q_row</span><span class="p">.</span><span class="nf">max</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nf">int</span><span class="p">(</span><span class="n">rng</span><span class="p">.</span><span class="nf">choice</span><span class="p">(</span><span class="n">best</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">epsilon_greedy</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">rng</span><span class="p">.</span><span class="nf">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nf">int</span><span class="p">(</span><span class="n">rng</span><span class="p">.</span><span class="nf">integers</span><span class="p">(</span><span class="n">N_ACTIONS</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nf">greedy_action</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">rng</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">q_learning_update</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s_next</span><span class="p">,</span> <span class="n">terminated</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">terminated</span><span class="p">)</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">s_next</span><span class="p">].</span><span class="nf">max</span><span class="p">()</span>
+    <span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">])</span>
+</code></pre></div></div> <p>The action which the agent actually takes next does not appear in the update at all; only the value of the greedy action does. Q-learning therefore learns about the greedy policy while it behaves differently, which is why it is called an off-policy method. This remains true if the \(\varepsilon\)-greedy behavior is replaced by any other policy which explores sufficiently, for example by \(\pi_1\): the target still estimates \(Q^*\) and not the action values of the behavior itself, which would require a different target.</p> <p>The training loop applies this update for 15,000 episodes on the slippery lake, with \(\alpha = 0.1\) and \(\gamma = 0.9\). The exploration rate starts at \(\varepsilon = 0.5\) and decreases linearly by \(10^{-4}\) per episode, so that it reaches zero after 5,000 episodes. During the remaining 10,000 episodes the agent acts purely greedily and keeps learning from its own decisions and the randomness of the ice. These settings are a working recipe for this particular task and not a choice which guarantees convergence:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">q_learning</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">,</span>
+    <span class="n">n_episodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">Generator</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">GAMMA</span><span class="p">,</span>
+    <span class="n">epsilon_start</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">epsilon_decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="bp">None</span><span class="p">]</span> <span class="o">|</span> <span class="bp">None</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="p">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Tabular Q-learning with a linearly decaying epsilon-greedy behaviour policy.</span><span class="sh">"""</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="n">N_STATES</span><span class="p">,</span> <span class="n">N_ACTIONS</span><span class="p">))</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon_start</span>
+    <span class="n">env</span><span class="p">.</span><span class="nf">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">):</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">reset</span><span class="p">()</span>
+        <span class="n">terminated</span> <span class="o">=</span> <span class="n">truncated</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nf">epsilon_greedy</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">rng</span><span class="p">)</span>
+            <span class="n">s_next</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="nf">q_learning_update</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s_next</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s_next</span>  <span class="c1"># a truncated episode is reset, but its last target still bootstraps
+</span>        <span class="n">epsilon</span> <span class="o">=</span> <span class="nf">max</span><span class="p">(</span><span class="n">epsilon</span> <span class="o">-</span> <span class="n">epsilon_decay</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="nf">callback</span><span class="p">(</span><span class="n">episode</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Q</span>
+</code></pre></div></div> <p>The environment passed to this loop is <code class="language-plaintext highlighter-rouge">make_lake(slippery=True, max_steps=200)</code>, and the limit of 200 steps needs some care. An episode which reaches the limit has not really ended, since the agent is still standing on the ice and the value of its state is not zero. The loop therefore starts a new episode when either flag is set, but it suppresses the bootstrap only for <code class="language-plaintext highlighter-rouge">terminated</code> and never for <code class="language-plaintext highlighter-rouge">truncated</code>, as recommended in Gymnasium’s <a href="https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/" rel="external nofollow noopener" target="_blank">guide on time limits</a>. The prediction experiments of the previous sections did not need a limit, since every recorded episode of \(\pi_1\) and \(\pi_2\) ended in a hole or in the goal. One training run of 15,000 episodes took 64 seconds on an Intel Core i7-3520M, a laptop CPU from 2012, measured without the intermediate evaluations described next.</p> <p><br></p> <h2 id="evaluation-of-the-learned-policy">Evaluation of the Learned Policy</h2> <p>A table of action values, however colorful, is no evidence that the agent can cross the lake. To evaluate a learned table, I freeze it, switch off exploration, and let its greedy policy play on the same slippery lake with separate random seeds, counting how each episode ends: in the goal, in a hole, or still on the ice after 200 steps. During training, this evaluation runs every 500 episodes with 1,000 evaluation episodes, and after training each table is evaluated on 10,000 episodes. The whole training is repeated with five seeds. As a reference, I compute the optimal action values \(Q^*\) by value iteration from the transition table and evaluate their greedy policy in the same way.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-evaluation-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-evaluation-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-evaluation-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-evaluation.png" class="img-fluid rounded z-depth-1 imgcenter" width="90%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 9:</b> Evaluation of the greedy policy during Q-learning on the slippery lake, for five training seeds (lines: mean, bands: range over the seeds). Top: the fraction of 1,000 evaluation episodes, played without exploration and with separate seeds, which reach the goal, fall into a hole, or are still on the ice after 200 steps. Bottom: the exact expected discounted return of the same greedy policy from the start state, computed from the transition table. The black lines show the optimal policy, and the gray vertical line marks the episode in which ε reaches zero. </figcaption> </figure> <p>After training, the five greedy policies reach the goal in 95.0% of their 10,000 evaluation episodes on average (84.7% for the worst seed and 97.9% for the best one), they fall into a hole in 4.9%, and the time limit ends only 0.1% of the episodes. While \(\varepsilon\) is still positive, the greedy policy changes considerably from one evaluation to the next, and the curves settle only after exploration has ended. The comparison with the optimal policy is surprising at first: the optimal policy reaches the goal in only 73% of its episodes and falls into a hole in the remaining 27%, so the learned policies succeed far more often than the optimal one.</p> <p>This is the distinction we met on slippery ice. The optimal policy maximizes the discounted return, and with \(\gamma = 0.9\) a goal which is reached in step 20 is worth \(0.9^{19}\approx 0.14\) at the start, one which is reached in step 46 less than 0.01. The optimal policy therefore takes rather direct routes and accepts the risk of sideways slips, and its episodes last about 20 steps on average. Four of the five learned policies instead prefer detours along the edges of the lake, where slips are harmless, and need about 46 steps on average (the fifth one about 30). Measured by the objective which Q-learning is supposed to maximize, the learned policies are clearly worse: the exact expected return from the start is 0.040 on average (between 0.035 and 0.056 for the individual seeds), compared with \(V^*(0) = 0.066\) for the optimal policy. With a discount closer to one, the optimal policy itself becomes cautious; for \(\gamma = 0.99\), it reaches the goal in 98.6% of the episodes, again computed from the transition table.</p> <p>The reason for the detours can be read off the learned table of the first seed, which the next figure shows next to the optimal action values. Its greedy actions differ from the optimal ones in 11 of the 54 states, and in the states 28, 43, 47 and 51 all five tables deviate from the optimal policy. In state 55, directly above the goal, the learned table pushes right against the edge and values the move down at only 0.149. This estimate is certainly too low, since the move down reaches the goal with probability 0.75 and a hole with probability 0.125, which makes it worth more than 0.5 whatever the agent does afterwards. Replaying the training run shows how the estimate got there. When exploration ended after 5,000 episodes, the table valued the move down at 0.735, close to the optimal 0.704. The greedy agent kept taking it, 1,348 times in total, and reached the goal in three quarters of these attempts, until it slipped into the hole at cell 54 in three consecutive episodes (6,697 to 6,699). With the constant step size \(\alpha = 0.1\), these three targets of \(-1\) pulled the estimate below that of pushing right. Q-learning only updates the action which is actually taken, and without exploration an action which has fallen behind in this way is never tried again, so the estimate was never corrected. State 47 shows the same pattern: the learned values for down and right, 0.078 and 0.225, reverse the ranking of the optimal values 0.395 and 0.382. The recipe with a linearly decreasing \(\varepsilon\) has therefore produced policies which cross the lake reliably, but not optimal ones. Keeping a small amount of exploration, or exploring for longer with decreasing step sizes, would be the natural candidates for an improvement, which I have not measured here.</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-policy-480.webp 480w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-policy-800.webp 800w,/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-policy-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/2026-06-04-frozen-lake-monte-carlo-td-q-learning/q-learning-policy.png" class="img-fluid rounded z-depth-1 imgcenter" width="100%" height="auto" data-zoomable="" loading="lazy" onerror="this.onerror=null; document.querySelectorAll('.responsive-img-srcset').forEach(function (n) { n.remove(); });"> </picture> <figcaption class="caption"> <b>Figure 10:</b> Left: the Q-table learned with the first seed after 15,000 episodes on the slippery lake. Right: the optimal action values Q*, computed from the transition table. The renderer prints the four action values of a cell at the side of the respective move (the value of ↓ at the bottom, and so on), readable from the centre of the cell, and it prints the largest one in bold. Orange frames mark the 11 states in which the learned greedy action differs from the optimal one, black frames the states 47 and 55 discussed in the text. In both states, the learned table prefers pushing right against the edge, and its estimates for the move down are far below the optimal values. </figcaption> </figure> <p>The final video shows the first three evaluation episodes of the same table, played with a fixed evaluation seed; the episodes were not selected. All three reach the goal, and the cautious behavior is easy to see: at the lower end of the right column, the agent pushes against the edge and waits until a slip carries it downwards.</p> <figure> <video src="/assets/video/2026-06-04-frozen-lake-monte-carlo-td-q-learning-greedy-slippery.mp4" class="img-fluid rounded z-depth-1 imgcenter" width="400" height="auto" controls="" loop="" muted=""></video> <figcaption class="caption"> <b>Figure 11:</b> The first three evaluation episodes of the greedy policy learned with the first seed, played on slippery ice without exploration (evaluation seed 40,000; the episodes were not selected). After a slip, a blue arrow shows the intended direction and a red arrow the move which actually happened. All three episodes reach the goal; at the lower end of the right column, the agent pushes against the edge of the lake until a slip carries it downwards. </figcaption> </figure> <p><br></p> <h2 id="summary-and-outlook">Summary and Outlook</h2> <p>The following table summarizes what the three methods of this post learn, which target they move their estimates towards, and when they do so.</p> <table> <thead> <tr> <th>Method</th> <th>Learns</th> <th>Target</th> <th>Update</th> </tr> </thead> <tbody> <tr> <td>Monte Carlo</td> <td>\(V^\pi\) of a fixed policy</td> <td>the observed return \(G_t\)</td> <td>after the episode has ended</td> </tr> <tr> <td>TD(0)</td> <td>\(V^\pi\) of a fixed policy</td> <td>\(R_{t+1}+\gamma V(S_{t+1})\)</td> <td>after every step</td> </tr> <tr> <td>Q-learning</td> <td>\(Q^*\), while behaving \(\varepsilon\)-greedily</td> <td>\(R_{t+1}+\gamma \max_{a'} Q(S_{t+1},a')\)</td> <td>after every step</td> </tr> </tbody> </table> <p>Returning to the question from the beginning, experience tells us which decisions are good in two steps. For a fixed behavior, the returns which actually follow a state estimate its value, either by waiting for them, as Monte Carlo does, or by combining one observed reward with the current estimate of the next state, as TD(0) does. To improve the behavior, it is more convenient to estimate the value of each action, and Q-learning does so with the same kind of one-step target, while an exploring behavior makes sure that every action gets a chance to be tried. Along the way, the small lake has also shown a few things which are easy to overlook in larger problems: the value of a state belongs to a policy and an environment, a zero in a table may simply mean that nothing is known yet, the step-size rule can matter as much as the target, and a higher value is not the same as a higher probability of success.</p> <p>Everything in this post relied on a table with one entry per state or per pair of state and action, which is only possible because the lake has 64 cells. Connect-4, with about \(4.5\cdot 10^{12}\) positions <a class="citation" href="#Edelkamp08">(Edelkamp &amp; Kissmann, 2008)</a>, rules out any such table, and the vast majority of its positions would never be visited even once during training. The next part therefore replaces the table by a function with far fewer parameters than there are states, so that experience with one position can inform the estimates of similar positions. The slow backward flow of rewards which we observed for TD(0) returns in part 5 together with its remedy, eligibility traces, and parts 7 to 9 apply all of this to Connect-4, where the agent learns from games against itself until it plays close to perfectly.</p> <p><br></p> <h2 id="source-code">Source Code</h2> <ul> <li> <strong>Experiments, figures and videos of this post</strong> — <code class="language-plaintext highlighter-rouge">tools/connect4_rl/</code> in the <a href="https://github.com/MarkusThill/MarkusThill.github.io/tree/master/tools/connect4_rl" rel="external nofollow noopener" target="_blank">source of this blog</a>. The module <code class="language-plaintext highlighter-rouge">frozen_lake_rl.py</code> contains every function quoted above, and <code class="language-plaintext highlighter-rouge">make_frozen_lake_figures.py</code> runs all experiments with fixed seeds and caches their results in <code class="language-plaintext highlighter-rouge">data/</code>.</li> <li> <strong>The Frozen Lake environment</strong> — <a href="https://github.com/MarkusThill/techdays26/blob/c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49/src/techdays26/frozen_lake/frozen_lake_enhanced.py" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">frozen_lake_enhanced.py</code></a> in the repository <a href="https://github.com/MarkusThill/techdays26" rel="external nofollow noopener" target="_blank">techdays26</a>, including the renderer which draws the lake and the values in the figures of this post.</li> <li> <strong>Interactive notebook</strong> — <a href="https://github.com/MarkusThill/techdays26/blob/c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49/lab1/0_frozen_lake_problem.ipynb" rel="external nofollow noopener" target="_blank"><code class="language-plaintext highlighter-rouge">lab1/0_frozen_lake_problem.ipynb</code></a>, to be run locally as described in the section on the environment.</li> <li> <strong>Gymnasium</strong> — <a href="https://gymnasium.farama.org/environments/toy_text/frozen_lake/" rel="external nofollow noopener" target="_blank">Frozen Lake documentation</a> · <a href="https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/" rel="external nofollow noopener" target="_blank">handling time limits</a> </li> </ul> <p><br></p> <h2 id="references">References</h2> <div class="publications"> <ol class="bibliography"> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="SuttonBarto18" class="col-sm-8"> <div class="title">Reinforcement Learning: An Introduction</div> <div class="author"> Richard S. Sutton and Andrew G. Barto </div> <div class="periodical"> 2018 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="Sutton88" class="col-sm-8"> <div class="title">Learning to Predict by the Methods of Temporal Differences.</div> <div class="author"> Richard S. Sutton </div> <div class="periodical"> <em>Machine Learning</em>, 1988 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="Watkins89" class="col-sm-8"> <div class="title">Learning from Delayed Rewards</div> <div class="author"> Christopher J. C. H. Watkins </div> <div class="periodical"> <em>King’s College, University of Cambridge</em>, 1989 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="WatkinsDayan92" class="col-sm-8"> <div class="title">Q-learning</div> <div class="author"> Christopher J. C. H. Watkins and Peter Dayan </div> <div class="periodical"> <em>Machine Learning</em>, 1992 </div> <div class="periodical"> </div> <div class="links"> <a href="https://doi.org/10.1007/BF00992698" class="btn btn-sm z-depth-0" role="button" rel="external nofollow noopener" target="_blank">DOI</a> </div> </div> </div> </li> <li> <div class="row"> <div class="col col-sm-2 abbr"> </div> <div id="Edelkamp08" class="col-sm-8"> <div class="title">Symbolic classification of general two-player games</div> <div class="author"> Stefan Edelkamp and Peter Kissmann </div> <div class="periodical"> <em>In KI 2008: Advances in Artificial Intelligence</em>, 2008 </div> <div class="periodical"> </div> <div class="links"> </div> </div> </div> </li> </ol> </div> <p><strong>Related posts:</strong> <a href="/blog/2026/connect-4-introduction-and-tree-search-algorithms/">Building Intelligent Agents for Connect-4: First Steps</a>; <a href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a>.</p> </div> </article> <br> <hr> <br> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <ul class="list-disc pl-7 my-3 space-y-2 marker:text-[var(--global-theme-color)]"> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/" target="_blank" rel="noopener noreferrer">Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2" target="_blank" rel="noopener noreferrer">Displaying External Posts on Your al-folio Blog</a> <svg width="1rem" height="1rem" viewbox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/linear-classifier-from-decision-boundary-points/">Constructing a Linear Classifier from Known Decision-Boundary Points</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/derivation-of-a-weighted-recursive-least-squares-estimator/">Derivation of a Weighted Recursive Linear Least Squares Estimator</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/">Binary Circles, Hamiltonian Cycles and de Bruijn Sequences</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/the-weighted-least-squares-algorithm/">The Weighted Linear Least Squares Algorithm</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/">Almost-Equal Isosceles Triangles: When Height Nearly Matches Base</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/online-inverse-covariance/">Online Estimation: Updating the Inverse Covariance Matrix</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/connect-4-final-considerations/">Building Intelligent Agents for Connect-4: Final Considerations</a> </li> <li class="leading-relaxed"> <a class="underline decoration-1 hover:text-[var(--global-hover-color)]" href="/blog/2026/memory-of-exponential-estimators/">Online Estimation: The Memory of an Exponentially Weighted Estimator</a> </li> </ul> <div id="giscus_thread" style="max-width: 1000px; margin: 0 auto;"> <br> <script>
+    (function setupGiscus() {
+      function determineGiscusTheme() {
+        var theme = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme") || "system";
+if (theme === "dark") return "dark";
+if (theme === "light") return "light";
+var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+return prefersDark ? "dark" : "light";
+
+      }
+
+      var giscusTheme = determineGiscusTheme();
+      var attrs = {
+        src: "https://giscus.app/client.js",
+        "data-repo": "MarkusThill/MarkusThill.github.io",
+        "data-repo-id": "R_kgDOLnMaxQ",
+        "data-category": "General",
+        "data-category-id": "DIC_kwDOLnMaxc4CeUxG",
+        "data-mapping": "title",
+        "data-strict": "1",
+        "data-reactions-enabled": "1",
+        "data-emit-metadata": "0",
+        "data-input-position": "bottom",
+        "data-theme": giscusTheme,
+        "data-lang": "en",
+        crossorigin: "anonymous",
+        async: true
+      };
+
+      var giscusScript = document.createElement("script");
+      Object.entries(attrs).forEach(function(entry) { giscusScript.setAttribute(entry[0], entry[1]); });
+      var host = document.getElementById("giscus_thread");
+      if (host) host.appendChild(giscusScript);
+    })();
+  </script> <noscript> Please enable JavaScript to view the <a href="http://giscus.app/?ref_noscript" rel="external nofollow noopener" target="_blank">comments powered by giscus.</a> </noscript> </div> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Markus Thill. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a> and from <a href="https://www.freepik.com/" rel="external nofollow noopener" target="_blank">Freepik</a>. Last updated: September 26, 2026. </div> </footer> <script>
+  window.alFolio = {
+    compatBootstrap: false
+  };
+</script> <script src="/assets/js/nav-toggle.js?v=141bd79a73ebc0f0b6ea58e440ae79fc"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?v=e49affc7bd2646f6acdad1dbe02c2359" type="text/javascript"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/al_math/js/mathjax-setup.js"></script> <script src="/assets/js/tooltips-setup.js?v=fe487e99db6c43751e6e7bdb2d6a0611"></script> <script src="/assets/js/no_defer.js?v=53b1b1a645525975c963ce8bf8bfefcf"></script> <script defer src="/assets/js/common.js?v=c938e61a06fc1f4229e56a041da8f266"></script> <script defer src="/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?v=896d254890d9b47f0281f63bfccf0dee"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPFK8PMRXH"></script> <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-RPFK8PMRXH");
+</script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/al_img_tools/js/zoom.js"></script> <script defer src="/assets/js/progress-bar.js?v=499464c5c63ced6cf7ad62509f1e2610" type="text/javascript"></script> <script src="/assets/js/tabs.js?v=6c399c7e9ab4c6ef34b5f0592d46a93d"></script> <script type="module" src="/assets/al_search/js/search/ninja-keys.min.js"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/al_search/js/search-setup.js"></script> <script>
+// get the ninja-keys element
+const ninja = document.querySelector('ninja-keys');
+
+// add the home and posts menu items
+ninja.data = [{
+    id: "nav-",
+    title: "",
+    section: "Navigation",
+    handler: () => {
+      window.location.href = "/";
+    },
+  },{id: "nav-about",
+          title: "about",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/about";
+          },
+        },{id: "nav-blog",
+          title: "blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/index.html";
+          },
+        },{id: "nav-publications",
+          title: "publications",
+          description: "publications by categories in reversed chronological order. generated by jekyll-scholar.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-projects",
+          title: "projects",
+          description: "A growing collection of some of my small fun projects.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "dropdown-publications",
+              title: "publications",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/publications/";
+              },
+            },{id: "dropdown-projects",
+              title: "projects",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/projects/";
+              },
+            },{id: "dropdown-blog",
+              title: "blog",
+              description: "",
+              section: "Dropdown",
+              handler: () => {
+                window.location.href = "/blog/";
+              },
+            },{id: "post-constructing-a-linear-classifier-from-known-decision-boundary-points",
+        
+          title: "Constructing a Linear Classifier from Known Decision-Boundary Points",
+        
+        description: "Construct a hyperplane from known decision-boundary points, use signed distances for classification, and extend the method to noisy boundary estimates with orthogonal least squares.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/linear-classifier-from-decision-boundary-points/";
+          
+        },
+      },{id: "post-derivation-of-a-weighted-recursive-linear-least-squares-estimator",
+        
+          title: "Derivation of a Weighted Recursive Linear Least Squares Estimator",
+        
+        description: "Deriving a weighted recursive least squares estimator for batches of observations, with exponential forgetting and multiple outputs, together with its single-observation special case.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/derivation-of-a-weighted-recursive-least-squares-estimator/";
+          
+        },
+      },{id: "post-binary-circles-hamiltonian-cycles-and-de-bruijn-sequences",
+        
+          title: "Binary Circles, Hamiltonian Cycles and de Bruijn Sequences",
+        
+        description: "A small combinatorial puzzle about circular binary words whose windows are all distinct turns out to be a question about Hamiltonian cycles in de Bruijn graphs. I count the arrangements, sum their numeric encodings up to a word length of 64 bits, and end with the multiplication trick that uses such a word to locate a set bit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-165p100-binary-circles-and-de-bruijn-sequences/";
+          
+        },
+      },{id: "post-the-weighted-linear-least-squares-algorithm",
+        
+          title: "The Weighted Linear Least Squares Algorithm",
+        
+        description: "In this blog post, we are going to take a look at the so-called weighted linear least squares estimator, which is very similar to the ordinary linear least squares estimator, but with one slight modification: while the ordinary estimator assumes that the errors of all data points have the same variance (which is typically referred to as homoscedasticity) and therefore assigns the same weight to the errors in the objective function, the weighted counterpart allows us to weight every single error individually. This is especially interesting in cases where we are working in a heteroscedastic setting, that is, when the variability in the errors cannot be assumed to be the same.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/the-weighted-least-squares-algorithm/";
+          
+        },
+      },{id: "post-crossing-the-frozen-lake-amp-58-monte-carlo-td-0-and-q-learning",
+        
+          title: "Crossing the Frozen Lake&amp;#58; Monte Carlo, TD(0) and Q-Learning",
+        
+        description: "Monte Carlo, TD(0) and Q-learning on an 8×8 Frozen Lake that is small enough to inspect every learned value: how experience turns into state values, why slippery ice changes them, and how action values lead to a policy that crosses the lake.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/frozen-lake-monte-carlo-td-q-learning/";
+          
+        },
+      },{id: "post-almost-equal-isosceles-triangles-when-height-nearly-matches-base",
+        
+          title: "Almost-Equal Isosceles Triangles: When Height Nearly Matches Base",
+        
+        description: "An exploration of a curious class of integer-sided isosceles triangles whose height differs from the base by exactly one. What begins as a simple geometric question quickly leads to Pell equations and elegant recurrences.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe3-38p100-almost-equal-isosceles-triangles/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-updating-the-inverse-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; Updating the Inverse Covariance Matrix",
+        
+        description: "Deriving Woodbury and Sherman-Morrison updates for the scatter matrix step by step, handling the singular startup phase explicitly, and verifying the reported covariance and precision with Python and R.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-inverse-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-final-considerations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Final Considerations",
+        
+        description: "The remaining techniques, an honest accounting of what each optimization was actually worth, the ideas which did not work, and why a perfect-playing Connect-4 agent has learned nothing at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-final-considerations/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-memory-of-an-exponentially-weighted-estimator",
+        
+          title: "Online Estimation&amp;#58; The Memory of an Exponentially Weighted Estimator",
+        
+        description: "Deriving the finite and limiting effective sample size of an exponentially weighted estimator step by step, revisiting the 100-versus-199 experiment, and stating carefully what the memory interpretation does and does not establish.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/memory-of-exponential-estimators/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-verification-and-benchmarking",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Verification and Benchmarking",
+        
+        description: "How independent opening-book answers, mirror invariants and driver agreement provide evidence of correctness, followed by a paired timing comparison with stated statistical assumptions.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-verification-and-benchmarking/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-covariance-of-a-weighted-mean",
+        
+          title: "Online Estimation&amp;#58; The Covariance of a Weighted Mean",
+        
+        description: "Deriving the covariance of a weighted sample mean line by line, stating the independence assumptions it needs, and showing why the covariance denominator must not be used to normalize the weights of a mean.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/covariance-of-weighted-means/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge-solution",
+        
+          title: "The Hexadecimal Digit Canon Challenge: Solution",
+        
+        description: "A complete solution to the Hexadecimal Digit Canon challenge, including the canonicalization rules, combinatorial reasoning, optimization strategy, and a Python implementation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon-solution/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-mtd-f-and-null-window-search",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; MTD(f) and Null-Window Search",
+        
+        description: "How a distance-aware score supplies game-derived bounds, and how MTD(f) and a binary null-window driver reconstruct exact values from narrow alpha-beta probes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-mtdf-and-null-window-search/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-exponential-forgetting",
+        
+          title: "Online Estimation&amp;#58; Exponential Forgetting",
+        
+        description: "Deriving exponentially decaying mean and covariance estimates in full, correcting the unrolled historical expansion, and distinguishing decay applied once per batch from decay applied once per observation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/exponentially-weighted-estimation/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-opening-databases",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Opening Databases",
+        
+        description: "How the 8- and 12-ply opening books encode millions of solved positions in compact fixed-width records, and how the original database pipeline is used by BitBully today.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-opening-databases/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-weighted-observations-and-mini-batches",
+        
+          title: "Online Estimation&amp;#58; Weighted Observations and Mini-Batches",
+        
+        description: "Carrying the weighted scatter derivation from the thesis through in full, to obtain exact single-observation and mini-batch updates, together with a four-point example which catches an incorrect batch formula.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/weighted-mean-and-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-transposition-tables",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Transposition Tables",
+        
+        description: "Why the same Connect-4 position keeps reappearing in the search tree, how Zobrist hashing exploits three properties of the exclusive OR, and why the more recent solver manages without it entirely.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-transposition-tables/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-the-mean-and-the-covariance-matrix",
+        
+          title: "Online Estimation&amp;#58; The Mean and the Covariance Matrix",
+        
+        description: "Deriving a running mean and scatter matrix from the definitions, carrying every step of the algebra through, and distinguishing the unbiased covariance from the Gaussian maximum-likelihood estimate.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-mean-and-covariance/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-move-ordering",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Move Ordering",
+        
+        description: "How the two solvers combine centre-first priorities, threat counts and parity heuristics, and how non-losing move generation removes branches before they reach alpha-beta.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-move-ordering/";
+          
+        },
+      },{id: "post-online-estimation-amp-58-learning-from-a-changing-data-stream",
+        
+          title: "Online Estimation&amp;#58; Learning from a Changing Data Stream",
+        
+        description: "Why streaming anomaly detection needs incremental statistics, and how this series connects means, covariances, forgetting and inverse updates back to Appendix B.2 of my PhD thesis.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/online-estimation-introduction/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-board-representations",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Board Representations",
+        
+        description: "How CFour and BitBully encode a Connect-4 position in 64-bit words, and how guard bits, shifts, exact position codes, and generated masks change the operations used by the search.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-board-representations/";
+          
+        },
+      },{id: "post-solving-a-mini-sudoku-in-6502-assembly",
+        
+          title: "Solving a Mini Sudoku in 6502 Assembly",
+        
+        description: "A deep dive into solving 4x4 mini-Sudokus using a recursive backtracking algorithm written entirely in 6502 assembly, including design decisions, memory layout, and emulator-based inspection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/mini-sudoku-asm/";
+          
+        },
+      },{id: "post-the-hexadecimal-digit-canon-challenge",
+        
+          title: "The Hexadecimal Digit Canon Challenge",
+        
+        description: "A combinatorial programming challenge set in base 16: define a digit-canonical form for hexadecimal numbers and compute the cumulative sum of these canonical values across rapidly growing digit ranges. Simple to state, but requiring careful counting and optimization at scale.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-785p100-hexadecimal-digit-canon/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-tree-search-algorithms",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; Tree Search Algorithms",
+        
+        description: "How alpha-beta search turns the Minimax recurrence into a practical Connect-4 solver, what its bounds mean, and how the real BitBully loop implements the cutoff.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-tree-search-algorithms/";
+          
+        },
+      },{id: "post-short-notes-equal-partitions-products-and-decimal-structure",
+        
+          title: "Short Notes: Equal Partitions, Products, and Decimal Structure",
+        
+        description: "We study how splitting an integer into equal parts affects the maximum attainable product and how arithmetic properties of the optimum emerge. In particular, we relate a continuous optimization problem to the decimal structure of the resulting rational values.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-83p100-quanity-equal-parts/";
+          
+        },
+      },{id: "post-short-notes-on-a-curious-prefix-sum-problem",
+        
+          title: "Short Notes: On a Curious Prefix-Sum Problem",
+        
+        description: "A deceptively simple recurrence leads to an unexpected challenge when computing its prefix sums. Solving it efficiently requires looking at the problem from a different angle.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-818p100-generalized-parity-recurrence/";
+          
+        },
+      },{id: "post-short-notes-summing-non-isolated-divisors-across-all-subsets",
+        
+          title: "Short Notes: Summing Non-Isolated Divisors Across All Subsets",
+        
+        description: "A step-by-step combinatorial derivation of an efficient algorithm to compute S(n): the total sum of subset elements that divide another element in the same subset. The post shows how a brute-force exponential problem can be transformed into a fast method using number-theoretic structure and closed-form counting.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/pe-844p100-divisors-sets/";
+          
+        },
+      },{id: "post-building-intelligent-agents-for-connect-4-amp-58-first-steps",
+        
+          title: "Building Intelligent Agents for Connect-4&amp;#58; First Steps",
+        
+        description: "How a Java Connect-4 agent from 2012 led to the C++/Python solver BitBully, why the game is small enough to solve but large enough to make search engineering matter, and what this series will cover.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/connect-4-introduction-and-tree-search-algorithms/";
+          
+        },
+      },{id: "post-backpropagation-from-scratch-feed-forward-neural-networks-in-matrix-notation",
+        
+          title: "Backpropagation from Scratch: Feed-Forward Neural Networks in Matrix Notation",
+        
+        description: "A notation-first walkthrough of feed-forward neural networks and vectorized backpropagation, focusing on how the math translates directly into clean, correct implementations. Covers forward pass, backprop, batching, and practical training considerations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/neural-nets-and-backprop/";
+          
+        },
+      },{id: "post-online-and-batch-incremental-estimation-of-covariance-matrices-and-means-in-python",
+        
+          title: "Online and Batch-Incremental Estimation of Covariance Matrices and Means in Python",
+        
+        description: "Learn how to estimate the mean, covariance, and inverse covariance matrices in an online or batch-incremental fashion. This post explains the theory behind forgetting factors and effective memory, provides Python implementations for both online and batch estimators, and investigates their accuracy and efficiency through experiments and visualizations.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/online-batch-estimate-cov-mu/";
+          
+        },
+      },{id: "post-the-relationship-between-the-mahalanobis-distance-and-the-chi-squared-distribution",
+        
+          title: "The Relationship between the Mahalanobis Distance and the Chi-Squared Distribution",
+        
+        description: "This post explores why the squared Mahalanobis distance of Gaussian data follows a Chi-square distribution. We cover the theory step by step, show empirical evidence, and explain how this relationship provides a principled way to set anomaly detection thresholds using quantiles.A companion Jupyter Notebook with code, benchmarks, and visualizations is provided to put the theory into practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance/";
+          
+        },
+      },{id: "post-notes-on-the-runtime-complexity-of-latin-hypercube-sampling",
+        
+          title: "Notes on the Runtime Complexity of Latin Hypercube Sampling",
+        
+        description: "Exploring the runtime complexity of the Latin Hypercube Sampling (LHS) algorithm, this post investigates how computation time scales with the number of design points. By measuring runtimes, applying log-log transformations, and using weighted linear regression, we estimate the polynomial order of growth and provide practical insights into the expected performance of LHS for larger datasets.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-few-notes-on-the-runtime-complexity-of-latin-hypercube-sampling/";
+          
+        },
+      },{id: "post-implementing-the-mahalanobis-distance-in-python",
+        
+          title: "Implementing the Mahalanobis Distance in Python",
+        
+        description: "A hands-on Jupyter Notebook implementation of the Mahalanobis distance in Python. Covers theory, multiple implementations (NumPy, JAX, TensorFlow, SciPy), benchmarking on low- and high-dimensional data, visualizations, and its connection to the Chi-square distribution for anomaly detection.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/mahalanobis-distance-implementations/";
+          
+        },
+      },{id: "post-diy-iot-building-a-smart-adapter-plug-from-scratch-with-esp8266-01-and-mqtt",
+        
+          title: "DIY IoT: Building a Smart Adapter Plug from Scratch with ESP8266-01 and MQTT...",
+        
+        description: "A DIY IoT project using the ESP8266-01 module to build a network-controlled adapter plug from scratch. This project demonstrates how to create connected devices with minimal hardware and effort using Wi-Fi and MQTT.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/control-an-adapter-plug-with-an-esp8266-and-mqtt/";
+          
+        },
+      },{id: "post-seychelles-from-above-a-drone-journey-across-its-most-beautiful-beaches",
+        
+          title: "Seychelles from Above: A Drone Journey Across Its Most Beautiful Beaches",
+        
+        description: "Discover the Seychelles’ most stunning beaches from a new perspective. From the iconic Anse Source d’Argent on La Digue to the sweeping Anse Intendance on Mahé, these drone shots capture some of the islands’ breathtaking beauty.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/seychelles-images/";
+          
+        },
+      },{id: "post-short-notes-understanding-euclid-s-gcd-algorithm",
+        
+          title: "Short Notes: Understanding Euclid’s GCD Algorithm",
+        
+        description: "A concise walkthrough of why Euclid’s Algorithm correctly computes the greatest common divisor (GCD), using basic properties of divisibility and remainders.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/euclids-algorithm/";
+          
+        },
+      },{id: "post-conway-39-s-game-of-life",
+        
+          title: "Conway&#39;s Game of Life",
+        
+        description: "An introduction to Conway’s Game of Life with an implementation in R. We explore the simple rules behind this zero-player cellular automaton, simulate its evolution on a 100×100 grid, and visualize emerging patterns and population dynamics over time.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/conways-game-of-life/";
+          
+        },
+      },{id: "post-visualizing-high-dimensional-data-using-parallel-coordinates",
+        
+          title: "Visualizing High-Dimensional Data Using Parallel Coordinates",
+        
+        description: "A deep dive into the visualization technique of Parallel Coordinates (||-Coordinates), exploring its strengths, challenges, and practical applications in data mining. Through detailed case studies—including wine quality analysis and the MiniBooNe particle dataset—we demonstrate how this powerful tool can reveal hidden structures, correlations, and clusters in high-dimensional data. With insights into alpha blending, axis reordering, outlier handling, and visual classification, this post offers both theoretical background and hands-on use cases for using Parallel Coordinates effectively.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/visualizing-high-dimensional-data-with-parallel-coordinates/";
+          
+        },
+      },{id: "post-short-notes-the-multivariate-gaussian-distribution-with-a-diagonal-covariance-matrix",
+        
+          title: "Short Notes: The Multivariate Gaussian Distribution With a Diagonal Covariance Matrix",
+        
+        description: "This post explores how a multivariate Gaussian distribution simplifies when the covariance matrix is diagonal. By breaking down the math, we show how the density function factorizes into a product of independent univariate Gaussians—making both interpretation and computation more tractable.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/gaussian-distribution-with-a-diagonal-covariance-matrix/";
+          
+        },
+      },{id: "post-understanding-bootstrap-sampling-where-euler-s-number-meets-random-forests",
+        
+          title: "Understanding Bootstrap Sampling: Where Euler’s Number Meets Random Forests",
+        
+        description: "A common problem involves drawing a sample of size n from a set of n elements, with replacement. For example, in Random Forests, each decision tree is trained on a bootstrap sample drawn n times with replacement from the training data. A natural question is: how many unique examples can we expect in such a sample? Since sampling is done with replacement, some examples are likely selected multiple times, while others may not be selected at all.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/sampling-with-replacement-random-forest/";
+          
+        },
+      },{id: "post-beyond-3d-generalizing-the-vector-cross-product",
+        
+          title: "Beyond 3D: Generalizing the Vector Cross Product",
+        
+        description: "Imagine you are working in three-dimensional space and have two directions. You want to find a third direction that is perpendicular to both of them. In this setting, there&#39;s a well-known solution: the cross product. When applied to the two original directions, it produces a new one that is exactly orthogonal to both.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/a-generalization-of-the-vector-cross-product/";
+          
+        },
+      },{id: "post-a-post-with-marimo-snippets",
+        
+          title: "a post with marimo snippets",
+        
+        description: "running Python in the browser with marimo",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/marimo/";
+          
+        },
+      },{id: "post-math-challenge-the-sequence-of-fibonacho",
+        
+          title: "Math Challenge: The Sequence of Fibonacho",
+        
+        description: "The Fibonacho Sequence is a playful and intriguing twist on the classical Fibonacci numbers. Unlike its better-known cousin, the Fibonacho Sequence does not follow the same simple recurrence relation. Instead, it introduces a slightly different structure, making it a entertaining puzzle for math enthusiasts and programmers alike. Are you ready to dive into the challenge?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/the-fibonacho-sequence/";
+          
+        },
+      },{id: "post-short-notes-upgrade-your-github-workflow-migrate-from-https-to-ssh",
+        
+          title: "Short Notes: Upgrade Your GitHub Workflow - Migrate from HTTPS to SSH",
+        
+        description: "A step-by-step guide to transitioning from HTTPS to SSH for secure and seamless GitHub repository management.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/migrating-git-from-https-to-ssh/";
+          
+        },
+      },{id: "post-designing-an-8-bit-integer-primality-test-using-logic-circuits",
+        
+          title: "Designing an 8-Bit Integer Primality Test Using Logic Circuits",
+        
+        description: "When working with digital circuits and number theory, I found that an interesting challenge is determining whether a given number is prime through purely combinational logic. Recently, I developed a circuit diagram for testing the primality of 8-bit integers using a Boolean function `f(a,b,c,d,e,f,g,h)`.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/primality-test-logical-circuit/";
+          
+        },
+      },{id: "post-short-notes-installing-gcc-13-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing GCC 13 on Debian and Ubuntu",
+        
+        description: "Learn how to install and configure the latest GNU GCC/G++ compiler on Debian and Ubuntu systems. This step-by-step guide covers updating packages, adding the Toolchain Test PPA, installing GCC 13, verifying the installation, and setting it as the default compiler.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-gcc/";
+          
+        },
+      },{id: "post-short-notes-installing-the-latest-cmake-on-debian-and-ubuntu",
+        
+          title: "Short Notes: Installing the Latest CMake on Debian and Ubuntu",
+        
+        description: "Learn how to install the latest version of CMake on Debian-based systems. This guide covers prerequisites, removing older versions, compiling from source, and verifying the installation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/installing-cmake/";
+          
+        },
+      },{id: "post-stack-overflow-vulnerabilities",
+        
+          title: "Stack Overflow Vulnerabilities",
+        
+        description: "This blog post explores the fundamentals of buffer overflows, including how they arise in C and C++ programs, the role of process memory layout and the x86/IA-32 architecture, and the significance of stack frames. It covers common overflow types — stack-based, off-by-one, BSS, and heap — and shows how attackers use techniques like NOP-sledding to gain elevated privileges. Finally, it illustrates how to craft a working exploit by injecting shellcode into a vulnerable application’s memory space.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/buffer-overflows/";
+          
+        },
+      },{id: "post-a-short-implementation-of-booth-39-s-multiplication-algorithm-in-6502-assembly",
+        
+          title: "A short Implementation of Booth&#39;s Multiplication Algorithm in 6502 Assembly",
+        
+        description: "I implemented a 6502 assembly routine for multiplying two one-byte integers using Booth&#39;s algorithm. While the algorithm itself wasn&#39;t difficult to implement, it took time to create a solution that fit within 40 lines of code. I also wrote a test routine to verify the multiplication, covering various predefined combinations, edge cases, and scenarios where one factor is zero.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/an-efficient-implementation-of-the-booth-algorithm-in-6502-assembler/";
+          
+        },
+      },{id: "post-optimizing-lagged-fibonacci-generators-for-large-scale-computations",
+        
+          title: "Optimizing Lagged Fibonacci Generators for Large-Scale Computations",
+        
+        description: "Lagged Fibonacci Generators (LFGs) are powerful tools for generating pseudo-random sequences in simulations and cryptography. While traditional implementations become inefficient when computing sparse terms at large indices, this blog explores an optimized approach using matrix exponentiation and modular arithmetic. By encoding the recurrence relation in a transformation matrix and leveraging GPU acceleration, the method achieves scalability and speed, making it ideal for large-scale applications.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/lagged-fibo-sequences/";
+          
+        },
+      },{id: "post-some-interesting-properties-of-the-exclusive-or-xor",
+        
+          title: "Some Interesting Properties of the Exclusive Or (XOR)",
+        
+        description: "The exclusive-OR — also known as exclusive disjunction (short: XOR) or antivalence — is a Boolean operation that outputs true only when exactly one of its two inputs is true (i.e., when the inputs differ). XOR has numerous applications, including cryptography, Gray codes, parity checks, and CRC checks, among others. In this blog post, we will explore some of its interesting properties that can be useful in practice.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-few-properties-of-the-exclusive-or/";
+          
+        },
+      },{id: "post-efficient-computation-of-sparse-fibonacci-subsequences",
+        
+          title: "Efficient Computation of Sparse Fibonacci Subsequences",
+        
+        description: "The Fibonacci sequence is a cornerstone of mathematics, defined by its elegant recurrence relation. While traditionally computed iteratively or recursively, obtaining specific terms like the 1000th or 2000th number seems to require calculating all preceding terms. But is this really necessary?In this post, we explore a powerful technique to compute arbitrary Fibonacci terms directly — bypassing the need for sequential computation. We’ll also tackle an exciting challenge: efficiently finding one thousand Fibonacci numbers modulo a given value, corresponding to every 10th prime greater than a trillion.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibo-subsequences/";
+          
+        },
+      },{id: "post-don-39-t-drink-and-derive-amp-58-a-simple-proof-that-1-2",
+        
+          title: "Don&#39;t Drink and Derive&amp;#58; A Simple Proof that 1 = 2",
+        
+        description: "In this blog post, we present a fun little proof that 1 is actually equal to 2. Or is it?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/a-simple-proof-that-1-2/";
+          
+        },
+      },{id: "post-cuda-basics-decoding-dtmf-signals",
+        
+          title: "CUDA Basics: Decoding DTMF Signals",
+        
+        description: "Discover the fundamentals of CUDA programming through a dual-tone multi-frequency (DTMF) signaling example. Learn how to generate DTMF signals, save them as .wav files, design FIR bandpass filters, and decode dialed keys. This project includes a CUDA/C++ implementation (dtmfCuda.cu) to showcase the power of parallel computing for signal processing.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/dtmf-cuda/";
+          
+        },
+      },{id: "post-a-few-bit-twiddling-tricks",
+        
+          title: "A few Bit-Twiddling Tricks",
+        
+        description: "When working with bit-fields, there are several techniques that can significantly speed up code — beyond the inherent performance benefits that bit-fields provide for many problems. In this post, I will introduce a few bit-twiddling tricks that I occasionally use, which can be useful for a variety of tasks.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/soa-few-bit-twiddling-tricks/";
+          
+        },
+      },{id: "post-the-monkey-and-coconut-problem",
+        
+          title: "The Monkey and Coconut Problem",
+        
+        description: "Three sailors and a monkey are stranded on a deserted island. They gather a pile of coconuts to divide the next morning. During the night, each sailor wakes up, divides the pile into three parts, gives the extra coconut to the monkey, hides his share, and restacks the remaining coconuts. In the morning, the remaining coconuts are again divided into three parts, with one coconut left over, which is given to the monkey.The question is: how many coconuts were originally in the pile?",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/the-sailors-problem/";
+          
+        },
+      },{id: "post-google-gemini-updates-flash-1-5-gemma-2-and-project-astra",
+        
+          title: 'Google Gemini updates: Flash 1.5, Gemma 2 and Project Astra <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "We’re sharing updates across our Gemini family of models and a glimpse of Project Astra, our vision for the future of AI assistants.",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/", "_blank");
+          
+        },
+      },{id: "post-short-notes-gradient-of-the-softmax-function-for-the-cross-entropy-loss",
+        
+          title: "Short Notes: Gradient of the Softmax Function for the Cross-Entropy Loss",
+        
+        description: "The softmax function in neural networks ensures outputs sum to one and are within [0,1]. Here&#39;s how to compute its gradients when the cross-entropy loss is applied.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/gradient-softmax-function-with-cross-entropy/";
+          
+        },
+      },{id: "post-obfuscating-a-function-amp-8211-how-not-to-write-code",
+        
+          title: "Obfuscating a Function &amp;#8211; How not to write Code",
+        
+        description: "A while back, I created a straightforward function to convert an integer into a new format, resulting in clear code. However, I inexplicably chose to obscure its purpose, leading to the following outcome: Read more in this post...",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/obsfucated-c-code/";
+          
+        },
+      },{id: "post-short-notes-eigendecomposition-of-a-matrix",
+        
+          title: "Short Notes: Eigendecomposition of a Matrix",
+        
+        description: "The derivation of the eigendecomposition is surprisingly simple. Read more here!",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/eigendecomposition/";
+          
+        },
+      },{id: "post-surprising-bank-investment",
+        
+          title: "Surprising Bank Investment",
+        
+        description: "Discover how investing in a startup turned into a financial rollercoaster. Your bank offers you a chance to invest in a new venture, with the promise of keeping all the profits if successful. Excited, you dive in with $1,000,000, providing 99% of the investment while the bank chips in the remaining 1%.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/surprising-investment/";
+          
+        },
+      },{id: "post-solving-peg-solitaire-with-efficient-bit-board-representations",
+        
+          title: "Solving Peg Solitaire with efficient Bit-Board Representations",
+        
+        description: "Many of us might now the board game peg solitaire and might even have one of its many variants at home. Peg solitaire is a one-player game played on a board with n holes and n - 1 pegs. The number of holes depends on the board variant. For example, the English variant consists of 33 holes while the typical diamond variant consists of 41 holes. The rules of the game are rather easy.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/solving-peg-solitaire/";
+          
+        },
+      },{id: "post-choosing-a-voltage-divider-resistor-for-a-light-dependent-resistor",
+        
+          title: "Choosing a Voltage Divider Resistor for a Light Dependent Resistor",
+        
+        description: "Imagine that you are planning to use a Light Dependent Resistor (LDR) for your new IoT prototype in order to detect whether or not a lamp is turned on in a (otherwise dark) room. A common way to solve this problem is the usage of a voltage divider circuit.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/voltage-divider/";
+          
+        },
+      },{id: "post-deriving-a-closed-form-solution-of-the-fibonacci-sequence",
+        
+          title: "Deriving a Closed-Form Solution of the Fibonacci Sequence",
+        
+        description: "The Fibonacci sequence might be one of the most famous sequences in the field of mathmatics and computer science. In this blog post we will derive an interesting closed-form solution to directly compute any arbitrary Fibonacci number without the necessity to obtain its predecessors first.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/fibonacci-closed/";
+          
+        },
+      },{id: "post-یک-نوشتهٔ-راست-چین",
+        
+          title: "یک نوشتهٔ راست‌چین",
+        
+        description: "نمونه‌ای از پشتیبانی زبان‌های راست‌چین",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2022/rtl/";
+          
+        },
+      },{id: "post-displaying-external-posts-on-your-al-folio-blog",
+        
+          title: 'Displaying External Posts on Your al-folio Blog <svg width="1.2rem" height="1.2rem" top=".5rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        
+        description: "",
+        section: "Posts",
+        handler: () => {
+          
+            window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
+          
+        },
+      },{id: "books-the-godfather",
+          title: 'The Godfather',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/the_godfather/";
+            },},{id: "news-bitbully-preview-v0-0-38-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully Preview v0.0.38 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_2/";
+            },},{id: "news-bitbully-databases-0-0-2-released-opening-databases-for-the-board-game-connect-4",
+          title: 'bitbully-databases 0.0.2 released: Opening Databases for the Board Game Connect-4.',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_3/";
+            },},{id: "news-bitbully-v0-0-74-released-a-fast-connect-4-solver-for-python-3",
+          title: 'BitBully v0.0.74 released: A fast Connect-4 Solver for Python 3',
+          description: "",
+          section: "News",handler: () => {
+              window.location.href = "/news/announcement_1/";
+            },},{id: "projects-bitbully",
+          title: 'BitBully',
+          description: "One of the fastest and perfect-playing Connect-4 solvers around",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/0_bitbully/";
+            },},{id: "projects-bitbully-databases",
+          title: 'BitBully Databases',
+          description: "Precomputed Connect-4 opening books with millions of evaluated positions",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/1_bitbully_databases/";
+            },},{id: "teachings-data-science-fundamentals",
+          title: 'Data Science Fundamentals',
+          description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/data-science-fundamentals/";
+            },},{id: "teachings-introduction-to-machine-learning",
+          title: 'Introduction to Machine Learning',
+          description: "This course provides an introduction to machine learning concepts, algorithms, and applications. Students will learn about supervised and unsupervised learning, model evaluation, and practical implementations.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/teachings/introduction-to-machine-learning/";
+            },},{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/MarkusThill", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/markus-thill-a4991090", "_blank");
+        },
+      },{
+        id: 'social-researchgate',
+        title: 'ResearchGate',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.researchgate.net/profile/Markus-Thill/", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=Bu5eFxQAAAAJ", "_blank");
+        },
+      },{
+        id: 'social-projecteuler',
+        title: 'Projecteuler',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://projecteuler.net/", "_blank");
+        },
+      },{
+      id: 'light-theme',
+      title: 'Change theme to light',
+      description: 'Change the theme of the site to Light',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("light");
+      },
+    },
+    {
+      id: 'dark-theme',
+      title: 'Change theme to dark',
+      description: 'Change the theme of the site to Dark',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("dark");
+      },
+    },
+    {
+      id: 'system-theme',
+      title: 'Use system default theme',
+      description: 'Change the theme of the site to System Default',
+      section: 'Theme',
+      handler: () => {
+        setThemeSetting("system");
+      },
+    },];
+
+</script> <script src="/assets/al_search/js/shortcut-key.js"></script> </body> </html>
