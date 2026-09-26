@@ -18,3 +18,6 @@ assets/code/*/results.json
 assets/code/2026-online-estimation/audit-results.json
 assets/code/2026-online-estimation/figure-results.json
 assets/code/2026-online-estimation/notebook-validation.json
+
+# Ignore JSON caches written by the reinforcement-learning figure harness (tools/connect4_rl/)
+tools/connect4_rl/data/*.json

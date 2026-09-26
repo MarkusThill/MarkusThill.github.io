@@ -1,0 +1,48 @@
+{%- comment -%}
+  Series header for the Connect-4 reinforcement-learning series.
+
+  Usage (from a post body):
+      {% include series_connect4_rl.liquid %}
+
+  The post declares its own position in the series via front matter:
+      series: connect4-rl
+      series_part: 3
+
+  Unlike series_connect4.liquid, the list is driven by the planned parts in
+  _data/series_connect4_rl.yml rather than by the published posts alone. The
+  series is written out of order, and counting only published posts would
+  announce "the 3rd part of a series of 1 articles". A published part is
+  linked with its own title; a part that is not published yet is shown as
+  plain text with its planned title, and becomes a link by itself as soon as
+  the post is committed.
+
+  The list is emitted as literal HTML for the reason given in
+  series_connect4.liquid: prettier reindents Liquid tag bodies, which silently
+  turns a Markdown list into a paragraph.
+{%- endcomment -%}
+
+{%- assign planned = site.data.series_connect4_rl.parts -%}
+{%- assign series_posts = site.posts | where: 'series', 'connect4-rl' -%}
+{%- assign n_parts = planned | size -%}
+{%- assign ordinals = '1st,2nd,3rd,4th,5th,6th,7th,8th,9th,10th' | split: ',' -%}
+{%- assign this_index = page.series_part | minus: 1 -%}
+{%- assign this_ordinal = ordinals[this_index] -%}
+
+<p>This post is the {{ this_ordinal }} part of a series of {{ n_parts }} articles:</p>
+
+<ol>
+  {%- for part in planned %}
+    {%- assign post = series_posts | where: 'series_part', part.part | first -%}
+    <li>
+      {%- if post == null -%}
+        {{ part.title }}
+      {%- elsif post.url == page.url -%}
+        <strong
+          ><a href="{{ post.url | relative_url }}">{{ post.title }}</a></strong
+        >
+      {%- else -%}
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      {%- endif -%}
+    </li>
+  {%- endfor %}
+</ol>

@@ -1,0 +1,24 @@
+# Planned parts of the Connect-4 reinforcement-learning series, rendered by
+# _includes/series_connect4_rl.liquid. A published part (a post with
+# `series: connect4-rl` and `series_part: N`) is linked with the post's own
+# title; the titles below only appear, as plain text, for parts that are not
+# published yet. Keep them in sync with the series plan.
+parts:
+  - part: 1
+    title: "Reinforcement Learning&#58; Learning by Doing, Not by Labels"
+  - part: 2
+    title: "Rewards, Returns and Value Functions&#58; What Is the Agent Actually Maximizing?"
+  - part: 3
+    title: "Crossing the Frozen Lake&#58; Monte Carlo, TD(0) and Q-Learning"
+  - part: 4
+    title: "When the Table Explodes&#58; Function Approximation for Value Functions"
+  - part: 5
+    title: "Eligibility Traces & TD(λ)&#58; The Bias–Variance Dial"
+  - part: 6
+    title: "The Deadly Triad&#58; Moving Targets, Target Networks and DQN"
+  - part: 7
+    title: "Connect-4 as a Reinforcement Learning Problem&#58; Bitboards, Afterstates and N-Tuple Networks"
+  - part: 8
+    title: "Self-Play That Learns&#58; The TD(λ) Connect-4 Training Loop"
+  - part: 9
+    title: "Train a Near-Perfect Connect-4 Agent in Minutes (with TD(λ) Self-Play)"

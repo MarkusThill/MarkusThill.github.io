@@ -1,0 +1,1793 @@
+{
+ "n_episodes": 15000,
+ "alpha": 0.1,
+ "gamma": 0.9,
+ "epsilon_start": 0.5,
+ "epsilon_decay": 0.0001,
+ "max_steps": 200,
+ "eval_every": 500,
+ "eval_episodes": 1000,
+ "final_eval_episodes": 10000,
+ "runs": [
+  {
+   "seed": 0,
+   "curve": [
+    {
+     "episode": 500,
+     "goal": 0.746,
+     "hole": 0.254,
+     "timeout": 0.0,
+     "mean_return": 0.06584513933482787,
+     "exact_start_value": 0.06208967166168516,
+     "exact_goal": 0.7257808207845328,
+     "exact_hole": 0.27421755743612397,
+     "exact_timeout": 1.6217793432637961e-06
+    },
+    {
+     "episode": 1000,
+     "goal": 0.957,
+     "hole": 0.042,
+     "timeout": 0.001,
+     "mean_return": 0.03084319159935467,
+     "exact_start_value": 0.03155896849226087,
+     "exact_goal": 0.9658235067431505,
+     "exact_hole": 0.03308764517628604,
+     "exact_timeout": 0.0010888480805634204
+    },
+    {
+     "episode": 1500,
+     "goal": 0.953,
+     "hole": 0.045,
+     "timeout": 0.002,
+     "mean_return": 0.02369755513838251,
+     "exact_start_value": 0.023467171580012516,
+     "exact_goal": 0.9488339037956808,
+     "exact_hole": 0.04980574791692882,
+     "exact_timeout": 0.0013603482873904005
+    },
+    {
+     "episode": 2000,
+     "goal": 0.969,
+     "hole": 0.009,
+     "timeout": 0.022,
+     "mean_return": 0.009503368054815981,
+     "exact_start_value": 0.010944759516131594,
+     "exact_goal": 0.9715613151466375,
+     "exact_hole": 0.00513217285311407,
+     "exact_timeout": 0.02330651200024847
+    },
+    {
+     "episode": 2500,
+     "goal": 0.85,
+     "hole": 0.15,
+     "timeout": 0.0,
+     "mean_return": 0.04675476725085442,
+     "exact_start_value": 0.04679463543073392,
+     "exact_goal": 0.8444000692400141,
+     "exact_hole": 0.1555917711042908,
+     "exact_timeout": 8.159655695116896e-06
+    },
+    {
+     "episode": 3000,
+     "goal": 0.978,
+     "hole": 0.022,
+     "timeout": 0.0,
+     "mean_return": 0.03643991133884332,
+     "exact_start_value": 0.03632513119016359,
+     "exact_goal": 0.9807379008447694,
+     "exact_hole": 0.01835729481574422,
+     "exact_timeout": 0.0009048043394863647
+    },
+    {
+     "episode": 3500,
+     "goal": 0.84,
+     "hole": 0.16,
+     "timeout": 0.0,
+     "mean_return": 0.05639810855290995,
+     "exact_start_value": 0.05568108342828562,
+     "exact_goal": 0.8477481200207525,
+     "exact_hole": 0.1522502912972159,
+     "exact_timeout": 1.5886820315946792e-06
+    },
+    {
+     "episode": 4000,
+     "goal": 0.834,
+     "hole": 0.166,
+     "timeout": 0.0,
+     "mean_return": 0.05385761563730473,
+     "exact_start_value": 0.05575460581947039,
+     "exact_goal": 0.8477419780684672,
+     "exact_hole": 0.15225643591561688,
+     "exact_timeout": 1.5860159159331033e-06
+    },
+    {
+     "episode": 4500,
+     "goal": 0.865,
+     "hole": 0.135,
+     "timeout": 0.0,
+     "mean_return": 0.05914009538329343,
+     "exact_start_value": 0.055635126589390564,
+     "exact_goal": 0.847676157272951,
+     "exact_hole": 0.15232221675941615,
+     "exact_timeout": 1.6259676328678196e-06
+    },
+    {
+     "episode": 5000,
+     "goal": 0.833,
+     "hole": 0.167,
+     "timeout": 0.0,
+     "mean_return": 0.0505331818616642,
+     "exact_start_value": 0.05572139808123815,
+     "exact_goal": 0.8454636365059428,
+     "exact_hole": 0.154523071455259,
+     "exact_timeout": 1.3292038798184969e-05
+    },
+    {
+     "episode": 5500,
+     "goal": 0.984,
+     "hole": 0.016,
+     "timeout": 0.0,
+     "mean_return": 0.035256360370605276,
+     "exact_start_value": 0.03623332319057956,
+     "exact_goal": 0.9792589784410775,
+     "exact_hole": 0.01983481193173553,
+     "exact_timeout": 0.0009062096271870157
+    },
+    {
+     "episode": 6000,
+     "goal": 0.849,
+     "hole": 0.151,
+     "timeout": 0.0,
+     "mean_return": 0.05748961410250403,
+     "exact_start_value": 0.05609019262538371,
+     "exact_goal": 0.8463376701289931,
+     "exact_hole": 0.1536519608155068,
+     "exact_timeout": 1.0369055500114577e-05
+    },
+    {
+     "episode": 6500,
+     "goal": 0.834,
+     "hole": 0.166,
+     "timeout": 0.0,
+     "mean_return": 0.05570338824766121,
+     "exact_start_value": 0.05559110738743055,
+     "exact_goal": 0.8391009362122316,
+     "exact_hole": 0.16089338379074036,
+     "exact_timeout": 5.679997028051886e-06
+    },
+    {
+     "episode": 7000,
+     "goal": 0.985,
+     "hole": 0.013,
+     "timeout": 0.002,
+     "mean_return": 0.03685374505797688,
+     "exact_start_value": 0.03631026319647966,
+     "exact_goal": 0.9796580278735417,
+     "exact_hole": 0.018996599823825844,
+     "exact_timeout": 0.0013453723026324305
+    },
+    {
+     "episode": 7500,
+     "goal": 0.977,
+     "hole": 0.023,
+     "timeout": 0.0,
+     "mean_return": 0.03496954421233865,
+     "exact_start_value": 0.0366221119521137,
+     "exact_goal": 0.9824341758881103,
+     "exact_hole": 0.016689170671706943,
+     "exact_timeout": 0.0008766534401827286
+    },
+    {
+     "episode": 8000,
+     "goal": 0.979,
+     "hole": 0.019,
+     "timeout": 0.002,
+     "mean_return": 0.03719849744641905,
+     "exact_start_value": 0.03665566898062634,
+     "exact_goal": 0.981312927232326,
+     "exact_hole": 0.017504528693344734,
+     "exact_timeout": 0.0011825440743292726
+    },
+    {
+     "episode": 8500,
+     "goal": 0.983,
+     "hole": 0.016,
+     "timeout": 0.001,
+     "mean_return": 0.03736051813553349,
+     "exact_start_value": 0.03621919859508056,
+     "exact_goal": 0.9815675268953873,
+     "exact_hole": 0.01750902021151357,
+     "exact_timeout": 0.0009234528930991415
+    },
+    {
+     "episode": 9000,
+     "goal": 0.982,
+     "hole": 0.013,
+     "timeout": 0.005,
+     "mean_return": 0.036494183501139914,
+     "exact_start_value": 0.036358288854697274,
+     "exact_goal": 0.9814672353843582,
+     "exact_hole": 0.017210039778428943,
+     "exact_timeout": 0.001322724837212852
+    },
+    {
+     "episode": 9500,
+     "goal": 0.978,
+     "hole": 0.02,
+     "timeout": 0.002,
+     "mean_return": 0.031508126024044306,
+     "exact_start_value": 0.03504552268384976,
+     "exact_goal": 0.9784498061679117,
+     "exact_hole": 0.020377620290363163,
+     "exact_timeout": 0.0011725735417251748
+    },
+    {
+     "episode": 10000,
+     "goal": 0.98,
+     "hole": 0.02,
+     "timeout": 0.0,
+     "mean_return": 0.03669753592350556,
+     "exact_start_value": 0.035638638765890435,
+     "exact_goal": 0.97909735320722,
+     "exact_hole": 0.019470321196459417,
+     "exact_timeout": 0.0014323255963205606
+    },
+    {
+     "episode": 10500,
+     "goal": 0.977,
+     "hole": 0.022,
+     "timeout": 0.001,
+     "mean_return": 0.036975047612797796,
+     "exact_start_value": 0.03566346372669328,
+     "exact_goal": 0.9802929406549126,
+     "exact_hole": 0.018301863600769686,
+     "exact_timeout": 0.0014051957443177443
+    },
+    {
+     "episode": 11000,
+     "goal": 0.981,
+     "hole": 0.017,
+     "timeout": 0.002,
+     "mean_return": 0.03550269922726177,
+     "exact_start_value": 0.03536219058112105,
+     "exact_goal": 0.9802679140483901,
+     "exact_hole": 0.01814750443551094,
+     "exact_timeout": 0.0015845815160989707
+    },
+    {
+     "episode": 11500,
+     "goal": 0.982,
+     "hole": 0.015,
+     "timeout": 0.003,
+     "mean_return": 0.037460788471110805,
+     "exact_start_value": 0.03557367492214833,
+     "exact_goal": 0.9824644477811628,
+     "exact_hole": 0.016325821622735548,
+     "exact_timeout": 0.0012097305961016325
+    },
+    {
+     "episode": 12000,
+     "goal": 0.985,
+     "hole": 0.014,
+     "timeout": 0.001,
+     "mean_return": 0.0342556411846734,
+     "exact_start_value": 0.03559281096659253,
+     "exact_goal": 0.9822549114073472,
+     "exact_hole": 0.016248055174929332,
+     "exact_timeout": 0.0014970334177234479
+    },
+    {
+     "episode": 12500,
+     "goal": 0.979,
+     "hole": 0.02,
+     "timeout": 0.001,
+     "mean_return": 0.032839610814597915,
+     "exact_start_value": 0.035449538436805664,
+     "exact_goal": 0.9822337465862662,
+     "exact_hole": 0.016260652537770093,
+     "exact_timeout": 0.0015056008759637418
+    },
+    {
+     "episode": 13000,
+     "goal": 0.981,
+     "hole": 0.019,
+     "timeout": 0.0,
+     "mean_return": 0.035021726415817384,
+     "exact_start_value": 0.03539931268943166,
+     "exact_goal": 0.980677110478279,
+     "exact_hole": 0.01840193379688193,
+     "exact_timeout": 0.0009209557248390787
+    },
+    {
+     "episode": 13500,
+     "goal": 0.986,
+     "hole": 0.012,
+     "timeout": 0.002,
+     "mean_return": 0.03581972346047362,
+     "exact_start_value": 0.03547373299453945,
+     "exact_goal": 0.983520129980402,
+     "exact_hole": 0.015508474094425129,
+     "exact_timeout": 0.0009713959251729243
+    },
+    {
+     "episode": 14000,
+     "goal": 0.982,
+     "hole": 0.016,
+     "timeout": 0.002,
+     "mean_return": 0.03486122990628335,
+     "exact_start_value": 0.03544399126987389,
+     "exact_goal": 0.9800885124102284,
+     "exact_hole": 0.01803275514236835,
+     "exact_timeout": 0.0018787324474032197
+    },
+    {
+     "episode": 14500,
+     "goal": 0.984,
+     "hole": 0.015,
+     "timeout": 0.001,
+     "mean_return": 0.03654661949560672,
+     "exact_start_value": 0.03537384437726203,
+     "exact_goal": 0.9796678886238789,
+     "exact_hole": 0.018483106505288727,
+     "exact_timeout": 0.0018490048708323936
+    },
+    {
+     "episode": 15000,
+     "goal": 0.974,
+     "hole": 0.026,
+     "timeout": 0.0,
+     "mean_return": 0.03767804240289756,
+     "exact_start_value": 0.03544399126987389,
+     "exact_goal": 0.9800885124102284,
+     "exact_hole": 0.01803275514236835,
+     "exact_timeout": 0.0018787324474032197
+    }
+   ],
+   "final": {
+    "goal": 0.9786,
+    "hole": 0.0203,
+    "timeout": 0.0011,
+    "mean_return": 0.03473038872704035
+   },
+   "exact_outcomes": {
+    "goal": 0.9800885124102284,
+    "hole": 0.01803275514236835,
+    "timeout": 0.0018787324474032197
+   },
+   "exact_start_value": 0.03544399126987389,
+   "max_q_start": 0.03789904739083589,
+   "agreement_with_optimal": 0.7962962962962963,
+   "seconds_incl_evaluation": 339.80759203000343
+  },
+  {
+   "seed": 1,
+   "curve": [
+    {
+     "episode": 500,
+     "goal": 0.738,
+     "hole": 0.262,
+     "timeout": 0.0,
+     "mean_return": 0.06715031991430877,
+     "exact_start_value": 0.06381639623067506,
+     "exact_goal": 0.7284736190468026,
+     "exact_hole": 0.2715263686563094,
+     "exact_timeout": 1.2296887952345514e-08
+    },
+    {
+     "episode": 1000,
+     "goal": 0.673,
+     "hole": 0.327,
+     "timeout": 0.0,
+     "mean_return": -0.005242073129092464,
+     "exact_start_value": 0.004833981069306343,
+     "exact_goal": 0.7028881609474288,
+     "exact_hole": 0.2971116812431117,
+     "exact_timeout": 1.5780945950005787e-07
+    },
+    {
+     "episode": 1500,
+     "goal": 0.835,
+     "hole": 0.165,
+     "timeout": 0.0,
+     "mean_return": 0.05395302235878233,
+     "exact_start_value": 0.055648036142512056,
+     "exact_goal": 0.8485618389648244,
+     "exact_hole": 0.15143811463871293,
+     "exact_timeout": 4.639646267179387e-08
+    },
+    {
+     "episode": 2000,
+     "goal": 0.714,
+     "hole": 0.286,
+     "timeout": 0.0,
+     "mean_return": 0.06084660449647861,
+     "exact_start_value": 0.0641296902553365,
+     "exact_goal": 0.7250112925635395,
+     "exact_hole": 0.2749886350045998,
+     "exact_timeout": 7.243186073147001e-08
+    },
+    {
+     "episode": 2500,
+     "goal": 0.834,
+     "hole": 0.166,
+     "timeout": 0.0,
+     "mean_return": 0.0543295596922288,
+     "exact_start_value": 0.05520053387813817,
+     "exact_goal": 0.837495146929379,
+     "exact_hole": 0.16244973705609278,
+     "exact_timeout": 5.511601452823367e-05
+    },
+    {
+     "episode": 3000,
+     "goal": 0.968,
+     "hole": 0.03,
+     "timeout": 0.002,
+     "mean_return": 0.03655615826800721,
+     "exact_start_value": 0.03611136321458879,
+     "exact_goal": 0.9749292150281393,
+     "exact_hole": 0.02400397481108829,
+     "exact_timeout": 0.001066810160772369
+    },
+    {
+     "episode": 3500,
+     "goal": 0.825,
+     "hole": 0.175,
+     "timeout": 0.0,
+     "mean_return": 0.023076467617098986,
+     "exact_start_value": 0.020408438144313118,
+     "exact_goal": 0.8182769222386526,
+     "exact_hole": 0.18143718142489274,
+     "exact_timeout": 0.00028589633645470514
+    },
+    {
+     "episode": 4000,
+     "goal": 0.831,
+     "hole": 0.169,
+     "timeout": 0.0,
+     "mean_return": 0.0545840199438448,
+     "exact_start_value": 0.05561613061911412,
+     "exact_goal": 0.8425733728338042,
+     "exact_hole": 0.15741367635986236,
+     "exact_timeout": 1.2950806333456022e-05
+    },
+    {
+     "episode": 4500,
+     "goal": 0.751,
+     "hole": 0.249,
+     "timeout": 0.0,
+     "mean_return": 0.07214540279304262,
+     "exact_start_value": 0.0625447504613746,
+     "exact_goal": 0.7268706340562611,
+     "exact_hole": 0.2731098144780918,
+     "exact_timeout": 1.95514656471385e-05
+    },
+    {
+     "episode": 5000,
+     "goal": 0.821,
+     "hole": 0.153,
+     "timeout": 0.026,
+     "mean_return": 0.04588436858259562,
+     "exact_start_value": 0.04979954744625166,
+     "exact_goal": 0.8241969281529269,
+     "exact_hole": 0.15289399983686613,
+     "exact_timeout": 0.022909072010206977
+    },
+    {
+     "episode": 5500,
+     "goal": 0.833,
+     "hole": 0.167,
+     "timeout": 0.0,
+     "mean_return": 0.05332616454167108,
+     "exact_start_value": 0.05540840916604166,
+     "exact_goal": 0.8425990756672814,
+     "exact_hole": 0.15733442715373214,
+     "exact_timeout": 6.649717898643548e-05
+    },
+    {
+     "episode": 6000,
+     "goal": 0.968,
+     "hole": 0.028,
+     "timeout": 0.004,
+     "mean_return": 0.037304643415258694,
+     "exact_start_value": 0.03600195199223912,
+     "exact_goal": 0.973335908493305,
+     "exact_hole": 0.025565197904382386,
+     "exact_timeout": 0.0010988936023126339
+    },
+    {
+     "episode": 6500,
+     "goal": 0.973,
+     "hole": 0.025,
+     "timeout": 0.002,
+     "mean_return": 0.03374211755175601,
+     "exact_start_value": 0.03600889425088138,
+     "exact_goal": 0.9730125573505507,
+     "exact_hole": 0.025034725355057352,
+     "exact_timeout": 0.001952717294391948
+    },
+    {
+     "episode": 7000,
+     "goal": 0.972,
+     "hole": 0.024,
+     "timeout": 0.004,
+     "mean_return": 0.03580190205640477,
+     "exact_start_value": 0.0353089153266673,
+     "exact_goal": 0.9748109465361224,
+     "exact_hole": 0.02337206963902594,
+     "exact_timeout": 0.0018169838248516257
+    },
+    {
+     "episode": 7500,
+     "goal": 0.977,
+     "hole": 0.022,
+     "timeout": 0.001,
+     "mean_return": 0.035920866448378136,
+     "exact_start_value": 0.036403874130024605,
+     "exact_goal": 0.9755647223602438,
+     "exact_hole": 0.02309862799812268,
+     "exact_timeout": 0.0013366496416334916
+    },
+    {
+     "episode": 8000,
+     "goal": 0.965,
+     "hole": 0.033,
+     "timeout": 0.002,
+     "mean_return": 0.036020174936190516,
+     "exact_start_value": 0.03599342384834682,
+     "exact_goal": 0.9703016104056542,
+     "exact_hole": 0.027846076737909953,
+     "exact_timeout": 0.0018523128564358338
+    },
+    {
+     "episode": 8500,
+     "goal": 0.975,
+     "hole": 0.024,
+     "timeout": 0.001,
+     "mean_return": 0.037402486182143986,
+     "exact_start_value": 0.03636296812484204,
+     "exact_goal": 0.9727826172825236,
+     "exact_hole": 0.025742543786775207,
+     "exact_timeout": 0.0014748389307012166
+    },
+    {
+     "episode": 9000,
+     "goal": 0.972,
+     "hole": 0.024,
+     "timeout": 0.004,
+     "mean_return": 0.03549090543848487,
+     "exact_start_value": 0.036498028706067095,
+     "exact_goal": 0.9778368498273361,
+     "exact_hole": 0.020848638241736106,
+     "exact_timeout": 0.0013145119309277975
+    },
+    {
+     "episode": 9500,
+     "goal": 0.982,
+     "hole": 0.015,
+     "timeout": 0.003,
+     "mean_return": 0.0333082381208546,
+     "exact_start_value": 0.036498028706067095,
+     "exact_goal": 0.9778368498273361,
+     "exact_hole": 0.020848638241736106,
+     "exact_timeout": 0.0013145119309277975
+    },
+    {
+     "episode": 10000,
+     "goal": 0.979,
+     "hole": 0.02,
+     "timeout": 0.001,
+     "mean_return": 0.03627404157851316,
+     "exact_start_value": 0.036498028706067095,
+     "exact_goal": 0.9778368498273361,
+     "exact_hole": 0.020848638241736106,
+     "exact_timeout": 0.0013145119309277975
+    },
+    {
+     "episode": 10500,
+     "goal": 0.983,
+     "hole": 0.017,
+     "timeout": 0.0,
+     "mean_return": 0.03773030387992021,
+     "exact_start_value": 0.03641474444335535,
+     "exact_goal": 0.9761298850275725,
+     "exact_hole": 0.022925211485473884,
+     "exact_timeout": 0.000944903486953641
+    },
+    {
+     "episode": 11000,
+     "goal": 0.968,
+     "hole": 0.031,
+     "timeout": 0.001,
+     "mean_return": 0.035827845986016495,
+     "exact_start_value": 0.03579246688343834,
+     "exact_goal": 0.9707645202084162,
+     "exact_hole": 0.02845377851926234,
+     "exact_timeout": 0.0007817012723214667
+    },
+    {
+     "episode": 11500,
+     "goal": 0.976,
+     "hole": 0.019,
+     "timeout": 0.005,
+     "mean_return": 0.03725247304480416,
+     "exact_start_value": 0.03648645936674768,
+     "exact_goal": 0.9797653687852644,
+     "exact_hole": 0.01831553457540458,
+     "exact_timeout": 0.001919096639330986
+    },
+    {
+     "episode": 12000,
+     "goal": 0.978,
+     "hole": 0.019,
+     "timeout": 0.003,
+     "mean_return": 0.03556025620181771,
+     "exact_start_value": 0.03650452584161804,
+     "exact_goal": 0.9797929427705073,
+     "exact_hole": 0.018316154375617733,
+     "exact_timeout": 0.0018909028538749428
+    },
+    {
+     "episode": 12500,
+     "goal": 0.962,
+     "hole": 0.036,
+     "timeout": 0.002,
+     "mean_return": 0.033894004130180774,
+     "exact_start_value": 0.03629396772728738,
+     "exact_goal": 0.9727235441916448,
+     "exact_hole": 0.025237650082089225,
+     "exact_timeout": 0.002038805726266024
+    },
+    {
+     "episode": 13000,
+     "goal": 0.972,
+     "hole": 0.028,
+     "timeout": 0.0,
+     "mean_return": 0.033355399164461744,
+     "exact_start_value": 0.036148988421353535,
+     "exact_goal": 0.973674990809173,
+     "exact_hole": 0.024444804517276264,
+     "exact_timeout": 0.0018802046735507671
+    },
+    {
+     "episode": 13500,
+     "goal": 0.986,
+     "hole": 0.012,
+     "timeout": 0.002,
+     "mean_return": 0.036388351905959855,
+     "exact_start_value": 0.036355026302045776,
+     "exact_goal": 0.9804004440289507,
+     "exact_hole": 0.017686669785881848,
+     "exact_timeout": 0.001912886185167495
+    },
+    {
+     "episode": 14000,
+     "goal": 0.982,
+     "hole": 0.016,
+     "timeout": 0.002,
+     "mean_return": 0.036047837998148154,
+     "exact_start_value": 0.036355026302045776,
+     "exact_goal": 0.9804004440289507,
+     "exact_hole": 0.017686669785881848,
+     "exact_timeout": 0.001912886185167495
+    },
+    {
+     "episode": 14500,
+     "goal": 0.966,
+     "hole": 0.033,
+     "timeout": 0.001,
+     "mean_return": 0.03788585074628014,
+     "exact_start_value": 0.03612586205149401,
+     "exact_goal": 0.9703718370637844,
+     "exact_hole": 0.028247162828019867,
+     "exact_timeout": 0.0013810001081957513
+    },
+    {
+     "episode": 15000,
+     "goal": 0.974,
+     "hole": 0.026,
+     "timeout": 0.0,
+     "mean_return": 0.03877668946074901,
+     "exact_start_value": 0.03633230568358848,
+     "exact_goal": 0.9771907012224096,
+     "exact_hole": 0.021397777353570402,
+     "exact_timeout": 0.0014115214240200125
+    }
+   ],
+   "final": {
+    "goal": 0.9768,
+    "hole": 0.0221,
+    "timeout": 0.0011,
+    "mean_return": 0.035939881308542865
+   },
+   "exact_outcomes": {
+    "goal": 0.9771907012224096,
+    "hole": 0.021397777353570402,
+    "timeout": 0.0014115214240200125
+   },
+   "exact_start_value": 0.03633230568358848,
+   "max_q_start": 0.041298866778263915,
+   "agreement_with_optimal": 0.8148148148148148,
+   "seconds_incl_evaluation": 622.6641810750007
+  },
+  {
+   "seed": 2,
+   "curve": [
+    {
+     "episode": 500,
+     "goal": 0.829,
+     "hole": 0.171,
+     "timeout": 0.0,
+     "mean_return": 0.052745195039261165,
+     "exact_start_value": 0.05485450396886758,
+     "exact_goal": 0.8370384647616317,
+     "exact_hole": 0.16295432629992868,
+     "exact_timeout": 7.2089384396401e-06
+    },
+    {
+     "episode": 1000,
+     "goal": 0.976,
+     "hole": 0.024,
+     "timeout": 0.0,
+     "mean_return": 0.03523354919703427,
+     "exact_start_value": 0.0351940579127899,
+     "exact_goal": 0.9767185739867932,
+     "exact_hole": 0.02241332724622025,
+     "exact_timeout": 0.0008680987669865692
+    },
+    {
+     "episode": 1500,
+     "goal": 0.756,
+     "hole": 0.244,
+     "timeout": 0.0,
+     "mean_return": 0.040228411522999934,
+     "exact_start_value": 0.0331308261022301,
+     "exact_goal": 0.745956856609621,
+     "exact_hole": 0.25404291043744787,
+     "exact_timeout": 2.329529311673184e-07
+    },
+    {
+     "episode": 2000,
+     "goal": 0.764,
+     "hole": 0.236,
+     "timeout": 0.0,
+     "mean_return": 0.03689446637310243,
+     "exact_start_value": 0.03284174978005655,
+     "exact_goal": 0.7459528530239339,
+     "exact_hole": 0.2540470981592966,
+     "exact_timeout": 4.881676951562497e-08
+    },
+    {
+     "episode": 2500,
+     "goal": 0.853,
+     "hole": 0.147,
+     "timeout": 0.0,
+     "mean_return": 0.05622034738428475,
+     "exact_start_value": 0.05619108313527068,
+     "exact_goal": 0.8441142102296927,
+     "exact_hole": 0.15588391921668066,
+     "exact_timeout": 1.8705536266594436e-06
+    },
+    {
+     "episode": 3000,
+     "goal": 0.846,
+     "hole": 0.154,
+     "timeout": 0.0,
+     "mean_return": 0.055824276169863095,
+     "exact_start_value": 0.05481288764311523,
+     "exact_goal": 0.8333504616436441,
+     "exact_hole": 0.16664548499805687,
+     "exact_timeout": 4.0533582990054384e-06
+    },
+    {
+     "episode": 3500,
+     "goal": 0.985,
+     "hole": 0.014,
+     "timeout": 0.001,
+     "mean_return": 0.03737622382987435,
+     "exact_start_value": 0.036504028552975736,
+     "exact_goal": 0.9854520016251505,
+     "exact_hole": 0.01385546938503035,
+     "exact_timeout": 0.0006925289898191966
+    },
+    {
+     "episode": 4000,
+     "goal": 0.832,
+     "hole": 0.168,
+     "timeout": 0.0,
+     "mean_return": 0.054755387448941165,
+     "exact_start_value": 0.05568715487162099,
+     "exact_goal": 0.8460791516353705,
+     "exact_hole": 0.1539107378727882,
+     "exact_timeout": 1.0110491841297531e-05
+    },
+    {
+     "episode": 4500,
+     "goal": 0.823,
+     "hole": 0.177,
+     "timeout": 0.0,
+     "mean_return": 0.050272773439007906,
+     "exact_start_value": 0.04747370650601242,
+     "exact_goal": 0.81576492869726,
+     "exact_hole": 0.18423335394870144,
+     "exact_timeout": 1.7173540385329034e-06
+    },
+    {
+     "episode": 5000,
+     "goal": 0.978,
+     "hole": 0.022,
+     "timeout": 0.0,
+     "mean_return": 0.03362178035848864,
+     "exact_start_value": 0.035555814581916256,
+     "exact_goal": 0.9786625250603895,
+     "exact_hole": 0.020322217817739796,
+     "exact_timeout": 0.0010152571218706719
+    },
+    {
+     "episode": 5500,
+     "goal": 0.976,
+     "hole": 0.024,
+     "timeout": 0.0,
+     "mean_return": 0.03525377030100481,
+     "exact_start_value": 0.034900481272261565,
+     "exact_goal": 0.9692182495601145,
+     "exact_hole": 0.029924010873581874,
+     "exact_timeout": 0.0008577395663036391
+    },
+    {
+     "episode": 6000,
+     "goal": 0.972,
+     "hole": 0.026,
+     "timeout": 0.002,
+     "mean_return": 0.03702330615845254,
+     "exact_start_value": 0.03530965263737584,
+     "exact_goal": 0.9754528488169704,
+     "exact_hole": 0.023439708921176416,
+     "exact_timeout": 0.0011074422618532198
+    },
+    {
+     "episode": 6500,
+     "goal": 0.963,
+     "hole": 0.036,
+     "timeout": 0.001,
+     "mean_return": 0.03395745589796092,
+     "exact_start_value": 0.035221066890937854,
+     "exact_goal": 0.9667557164915388,
+     "exact_hole": 0.03190268377380401,
+     "exact_timeout": 0.001341599734657195
+    },
+    {
+     "episode": 7000,
+     "goal": 0.849,
+     "hole": 0.151,
+     "timeout": 0.0,
+     "mean_return": 0.054264498669238,
+     "exact_start_value": 0.05418827610297055,
+     "exact_goal": 0.8427582787047709,
+     "exact_hole": 0.15724171059041658,
+     "exact_timeout": 1.0704812480888393e-08
+    },
+    {
+     "episode": 7500,
+     "goal": 0.968,
+     "hole": 0.032,
+     "timeout": 0.0,
+     "mean_return": 0.035681516051467965,
+     "exact_start_value": 0.035449046932971004,
+     "exact_goal": 0.9703083742808944,
+     "exact_hole": 0.029204237142148037,
+     "exact_timeout": 0.0004873885769575148
+    },
+    {
+     "episode": 8000,
+     "goal": 0.97,
+     "hole": 0.029,
+     "timeout": 0.001,
+     "mean_return": 0.03666414622548822,
+     "exact_start_value": 0.03541393276798636,
+     "exact_goal": 0.9702595093983494,
+     "exact_hole": 0.029250674909284125,
+     "exact_timeout": 0.000489815692366502
+    },
+    {
+     "episode": 8500,
+     "goal": 0.976,
+     "hole": 0.023,
+     "timeout": 0.001,
+     "mean_return": 0.03842398111878694,
+     "exact_start_value": 0.03615694028821861,
+     "exact_goal": 0.970605016622583,
+     "exact_hole": 0.02866348278584363,
+     "exact_timeout": 0.0007315005915733419
+    },
+    {
+     "episode": 9000,
+     "goal": 0.98,
+     "hole": 0.015,
+     "timeout": 0.005,
+     "mean_return": 0.03768430154457001,
+     "exact_start_value": 0.036426968388016255,
+     "exact_goal": 0.9799085712610849,
+     "exact_hole": 0.019071171747215065,
+     "exact_timeout": 0.0010202569917000526
+    },
+    {
+     "episode": 9500,
+     "goal": 0.978,
+     "hole": 0.019,
+     "timeout": 0.003,
+     "mean_return": 0.034694217253002944,
+     "exact_start_value": 0.03639500264996355,
+     "exact_goal": 0.9743224344698898,
+     "exact_hole": 0.02455297513462862,
+     "exact_timeout": 0.0011245903954816283
+    },
+    {
+     "episode": 10000,
+     "goal": 0.972,
+     "hole": 0.028,
+     "timeout": 0.0,
+     "mean_return": 0.03681317286266366,
+     "exact_start_value": 0.03637785178357108,
+     "exact_goal": 0.9750840860134852,
+     "exact_hole": 0.02376778604985308,
+     "exact_timeout": 0.001148127936661747
+    },
+    {
+     "episode": 10500,
+     "goal": 0.977,
+     "hole": 0.023,
+     "timeout": 0.0,
+     "mean_return": 0.03791628731567719,
+     "exact_start_value": 0.036418596825555934,
+     "exact_goal": 0.9778281799854349,
+     "exact_hole": 0.02106738464794633,
+     "exact_timeout": 0.00110443536661875
+    },
+    {
+     "episode": 11000,
+     "goal": 0.978,
+     "hole": 0.021,
+     "timeout": 0.001,
+     "mean_return": 0.035283330112575007,
+     "exact_start_value": 0.036411561236051715,
+     "exact_goal": 0.975665833635874,
+     "exact_hole": 0.0233884991054375,
+     "exact_timeout": 0.0009456672586884984
+    },
+    {
+     "episode": 11500,
+     "goal": 0.976,
+     "hole": 0.02,
+     "timeout": 0.004,
+     "mean_return": 0.03724009317786944,
+     "exact_start_value": 0.03645088420726601,
+     "exact_goal": 0.9813212807306262,
+     "exact_hole": 0.0168059404061639,
+     "exact_timeout": 0.0018727788632099118
+    },
+    {
+     "episode": 12000,
+     "goal": 0.985,
+     "hole": 0.013,
+     "timeout": 0.002,
+     "mean_return": 0.03544153310154033,
+     "exact_start_value": 0.036451651780450685,
+     "exact_goal": 0.9816693304011581,
+     "exact_hole": 0.016593828665106614,
+     "exact_timeout": 0.001736840933735273
+    },
+    {
+     "episode": 12500,
+     "goal": 0.975,
+     "hole": 0.024,
+     "timeout": 0.001,
+     "mean_return": 0.03451088385037127,
+     "exact_start_value": 0.03643532843084198,
+     "exact_goal": 0.9802093536354548,
+     "exact_hole": 0.01861466453617111,
+     "exact_timeout": 0.0011759818283740842
+    },
+    {
+     "episode": 13000,
+     "goal": 0.98,
+     "hole": 0.02,
+     "timeout": 0.0,
+     "mean_return": 0.03516793116704122,
+     "exact_start_value": 0.03642922257273622,
+     "exact_goal": 0.9781509770053292,
+     "exact_hole": 0.020473314468750115,
+     "exact_timeout": 0.001375708525920727
+    },
+    {
+     "episode": 13500,
+     "goal": 0.87,
+     "hole": 0.13,
+     "timeout": 0.0,
+     "mean_return": 0.05654490863466872,
+     "exact_start_value": 0.055743837574883215,
+     "exact_goal": 0.84807575600292,
+     "exact_hole": 0.1517258042586509,
+     "exact_timeout": 0.00019843973842914586
+    },
+    {
+     "episode": 14000,
+     "goal": 0.838,
+     "hole": 0.161,
+     "timeout": 0.001,
+     "mean_return": 0.0530203848900449,
+     "exact_start_value": 0.055743837574883215,
+     "exact_goal": 0.84807575600292,
+     "exact_hole": 0.1517258042586509,
+     "exact_timeout": 0.00019843973842914586
+    },
+    {
+     "episode": 14500,
+     "goal": 0.84,
+     "hole": 0.159,
+     "timeout": 0.001,
+     "mean_return": 0.05582661501717151,
+     "exact_start_value": 0.055743837574883215,
+     "exact_goal": 0.84807575600292,
+     "exact_hole": 0.1517258042586509,
+     "exact_timeout": 0.00019843973842914586
+    },
+    {
+     "episode": 15000,
+     "goal": 0.841,
+     "hole": 0.159,
+     "timeout": 0.0,
+     "mean_return": 0.0565473454040433,
+     "exact_start_value": 0.055743837574883215,
+     "exact_goal": 0.84807575600292,
+     "exact_hole": 0.1517258042586509,
+     "exact_timeout": 0.00019843973842914586
+    }
+   ],
+   "final": {
+    "goal": 0.8473,
+    "hole": 0.1527,
+    "timeout": 0.0,
+    "mean_return": 0.05485733840972448
+   },
+   "exact_outcomes": {
+    "goal": 0.84807575600292,
+    "hole": 0.1517258042586509,
+    "timeout": 0.00019843973842914586
+   },
+   "exact_start_value": 0.055743837574883215,
+   "max_q_start": 0.06496383787499634,
+   "agreement_with_optimal": 0.8888888888888888,
+   "seconds_incl_evaluation": 216.798277245005
+  },
+  {
+   "seed": 3,
+   "curve": [
+    {
+     "episode": 500,
+     "goal": 0.829,
+     "hole": 0.171,
+     "timeout": 0.0,
+     "mean_return": 0.0510709766258955,
+     "exact_start_value": 0.05322023407090144,
+     "exact_goal": 0.8376860682172124,
+     "exact_hole": 0.16231004756631973,
+     "exact_timeout": 3.884216467908708e-06
+    },
+    {
+     "episode": 1000,
+     "goal": 0.977,
+     "hole": 0.022,
+     "timeout": 0.001,
+     "mean_return": 0.023812280601720828,
+     "exact_start_value": 0.02543478784095643,
+     "exact_goal": 0.9738714057262732,
+     "exact_hole": 0.024736689567265824,
+     "exact_timeout": 0.0013919047064610002
+    },
+    {
+     "episode": 1500,
+     "goal": 0.823,
+     "hole": 0.177,
+     "timeout": 0.0,
+     "mean_return": 0.052096767501574076,
+     "exact_start_value": 0.05483233481038839,
+     "exact_goal": 0.8389688458501898,
+     "exact_hole": 0.16102998623978926,
+     "exact_timeout": 1.1679100209160964e-06
+    },
+    {
+     "episode": 2000,
+     "goal": 0.985,
+     "hole": 0.014,
+     "timeout": 0.001,
+     "mean_return": 0.03584933210625207,
+     "exact_start_value": 0.035218031428017986,
+     "exact_goal": 0.9858780762815867,
+     "exact_hole": 0.013426543757660947,
+     "exact_timeout": 0.000695379960752307
+    },
+    {
+     "episode": 2500,
+     "goal": 0.75,
+     "hole": 0.249,
+     "timeout": 0.001,
+     "mean_return": 0.010911079985558281,
+     "exact_start_value": 0.009623965554861445,
+     "exact_goal": 0.7483056834787366,
+     "exact_hole": 0.2510140582623376,
+     "exact_timeout": 0.0006802582589258144
+    },
+    {
+     "episode": 3000,
+     "goal": 0.853,
+     "hole": 0.147,
+     "timeout": 0.0,
+     "mean_return": 0.054066673625743404,
+     "exact_start_value": 0.054002991261591006,
+     "exact_goal": 0.8383419395091396,
+     "exact_hole": 0.1616099735029739,
+     "exact_timeout": 4.808698788649757e-05
+    },
+    {
+     "episode": 3500,
+     "goal": 0.73,
+     "hole": 0.265,
+     "timeout": 0.005,
+     "mean_return": 0.007272220141425948,
+     "exact_start_value": 0.0057384271283323985,
+     "exact_goal": 0.735992481201047,
+     "exact_hole": 0.26223181790360983,
+     "exact_timeout": 0.0017757008953431797
+    },
+    {
+     "episode": 4000,
+     "goal": 0.969,
+     "hole": 0.028,
+     "timeout": 0.003,
+     "mean_return": 0.031885329299132785,
+     "exact_start_value": 0.03180579062787577,
+     "exact_goal": 0.9640921570618096,
+     "exact_hole": 0.03502071672927798,
+     "exact_timeout": 0.0008871262089124032
+    },
+    {
+     "episode": 4500,
+     "goal": 0.86,
+     "hole": 0.14,
+     "timeout": 0.0,
+     "mean_return": 0.0583907529986147,
+     "exact_start_value": 0.053709503906591835,
+     "exact_goal": 0.8429504522300965,
+     "exact_hole": 0.15689104446141633,
+     "exact_timeout": 0.00015850330848721228
+    },
+    {
+     "episode": 5000,
+     "goal": 0.972,
+     "hole": 0.028,
+     "timeout": 0.0,
+     "mean_return": 0.0319813517025981,
+     "exact_start_value": 0.03410019481102029,
+     "exact_goal": 0.9742219116571946,
+     "exact_hole": 0.024521079995096673,
+     "exact_timeout": 0.001257008347708699
+    },
+    {
+     "episode": 5500,
+     "goal": 0.987,
+     "hole": 0.013,
+     "timeout": 0.0,
+     "mean_return": 0.03751039067343496,
+     "exact_start_value": 0.036291159725522916,
+     "exact_goal": 0.972899477162795,
+     "exact_hole": 0.02588864430384441,
+     "exact_timeout": 0.0012118785333605775
+    },
+    {
+     "episode": 6000,
+     "goal": 0.972,
+     "hole": 0.025,
+     "timeout": 0.003,
+     "mean_return": 0.03825572227845668,
+     "exact_start_value": 0.036141174849790646,
+     "exact_goal": 0.9733015344658527,
+     "exact_hole": 0.025476929545271365,
+     "exact_timeout": 0.001221535988875977
+    },
+    {
+     "episode": 6500,
+     "goal": 0.974,
+     "hole": 0.026,
+     "timeout": 0.0,
+     "mean_return": 0.03340283409142559,
+     "exact_start_value": 0.03592562250078084,
+     "exact_goal": 0.9735483637767782,
+     "exact_hole": 0.02524007305059739,
+     "exact_timeout": 0.0012115631726243858
+    },
+    {
+     "episode": 7000,
+     "goal": 0.972,
+     "hole": 0.027,
+     "timeout": 0.001,
+     "mean_return": 0.036505479231312504,
+     "exact_start_value": 0.03594987360274976,
+     "exact_goal": 0.971682691568368,
+     "exact_hole": 0.02727982537372231,
+     "exact_timeout": 0.0010374830579097383
+    },
+    {
+     "episode": 7500,
+     "goal": 0.967,
+     "hole": 0.033,
+     "timeout": 0.0,
+     "mean_return": 0.03543881470541225,
+     "exact_start_value": 0.03519796894497665,
+     "exact_goal": 0.9711790502451051,
+     "exact_hole": 0.02828780007098175,
+     "exact_timeout": 0.0005331496839131589
+    },
+    {
+     "episode": 8000,
+     "goal": 0.978,
+     "hole": 0.021,
+     "timeout": 0.001,
+     "mean_return": 0.03594467846543088,
+     "exact_start_value": 0.03533238191502175,
+     "exact_goal": 0.9750879351025122,
+     "exact_hole": 0.023845693288478964,
+     "exact_timeout": 0.0010663716090087982
+    },
+    {
+     "episode": 8500,
+     "goal": 0.973,
+     "hole": 0.026,
+     "timeout": 0.001,
+     "mean_return": 0.03617341116219088,
+     "exact_start_value": 0.035317953185776046,
+     "exact_goal": 0.9783308958243374,
+     "exact_hole": 0.02069065384569413,
+     "exact_timeout": 0.000978450329968461
+    },
+    {
+     "episode": 9000,
+     "goal": 0.972,
+     "hole": 0.024,
+     "timeout": 0.004,
+     "mean_return": 0.034789003401879924,
+     "exact_start_value": 0.03535997178495299,
+     "exact_goal": 0.9763476394562174,
+     "exact_hole": 0.021876004172737717,
+     "exact_timeout": 0.001776356371044896
+    },
+    {
+     "episode": 9500,
+     "goal": 0.985,
+     "hole": 0.012,
+     "timeout": 0.003,
+     "mean_return": 0.03452580690311524,
+     "exact_start_value": 0.03599481226197477,
+     "exact_goal": 0.9761700385930142,
+     "exact_hole": 0.022035372857554414,
+     "exact_timeout": 0.0017945885494313751
+    },
+    {
+     "episode": 10000,
+     "goal": 0.974,
+     "hole": 0.024,
+     "timeout": 0.002,
+     "mean_return": 0.03602888941882643,
+     "exact_start_value": 0.03593924193023383,
+     "exact_goal": 0.975253585133687,
+     "exact_hole": 0.02283626255675042,
+     "exact_timeout": 0.001910152309562596
+    },
+    {
+     "episode": 10500,
+     "goal": 0.977,
+     "hole": 0.021,
+     "timeout": 0.002,
+     "mean_return": 0.03731978805528442,
+     "exact_start_value": 0.0351514863941982,
+     "exact_goal": 0.9727935609051082,
+     "exact_hole": 0.025105649334322466,
+     "exact_timeout": 0.002100789760569377
+    },
+    {
+     "episode": 11000,
+     "goal": 0.971,
+     "hole": 0.024,
+     "timeout": 0.005,
+     "mean_return": 0.03511122158356554,
+     "exact_start_value": 0.0351514863941982,
+     "exact_goal": 0.9727935609051082,
+     "exact_hole": 0.025105649334322466,
+     "exact_timeout": 0.002100789760569377
+    },
+    {
+     "episode": 11500,
+     "goal": 0.968,
+     "hole": 0.028,
+     "timeout": 0.004,
+     "mean_return": 0.03557095490391562,
+     "exact_start_value": 0.03514704416748768,
+     "exact_goal": 0.9725439162879234,
+     "exact_hole": 0.025245241628110593,
+     "exact_timeout": 0.002210842083966047
+    },
+    {
+     "episode": 12000,
+     "goal": 0.969,
+     "hole": 0.03,
+     "timeout": 0.001,
+     "mean_return": 0.03440374028736401,
+     "exact_start_value": 0.03494921251700736,
+     "exact_goal": 0.9671558308764967,
+     "exact_hole": 0.030749819705640613,
+     "exact_timeout": 0.0020943494178626842
+    },
+    {
+     "episode": 12500,
+     "goal": 0.972,
+     "hole": 0.027,
+     "timeout": 0.001,
+     "mean_return": 0.03293649553408727,
+     "exact_start_value": 0.03515794368344052,
+     "exact_goal": 0.9754681737505708,
+     "exact_hole": 0.02289120435165415,
+     "exact_timeout": 0.0016406218977750298
+    },
+    {
+     "episode": 13000,
+     "goal": 0.963,
+     "hole": 0.036,
+     "timeout": 0.001,
+     "mean_return": 0.03322918040311502,
+     "exact_start_value": 0.03515794368344052,
+     "exact_goal": 0.9754681737505708,
+     "exact_hole": 0.02289120435165415,
+     "exact_timeout": 0.0016406218977750298
+    },
+    {
+     "episode": 13500,
+     "goal": 0.982,
+     "hole": 0.015,
+     "timeout": 0.003,
+     "mean_return": 0.036620258706940245,
+     "exact_start_value": 0.03515794368344052,
+     "exact_goal": 0.9754681737505708,
+     "exact_hole": 0.02289120435165415,
+     "exact_timeout": 0.0016406218977750298
+    },
+    {
+     "episode": 14000,
+     "goal": 0.983,
+     "hole": 0.015,
+     "timeout": 0.002,
+     "mean_return": 0.03450858055832779,
+     "exact_start_value": 0.0351774368707954,
+     "exact_goal": 0.978478229165513,
+     "exact_hole": 0.019982849681429937,
+     "exact_timeout": 0.0015389211530570934
+    },
+    {
+     "episode": 14500,
+     "goal": 0.971,
+     "hole": 0.027,
+     "timeout": 0.002,
+     "mean_return": 0.03512409460155638,
+     "exact_start_value": 0.03516415357412409,
+     "exact_goal": 0.9798654508370994,
+     "exact_hole": 0.019224572062901735,
+     "exact_timeout": 0.0009099770999988488
+    },
+    {
+     "episode": 15000,
+     "goal": 0.958,
+     "hole": 0.042,
+     "timeout": 0.0,
+     "mean_return": 0.03790565831302437,
+     "exact_start_value": 0.035043275590495755,
+     "exact_goal": 0.9703676067121502,
+     "exact_hole": 0.027784857607349056,
+     "exact_timeout": 0.001847535680500778
+    }
+   ],
+   "final": {
+    "goal": 0.9704,
+    "hole": 0.0276,
+    "timeout": 0.002,
+    "mean_return": 0.03482907867431302
+   },
+   "exact_outcomes": {
+    "goal": 0.9703676067121502,
+    "hole": 0.027784857607349056,
+    "timeout": 0.001847535680500778
+   },
+   "exact_start_value": 0.035043275590495755,
+   "max_q_start": 0.0388113412370862,
+   "agreement_with_optimal": 0.7222222222222222,
+   "seconds_incl_evaluation": 297.31801265199465
+  },
+  {
+   "seed": 4,
+   "curve": [
+    {
+     "episode": 500,
+     "goal": 0.033,
+     "hole": 0.147,
+     "timeout": 0.82,
+     "mean_return": -0.0006613027549839949,
+     "exact_start_value": -0.0008305552465022923,
+     "exact_goal": 0.024287278259992464,
+     "exact_hole": 0.13322816100268808,
+     "exact_timeout": 0.8424845607373195
+    },
+    {
+     "episode": 1000,
+     "goal": 0.812,
+     "hole": 0.185,
+     "timeout": 0.003,
+     "mean_return": 0.049497926064867075,
+     "exact_start_value": 0.051364726995749975,
+     "exact_goal": 0.8358660029270194,
+     "exact_hole": 0.16210347182992701,
+     "exact_timeout": 0.0020305252430535825
+    },
+    {
+     "episode": 1500,
+     "goal": 0.739,
+     "hole": 0.258,
+     "timeout": 0.003,
+     "mean_return": 0.031461228275425385,
+     "exact_start_value": 0.029616863947768177,
+     "exact_goal": 0.729283084670096,
+     "exact_hole": 0.2686851876666603,
+     "exact_timeout": 0.0020317276632437764
+    },
+    {
+     "episode": 2000,
+     "goal": 0.35,
+     "hole": 0.015,
+     "timeout": 0.635,
+     "mean_return": 0.0017321540366376303,
+     "exact_start_value": 0.001538760964062993,
+     "exact_goal": 0.3338615550952457,
+     "exact_hole": 0.012690885406436259,
+     "exact_timeout": 0.653447559498318
+    },
+    {
+     "episode": 2500,
+     "goal": 0.963,
+     "hole": 0.031,
+     "timeout": 0.006,
+     "mean_return": 0.036448767985224936,
+     "exact_start_value": 0.036356218597654776,
+     "exact_goal": 0.9736098164465653,
+     "exact_hole": 0.02293285671229972,
+     "exact_timeout": 0.003457326841134978
+    },
+    {
+     "episode": 3000,
+     "goal": 0.967,
+     "hole": 0.031,
+     "timeout": 0.002,
+     "mean_return": 0.03643392451022372,
+     "exact_start_value": 0.035992584052254875,
+     "exact_goal": 0.9662282554067639,
+     "exact_hole": 0.031780034876580876,
+     "exact_timeout": 0.001991709716655188
+    },
+    {
+     "episode": 3500,
+     "goal": 0.648,
+     "hole": 0.123,
+     "timeout": 0.229,
+     "mean_return": 0.003980654135852372,
+     "exact_start_value": 0.004313445143043293,
+     "exact_goal": 0.6493037562029703,
+     "exact_hole": 0.12420817867605682,
+     "exact_timeout": 0.22648806512097286
+    },
+    {
+     "episode": 4000,
+     "goal": 0.729,
+     "hole": 0.27,
+     "timeout": 0.001,
+     "mean_return": 0.03318553057505932,
+     "exact_start_value": 0.03340470701915492,
+     "exact_goal": 0.7439469865383441,
+     "exact_hole": 0.25568769037407413,
+     "exact_timeout": 0.00036532308758174814
+    },
+    {
+     "episode": 4500,
+     "goal": 0.86,
+     "hole": 0.14,
+     "timeout": 0.0,
+     "mean_return": 0.05920620229729691,
+     "exact_start_value": 0.05516861175577495,
+     "exact_goal": 0.8384506277890319,
+     "exact_hole": 0.16143226812319322,
+     "exact_timeout": 0.00011710408777487746
+    },
+    {
+     "episode": 5000,
+     "goal": 0.824,
+     "hole": 0.176,
+     "timeout": 0.0,
+     "mean_return": 0.05238394874517498,
+     "exact_start_value": 0.05598285285884486,
+     "exact_goal": 0.8438575909423369,
+     "exact_hole": 0.1561192108869467,
+     "exact_timeout": 2.3198170716387523e-05
+    },
+    {
+     "episode": 5500,
+     "goal": 0.982,
+     "hole": 0.017,
+     "timeout": 0.001,
+     "mean_return": 0.014904054071892983,
+     "exact_start_value": 0.015507183871340945,
+     "exact_goal": 0.9769051768914399,
+     "exact_hole": 0.021038396462044306,
+     "exact_timeout": 0.002056426646515841
+    },
+    {
+     "episode": 6000,
+     "goal": 0.978,
+     "hole": 0.018,
+     "timeout": 0.004,
+     "mean_return": 0.03828605967204338,
+     "exact_start_value": 0.03646357512420335,
+     "exact_goal": 0.9804556587409928,
+     "exact_hole": 0.016823752527211466,
+     "exact_timeout": 0.0027205887317957034
+    },
+    {
+     "episode": 6500,
+     "goal": 0.961,
+     "hole": 0.038,
+     "timeout": 0.001,
+     "mean_return": 0.03441343446502164,
+     "exact_start_value": 0.03578560017851158,
+     "exact_goal": 0.9707402275143178,
+     "exact_hole": 0.028300426039481574,
+     "exact_timeout": 0.0009593464462006596
+    },
+    {
+     "episode": 7000,
+     "goal": 0.838,
+     "hole": 0.162,
+     "timeout": 0.0,
+     "mean_return": 0.0533024906201508,
+     "exact_start_value": 0.055076609390090854,
+     "exact_goal": 0.8375303508767227,
+     "exact_hole": 0.1623758814991375,
+     "exact_timeout": 9.376762413981776e-05
+    },
+    {
+     "episode": 7500,
+     "goal": 0.974,
+     "hole": 0.025,
+     "timeout": 0.001,
+     "mean_return": 0.035365680738240104,
+     "exact_start_value": 0.036070879383007216,
+     "exact_goal": 0.9768278042573855,
+     "exact_hole": 0.02114198764399089,
+     "exact_timeout": 0.0020302080986236426
+    },
+    {
+     "episode": 8000,
+     "goal": 0.98,
+     "hole": 0.019,
+     "timeout": 0.001,
+     "mean_return": 0.037148658669794214,
+     "exact_start_value": 0.036516176709967076,
+     "exact_goal": 0.9808539419144384,
+     "exact_hole": 0.017742136346483917,
+     "exact_timeout": 0.0014039217390776626
+    },
+    {
+     "episode": 8500,
+     "goal": 0.979,
+     "hole": 0.018,
+     "timeout": 0.003,
+     "mean_return": 0.03861829755843575,
+     "exact_start_value": 0.036426406474914005,
+     "exact_goal": 0.9767022896885198,
+     "exact_hole": 0.021721172791186683,
+     "exact_timeout": 0.0015765375202935195
+    },
+    {
+     "episode": 9000,
+     "goal": 0.968,
+     "hole": 0.028,
+     "timeout": 0.004,
+     "mean_return": 0.03659081650725682,
+     "exact_start_value": 0.03641921621417661,
+     "exact_goal": 0.9736316558806318,
+     "exact_hole": 0.025345278637379676,
+     "exact_timeout": 0.0010230654819884943
+    },
+    {
+     "episode": 9500,
+     "goal": 0.981,
+     "hole": 0.018,
+     "timeout": 0.001,
+     "mean_return": 0.033861385816163325,
+     "exact_start_value": 0.03642254275832406,
+     "exact_goal": 0.981837884730315,
+     "exact_hole": 0.017207400317642896,
+     "exact_timeout": 0.000954714952042135
+    },
+    {
+     "episode": 10000,
+     "goal": 0.979,
+     "hole": 0.021,
+     "timeout": 0.0,
+     "mean_return": 0.03690419944482177,
+     "exact_start_value": 0.036409216832657645,
+     "exact_goal": 0.9770598757507419,
+     "exact_hole": 0.022114462963593873,
+     "exact_timeout": 0.0008256612856641921
+    },
+    {
+     "episode": 10500,
+     "goal": 0.976,
+     "hole": 0.023,
+     "timeout": 0.001,
+     "mean_return": 0.0374909658955033,
+     "exact_start_value": 0.03644161147138712,
+     "exact_goal": 0.9776469687573299,
+     "exact_hole": 0.020513152607803842,
+     "exact_timeout": 0.0018398786348662322
+    },
+    {
+     "episode": 11000,
+     "goal": 0.977,
+     "hole": 0.022,
+     "timeout": 0.001,
+     "mean_return": 0.03567276461568536,
+     "exact_start_value": 0.036473816316274874,
+     "exact_goal": 0.9807558187010401,
+     "exact_hole": 0.018406799477706737,
+     "exact_timeout": 0.000837381821253147
+    },
+    {
+     "episode": 11500,
+     "goal": 0.981,
+     "hole": 0.018,
+     "timeout": 0.001,
+     "mean_return": 0.037373558886711185,
+     "exact_start_value": 0.036473816316274874,
+     "exact_goal": 0.9807558187010401,
+     "exact_hole": 0.018406799477706737,
+     "exact_timeout": 0.000837381821253147
+    },
+    {
+     "episode": 12000,
+     "goal": 0.981,
+     "hole": 0.017,
+     "timeout": 0.002,
+     "mean_return": 0.03636266253610633,
+     "exact_start_value": 0.036473816316274874,
+     "exact_goal": 0.9807558187010401,
+     "exact_hole": 0.018406799477706737,
+     "exact_timeout": 0.000837381821253147
+    },
+    {
+     "episode": 12500,
+     "goal": 0.974,
+     "hole": 0.026,
+     "timeout": 0.0,
+     "mean_return": 0.03397362373021313,
+     "exact_start_value": 0.036473816316274874,
+     "exact_goal": 0.9807558187010401,
+     "exact_hole": 0.018406799477706737,
+     "exact_timeout": 0.000837381821253147
+    },
+    {
+     "episode": 13000,
+     "goal": 0.978,
+     "hole": 0.021,
+     "timeout": 0.001,
+     "mean_return": 0.03434798657200945,
+     "exact_start_value": 0.03644161147138712,
+     "exact_goal": 0.9776469687573299,
+     "exact_hole": 0.020513152607803842,
+     "exact_timeout": 0.0018398786348662322
+    },
+    {
+     "episode": 13500,
+     "goal": 0.982,
+     "hole": 0.015,
+     "timeout": 0.003,
+     "mean_return": 0.03651032783266106,
+     "exact_start_value": 0.03644161147138712,
+     "exact_goal": 0.9776469687573299,
+     "exact_hole": 0.020513152607803842,
+     "exact_timeout": 0.0018398786348662322
+    },
+    {
+     "episode": 14000,
+     "goal": 0.981,
+     "hole": 0.016,
+     "timeout": 0.003,
+     "mean_return": 0.03572846100554296,
+     "exact_start_value": 0.03644161147138712,
+     "exact_goal": 0.9776469687573299,
+     "exact_hole": 0.020513152607803842,
+     "exact_timeout": 0.0018398786348662322
+    },
+    {
+     "episode": 14500,
+     "goal": 0.98,
+     "hole": 0.019,
+     "timeout": 0.001,
+     "mean_return": 0.03910720411270883,
+     "exact_start_value": 0.03642668620330975,
+     "exact_goal": 0.9776295156609343,
+     "exact_hole": 0.020519570422820377,
+     "exact_timeout": 0.001850913916245367
+    },
+    {
+     "episode": 15000,
+     "goal": 0.975,
+     "hole": 0.025,
+     "timeout": 0.0,
+     "mean_return": 0.03968605163613367,
+     "exact_start_value": 0.03642668620330975,
+     "exact_goal": 0.9776295156609343,
+     "exact_hole": 0.020519570422820377,
+     "exact_timeout": 0.001850913916245367
+    }
+   ],
+   "final": {
+    "goal": 0.9773,
+    "hole": 0.0212,
+    "timeout": 0.0015,
+    "mean_return": 0.035770701665865656
+   },
+   "exact_outcomes": {
+    "goal": 0.9776295156609343,
+    "hole": 0.020519570422820377,
+    "timeout": 0.001850913916245367
+   },
+   "exact_start_value": 0.03642668620330975,
+   "max_q_start": 0.03812340726386876,
+   "agreement_with_optimal": 0.7962962962962963,
+   "seconds_incl_evaluation": 268.0252562859969
+  }
+ ],
+ "training_seconds_without_evaluation": 63.84046832300373,
+ "optimal": {
+  "goal": 0.7294,
+  "hole": 0.2706,
+  "timeout": 0.0,
+  "mean_return": 0.06465953196206962,
+  "exact_start_value": 0.06547272864515037,
+  "exact_outcomes": {
+   "goal": 0.7308772458072594,
+   "hole": 0.2691212116638648,
+   "timeout": 1.542528875742022e-06
+  }
+ },
+ "optimal_outcomes_by_gamma": {
+  "0.9": {
+   "goal": 0.7308772458072594,
+   "hole": 0.2691212116638648,
+   "timeout": 1.542528875742022e-06
+  },
+  "0.95": {
+   "goal": 0.84899880254469,
+   "hole": 0.15100095021954885,
+   "timeout": 2.4723576119711765e-07
+  },
+  "0.99": {
+   "goal": 0.9862685541157071,
+   "hole": 0.01304216010757031,
+   "timeout": 0.0006892857767225591
+  }
+ }
+}
