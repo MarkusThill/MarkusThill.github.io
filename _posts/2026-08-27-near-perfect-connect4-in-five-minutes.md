@@ -25,7 +25,7 @@ every position it is asked about by searching the game tree down to the end, sup
 transposition tables and an opening book. This series took the opposite route. An agent starts with a value
 function that knows nothing about Connect-4, plays against itself, and adjusts its estimates towards what
 actually happened afterwards. The previous parts described the ingredients one by one; this post shows what
-they add up to. After about five minutes of training on a single GPU, the agent wins 94.6% of its games
+they add up to. After about five minutes of training on a single NVIDIA A100, the agent wins 94.6% of its games
 against the perfect solver when it makes the first move, and 96.6% at the end of training, after about eight
 and a half minutes.
 
@@ -51,7 +51,7 @@ otherwise.
 | $$t$$                    | integer     | Training step: one move on each of the $$B$$ boards, followed by one gradient step; $$t\le 25{,}000$$       |
 | $$\varepsilon$$          | probability | Exploration rate of the learning agent during self-play, $$\varepsilon=0.1$$                               |
 | $$\varepsilon_{\text{opp}}$$ | probability | Probability with which an evaluation opponent plays a random non-losing move instead of its search move |
-| $$\lambda,\ n$$          | scalar      | Weighting and truncation horizon of the truncated $$\lambda$$-return, $$\lambda=0.7$$, $$n=5$$             |
+| $$\lambda,\ n$$          | scalar      | Weighting and notebook truncation parameter of the truncated $$\lambda$$-return, $$\lambda=0.7$$, $$n=5$$             |
 | $$\tau$$                 | scalar      | Coefficient of the exponential moving average which updates the target network, $$\tau=0.15$$             |
 | $$W,\ D,\ L,\ N$$        | counts      | Wins, draws and losses of the learning agent, and the number of games $$N=W+D+L$$                         |
 | $$W/N$$                  | rate        | Win rate, the headline measure of this post                                                                 |
@@ -76,6 +76,7 @@ won all fifty of their final games, and the weakest one won 44.
 
 {% include figure.liquid
    path="assets/img/2026-08-27-near-perfect-connect4-in-five-minutes/learning-curve.png"
+   alt="First-player win rate exceeds 90 percent within 1.5 minutes and reaches 94.6 percent by five minutes."
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="100%"
    caption="Win rate of the learning agent against full-strength BitBully when the agent moves first, over the training time without evaluations. Thin lines: the ten training runs, each evaluated with 50 games every 1,000 steps; thick line and band: their mean and a 95% bootstrap confidence interval. The vertical line marks five minutes of training; the annotation marks step 13,000, the last evaluation which all ten runs reached within five minutes."
 %}
@@ -85,13 +86,14 @@ which moves first wins, as the game-theoretic results summarized in
 {% include series_link.liquid series="connect4-search" part=1 text="the first part of the search series" %}
 show. Moving first against a perfect opponent is therefore the one situation in which a learned agent can be
 measured against the ideal of winning every game. BitBully defends as well as possible and breaks ties
-between equally good moves at random, so the fifty games of an evaluation do not repeat each other, and every
-game the agent does not win is a game in which it missed the winning line somewhere. Moving second, the same
+between equally good moves at random to vary the games. Every game the agent does not win is a game in
+which it missed the winning line somewhere. Moving second, the same
 opponent wins every game, whoever plays against it; the second-player results below therefore use opponents
 which are weakened in controlled ways.
 
-You can play against the strongest of the ten agents right here; the appendix describes how it was
-selected. The widget loads the agent's weights when you ask for
+You can play against the agent selected for release right here; the appendix describes how it was
+selected. In a separate evaluation, it won 91% of 200 games as the first player against perfect play and
+drew the rest. The widget loads the agent's weights when you ask for
 them (7.9 MB) and runs it entirely in the browser. It is a JavaScript transcription of the Python agent, and on
 7,447 positions from self-play games it chose the same move as the original every single time. The numbers
 below the board show how the agent scored each of its options before its last move.
@@ -116,22 +118,22 @@ table of $$4^8=65{,}536$$ weights. The network adds up the addressed weights of 
 board and once on its mirror image, and squashes the sum with $$\tanh$$:
 
 \begin{equation}
-V(s) = \tanh\Bigl(\sum_{m=1}^{200} W_{p,m}\bigl[T_m(s)\bigr] + W_{p,m}\bigl[T_m(\text{mirror}(s))\bigr]\Bigr),
+V(s) = \tanh\Bigl(\sum_{m=1}^{200} \Bigl(W_{p,m}\bigl[T_m(s)\bigr] + W_{p,m}\bigl[T_m(\text{mirror}(s))\bigr]\Bigr)\Bigr),
 \label{eq:ntuple}
 \end{equation}
 
 where $$T_m(s)$$ is the table index of pattern $$m$$ and $$p$$ the player to move, since each pattern has one
-table per player. This gives $$2\cdot 200\cdot 65{,}536 = 26{,}214{,}400$$ weights, of which, however, only
-about 8% can ever become non-zero: most combinations of eight cells cannot occur on a Connect-4 board because
+table per player. The value $$V(s)$$ is from Yellow's point of view. This gives
+$$2\cdot 200\cdot 65{,}536 = 26{,}214{,}400$$ weights, of which, however, only about 8% can ever become non-zero: most combinations of eight cells cannot occur on a Connect-4 board because
 of gravity, as the
 [side post on realisable n-tuple states]({% post_url 2026-08-06-counting-realisable-ntuple-states %}) derives.
 
 The agent learns by self-play on $$B=50{,}000$$ boards at once. In every training step, it makes one move on
 each board, with probability $$\varepsilon=0.1$$ a random one, restarts the games which have ended, and
-performs one gradient step. The targets are truncated $$\lambda$$-returns with $$\lambda=0.7$$ over at most
-$$n=5$$ future moves ({% include series_link.liquid series="connect4-rl" part=5 text="part 5" %}), which
-bootstrap from a target network that follows the trained network as an exponential moving average with
-$$\tau=0.15$$ ({% include series_link.liquid series="connect4-rl" part=6 text="part 6" %}). Transitions after
+performs one gradient step. The targets are truncated $$\lambda$$-returns with $$\lambda=0.7$$ and the
+notebook parameter $$n=5$$ ({% include series_link.liquid series="connect4-rl" part=5 text="part 5" %}). In this
+implementation, the furthest bootstrap is $$n+1=6$$ moves ahead. The targets bootstrap from a target network
+that follows the trained network as an exponential moving average with $$\tau=0.15$$ ({% include series_link.liquid series="connect4-rl" part=6 text="part 6" %}). Transitions after
 exploratory moves are not used for updates unless they ended a game. The optimizer is Adam with a learning rate
 of $$3\cdot10^{-4}$$ which decays slowly towards $$10^{-6}$$ (to about $$2.3\cdot10^{-4}$$ after 25,000 steps),
 and gradients are clipped at a norm of 0.1. A training run consists of 25,000 steps, which amounts to about
@@ -160,7 +162,8 @@ Every evaluation plays 50 games per opponent, side and $$\varepsilon_{\text{opp}
 choosing its moves greedily, i.e. without exploration. The agent evaluated here also applies a one-move
 tactical rule before consulting its network: it takes an immediately winning move if there is one, and it
 avoids moves after which the opponent could win immediately. Everything beyond that single move comes from the
-learned values. I report the **win rate** $$W/N$$ and, where draws matter, the full distribution of wins,
+learned values. To score a move, the agent reverses the network value's sign when playing Red, multiplies
+by 100 and truncates towards zero. I report the **win rate** $$W/N$$ and, where draws matter, the full distribution of wins,
 draws and losses; the **score** $$(W-L)/N$$, which the training notebook logs, is not a win rate, since 95 wins
 and 5 losses in 100 games give a win rate of 95% but a score of 0.90. Means over the ten runs come with a 95%
 bootstrap confidence interval, obtained by resampling the runs; the games within one run describe that
@@ -186,6 +189,7 @@ what the theory of the game demands.
 
 {% include figure.liquid
    path="assets/img/2026-08-27-near-perfect-connect4-in-five-minutes/final-outcomes.png"
+   alt="Final outcomes: 96.6 percent wins against perfect play when moving first, and no wins when moving second."
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="100%"
    caption="Wins, draws and losses of the trained agents after 25,000 steps, pooled over the ten runs (500 games per bar), when the agent moves first (left) and second (right). The opponents are ordered from random moves to BitBully at full strength, which plays perfectly; against it, the second player cannot win."
 %}
@@ -201,6 +205,7 @@ and random moves only weaken its defence further.
 
 {% include figure.liquid
    path="assets/img/2026-08-27-near-perfect-connect4-in-five-minutes/win-rate-vs-opponent-epsilon.png"
+   alt="Second-player win rate rises from zero to 90.2 percent as the probability of a random opponent move increases to 0.3."
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="85%"
    caption="Win rate after training against full-strength BitBully, which replaces its search move by a random non-losing move with probability ε. Dots: the ten runs (50 games each), lines: their mean with a 95% bootstrap confidence interval."
 %}
@@ -214,8 +219,9 @@ opponent, side and $$\varepsilon_{\text{opp}}$$). An evaluation takes 20.7 secon
 seconds), and the 25 evaluations of a run add up to about half of its running time. The logger of the training
 notebook does not measure them separately, but it writes two records at every evaluation step with times
 relative to the same start: the training metrics immediately before the evaluation and the arena results
-immediately after it. The difference between the two is the length of the evaluation pause, and subtracting
-all earlier pauses from the elapsed time gives the training time at every step:
+immediately after it. The difference between the two is the length of the evaluation pause, including the
+logging and the time needed to copy and save the model between those timestamps. Subtracting all earlier pauses from the
+elapsed time gives the training time at every step:
 
 ```python
 def evaluation_pauses(rep: Repeat) -> dict[int, float]:
@@ -239,15 +245,16 @@ def training_time(rep: Repeat) -> dict[int, float]:
     return times
 ```
 
-As a check, the training time and all pauses of a run add up to the time of its last evaluation record, which
-holds for all ten runs. The training time includes the compilation of the network by `torch.compile` at the
-beginning, which makes the first 1,000 steps about four seconds slower than the following ones, and the
-regular logging of metrics, and it excludes
+By construction, the training time and all pauses of a run add up to the time of its last evaluation record.
+The clock starts after model and optimizer initialization. The training time includes the compilation of
+the network by `torch.compile` at the beginning, which makes the first 1,000 steps about four seconds slower
+than the following ones, and the logging of metrics outside the evaluation pauses, and it excludes
 installation, the evaluations and everything after the last training step. The next figure shows how the
 17.3 minutes of a run (17.0 to 17.4 minutes) divide into training and evaluation.
 
 {% include figure.liquid
    path="assets/img/2026-08-27-near-perfect-connect4-in-five-minutes/training-vs-evaluation-time.png"
+   alt="Run durations split almost equally between training and evaluation pauses, each averaging 8.6 minutes."
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="85%"
    caption="Duration of the ten training runs on an NVIDIA A100, split into training (8.6 minutes on average) and the 25 evaluation pauses every 1,000 steps (8.6 minutes on average)."
 %}
@@ -266,7 +273,7 @@ just learned, and the exploration determines which positions the agent gets to s
 two variants of the recipe, ten runs each, with everything else unchanged. The first one updates its target
 network three times more slowly, with $$\tau=0.05$$ instead of 0.15. The second keeps $$\tau=0.15$$ but
 explores more at the beginning and less at the end: $$\varepsilon$$ decreases linearly from 0.2 to 0.02 over
-the 25,000 steps, and its targets look further ahead, with $$\lambda=0.75$$ and $$n=8$$. Both variants ran on
+the 25,000 steps, and its targets look further ahead, with $$\lambda=0.75$$ and $$n=8$$ (up to nine moves). Both variants ran on
 the same type of GPU and were evaluated in the same way as the recipe; the appendix lists their settings. All
 ten runs of every recipe enter the comparison. To reduce the noise of single evaluations of 50 games, the right
 half of the next figure pools, for each run, the last five of its 25 evaluations, at steps 21,000 to 25,000,
@@ -274,6 +281,7 @@ i.e. 250 games per run and condition, or 2,500 per recipe and condition.
 
 {% include figure.liquid
    path="assets/img/2026-08-27-near-perfect-connect4-in-five-minutes/recipe-comparison.png"
+   alt="Three recipes reach similar first-player win rates; the decaying-exploration variant is weaker as the second player."
    class="img-fluid rounded z-depth-1 imgcenter" zoomable=true width="100%"
    caption="The recipe of this post compared with two variants, ten runs each. Left: mean win rate against full-strength BitBully when moving first, over the training time without evaluations, with 95% bootstrap confidence bands. Right: win rates at the end of training, pooling for each run its last five evaluations at steps 21,000 to 25,000 (250 games per run and condition); small dots are the ten individual runs, large dots their mean with a 95% bootstrap confidence interval. The colours are the same in both panels."
 %}
@@ -328,18 +336,18 @@ Java agent with 70 tuples needed between 350,000 and about 1.6 million training 
 opponent in 80% of the evaluation games, which took between half an hour and 1.7 hours on a single core of a
 laptop CPU, evaluations included, and it reached about 90–94% after ten million games
 {% cite ThillMA15 --file thesis %}. The opponent was a
-different one, and so was the evaluation protocol, so the numbers are not directly comparable; the scale,
-however, is. The agents of that time processed about 12,000 to 16,000 games per minute; a training run of this post plays
-about 42 million games in 8.6 minutes, that is roughly 4.8 million per minute or several hundred times as
-many, and ends with a win rate of 96.6% against a perfect player rather than 80% against Minimax. The difference lies less in
-the algorithm than in playing tens of thousands of games at once on hardware built for exactly this kind of
-parallel arithmetic.
+different one, and so was the evaluation protocol, so the win rates are not directly comparable. The agents
+of that time processed about 12,000 to 16,000 games per minute; a training run of this post plays about
+42 million games in 8.6 minutes, that is roughly 4.8 million per minute. The older timings include evaluations,
+whereas the current training time excludes them, so this is only a rough throughput comparison. The difference
+in throughput lies less in the algorithm than in playing tens of thousands of games at once on hardware
+built for exactly this kind of parallel arithmetic.
 
 <br>
 
 ## Playing Against the Agent
 
-The agent in the widget above and in the release below is the strongest of the ten trained agents. I chose it
+The agent in the widget above and in the release below is one of the ten trained agents. I chose it
 with a separate tournament of 200 games per opponent, side and $$\varepsilon_{\text{opp}}$$, and then evaluated
 it once more on fresh games, so that the choice does not inflate its results; the appendix describes the
 selection and lists all its results. Moving first against perfect play, it won 182 of the 200 fresh games and
@@ -396,7 +404,9 @@ opponents. Near-perfect is not perfect: as the first player the agents still dra
 against full-strength BitBully, and the one-move tactical rule of the evaluated agent is a small piece
 of built-in knowledge, although everything beyond a single move is learned. Fifty games per evaluation are
 enough to follow the learning curve but leave a sampling uncertainty of a few percentage points per point,
-which the ten runs average out only partly. Finally, the n-tuple network is tailored to the $$7\times 6$$
+which the ten runs average out only partly. Some depth-limited matchups also varied substantially between
+evaluation sessions for the same agent, for reasons not yet examined; the selection appendix gives the details.
+Finally, the n-tuple network is tailored to the $$7\times 6$$
 board: its patterns, and with them all learned weights, would have to be recreated for a different board,
 even though the training recipe itself would carry over.
 
@@ -454,7 +464,7 @@ current version of the notebook uses the settings of this post as its defaults.
 | `B`                                       | 50,000                 | Boards played in parallel                                                                                 |
 | `epsilon`                                 | 0.1                    | Probability of a random move on each board and in each step                                               |
 | `use_non_losing`                          | `False`                | Self-play chooses among all legal moves, including those that allow an immediate loss                     |
-| `lam`, `n_truncate`                       | 0.7, 5                 | Truncated $$\lambda$$-return over at most five future moves                                               |
+| `lam`, `n_truncate`                       | 0.7, 5                 | Truncated $$\lambda$$-return; `n_truncate=5` gives a lookahead of up to six moves                                               |
 | `use_target_net`, `tau`                   | `True`, 0.15           | Bootstrap values from a target network, updated as $$\theta^- \leftarrow (1-\tau)\,\theta^- + \tau\,\theta$$ |
 | `use_online_net_for_action`               | `True`                 | The trained network, not the target network, chooses the self-play moves                                  |
 | `lr_initial`, `lr_final`, `gamma`         | $$3\cdot10^{-4}$$, $$10^{-6}$$, 0.99999 | Learning rate $$\alpha_t = \alpha_{\text{final}} + (\alpha_{\text{initial}}-\alpha_{\text{final}})\,\gamma^t$$ after $$t$$ steps; $$2.34\cdot10^{-4}$$ at the end |
@@ -488,6 +498,8 @@ type with the same software versions. Their results are in the subfolders `varia
 The network consists of 200 tuples of eight cells, four states per cell, and two tables of 65,536 weights per
 tuple, one for each player to move. Every tuple is also applied to the mirrored board, and the output is
 squashed by $$\tanh$$; the training minimises the mean squared TD error. All weights start at zero.
+The logged `total_params` in `params.json` counts only one player's tables (13,107,200); the network has
+twice as many weights.
 
 The evaluation plays 50 games per pairing, side and $$\varepsilon_{\text{opp}}$$, i.e. 1,200 games per
 evaluation: 24 pairings of the learned agent, playing greedily, with the eight BitBully configurations and the
@@ -574,7 +586,8 @@ tournament rather than an agent that is provably better than run 0. The spread o
 to 0.793, is larger than this noise, so the runs do end with agents of somewhat different strength. Choosing the
 best of ten noisy measurements favours an agent that was lucky, so the selected agent then played the entire
 tournament once more, on fresh games with a different seed. Its criterion on these games is 0.793 again, and
-the selection has not inflated it noticeably. The next table shows its results on the fresh games.
+the selection has not inflated it noticeably. The evaluation setup does not explicitly seed BitBully's
+separate tie-breaking generators. The next table shows its results on the fresh games.
 
 | Opponent                              | Agent moves first: W / D / L | Agent moves second: W / D / L |
 | ------------------------------------- | ---------------------------: | ----------------------------: |

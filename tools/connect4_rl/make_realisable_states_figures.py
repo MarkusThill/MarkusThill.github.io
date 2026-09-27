@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import glob
+import itertools
 import json
 from pathlib import Path
 
@@ -97,6 +98,72 @@ def fig_patterns(tuple_bits, out):
     fig.savefig(out / "tuple-states.png", bbox_inches="tight", pad_inches=0.1)
     plt.close(fig)
     print("wrote", out / "tuple-states.png")
+
+
+def fig_column_states(tuple_bits, out, columns=(2, 3), n_rows_shown=4):
+    """All realisable states of some columns of a tuple, grouped by the number of stones in the sampled cells.
+
+    The states come from `realisable_states.column_states`, so the figure also shows its enumeration.
+    """
+    colour = {rs.EMPTY: "white", rs.YELLOW: C_YELLOW, rs.RED: C_RED, rs.REACHABLE: C_REACH}
+    tc = rs.cells(tuple_bits)
+    by_col = {c.column: c for c in rs.column_states(tuple_bits)}
+    w_gap, g_gap, band = 0.3, 1.3, n_rows_shown + 3.2  # gap between states, between groups, height per column
+    fig, ax = plt.subplots(figsize=(12.6, 5.6))
+    for band_idx, col in enumerate(columns):
+        cs = by_col[col]
+        rows = [tc[p][1] for p in cs.positions]
+        states = []
+        for partial in cs.partials:
+            codes = [(partial >> (2 * p)) & 3 for p in cs.positions]
+            by_row = dict(sorted(zip(rows, codes)))
+            stones = sum(v in (rs.YELLOW, rs.RED) for v in by_row.values())
+            key = (stones, [v for v in by_row.values() if v in (rs.YELLOW, rs.RED)], -max(by_row.values()))
+            states.append((key, by_row))
+        states.sort(key=lambda s: s[0])
+        y0 = (len(columns) - 1 - band_idx) * band
+        name = "abcdefg"[col]
+        sampled = [f"{name}{r + 1}" for r in sorted(rows)]
+        x = 0.0
+        for stones, group in itertools.groupby(states, key=lambda s: s[0][0]):
+            group = [s for _, s in group]
+            x_start = x
+            for by_row in group:
+                for r in range(n_rows_shown):
+                    fc = colour[by_row[r]] if r in by_row else C_EMPTY
+                    ax.add_patch(Rectangle((x + 0.04, y0 + r + 0.04), 0.92, 0.92, facecolor=fc, edgecolor="none"))
+                    if r in by_row:
+                        ax.add_patch(Rectangle((x + 0.10, y0 + r + 0.10), 0.80, 0.80, facecolor="none",
+                                               edgecolor=C_TEXT, lw=1.1, ls=(0, (3, 2))))
+                x += 1 + w_gap
+            x_end = x - w_gap
+            if stones == 0:
+                title = "no stone"
+            elif stones == 1:
+                title = f"stone in {sampled[0]}"
+            else:
+                title = f"stones in {', '.join(sampled[:stones])}"
+            mid = (x_start + x_end) / 2
+            ax.text(mid, y0 + n_rows_shown + 0.35, title, ha="center", va="bottom", fontsize=9.5, color=C_TEXT)
+            ax.text(mid, y0 - 0.3, f"{len(group)} state{'s' if len(group) > 1 else ''}", ha="center", va="top",
+                    fontsize=9, color=C_TEXT_LIGHT)
+            x += g_gap - w_gap
+        for r in range(n_rows_shown):
+            ax.text(-0.35, y0 + r + 0.5, str(r + 1), ha="center", va="center", fontsize=8, color=C_TEXT_LIGHT)
+        ax.text(-1.0, y0 + n_rows_shown / 2, f"column {name}\n({', '.join(sampled)})\n{len(states)} states",
+                ha="right", va="center", fontsize=10, color=C_TEXT)
+    ax.set_xlim(-4.6, 23.6)
+    ax.set_ylim(-1.2, len(columns) * band - 1.9)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    fig.text(0.5, 0.02, "dashed = cells of the tuple     yellow / red = stones     green = empty and reachable     "
+             "white = empty, not reachable     grey = not sampled", ha="center", va="bottom", fontsize=8.5,
+             color=C_TEXT_LIGHT)
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    out.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out / "column-states.png", bbox_inches="tight", pad_inches=0.1)
+    plt.close(fig)
+    print("wrote", out / "column-states.png")
 
 
 def terminal_mask(tuple_bits) -> np.ndarray:
@@ -188,6 +255,7 @@ def main():
                "example_count": rs.count_recursive(tuples[EXAMPLE]),
                "total_realisable_per_player": int(sum(rs.count_recursive(t) for t in tuples))}
     fig_patterns(tuples[EXAMPLE], args.out)
+    fig_column_states(tuples[EXAMPLE], args.out)
     fig_per_tuple(tuples, checkpoints, args.out, numbers)
     text = json.dumps(numbers, indent=1)
     if args.numbers:

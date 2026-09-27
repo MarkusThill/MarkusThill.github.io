@@ -22,3 +22,6 @@ assets/code/2026-online-estimation/notebook-validation.json
 # Ignore JSON caches of the reinforcement-learning figure harness (tools/connect4_rl/) and published run data
 tools/connect4_rl/data/**/*.json
 assets/data/**/*.json
+
+# Preserve original PowerPoint media and generated reference exports byte-for-byte
+_connect_4_series_plan/techdays26_rl_assets/

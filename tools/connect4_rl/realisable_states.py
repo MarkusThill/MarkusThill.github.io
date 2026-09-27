@@ -51,15 +51,16 @@ def count_recursive(tuple_bits: list[int]) -> int:
 def count_column(rows: list[int]) -> int:
     """Realisable states of the sampled rows of one column, in closed form.
 
-    With the sampled rows r_1 < ... < r_k, the lowest j of them can be filled (2**j colourings); the next
-    one is then either reachable, or empty if at least one unsampled row lies below it (for j = 0: if it
-    is not in the bottom row). With j = k all sampled cells are filled.
+    With the sampled rows r_1 < ... < r_k, the count is 2**(k + 1) - 1, the count for three cell states,
+    plus 2**(j - 1) for every r_j with at least one unsampled row directly below it: if r_j is the lowest
+    sampled cell without a stone, it can then be reachable or empty.
     """
     r = sorted(rows)
-    total = 2 ** len(r)
+    total = 2 ** (len(r) + 1) - 1
     for j in range(len(r)):
         gap = r[j] if j == 0 else r[j] - r[j - 1] - 1  # unsampled rows directly below r_{j+1}
-        total += 2**j * (1 + (gap > 0))
+        if gap > 0:
+            total += 2**j
     return total
 
 
