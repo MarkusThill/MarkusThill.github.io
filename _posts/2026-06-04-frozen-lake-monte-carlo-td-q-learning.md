@@ -88,7 +88,8 @@ their own value is zero by definition.
 I use a slightly modified version of the Frozen Lake from the
 [Gymnasium](https://gymnasium.farama.org/environments/toy_text/frozen_lake/) library, which my repository
 [techdays26](https://github.com/MarkusThill/techdays26/blob/c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49/src/techdays26/frozen_lake/frozen_lake_enhanced.py)
-provides as `FrozenLakeEnv`. Three details differ from Gymnasium's standard 8×8 task and change the
+provides as `FrozenLakeEnv`; I originally put this repository together for a hands-on workshop on
+reinforcement learning. Three details differ from Gymnasium's standard 8×8 task and change the
 learning problem, so they are worth stating explicitly: cell 42 is frozen instead of being a hole (nine holes
 instead of ten), entering a hole costs $$-1$$ instead of nothing, and on slippery ice the agent moves in the
 intended direction with probability 0.75 instead of 1/3. The ice is not slippery in the first half of the

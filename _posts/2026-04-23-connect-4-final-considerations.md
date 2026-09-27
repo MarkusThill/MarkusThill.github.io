@@ -269,7 +269,9 @@ this series does not go to waste, either — it becomes the foundation:
 - The bit board representation of part 3 is reused to simulate many games in parallel on a
   GPU. As described there, the batched variant applies essentially the same expressions to
   tensors of positions instead of to single integers, and the legal-move generation and win
-  detection carry over directly.
+  detection carry over directly;
+  {% include series_link.liquid series="connect4-rl" part=7 text="part 7 of the reinforcement-learning series" %}
+  returns to this.
 - The insights about threats and about the parity of rows from part 4 inform how positions are
   described by features.
 - The old Java framework already contains the other half of this story:
@@ -281,7 +283,8 @@ this series does not go to waste, either — it becomes the foundation:
   [`CountRealizableStates.java`](https://github.com/MarkusThill/Connect-Four/blob/2a58844594ac022846385dd3ddc8bbbf0a26eae5/CFour/src/miscellaneous/CountRealizableStates.java),
   which counts how many of the states an n-tuple can formally take are actually realizable on
   a Connect-4 board — a question that becomes relevant the moment a value function is built
-  from such tuples, and one the learning series will return to.
+  from such tuples, and one that
+  [a later post]({% post_url 2026-08-06-counting-realisable-ntuple-states %}) answers in detail.
 
 If you would like to go further in this direction, Wolfgang Konen's
 [General Board Game framework (GBG)](https://github.com/WolfgangKonen/GBG) is worth a look. It
@@ -299,10 +302,13 @@ this ambiguity entirely, because every move which the learner makes can be score
 game-theoretic optimum, so that the term "near-perfect" stops being a figure of speech and
 becomes a measurement.
 
-This will be the subject of the next series: the same game, the opposite method, and the solver
-built here as the opponent to beat. If this series was about computing the answer, the next one
-is about learning to guess it well, and about why, for almost every genuinely interesting
-problem, approximation is the only practical option.
+This is the subject of the
+{% include series_link.liquid series="connect4-rl" part=1 text="next series" %}: the same game, the
+opposite method, and the solver built here as the opponent to beat. If this series was about
+computing the answer, the next one is about learning to guess it well, and about why, for almost
+every genuinely interesting problem, approximation is the only practical option. Its
+[results post]({% post_url 2026-08-27-near-perfect-connect4-in-five-minutes %}) shows where this leads: after five minutes of training by
+self-play on a single GPU, the learned agent wins almost every game it starts against BitBully.
 
 <br>
 

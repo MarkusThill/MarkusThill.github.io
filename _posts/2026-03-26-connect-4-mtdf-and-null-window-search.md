@@ -280,7 +280,10 @@ the same units as the real search, so that no calibration is necessary. The alte
 negation via `ply % 2` converts the value back to the point of view of the root.
 
 The whole procedure thus reuses machinery which was built for other purposes, and there is no
-evaluation function which would have to be written, tuned or gotten wrong.
+evaluation function which would have to be written, tuned or gotten wrong. A third possibility is
+to learn the evaluation from self-play instead of writing it by hand. The
+[reinforcement-learning series]({% post_url 2026-08-27-near-perfect-connect4-in-five-minutes %}) does exactly that, and its agent plays
+almost perfectly as the first player with no search beyond the next move.
 
 <br>
 

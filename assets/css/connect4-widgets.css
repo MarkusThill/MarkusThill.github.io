@@ -411,3 +411,34 @@
     grid-column: 1 / -1;
   }
 }
+
+/* Play against the learned agent (reinforcement-learning series, part 9). Real game colours here,
+   unlike the "player to move / opponent" colouring of the search widgets above. */
+
+.c4play-yellow,
+.c4bb-sw.c4play-yellow {
+  background: #f2c230;
+  color: #3a2a00;
+}
+.c4play-red,
+.c4bb-sw.c4play-red {
+  background: var(--c4bb-red);
+  color: #fff;
+}
+.c4play-last {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: -2px;
+}
+.c4play-scores {
+  margin-top: 4px;
+}
+.c4play-score {
+  text-align: center;
+  font-family: var(--bs-font-monospace, monospace);
+  font-size: 0.72rem;
+  color: var(--global-text-color-light);
+}
+.c4play-chosen {
+  font-weight: bold;
+  color: var(--global-theme-color);
+}

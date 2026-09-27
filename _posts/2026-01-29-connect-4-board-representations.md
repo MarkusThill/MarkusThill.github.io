@@ -603,7 +603,8 @@ index the transposition table.
 
 There is one further property of this representation which I only came to appreciate much
 later, when I needed to simulate a very large number of Connect-4 games at once for a
-completely different set of experiments.
+completely different set of experiments: training an agent by self-play on 50,000 boards at a
+time, which the [reinforcement-learning series]({% post_url 2026-08-27-near-perfect-connect4-in-five-minutes %}) describes.
 
 The core masks, shifts and additions described above operate on whole words and contain no
 loops over individual cells. The scalar `hasWin()` still uses data-dependent early returns, but

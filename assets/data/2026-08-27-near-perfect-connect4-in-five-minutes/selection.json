@@ -1,0 +1,2461 @@
+{
+ "run": "exp_L_batch_fast_tau_20260925_22-36",
+ "games": 200,
+ "selection_seed": 20260927,
+ "fresh_seed": 90210,
+ "criterion": "mean score over all search-opponent conditions",
+ "candidates": [
+  {
+   "checkpoint": "repeat_0/step_25000_snapshot.pt",
+   "criterion": 0.7911363636363636,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 167,
+     "draws": 9,
+     "losses": 24,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 137,
+     "draws": 2,
+     "losses": 61,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 183,
+     "draws": 5,
+     "losses": 12,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 2,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 190,
+     "draws": 4,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 115,
+     "draws": 9,
+     "losses": 76,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 179,
+     "draws": 4,
+     "losses": 17,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 191,
+     "draws": 1,
+     "losses": 8,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 1,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 2,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 0,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 2,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 2,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 188,
+     "draws": 7,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 2,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 197,
+     "draws": 2,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 199,
+     "draws": 0,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 202.577491313
+  },
+  {
+   "checkpoint": "repeat_1/step_25000_snapshot.pt",
+   "criterion": 0.7927272727272728,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 8,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 181,
+     "draws": 18,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 2,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 183,
+     "draws": 17,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 164,
+     "draws": 0,
+     "losses": 36,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 1,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 10,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 96,
+     "draws": 23,
+     "losses": 81,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 154,
+     "draws": 13,
+     "losses": 33,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 176,
+     "draws": 17,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 2,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 3,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 2,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 5,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 8,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 194,
+     "draws": 5,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 193,
+     "draws": 5,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 197,
+     "draws": 3,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 199.385654747
+  },
+  {
+   "checkpoint": "repeat_2/step_25000_snapshot.pt",
+   "criterion": 0.735909090909091,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 170,
+     "draws": 1,
+     "losses": 29,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 118,
+     "draws": 0,
+     "losses": 82,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 1,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 161,
+     "draws": 0,
+     "losses": 39,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 172,
+     "draws": 2,
+     "losses": 26,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 199,
+     "draws": 1,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 94,
+     "draws": 10,
+     "losses": 96,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 150,
+     "draws": 8,
+     "losses": 42,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 182,
+     "draws": 5,
+     "losses": 13,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 0,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 4,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 5,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 191,
+     "draws": 2,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 197,
+     "draws": 1,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 209.05032511600007
+  },
+  {
+   "checkpoint": "repeat_3/step_25000_snapshot.pt",
+   "criterion": 0.7772727272727273,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 161,
+     "draws": 10,
+     "losses": 29,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 155,
+     "draws": 1,
+     "losses": 44,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 174,
+     "draws": 12,
+     "losses": 14,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 184,
+     "draws": 0,
+     "losses": 16,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 0,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 107,
+     "draws": 15,
+     "losses": 78,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 164,
+     "draws": 8,
+     "losses": 28,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 182,
+     "draws": 6,
+     "losses": 12,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 2,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 197,
+     "draws": 3,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 2,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 1,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 1,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 4,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 186.63524611300022
+  },
+  {
+   "checkpoint": "repeat_4/step_25000_snapshot.pt",
+   "criterion": 0.7702272727272728,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 182,
+     "draws": 18,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 114,
+     "draws": 0,
+     "losses": 86,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 191,
+     "draws": 0,
+     "losses": 9,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 187,
+     "draws": 11,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 108,
+     "draws": 15,
+     "losses": 77,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 159,
+     "draws": 8,
+     "losses": 33,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 183,
+     "draws": 7,
+     "losses": 10,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 3,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 2,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 0,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 6,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 1,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 179,
+     "draws": 8,
+     "losses": 13,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 184,
+     "draws": 7,
+     "losses": 9,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 193,
+     "draws": 3,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 170.55499486600002
+  },
+  {
+   "checkpoint": "repeat_5/step_25000_snapshot.pt",
+   "criterion": 0.7581818181818182,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 169,
+     "draws": 31,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 92,
+     "draws": 0,
+     "losses": 108,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 184,
+     "draws": 2,
+     "losses": 14,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 2,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 197,
+     "draws": 3,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 111,
+     "draws": 11,
+     "losses": 78,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 167,
+     "draws": 8,
+     "losses": 25,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 180,
+     "draws": 7,
+     "losses": 13,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 1,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 197,
+     "draws": 3,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 0,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 0,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 190,
+     "draws": 2,
+     "losses": 8,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 1,
+     "losses": 10,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 180,
+     "draws": 20,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 187,
+     "draws": 12,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 195,
+     "draws": 4,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 197,
+     "draws": 3,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 190.93614633599987
+  },
+  {
+   "checkpoint": "repeat_6/step_25000_snapshot.pt",
+   "criterion": 0.7372727272727272,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 180,
+     "draws": 0,
+     "losses": 20,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 96,
+     "draws": 0,
+     "losses": 104,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 182,
+     "draws": 3,
+     "losses": 15,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 154,
+     "draws": 3,
+     "losses": 43,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 169,
+     "draws": 0,
+     "losses": 31,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 0,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 117,
+     "draws": 12,
+     "losses": 71,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 168,
+     "draws": 9,
+     "losses": 23,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 188,
+     "draws": 4,
+     "losses": 8,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 1,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 5,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 0,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 0,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 5,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 191,
+     "draws": 2,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 7,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 196,
+     "draws": 1,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 195,
+     "draws": 2,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 199,
+     "draws": 0,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 194.04693257600002
+  },
+  {
+   "checkpoint": "repeat_7/step_25000_snapshot.pt",
+   "criterion": 0.7718181818181818,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 172,
+     "draws": 26,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 116,
+     "draws": 0,
+     "losses": 84,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 179,
+     "draws": 2,
+     "losses": 19,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 0,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 115,
+     "draws": 9,
+     "losses": 76,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 159,
+     "draws": 8,
+     "losses": 33,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 182,
+     "draws": 6,
+     "losses": 12,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 197,
+     "draws": 0,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 1,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 177,
+     "draws": 9,
+     "losses": 14,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 0,
+     "losses": 4,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 2,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 2,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 190,
+     "draws": 8,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 193,
+     "draws": 6,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 195,
+     "draws": 4,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 197,
+     "draws": 1,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 185.05039723499976
+  },
+  {
+   "checkpoint": "repeat_8/step_25000_snapshot.pt",
+   "criterion": 0.7497727272727274,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 157,
+     "draws": 18,
+     "losses": 25,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 92,
+     "draws": 0,
+     "losses": 108,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 0,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 0,
+     "losses": 11,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 0,
+     "losses": 7,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 106,
+     "draws": 13,
+     "losses": 81,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 165,
+     "draws": 11,
+     "losses": 24,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 184,
+     "draws": 8,
+     "losses": 8,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 1,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 199,
+     "draws": 0,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 182,
+     "draws": 8,
+     "losses": 10,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 4,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 4,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 193,
+     "draws": 5,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 187,
+     "draws": 1,
+     "losses": 12,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 197,
+     "draws": 2,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 196,
+     "draws": 1,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 181.89593516800005
+  },
+  {
+   "checkpoint": "repeat_9/step_25000_snapshot.pt",
+   "criterion": 0.7688636363636363,
+   "rows": [
+    {
+     "side": "second",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 167,
+     "draws": 0,
+     "losses": 33,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 104,
+     "draws": 0,
+     "losses": 96,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 192,
+     "draws": 2,
+     "losses": 6,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 186,
+     "draws": 14,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 0,
+     "losses": 2,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 0,
+     "draws": 0,
+     "losses": 200,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 113,
+     "draws": 8,
+     "losses": 79,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 165,
+     "draws": 11,
+     "losses": 24,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 184,
+     "draws": 4,
+     "losses": 12,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-10-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-16ply-book12ply",
+     "opponent_eps": 0.0,
+     "wins": 198,
+     "draws": 2,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-1ply",
+     "opponent_eps": 0.0,
+     "wins": 199,
+     "draws": 0,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-2ply",
+     "opponent_eps": 0.0,
+     "wins": 195,
+     "draws": 0,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-4ply",
+     "opponent_eps": 0.0,
+     "wins": 189,
+     "draws": 0,
+     "losses": 11,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8-ply-book8ply",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 1,
+     "losses": 3,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-8ply",
+     "opponent_eps": 0.0,
+     "wins": 194,
+     "draws": 1,
+     "losses": 5,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.0,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.1,
+     "wins": 196,
+     "draws": 3,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.2,
+     "wins": 196,
+     "draws": 4,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "bitbully-full-strength",
+     "opponent_eps": 0.3,
+     "wins": 198,
+     "draws": 1,
+     "losses": 1,
+     "games": 200
+    },
+    {
+     "side": "first",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    },
+    {
+     "side": "second",
+     "opponent": "random",
+     "opponent_eps": 0.0,
+     "wins": 200,
+     "draws": 0,
+     "losses": 0,
+     "games": 200
+    }
+   ],
+   "seconds": 199.61243898099974
+  }
+ ],
+ "selected": {
+  "checkpoint": "repeat_1/step_25000_snapshot.pt",
+  "fresh_criterion": 0.7929545454545455,
+  "fresh_rows": [
+   {
+    "side": "second",
+    "opponent": "bitbully-10-ply-book8ply",
+    "opponent_eps": 0.0,
+    "wins": 197,
+    "draws": 2,
+    "losses": 1,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-16ply-book12ply",
+    "opponent_eps": 0.0,
+    "wins": 179,
+    "draws": 19,
+    "losses": 2,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-1ply",
+    "opponent_eps": 0.0,
+    "wins": 192,
+    "draws": 4,
+    "losses": 4,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-2ply",
+    "opponent_eps": 0.0,
+    "wins": 192,
+    "draws": 8,
+    "losses": 0,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-4ply",
+    "opponent_eps": 0.0,
+    "wins": 162,
+    "draws": 0,
+    "losses": 38,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-8-ply-book8ply",
+    "opponent_eps": 0.0,
+    "wins": 197,
+    "draws": 1,
+    "losses": 2,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-8ply",
+    "opponent_eps": 0.0,
+    "wins": 194,
+    "draws": 0,
+    "losses": 6,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.0,
+    "wins": 0,
+    "draws": 0,
+    "losses": 200,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.1,
+    "wins": 104,
+    "draws": 22,
+    "losses": 74,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.2,
+    "wins": 144,
+    "draws": 16,
+    "losses": 40,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.3,
+    "wins": 183,
+    "draws": 11,
+    "losses": 6,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-10-ply-book8ply",
+    "opponent_eps": 0.0,
+    "wins": 197,
+    "draws": 2,
+    "losses": 1,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-16ply-book12ply",
+    "opponent_eps": 0.0,
+    "wins": 194,
+    "draws": 4,
+    "losses": 2,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-1ply",
+    "opponent_eps": 0.0,
+    "wins": 200,
+    "draws": 0,
+    "losses": 0,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-2ply",
+    "opponent_eps": 0.0,
+    "wins": 191,
+    "draws": 3,
+    "losses": 6,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-4ply",
+    "opponent_eps": 0.0,
+    "wins": 196,
+    "draws": 0,
+    "losses": 4,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-8-ply-book8ply",
+    "opponent_eps": 0.0,
+    "wins": 196,
+    "draws": 1,
+    "losses": 3,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-8ply",
+    "opponent_eps": 0.0,
+    "wins": 196,
+    "draws": 1,
+    "losses": 3,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.0,
+    "wins": 182,
+    "draws": 18,
+    "losses": 0,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.1,
+    "wins": 195,
+    "draws": 4,
+    "losses": 1,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.2,
+    "wins": 197,
+    "draws": 1,
+    "losses": 2,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "bitbully-full-strength",
+    "opponent_eps": 0.3,
+    "wins": 198,
+    "draws": 0,
+    "losses": 2,
+    "games": 200
+   },
+   {
+    "side": "first",
+    "opponent": "random",
+    "opponent_eps": 0.0,
+    "wins": 200,
+    "draws": 0,
+    "losses": 0,
+    "games": 200
+   },
+   {
+    "side": "second",
+    "opponent": "random",
+    "opponent_eps": 0.0,
+    "wins": 200,
+    "draws": 0,
+    "losses": 0,
+    "games": 200
+   }
+  ]
+ }
+}

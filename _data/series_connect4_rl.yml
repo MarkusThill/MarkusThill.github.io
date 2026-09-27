@@ -21,4 +21,4 @@ parts:
   - part: 8
     title: "Self-Play That Learns&#58; The TD(λ) Connect-4 Training Loop"
   - part: 9
-    title: "Train a Near-Perfect Connect-4 Agent in Minutes (with TD(λ) Self-Play)"
+    title: "Near-Perfect Connect-4 after Five Minutes of Training&#58; Reinforcement Learning from Scratch by Self-Play"

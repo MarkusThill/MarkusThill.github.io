@@ -69,7 +69,9 @@ positions through its function approximator. The latter can reduce the need for
 position-specific search, but it does not remove the choices involved in representing the
 state or constructing the learner. This series takes the first route and pushes classical tree
 search until the game is solved perfectly; the {% include series_link.liquid part=9 text="final part" %}
-then explains how the resulting solver can serve as a reference for the learning agents.
+then explains how the resulting solver can serve as a reference for the learning agents. A second series takes
+the other route and trains such an agent by reinforcement learning, with the solver of this series as the
+[opponent it is measured against]({% post_url 2026-08-27-near-perfect-connect4-in-five-minutes %}).
 
 
 ## Connect-4

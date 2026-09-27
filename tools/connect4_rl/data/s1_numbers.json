@@ -1,0 +1,34 @@
+{
+ "example_tuple": 0,
+ "example_cells": [
+  "a1",
+  "b1",
+  "b2",
+  "c1",
+  "c2",
+  "c3",
+  "d2",
+  "d4"
+ ],
+ "example_column_counts": [
+  3,
+  7,
+  15,
+  10
+ ],
+ "example_count": 3150,
+ "total_realisable_per_player": 1075163,
+ "checkpoints": 10,
+ "nonzero_outside_realisable": 0,
+ "nonzero_on_four_in_a_row_states": 0,
+ "nonterminal_realisable_per_player": 1059993,
+ "four_in_a_row_states_per_player": 15170,
+ "visited_nonterminal_pooled_min": 0.9942985472545574,
+ "visited_nonterminal_pooled_max": 0.9956631789077852,
+ "visited_per_tuple_min": 0.9394965277777778,
+ "tuples_fully_visited": 51,
+ "tuples_below_99pct": 14,
+ "counts_min": 1024,
+ "counts_max": 32768,
+ "counts_median": 4096.0
+}

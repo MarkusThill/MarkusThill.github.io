@@ -1,0 +1,5332 @@
+{
+ "max_step": 25000,
+ "baseline_defaults": {
+  "n_steps": 25000,
+  "n_evaluate": 1000,
+  "n_repeats": 10,
+  "batch_size": 20000,
+  "epsilon": 0.1,
+  "lr_initial": 0.0003,
+  "lr_final": 1e-06,
+  "gamma": 0.99999,
+  "use_gradient_clipping": true,
+  "gradient_clip_max_norm": 0.1,
+  "optimizer_betas": [
+   0.9,
+   0.999
+  ],
+  "optimizer_eps": 1e-08,
+  "optimizer_weight_decay": 0,
+  "lam": 0.7,
+  "n_truncate": 5,
+  "use_target_net": true,
+  "use_online_net_for_action": true,
+  "tau": 0.05
+ },
+ "experiments": {
+  "exp_20260403_12-05": {
+   "folder": "exp_20260403_12-05",
+   "params": {
+    "start_time": "20260403_12-05",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": true,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "fcdd1265db3e023868a53c25b44f753ef1039123",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8702577777777778,
+   "nAUC": 0.882167,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.728,
+     "final_std": 0.4217
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.274,
+     "final_std": 0.5006
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.0822
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.922,
+     "final_std": 0.0986
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.896,
+     "final_std": 0.1078
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.952,
+     "final_std": 0.1186
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.778,
+     "final_std": 0.1856
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.886,
+     "final_std": 0.0822
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0346
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.982,
+     "final_std": 0.0405
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.878,
+     "final_std": 0.1331
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0585
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.902,
+     "final_std": 0.0689
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.846,
+     "final_std": 0.124
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.93,
+     "final_std": 0.0634
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_20260426_16-15": {
+   "folder": "exp_20260426_16-15",
+   "params": {
+    "start_time": "20260426_16-15",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": false,
+    "gradient_clip_max_norm": 0.0,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "283af2f9c34613a96000b33d6cbad605ccee69f9",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8736088888888888,
+   "nAUC": 0.887171,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.768,
+     "final_std": 0.2148
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.166,
+     "final_std": 0.443
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.924,
+     "final_std": 0.1057
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.9,
+     "final_std": 0.1801
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.96,
+     "final_std": 0.0589
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.862,
+     "final_std": 0.2051
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.958,
+     "final_std": 0.0346
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.926,
+     "final_std": 0.0589
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.976,
+     "final_std": 0.0207
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.968,
+     "final_std": 0.027
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.964,
+     "final_std": 0.043
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.924,
+     "final_std": 0.0617
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.94,
+     "final_std": 0.0462
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.888,
+     "final_std": 0.0694
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.956,
+     "final_std": 0.035
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "use_gradient_clipping": false,
+    "gradient_clip_max_norm": 0.0
+   }
+  },
+  "exp_20260426_16-19": {
+   "folder": "exp_20260426_16-19",
+   "params": {
+    "start_time": "20260426_16-19",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 1.0,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "283af2f9c34613a96000b33d6cbad605ccee69f9",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8670488888888889,
+   "nAUC": 0.88106,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.1612
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.246,
+     "final_std": 0.3662
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.914,
+     "final_std": 0.1016
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.898,
+     "final_std": 0.0629
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.912,
+     "final_std": 0.07
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.944,
+     "final_std": 0.1107
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.886,
+     "final_std": 0.1112
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.856,
+     "final_std": 0.1484
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.97,
+     "final_std": 0.0316
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.948,
+     "final_std": 0.07
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0962
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.894,
+     "final_std": 0.12
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.87,
+     "final_std": 0.0455
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.946,
+     "final_std": 0.0597
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "gradient_clip_max_norm": 1.0
+   }
+  },
+  "exp_20260426_16-20": {
+   "folder": "exp_20260426_16-20",
+   "params": {
+    "start_time": "20260426_16-20",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.001,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 1.0,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "283af2f9c34613a96000b33d6cbad605ccee69f9",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.7157244444444443,
+   "nAUC": 0.726676,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.642,
+     "final_std": 0.5102
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.338,
+     "final_std": 0.6693
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.88,
+     "final_std": 0.0508
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.838,
+     "final_std": 0.1168
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.808,
+     "final_std": 0.1617
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.89,
+     "final_std": 0.1949
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.606,
+     "final_std": 0.2718
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.634,
+     "final_std": 0.2044
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.836,
+     "final_std": 0.4148
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.842,
+     "final_std": 0.2149
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.666,
+     "final_std": 0.2029
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.702,
+     "final_std": 0.1364
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.69,
+     "final_std": 0.1919
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.64,
+     "final_std": 0.2048
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.758,
+     "final_std": 0.4765
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "lr_initial": 0.001,
+    "gradient_clip_max_norm": 1.0
+   }
+  },
+  "exp_20260501_09-43": {
+   "folder": "exp_20260501_09-43",
+   "params": {
+    "start_time": "20260501_09-43",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.25,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5f46bfd17ec05deaaca13a8c3b05dffac46d9c24",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8841066666666667,
+   "nAUC": 0.893347,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.748,
+     "final_std": 0.3172
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.208,
+     "final_std": 0.5198
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.89,
+     "final_std": 0.103
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.876,
+     "final_std": 0.1859
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.748,
+     "final_std": 0.1578
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.918,
+     "final_std": 0.1321
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.744,
+     "final_std": 0.3596
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0483
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0829
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0875
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.872,
+     "final_std": 0.1226
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.924,
+     "final_std": 0.0548
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0675
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.934,
+     "final_std": 0.0604
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "gradient_clip_max_norm": 0.25
+   }
+  },
+  "exp_20260501_09-45": {
+   "folder": "exp_20260501_09-45",
+   "params": {
+    "start_time": "20260501_09-45",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "7751ae831858363415d605f149c609a59b5f5f31",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8842044444444445,
+   "nAUC": 0.897051,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.796,
+     "final_std": 0.2594
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.026,
+     "final_std": 0.6049
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.942,
+     "final_std": 0.0663
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.772,
+     "final_std": 0.3308
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.97,
+     "final_std": 0.0435
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.934,
+     "final_std": 0.1679
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.6,
+     "final_std": 0.6214
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0464
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.972,
+     "final_std": 0.0391
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.982,
+     "final_std": 0.0382
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.906,
+     "final_std": 0.0859
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.896,
+     "final_std": 0.0572
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.952,
+     "final_std": 0.0316
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.88,
+     "final_std": 0.0686
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.97,
+     "final_std": 0.062
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_20260501_14-14": {
+   "folder": "exp_20260501_14-14",
+   "params": {
+    "start_time": "20260501_14-14",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": true,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "98e6362d3abe6f5a2f7b8e3fe5576a18e0402764",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8840622222222223,
+   "nAUC": 0.896463,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.76,
+     "final_std": 0.2383
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.372,
+     "final_std": 0.5349
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.94,
+     "final_std": 0.102
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.922,
+     "final_std": 0.1187
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.79,
+     "final_std": 0.2045
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.944,
+     "final_std": 0.058
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.878,
+     "final_std": 0.1422
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.922,
+     "final_std": 0.0872
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0499
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.928,
+     "final_std": 0.1538
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.892,
+     "final_std": 0.0801
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.944,
+     "final_std": 0.0263
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.924,
+     "final_std": 0.0821
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0582
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.982,
+     "final_std": 0.0346
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_20260509_16-36": {
+   "folder": "exp_20260509_16-36",
+   "params": {
+    "start_time": "20260509_16-36",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "c4c4d67bd8f8192e33045cdeed20b8db6c370a29",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8819911111111111,
+   "nAUC": 0.892787,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.624,
+     "final_std": 0.4065
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.086,
+     "final_std": 0.6962
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.0566
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.902,
+     "final_std": 0.1783
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.862,
+     "final_std": 0.0866
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.856,
+     "final_std": 0.1611
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.872,
+     "final_std": 0.059
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0437
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.99,
+     "final_std": 0.0105
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.98,
+     "final_std": 0.034
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.914,
+     "final_std": 0.0783
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.968,
+     "final_std": 0.0424
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.954,
+     "final_std": 0.0412
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.892,
+     "final_std": 0.07
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.924,
+     "final_std": 0.0942
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_20260514_03-44": {
+   "folder": "exp_20260514_03-44",
+   "params": {
+    "start_time": "20260514_03-44",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "df7c67ec0433683db3bd8a921ea681e68cac3518",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.88128,
+   "nAUC": 0.893444,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.814,
+     "final_std": 0.1644
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.286,
+     "final_std": 0.4069
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.946,
+     "final_std": 0.049
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.982,
+     "final_std": 0.0175
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.924,
+     "final_std": 0.0548
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.1262
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.846,
+     "final_std": 0.0558
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.95,
+     "final_std": 0.0424
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.964,
+     "final_std": 0.0295
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0405
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.89,
+     "final_std": 0.0701
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.9,
+     "final_std": 0.1174
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0508
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.888,
+     "final_std": 0.087
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.93,
+     "final_std": 0.0675
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_20260525_01-31": {
+   "folder": "exp_20260525_01-31",
+   "params": {
+    "start_time": "20260525_01-31",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "0da53a8670703b2c5a3ab118c93497391f945510",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9098666666666668,
+   "nAUC": 0.917699,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.85,
+     "final_std": 0.0963
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.224,
+     "final_std": 0.3037
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.89,
+     "final_std": 0.1287
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.906,
+     "final_std": 0.1132
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.878,
+     "final_std": 0.1109
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.952,
+     "final_std": 0.0413
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.86,
+     "final_std": 0.0508
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0553
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.986,
+     "final_std": 0.0165
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0333
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.904,
+     "final_std": 0.0548
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.938,
+     "final_std": 0.067
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.972,
+     "final_std": 0.0301
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.874,
+     "final_std": 0.0909
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.948,
+     "final_std": 0.0527
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000
+   }
+  },
+  "exp_20260525_09-25": {
+   "folder": "exp_20260525_09-25",
+   "params": {
+    "start_time": "20260525_09-25",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 10,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=10)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "0da53a8670703b2c5a3ab118c93497391f945510",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.10.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8878044444444445,
+   "nAUC": 0.898319,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.74,
+     "final_std": 0.2123
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.044,
+     "final_std": 0.4902
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.904,
+     "final_std": 0.1053
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.912,
+     "final_std": 0.1663
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.942,
+     "final_std": 0.0257
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.1251
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.0738
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.932,
+     "final_std": 0.0915
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0232
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.976,
+     "final_std": 0.0324
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0706
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.952,
+     "final_std": 0.0492
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.926,
+     "final_std": 0.1182
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.862,
+     "final_std": 0.0676
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.958,
+     "final_std": 0.0466
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "n_truncate": 10
+   }
+  },
+  "exp_A_batch50k_tau005_20260926_21-21": {
+   "folder": "exp_A_batch50k_tau005_20260926_21-21",
+   "params": {
+    "start_time": "20260926_21-21",
+    "device": "cuda",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "29725676fb875802ee86e3f5685c6339af57414e",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9043022222222222,
+   "nAUC": 0.913991,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.816,
+     "final_std": 0.1763
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.458,
+     "final_std": 0.301
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.932,
+     "final_std": 0.0784
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.92,
+     "final_std": 0.1279
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.924,
+     "final_std": 0.042
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.97,
+     "final_std": 0.0287
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.89,
+     "final_std": 0.0726
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0503
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.986,
+     "final_std": 0.0165
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0305
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.88,
+     "final_std": 0.1485
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0497
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0422
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.828,
+     "final_std": 0.0655
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.934,
+     "final_std": 0.0626
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000
+   }
+  },
+  "exp_A_higher_lr_20260626_16-37": {
+   "folder": "exp_A_higher_lr_20260626_16-37",
+   "params": {
+    "start_time": "20260626_16-37",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.001,
+    "lr_final": 3e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "d92f7df18f0da777e0a8707df3e90291a5ba1b42",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.7481155555555555,
+   "nAUC": 0.757662,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.674,
+     "final_std": 0.3698
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.352,
+     "final_std": 0.6972
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.914,
+     "final_std": 0.0864
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.778,
+     "final_std": 0.1634
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.746,
+     "final_std": 0.1532
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.794,
+     "final_std": 0.4256
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.594,
+     "final_std": 0.2402
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.754,
+     "final_std": 0.1108
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0508
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.876,
+     "final_std": 0.0572
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.726,
+     "final_std": 0.1731
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.748,
+     "final_std": 0.1055
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.73,
+     "final_std": 0.2018
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.702,
+     "final_std": 0.1039
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.952,
+     "final_std": 0.0543
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "lr_initial": 0.001,
+    "lr_final": 3e-06
+   }
+  },
+  "exp_B_longer_lookahead_20260626_17-35": {
+   "folder": "exp_B_longer_lookahead_20260626_17-35",
+   "params": {
+    "start_time": "20260626_17-35",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.85,
+    "n_truncate": 12,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.85, n=12)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "d92f7df18f0da777e0a8707df3e90291a5ba1b42",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8579911111111111,
+   "nAUC": 0.872556,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.422,
+     "final_std": 0.4744
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.084,
+     "final_std": 0.5858
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.89,
+     "final_std": 0.0648
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.918,
+     "final_std": 0.1384
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.896,
+     "final_std": 0.1091
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.736,
+     "final_std": 0.2178
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.1008
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.872,
+     "final_std": 0.0944
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0284
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.98,
+     "final_std": 0.0283
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0566
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.942,
+     "final_std": 0.0476
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.888,
+     "final_std": 0.1029
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.92,
+     "final_std": 0.055
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.876,
+     "final_std": 0.1523
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "lam": 0.85,
+    "n_truncate": 12
+   }
+  },
+  "exp_C_bigger_batch_20260627_08-31": {
+   "folder": "exp_C_bigger_batch_20260627_08-31",
+   "params": {
+    "start_time": "20260627_08-31",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 60000,
+    "lr_initial": 0.0005,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "373b33f872143cdf9c90f312408aa059e0c6ddec",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8962577777777778,
+   "nAUC": 0.90637,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.692,
+     "final_std": 0.4153
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.314,
+     "final_std": 0.5149
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.896,
+     "final_std": 0.0624
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.816,
+     "final_std": 0.1892
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.908,
+     "final_std": 0.0796
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.916,
+     "final_std": 0.061
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.814,
+     "final_std": 0.0924
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.916,
+     "final_std": 0.0893
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.984,
+     "final_std": 0.0246
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.944,
+     "final_std": 0.0479
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.878,
+     "final_std": 0.0663
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0634
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0358
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.904,
+     "final_std": 0.0652
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.932,
+     "final_std": 0.0605
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 60000,
+    "lr_initial": 0.0005
+   }
+  },
+  "exp_D_faster_tau_20260626_16-03": {
+   "folder": "exp_D_faster_tau_20260626_16-03",
+   "params": {
+    "start_time": "20260626_16-03",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "d92f7df18f0da777e0a8707df3e90291a5ba1b42",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.876,
+   "nAUC": 0.887319,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.664,
+     "final_std": 0.358
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.378,
+     "final_std": 0.3652
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.1067
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.954,
+     "final_std": 0.1054
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.888,
+     "final_std": 0.1347
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.808,
+     "final_std": 0.2657
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.824,
+     "final_std": 0.2405
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0445
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.99,
+     "final_std": 0.0141
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0443
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.896,
+     "final_std": 0.0832
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.926,
+     "final_std": 0.0499
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.956,
+     "final_std": 0.0556
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0698
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.96,
+     "final_std": 0.0653
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "tau": 0.15
+   }
+  },
+  "exp_E_baseline_20260626_18-52": {
+   "folder": "exp_E_baseline_20260626_18-52",
+   "params": {
+    "start_time": "20260626_18-52",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "baf167b28d16fbe04ac5ec5b9ebc97d07904a8a1",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8914133333333334,
+   "nAUC": 0.900574,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.568,
+     "final_std": 0.4509
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.13,
+     "final_std": 0.5119
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.938,
+     "final_std": 0.0569
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.902,
+     "final_std": 0.1205
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.956,
+     "final_std": 0.0337
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.764,
+     "final_std": 0.2995
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.868,
+     "final_std": 0.0895
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.964,
+     "final_std": 0.035
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0327
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.984,
+     "final_std": 0.028
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.914,
+     "final_std": 0.0604
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.896,
+     "final_std": 0.0793
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0353
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.912,
+     "final_std": 0.0875
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.962,
+     "final_std": 0.0553
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {}
+  },
+  "exp_F_combined_lr_lookahead_20260626_20-04": {
+   "folder": "exp_F_combined_lr_lookahead_20260626_20-04",
+   "params": {
+    "start_time": "20260626_20-04",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.001,
+    "lr_final": 3e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.85,
+    "n_truncate": 12,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.85, n=12)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "baf167b28d16fbe04ac5ec5b9ebc97d07904a8a1",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.5837333333333333,
+   "nAUC": 0.591611,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.222,
+     "final_std": 0.5132
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.25,
+     "final_std": 0.7405
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.834,
+     "final_std": 0.1421
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.76,
+     "final_std": 0.2179
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.806,
+     "final_std": 0.1668
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.38,
+     "final_std": 0.4542
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.682,
+     "final_std": 0.2271
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.736,
+     "final_std": 0.1391
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.874,
+     "final_std": 0.1357
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.882,
+     "final_std": 0.1089
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.75,
+     "final_std": 0.2077
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.676,
+     "final_std": 0.1282
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.782,
+     "final_std": 0.1507
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.702,
+     "final_std": 0.1861
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.76,
+     "final_std": 0.1697
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "lr_initial": 0.001,
+    "lr_final": 3e-06,
+    "lam": 0.85,
+    "n_truncate": 12
+   }
+  },
+  "exp_G_epsilon_decay_20260626_20-09": {
+   "folder": "exp_G_epsilon_decay_20260626_20-09",
+   "params": {
+    "start_time": "20260626_20-09",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "baf167b28d16fbe04ac5ec5b9ebc97d07904a8a1",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8942311111111111,
+   "nAUC": 0.901153,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.528,
+     "final_std": 0.3984
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.21,
+     "final_std": 0.6056
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.852,
+     "final_std": 0.2079
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.77,
+     "final_std": 0.3217
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.814,
+     "final_std": 0.1869
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.64,
+     "final_std": 0.3094
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.784,
+     "final_std": 0.1551
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.914,
+     "final_std": 0.0401
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.964,
+     "final_std": 0.044
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.964,
+     "final_std": 0.0602
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.914,
+     "final_std": 0.1366
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.84,
+     "final_std": 0.1275
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0435
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.878,
+     "final_std": 0.0585
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.954,
+     "final_std": 0.0619
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_H_looser_grad_clip_20260626_23-03": {
+   "folder": "exp_H_looser_grad_clip_20260626_23-03",
+   "params": {
+    "start_time": "20260626_23-03",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 20000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.5,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "373b33f872143cdf9c90f312408aa059e0c6ddec",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8728,
+   "nAUC": 0.885676,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.872,
+     "final_std": 0.059
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.318,
+     "final_std": 0.448
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.946,
+     "final_std": 0.0737
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.912,
+     "final_std": 0.136
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.924,
+     "final_std": 0.045
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.968,
+     "final_std": 0.0379
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.836,
+     "final_std": 0.1641
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0575
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0267
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.974,
+     "final_std": 0.0422
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.888,
+     "final_std": 0.0865
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.886,
+     "final_std": 0.0849
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.916,
+     "final_std": 0.047
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.892,
+     "final_std": 0.0444
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.976,
+     "final_std": 0.0324
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "gradient_clip_max_norm": 0.5
+   }
+  },
+  "exp_I_huge_batch_20260628_20-29": {
+   "folder": "exp_I_huge_batch_20260628_20-29",
+   "params": {
+    "start_time": "20260628_20-29",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "c8ab721bc79c8121d385bb201b0fd5cc1d9db2a5",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9118488888888889,
+   "nAUC": 0.920565,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.74,
+     "final_std": 0.2241
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.14,
+     "final_std": 0.6641
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.91,
+     "final_std": 0.1136
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.852,
+     "final_std": 0.2417
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.934,
+     "final_std": 0.0525
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.898,
+     "final_std": 0.2167
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.934,
+     "final_std": 0.0453
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.956,
+     "final_std": 0.0295
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.976,
+     "final_std": 0.0246
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.97,
+     "final_std": 0.0392
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.922,
+     "final_std": 0.0553
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.954,
+     "final_std": 0.0378
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.966,
+     "final_std": 0.0267
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.88,
+     "final_std": 0.0789
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.958,
+     "final_std": 0.0457
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000
+   }
+  },
+  "exp_J_batch_eps_decay_20260628_20-30": {
+   "folder": "exp_J_batch_eps_decay_20260628_20-30",
+   "params": {
+    "start_time": "20260628_20-30",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "c8ab721bc79c8121d385bb201b0fd5cc1d9db2a5",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9156622222222223,
+   "nAUC": 0.92087,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.494,
+     "final_std": 0.3653
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.022,
+     "final_std": 0.879
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.894,
+     "final_std": 0.1581
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.736,
+     "final_std": 0.333
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.816,
+     "final_std": 0.1876
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.554,
+     "final_std": 0.4395
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.774,
+     "final_std": 0.1862
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.908,
+     "final_std": 0.0694
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0534
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0274
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.88,
+     "final_std": 0.1095
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.822,
+     "final_std": 0.1109
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.902,
+     "final_std": 0.0702
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.88,
+     "final_std": 0.0581
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.89,
+     "final_std": 0.1055
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_K_batch_lookahead_20260628_20-31": {
+   "folder": "exp_K_batch_lookahead_20260628_20-31",
+   "params": {
+    "start_time": "20260628_20-31",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.75, n=8)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "c8ab721bc79c8121d385bb201b0fd5cc1d9db2a5",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.904311111111111,
+   "nAUC": 0.916037,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.702,
+     "final_std": 0.3769
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.382,
+     "final_std": 0.3208
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.956,
+     "final_std": 0.0515
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.734,
+     "final_std": 0.2721
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.894,
+     "final_std": 0.0674
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.91,
+     "final_std": 0.0871
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.898,
+     "final_std": 0.0636
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0681
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.966,
+     "final_std": 0.0299
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.97,
+     "final_std": 0.0648
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.898,
+     "final_std": 0.0733
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0422
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0793
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.882,
+     "final_std": 0.0745
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.908,
+     "final_std": 0.1038
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "lam": 0.75,
+    "n_truncate": 8
+   }
+  },
+  "exp_L_batch_fast_tau_20260628_21-11": {
+   "folder": "exp_L_batch_fast_tau_20260628_21-11",
+   "params": {
+    "start_time": "20260628_21-11",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "2325ac92028bfe92ec6902828748fddc7ebc2544",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.91672,
+   "nAUC": 0.923856,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.8,
+     "final_std": 0.1555
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.302,
+     "final_std": 0.4373
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.948,
+     "final_std": 0.0444
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.1614
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.942,
+     "final_std": 0.0485
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.9,
+     "final_std": 0.15
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.868,
+     "final_std": 0.0681
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.948,
+     "final_std": 0.062
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.982,
+     "final_std": 0.022
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.958,
+     "final_std": 0.0382
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.936,
+     "final_std": 0.054
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.926,
+     "final_std": 0.0481
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0472
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.956,
+     "final_std": 0.0515
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.954,
+     "final_std": 0.0472
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "tau": 0.15
+   }
+  },
+  "exp_L_batch_fast_tau_20260703_19-33_timing_T4": {
+   "folder": "exp_L_batch_fast_tau_20260703_19-33_timing_T4",
+   "params": {
+    "start_time": "20260703_19-33",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 15000,
+    "n_evaluate": 15000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9322222222222223,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.92,
+     "final_std": 0.1373
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.66,
+     "final_std": 0.3645
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.91,
+     "final_std": 0.0871
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.972,
+     "final_std": 0.0501
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.872,
+     "final_std": 0.0818
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.96,
+     "final_std": 0.0432
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.96,
+     "final_std": 0.0604
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.912,
+     "final_std": 0.0379
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.98,
+     "final_std": 0.0163
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.98,
+     "final_std": 0.034
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.942,
+     "final_std": 0.0643
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0577
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.932,
+     "final_std": 0.0343
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.748,
+     "final_std": 0.1663
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.958,
+     "final_std": 0.0561
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "n_steps": 15000,
+    "n_evaluate": 15000,
+    "batch_size": 50000,
+    "tau": 0.15
+   }
+  },
+  "exp_L_batch_fast_tau_20260925_22-36": {
+   "folder": "exp_L_batch_fast_tau_20260925_22-36",
+   "params": {
+    "start_time": "20260925_22-36",
+    "device": "cuda",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9140266666666668,
+   "nAUC": 0.921778,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.798,
+     "final_std": 0.1235
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.176,
+     "final_std": 0.313
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.906,
+     "final_std": 0.055
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.952,
+     "final_std": 0.0796
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.93,
+     "final_std": 0.0552
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.958,
+     "final_std": 0.0585
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.866,
+     "final_std": 0.0914
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.954,
+     "final_std": 0.0647
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.98,
+     "final_std": 0.0283
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.962,
+     "final_std": 0.0382
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.872,
+     "final_std": 0.0773
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0481
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.958,
+     "final_std": 0.0274
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.878,
+     "final_std": 0.0466
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.954,
+     "final_std": 0.0604
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "tau": 0.15
+   }
+  },
+  "exp_M_batch_kitchen_sink_20260628_21-11": {
+   "folder": "exp_M_batch_kitchen_sink_20260628_21-11",
+   "params": {
+    "start_time": "20260628_21-11",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.05,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.75, n=8)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "2325ac92028bfe92ec6902828748fddc7ebc2544",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9096355555555555,
+   "nAUC": 0.915477,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.316,
+     "final_std": 0.7093
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.2,
+     "final_std": 0.684
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.876,
+     "final_std": 0.097
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.832,
+     "final_std": 0.1774
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.938,
+     "final_std": 0.0689
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.422,
+     "final_std": 0.6448
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.8,
+     "final_std": 0.1781
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0517
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.94,
+     "final_std": 0.066
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.978,
+     "final_std": 0.0274
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.944,
+     "final_std": 0.0624
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.868,
+     "final_std": 0.1634
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0378
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.9,
+     "final_std": 0.0581
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.956,
+     "final_std": 0.0631
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_N_batch_tau_eps_20260629_19-53": {
+   "folder": "exp_N_batch_tau_eps_20260629_19-53",
+   "params": {
+    "start_time": "20260629_19-53",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "1a93f54b15b5b29eb0459fc82639cfe1e455f9e4",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9233511111111112,
+   "nAUC": 0.927778,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.592,
+     "final_std": 0.5579
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.228,
+     "final_std": 0.8614
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.816,
+     "final_std": 0.171
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.768,
+     "final_std": 0.2759
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.772,
+     "final_std": 0.2335
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.646,
+     "final_std": 0.493
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.672,
+     "final_std": 0.2743
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0574
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.972,
+     "final_std": 0.0509
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.926,
+     "final_std": 0.1059
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.856,
+     "final_std": 0.1074
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.858,
+     "final_std": 0.1048
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0587
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.882,
+     "final_std": 0.0897
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.962,
+     "final_std": 0.0553
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "tau": 0.15,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_N_batch_tau_eps_20260702_19-58_timing_T4": {
+   "folder": "exp_N_batch_tau_eps_20260702_19-58_timing_T4",
+   "params": {
+    "start_time": "20260702_19-58",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 25000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9231111111111112,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.556,
+     "final_std": 0.3507
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.234,
+     "final_std": 0.6374
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.912,
+     "final_std": 0.0939
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.606,
+     "final_std": 0.4006
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.932,
+     "final_std": 0.11
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.67,
+     "final_std": 0.2868
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.1636
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.928,
+     "final_std": 0.0509
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0499
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.906,
+     "final_std": 0.1075
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.898,
+     "final_std": 0.0585
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.908,
+     "final_std": 0.0583
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.922,
+     "final_std": 0.0437
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.822,
+     "final_std": 0.1105
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.964,
+     "final_std": 0.0572
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -0.996,
+     "final_std": 0.0126
+    }
+   },
+   "diffs_from_baseline": {
+    "n_evaluate": 25000,
+    "batch_size": 50000,
+    "tau": 0.15,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_O_huge_batch_tau_20260629_19-55": {
+   "folder": "exp_O_huge_batch_tau_20260629_19-55",
+   "params": {
+    "start_time": "20260629_19-55",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "1a93f54b15b5b29eb0459fc82639cfe1e455f9e4",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9258666666666666,
+   "nAUC": 0.932546,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.79,
+     "final_std": 0.1331
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.184,
+     "final_std": 0.475
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.91,
+     "final_std": 0.0886
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.836,
+     "final_std": 0.2288
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.924,
+     "final_std": 0.0556
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.934,
+     "final_std": 0.0989
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.828,
+     "final_std": 0.0985
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.932,
+     "final_std": 0.1116
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.976,
+     "final_std": 0.028
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.968,
+     "final_std": 0.0253
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0679
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.916,
+     "final_std": 0.0672
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.916,
+     "final_std": 0.1469
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.924,
+     "final_std": 0.0776
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.96,
+     "final_std": 0.049
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000,
+    "tau": 0.15
+   }
+  },
+  "exp_P_batch_higher_tau_20260629_19-56": {
+   "folder": "exp_P_batch_higher_tau_20260629_19-56",
+   "params": {
+    "start_time": "20260629_19-56",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.25,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "1a93f54b15b5b29eb0459fc82639cfe1e455f9e4",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9085333333333334,
+   "nAUC": 0.917755,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.794,
+     "final_std": 0.235
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.148,
+     "final_std": 0.4906
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.914,
+     "final_std": 0.1313
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.892,
+     "final_std": 0.1855
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.942,
+     "final_std": 0.0512
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.84,
+     "final_std": 0.2889
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.854,
+     "final_std": 0.0885
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.896,
+     "final_std": 0.1162
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.956,
+     "final_std": 0.0548
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.986,
+     "final_std": 0.0267
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.942,
+     "final_std": 0.0553
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.878,
+     "final_std": 0.1013
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.91,
+     "final_std": 0.0915
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0474
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.936,
+     "final_std": 0.0548
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "tau": 0.25
+   }
+  },
+  "exp_Q_eps02to002_lam075_n8_20260926_21-26": {
+   "folder": "exp_Q_eps02to002_lam075_n8_20260926_21-26",
+   "params": {
+    "start_time": "20260926_21-26",
+    "device": "cuda",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.2,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.75, n=8)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "29725676fb875802ee86e3f5685c6339af57414e",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.13.15 (main, Aug  6 2026, 11:06:22) [GCC 13.3.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9082133333333334,
+   "nAUC": 0.912819,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.466,
+     "final_std": 0.5498
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": 0.108,
+     "final_std": 0.6416
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.884,
+     "final_std": 0.1502
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.858,
+     "final_std": 0.1305
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.888,
+     "final_std": 0.1076
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.436,
+     "final_std": 0.4921
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.832,
+     "final_std": 0.1167
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0443
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.968,
+     "final_std": 0.027
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.954,
+     "final_std": 0.0499
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.922,
+     "final_std": 0.0629
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.842,
+     "final_std": 0.1048
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.918,
+     "final_std": 0.067
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.884,
+     "final_std": 0.0672
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.974,
+     "final_std": 0.0327
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "epsilon": 0.2,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "tau": 0.15
+   }
+  },
+  "exp_Q_kitchen_sink_v2_20260629_19-58": {
+   "folder": "exp_Q_kitchen_sink_v2_20260629_19-58",
+   "params": {
+    "start_time": "20260629_19-58",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.75, n=8)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "1a93f54b15b5b29eb0459fc82639cfe1e455f9e4",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9094933333333333,
+   "nAUC": 0.914167,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.61,
+     "final_std": 0.4525
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.284,
+     "final_std": 0.7828
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.912,
+     "final_std": 0.0807
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.832,
+     "final_std": 0.1666
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.876,
+     "final_std": 0.0815
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.594,
+     "final_std": 0.4554
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.762,
+     "final_std": 0.2016
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.92,
+     "final_std": 0.0558
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.992,
+     "final_std": 0.014
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.914,
+     "final_std": 0.0534
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.946,
+     "final_std": 0.0633
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.826,
+     "final_std": 0.1555
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.908,
+     "final_std": 0.0583
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.88,
+     "final_std": 0.0889
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.994,
+     "final_std": 0.0097
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "lam": 0.75,
+    "n_truncate": 8,
+    "tau": 0.15,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_R_batch_tau_higher_lr_20260629_22-32": {
+   "folder": "exp_R_batch_tau_higher_lr_20260629_22-32",
+   "params": {
+    "start_time": "20260629_22-32",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.00075,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "28fc92cc6329bd2d2fb110b4133a64ab96b82ada",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8523555555555555,
+   "nAUC": 0.863546,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.792,
+     "final_std": 0.1846
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.364,
+     "final_std": 0.6307
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.896,
+     "final_std": 0.0951
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.858,
+     "final_std": 0.1805
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.794,
+     "final_std": 0.1941
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.87,
+     "final_std": 0.2389
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.65,
+     "final_std": 0.3102
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.864,
+     "final_std": 0.0723
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.98,
+     "final_std": 0.0432
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.942,
+     "final_std": 0.0561
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.866,
+     "final_std": 0.089
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.908,
+     "final_std": 0.0732
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.904,
+     "final_std": 0.0659
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.876,
+     "final_std": 0.0556
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.956,
+     "final_std": 0.044
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "lr_initial": 0.00075,
+    "tau": 0.15
+   }
+  },
+  "exp_S_batch_tau010_20260630_22-55": {
+   "folder": "exp_S_batch_tau010_20260630_22-55",
+   "params": {
+    "start_time": "20260630_22-55",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 50000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.1,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9074577777777777,
+   "nAUC": 0.916958,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.71,
+     "final_std": 0.1933
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.314,
+     "final_std": 0.4928
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.944,
+     "final_std": 0.0698
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.884,
+     "final_std": 0.1445
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.942,
+     "final_std": 0.0553
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.906,
+     "final_std": 0.1283
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.876,
+     "final_std": 0.0564
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.956,
+     "final_std": 0.042
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.97,
+     "final_std": 0.0464
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.986,
+     "final_std": 0.0232
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.93,
+     "final_std": 0.0785
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.922,
+     "final_std": 0.0926
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.958,
+     "final_std": 0.0346
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.87,
+     "final_std": 0.0906
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.968,
+     "final_std": 0.0694
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 50000,
+    "tau": 0.1
+   }
+  },
+  "exp_T_huge_batch_tau_eps_20260630_18-54": {
+   "folder": "exp_T_huge_batch_tau_eps_20260630_18-54",
+   "params": {
+    "start_time": "20260630_18-54",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9276799999999998,
+   "nAUC": 0.931352,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.744,
+     "final_std": 0.3065
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.246,
+     "final_std": 0.5045
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.92,
+     "final_std": 0.0646
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.654,
+     "final_std": 0.1838
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.858,
+     "final_std": 0.0856
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.83,
+     "final_std": 0.2525
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.748,
+     "final_std": 0.1919
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.926,
+     "final_std": 0.0443
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.966,
+     "final_std": 0.0389
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.966,
+     "final_std": 0.0422
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.902,
+     "final_std": 0.0715
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.852,
+     "final_std": 0.0464
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.914,
+     "final_std": 0.055
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.896,
+     "final_std": 0.0735
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.966,
+     "final_std": 0.0284
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000,
+    "tau": 0.15,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_T_huge_batch_tau_eps_20260630_23-00_timing_A100": {
+   "folder": "exp_T_huge_batch_tau_eps_20260630_23-00_timing_A100",
+   "params": {
+    "start_time": "20260630_23-00",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 25000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9328888888888889,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.688,
+     "final_std": 0.3316
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.24,
+     "final_std": 0.7647
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.864,
+     "final_std": 0.1107
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.862,
+     "final_std": 0.1792
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.926,
+     "final_std": 0.0712
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.852,
+     "final_std": 0.2115
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.856,
+     "final_std": 0.1135
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.962,
+     "final_std": 0.0239
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.968,
+     "final_std": 0.0518
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.99,
+     "final_std": 0.017
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.92,
+     "final_std": 0.0777
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.846,
+     "final_std": 0.133
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.94,
+     "final_std": 0.0525
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.844,
+     "final_std": 0.1247
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.926,
+     "final_std": 0.1313
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "n_evaluate": 25000,
+    "batch_size": 100000,
+    "tau": 0.15,
+    "epsilon_initial": 0.2,
+    "epsilon_final": 0.02,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_U_huge_batch_tau020_20260630_18-56": {
+   "folder": "exp_U_huge_batch_tau020_20260630_18-56",
+   "params": {
+    "start_time": "20260630_18-56",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.2,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9205066666666666,
+   "nAUC": 0.928301,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.832,
+     "final_std": 0.1215
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.382,
+     "final_std": 0.4997
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.854,
+     "final_std": 0.1538
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.836,
+     "final_std": 0.2447
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.844,
+     "final_std": 0.1313
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.898,
+     "final_std": 0.1252
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.888,
+     "final_std": 0.062
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0472
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.968,
+     "final_std": 0.0301
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.972,
+     "final_std": 0.0379
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.904,
+     "final_std": 0.0515
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.932,
+     "final_std": 0.059
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0481
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.902,
+     "final_std": 0.0426
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.928,
+     "final_std": 0.0627
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000,
+    "tau": 0.2
+   }
+  },
+  "exp_V_huge_batch_tau_mild_eps_20260630_18-57": {
+   "folder": "exp_V_huge_batch_tau_mild_eps_20260630_18-57",
+   "params": {
+    "start_time": "20260630_18-57",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon_initial": 0.1,
+    "epsilon_final": 0.01,
+    "epsilon_schedule": "linear",
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.1,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.8894666666666666,
+   "nAUC": 0.895458,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.508,
+     "final_std": 0.4221
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.038,
+     "final_std": 0.7753
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.87,
+     "final_std": 0.093
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.838,
+     "final_std": 0.1965
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.824,
+     "final_std": 0.1385
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.754,
+     "final_std": 0.1973
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.728,
+     "final_std": 0.1491
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.874,
+     "final_std": 0.0712
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.97,
+     "final_std": 0.0403
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.928,
+     "final_std": 0.099
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.89,
+     "final_std": 0.0785
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.778,
+     "final_std": 0.0968
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.898,
+     "final_std": 0.0727
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.864,
+     "final_std": 0.0868
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.966,
+     "final_std": 0.0433
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000,
+    "tau": 0.15,
+    "epsilon_initial": 0.1,
+    "epsilon_final": 0.01,
+    "epsilon_schedule": "linear"
+   }
+  },
+  "exp_W_huge_batch_tau_clip025_20260630_19-00": {
+   "folder": "exp_W_huge_batch_tau_clip025_20260630_19-00",
+   "params": {
+    "start_time": "20260630_19-00",
+    "device": "cuda",
+    "pre_trained_model": null,
+    "n_steps": 25000,
+    "n_evaluate": 1000,
+    "n_repeats": 10,
+    "batch_size": 100000,
+    "lr_initial": 0.0003,
+    "lr_final": 1e-06,
+    "gamma": 0.99999,
+    "epsilon": 0.1,
+    "use_target_net": true,
+    "use_online_net_for_action": true,
+    "tau": 0.15,
+    "lam": 0.7,
+    "n_truncate": 5,
+    "use_torch_compile": true,
+    "optimizer": "Adam",
+    "optimizer_betas": [
+     0.9,
+     0.999
+    ],
+    "optimizer_eps": 1e-08,
+    "optimizer_weight_decay": 0,
+    "use_gradient_clipping": true,
+    "gradient_clip_max_norm": 0.25,
+    "loss": "MSE",
+    "td_method": "truncated_lambda(lam=0.7, n=5)",
+    "use_non_losing": false,
+    "batch_afterstates": null,
+    "save_detailed_arena_results": false,
+    "activation": "tanh",
+    "mirror_symmetry": true,
+    "n_tuples": 200,
+    "tuple_length": 8,
+    "lut_size": 65536,
+    "total_params": 13107200,
+    "ntuple_hash": "baa6b500a107b740919f9cb65fe4128f15767d1bef8c57345b10cec6cd838345",
+    "commit_sha": "5bb3005f50f897cd0ce86e4272de0d9b597af1b3",
+    "techdays26_version": "0.0.5",
+    "python_version": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "pytorch_version": "2.11.0+cu128"
+   },
+   "n_repeats": 10,
+   "scalar_score": 0.9116,
+   "nAUC": 0.920491,
+   "matchup_finals": {
+    "bitbully-10-ply-book8ply vs ntuple": {
+     "final_avg": -0.688,
+     "final_std": 0.3342
+    },
+    "bitbully-16ply-book12ply vs ntuple": {
+     "final_avg": -0.154,
+     "final_std": 0.5863
+    },
+    "bitbully-1ply vs ntuple": {
+     "final_avg": -0.858,
+     "final_std": 0.0802
+    },
+    "bitbully-2ply vs ntuple": {
+     "final_avg": -0.7,
+     "final_std": 0.2085
+    },
+    "bitbully-4ply vs ntuple": {
+     "final_avg": -0.838,
+     "final_std": 0.1783
+    },
+    "bitbully-8-ply-book8ply vs ntuple": {
+     "final_avg": -0.864,
+     "final_std": 0.3618
+    },
+    "bitbully-8ply vs ntuple": {
+     "final_avg": -0.818,
+     "final_std": 0.1069
+    },
+    "bitbully-full-strength vs ntuple": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "ntuple vs bitbully-10-ply-book8ply": {
+     "final_avg": 0.96,
+     "final_std": 0.0377
+    },
+    "ntuple vs bitbully-16ply-book12ply": {
+     "final_avg": 0.984,
+     "final_std": 0.0246
+    },
+    "ntuple vs bitbully-1ply": {
+     "final_avg": 0.99,
+     "final_std": 0.017
+    },
+    "ntuple vs bitbully-2ply": {
+     "final_avg": 0.936,
+     "final_std": 0.0704
+    },
+    "ntuple vs bitbully-4ply": {
+     "final_avg": 0.934,
+     "final_std": 0.0619
+    },
+    "ntuple vs bitbully-8-ply-book8ply": {
+     "final_avg": 0.938,
+     "final_std": 0.0457
+    },
+    "ntuple vs bitbully-8ply": {
+     "final_avg": 0.886,
+     "final_std": 0.0433
+    },
+    "ntuple vs bitbully-full-strength": {
+     "final_avg": 0.964,
+     "final_std": 0.0497
+    },
+    "ntuple vs random": {
+     "final_avg": 1.0,
+     "final_std": 0.0
+    },
+    "random vs ntuple": {
+     "final_avg": -1.0,
+     "final_std": 0.0
+    }
+   },
+   "diffs_from_baseline": {
+    "batch_size": 100000,
+    "gradient_clip_max_norm": 0.25,
+    "tau": 0.15
+   }
+  }
+ },
+ "ranking": [
+  [
+   "exp_T_huge_batch_tau_eps_20260630_23-00_timing_A100",
+   0.9328888888888889
+  ],
+  [
+   "exp_L_batch_fast_tau_20260703_19-33_timing_T4",
+   0.9322222222222223
+  ],
+  [
+   "exp_T_huge_batch_tau_eps_20260630_18-54",
+   0.9276799999999998
+  ],
+  [
+   "exp_O_huge_batch_tau_20260629_19-55",
+   0.9258666666666666
+  ],
+  [
+   "exp_N_batch_tau_eps_20260629_19-53",
+   0.9233511111111112
+  ],
+  [
+   "exp_N_batch_tau_eps_20260702_19-58_timing_T4",
+   0.9231111111111112
+  ],
+  [
+   "exp_U_huge_batch_tau020_20260630_18-56",
+   0.9205066666666666
+  ],
+  [
+   "exp_L_batch_fast_tau_20260628_21-11",
+   0.91672
+  ],
+  [
+   "exp_J_batch_eps_decay_20260628_20-30",
+   0.9156622222222223
+  ],
+  [
+   "exp_L_batch_fast_tau_20260925_22-36",
+   0.9140266666666668
+  ],
+  [
+   "exp_I_huge_batch_20260628_20-29",
+   0.9118488888888889
+  ],
+  [
+   "exp_W_huge_batch_tau_clip025_20260630_19-00",
+   0.9116
+  ],
+  [
+   "exp_20260525_01-31",
+   0.9098666666666668
+  ],
+  [
+   "exp_M_batch_kitchen_sink_20260628_21-11",
+   0.9096355555555555
+  ],
+  [
+   "exp_Q_kitchen_sink_v2_20260629_19-58",
+   0.9094933333333333
+  ],
+  [
+   "exp_P_batch_higher_tau_20260629_19-56",
+   0.9085333333333334
+  ],
+  [
+   "exp_Q_eps02to002_lam075_n8_20260926_21-26",
+   0.9082133333333334
+  ],
+  [
+   "exp_S_batch_tau010_20260630_22-55",
+   0.9074577777777777
+  ],
+  [
+   "exp_K_batch_lookahead_20260628_20-31",
+   0.904311111111111
+  ],
+  [
+   "exp_A_batch50k_tau005_20260926_21-21",
+   0.9043022222222222
+  ],
+  [
+   "exp_C_bigger_batch_20260627_08-31",
+   0.8962577777777778
+  ],
+  [
+   "exp_G_epsilon_decay_20260626_20-09",
+   0.8942311111111111
+  ],
+  [
+   "exp_E_baseline_20260626_18-52",
+   0.8914133333333334
+  ],
+  [
+   "exp_V_huge_batch_tau_mild_eps_20260630_18-57",
+   0.8894666666666666
+  ],
+  [
+   "exp_20260525_09-25",
+   0.8878044444444445
+  ],
+  [
+   "exp_20260501_09-45",
+   0.8842044444444445
+  ],
+  [
+   "exp_20260501_09-43",
+   0.8841066666666667
+  ],
+  [
+   "exp_20260501_14-14",
+   0.8840622222222223
+  ],
+  [
+   "exp_20260509_16-36",
+   0.8819911111111111
+  ],
+  [
+   "exp_20260514_03-44",
+   0.88128
+  ],
+  [
+   "exp_D_faster_tau_20260626_16-03",
+   0.876
+  ],
+  [
+   "exp_20260426_16-15",
+   0.8736088888888888
+  ],
+  [
+   "exp_H_looser_grad_clip_20260626_23-03",
+   0.8728
+  ],
+  [
+   "exp_20260403_12-05",
+   0.8702577777777778
+  ],
+  [
+   "exp_20260426_16-19",
+   0.8670488888888889
+  ],
+  [
+   "exp_B_longer_lookahead_20260626_17-35",
+   0.8579911111111111
+  ],
+  [
+   "exp_R_batch_tau_higher_lr_20260629_22-32",
+   0.8523555555555555
+  ],
+  [
+   "exp_A_higher_lr_20260626_16-37",
+   0.7481155555555555
+  ],
+  [
+   "exp_20260426_16-20",
+   0.7157244444444443
+  ],
+  [
+   "exp_F_combined_lr_lookahead_20260626_20-04",
+   0.5837333333333333
+  ]
+ ]
+}

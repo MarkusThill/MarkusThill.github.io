@@ -1,2 +1,5 @@
 .techdays26/
 data/*.tmp
+checkpoints/
+# raw run folders (published as an extract in assets/data/, complete on Google Drive)
+data/post09/exp_*/

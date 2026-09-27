@@ -1,0 +1,193 @@
+{
+ "gpu_name": "NVIDIA A100-SXM4-40GB",
+ "commit_sha": "c18a0b5f3f2a3fdc48fec5c8872c698ac647dc49",
+ "batch_size": 50000,
+ "tau": 0.15,
+ "n_steps": 25000,
+ "repeats": 10,
+ "games_estimate_mean": 41646664.71917555,
+ "five_minutes": {
+  "step": 13000,
+  "win_rate_mean": 0.9460000000000001,
+  "ci": [
+   0.9039999999999999,
+   0.984
+  ],
+  "minutes_max": 4.75102965037028
+ },
+ "final_first_vs_full": {
+  "win_rate_mean": 0.966,
+  "ci": [
+   0.9420000000000002,
+   0.984
+  ],
+  "per_repeat": [
+   1.0,
+   0.96,
+   1.0,
+   1.0,
+   0.88,
+   0.94,
+   0.98,
+   0.98,
+   0.96,
+   0.96
+  ]
+ },
+ "final_outcomes": {
+  "random|first": [
+   500,
+   0,
+   0
+  ],
+  "bitbully-1ply|first": [
+   490,
+   1,
+   9
+  ],
+  "bitbully-2ply|first": [
+   467,
+   2,
+   31
+  ],
+  "bitbully-4ply|first": [
+   482,
+   3,
+   15
+  ],
+  "bitbully-8ply|first": [
+   465,
+   9,
+   26
+  ],
+  "bitbully-8-ply-book8ply|first": [
+   488,
+   3,
+   9
+  ],
+  "bitbully-10-ply-book8ply|first": [
+   486,
+   5,
+   9
+  ],
+  "bitbully-16ply-book12ply|first": [
+   492,
+   6,
+   2
+  ],
+  "bitbully-full-strength|first": [
+   483,
+   11,
+   6
+  ],
+  "random|second": [
+   500,
+   0,
+   0
+  ],
+  "bitbully-1ply|second": [
+   472,
+   9,
+   19
+  ],
+  "bitbully-2ply|second": [
+   483,
+   10,
+   7
+  ],
+  "bitbully-4ply|second": [
+   479,
+   7,
+   14
+  ],
+  "bitbully-8ply|second": [
+   458,
+   17,
+   25
+  ],
+  "bitbully-8-ply-book8ply|second": [
+   489,
+   1,
+   10
+  ],
+  "bitbully-10-ply-book8ply|second": [
+   439,
+   21,
+   40
+  ],
+  "bitbully-16ply-book12ply|second": [
+   291,
+   6,
+   203
+  ],
+  "bitbully-full-strength|second": [
+   0,
+   0,
+   500
+  ]
+ },
+ "epsilon_curve": {
+  "first|0.0": {
+   "win_rate_mean": 0.966,
+   "ci": [
+    0.9420000000000002,
+    0.984
+   ]
+  },
+  "first|0.1": {
+   "win_rate_mean": 0.958,
+   "ci": [
+    0.9339999999999999,
+    0.9780000000000001
+   ]
+  },
+  "first|0.2": {
+   "win_rate_mean": 0.9719999999999999,
+   "ci": [
+    0.958,
+    0.986
+   ]
+  },
+  "first|0.3": {
+   "win_rate_mean": 0.992,
+   "ci": [
+    0.9839500000000004,
+    1.0
+   ]
+  },
+  "second|0.0": {
+   "win_rate_mean": 0.0,
+   "ci": [
+    0.0,
+    0.0
+   ]
+  },
+  "second|0.1": {
+   "win_rate_mean": 0.4880000000000001,
+   "ci": [
+    0.466,
+    0.51
+   ]
+  },
+  "second|0.2": {
+   "win_rate_mean": 0.858,
+   "ci": [
+    0.842,
+    0.876
+   ]
+  },
+  "second|0.3": {
+   "win_rate_mean": 0.9019999999999999,
+   "ci": [
+    0.8800000000000001,
+    0.9239999999999998
+   ]
+  }
+ },
+ "time_minutes": {
+  "training_mean": 8.630102889935175,
+  "training_min": 8.584108412265778,
+  "training_max": 8.846263659000396,
+  "evaluation_mean": 8.623258927663167
+ }
+}
